@@ -120,7 +120,7 @@ textarea{width:100%;min-height:72px;border:1px solid var(--line);border-radius:8
 .run-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;justify-content:space-between}
 .run-head h2{font-size:15px;margin:0;display:flex;align-items:center;gap:8px}
 .run-time{font-family:var(--mono);font-size:12px;color:var(--muted)}
-.kpi.alert{cursor:pointer;text-align:left;border:1px solid var(--line);font:inherit;color:inherit;background:var(--surface)}.kpi.alert.fresh b{color:var(--accent)}.kpi.alert.hot b{color:var(--lo)}.kpi.alert.on{outline:2px solid var(--accent)}
+.kpi.alert{cursor:pointer;text-align:left;border:1px solid var(--line);font:inherit;color:inherit;background:var(--surface)}.kpi.alert.fresh b{color:var(--accent)}.kpi.alert.hot b{color:var(--lo)}.kpi.alert.on{outline:2px solid var(--accent)}.kpi.alert.top b{color:var(--accent)}
 .chip.flag{background:var(--surface2);border:1px dashed var(--line)}.chip.flag.tek{border-style:solid;border-color:var(--accent);color:var(--accent)}.chip.flag.license{border-style:solid}
 .chip.claim{background:var(--surface2);border:1px dotted var(--muted)}.chip.claim.c-egrul{border:1px solid var(--accent);color:var(--accent);background:var(--surface)}.chip.claim.c-verified{border:1px solid var(--accent);color:var(--accent)}.chip.claim.c-historical,.chip.claim.c-procurement-only,.chip.claim.c-needs-proof{color:var(--muted)}
 .org-g{display:flex;justify-content:space-between;gap:8px;padding:5px 6px;border-radius:6px;cursor:pointer;font-size:13.5px}.org-g:hover,.org-g.on{background:var(--surface2)}
@@ -151,19 +151,6 @@ textarea{width:100%;min-height:72px;border:1px solid var(--line);border-radius:8
 .run-hist{font-size:12.5px;color:var(--muted);margin-top:8px}
 .run-note{font-size:12.5px;color:var(--muted);margin-top:8px}
 .run-err{border:1px solid var(--lo);background:var(--lo-bg);color:var(--ink);border-radius:8px;padding:8px 10px;margin-top:10px;font-size:13px}
-/* B2B-Center manual check */
-.hdr-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
-@media (max-width:640px){.hdr-btns{justify-content:flex-start}}
-.st-incomplete{background:var(--mid-bg);color:var(--mid)} .st-blocked{background:var(--lo-bg);color:var(--lo)}
-.b2b-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;margin-top:10px}
-.b2b-grid>div{background:var(--surface2);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
-.b2b-grid b{font-family:var(--mono);font-size:16px;font-weight:500;font-variant-numeric:tabular-nums}
-.b2b-grid span{color:var(--muted);font-size:12px}
-.b2b-facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 14px;margin:10px 0 0;font-size:13px}
-.b2b-facts dt{color:var(--muted)} .b2b-facts dd{margin:0;overflow-wrap:anywhere}
-@media (max-width:520px){.b2b-facts{grid-template-columns:1fr}.b2b-facts dd{margin-bottom:4px}}
-.b2b-opts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:10px;font-size:13px}
-.b2b-opts input{width:88px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-family:var(--mono)}
 /* holdings */
 .groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px}
 .group{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
@@ -213,17 +200,13 @@ input[type=file]{max-width:100%}
       <p>Закупки обучения, бизнес-тренингов, семинаров, вебинаров, деловых конференций и консалтинга у корпоративных и государственных заказчиков РФ — из всех подключённых источников в одной таблице.</p>
     </div>
     <div class="hdr-right">
-      <div class="hdr-btns">
-        <button class="btn refresh" id="b2bBtn" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Проверить B2B-Center</span></button>
-        <button class="btn primary refresh" id="refreshBtn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 4v5h-5"/></svg><span>Обновить</span></button>
-      </div>
+      <button class="btn primary refresh" id="refreshBtn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 4v5h-5"/></svg><span>Обновить</span></button>
       <div class="meta-note" id="metaNote">Загрузка базы…</div>
     </div>
   </header>
 
   <section class="kpis" id="kpis" aria-label="Сводка"></section>
   <section class="run" id="runPanel" hidden aria-live="polite"></section>
-  <section class="run" id="b2bPanel" hidden aria-live="polite"></section>
 
   <nav class="tabs" role="tablist" id="tabs">
     <button role="tab" data-tab="leads" aria-selected="true">Лиды</button>
@@ -246,7 +229,7 @@ input[type=file]{max-width:100%}
       <select id="fDir" aria-label="Направление"><option value="">Все направления</option></select>
       <select id="fForm" aria-label="Форма обучения"><option value="">Все формы обучения</option></select>
       <select id="fOpen" aria-label="Приём заявок"><option value="">Все сроки</option><option value="open">Приём идёт</option><option value="closed">Завершён (сигнал потребности)</option></select>
-      <select id="fFit" aria-label="Fit"><option value="">Любой fit</option><option value="65">Fit от 65</option><option value="40" selected>Fit от 40</option><option value="lt40">Fit ниже 40</option></select>
+      <select id="fFit" aria-label="Fit"><option value="">Любой fit</option><option value="75">Fit от 75</option><option value="65">Fit от 65</option><option value="40" selected>Fit от 40</option><option value="lt40">Fit ниже 40</option></select>
       <select id="fLaw" aria-label="Тип закупки"><option value="">Все типы</option><option>44-ФЗ</option><option>223-ФЗ</option><option>Коммерческий</option><option value="none">Не указан</option></select>
       <select id="fHold" aria-label="Холдинг"><option value="">Все заказчики</option><option value="__any">Только холдинги из реестра</option></select>
       <select id="fStatus" aria-label="Статус работы"><option value="">Любой статус</option></select>
@@ -377,7 +360,7 @@ input[type=file]{max-width:100%}
     <div class="srcs" id="srcs"></div>
     <h3 style="margin:22px 0 8px;font-size:15px">Каталог площадок из справочника (кандидаты)</h3>
     <p class="muted" style="margin:0 0 8px">150 российских площадок из таблиц ДПО и малых закупок. Ни одна не включена в сбор автоматически: сначала проверяется открытая выдача и одна реальная карточка. «Уже в сборе» — тот же сайт и раздел, что у работающего источника; «тот же сайт» — другой раздел, склеивать нельзя.</p>
-    <div class="filters"><select id="catF" aria-label="Фильтр каталога"><option value="">Все</option><option value="queued">В проверке и проверенные</option><option value="new">Новые сайты</option><option value="overlap">Уже в сборе</option><option value="high">Высокая релевантность</option><option value="p0">Приоритет P0 по реестру</option><option value="wave">Следующая волна (P1)</option></select></div>
+    <div class="filters"><select id="catF" aria-label="Фильтр каталога"><option value="">Все</option><option value="live">Действующие (все виды)</option><option value="direct">Включены в сбор напрямую</option><option value="queued">В проверке и проверенные</option><option value="new">Новые сайты</option><option value="overlap">Уже в сборе</option><option value="high">Высокая релевантность</option><option value="p0">Приоритет P0 по реестру</option><option value="wave">Следующая волна (P1)</option></select></div>
     <div id="catBox"></div>
     <h3 style="margin:22px 0 8px;font-size:15px">API и пробный доступ</h3>
     <p class="muted" style="margin:0 0 8px">Из реестра источников 100+100. Ключи сюда не записываются: они хранятся только в задании сбора.</p>
@@ -502,13 +485,13 @@ function innOf(l){return l.customerInn||((/^ИНН\s*(\d{10,12})$/.exec(String(l
 function claimOf(l){const inn=innOf(l);const O=inn&&S.own?S.own[inn]:null;if(O&&O.group)return {g:O.group,p:(O.chain&&O.chain[0]&&O.chain[0].name)||"",lvl:O.groupShare?`доля ${O.groupShare}%`:"",st:"egrul",by:"ЕГРЮЛ",k:"own:"+inn};if(!ORGIDX.size)return null;if(inn){const e=ORGIDX.get("i:"+inn);if(e)return {...e,by:"ИНН"}}const n=normOrg(l.customer);if(n&&n.length>4){const e=ORGIDX.get("n:"+n);if(e)return {...e,by:"названию"}}return null}
 const CLAIM_LABEL={egrul:"подтверждено по ЕГРЮЛ",claimed:"заявлено по таблице",verified:"подтверждено",historical:"историческая связь","procurement-only":"только закупочная связь","needs-proof":"требует подтверждения"};
 async function loadOrgIndex(db){try{const m=await db.doc("orgdir/meta").get();if(!m.exists)return;S.orgMeta=m.data();const n=S.orgMeta.parts?.index||0;const parts=await Promise.all(Array.from({length:n},(_,i)=>db.doc(`orgdir/index-${i+1}`).get()));const map=new Map();for(const p of parts){if(!p.exists)continue;const d=p.data();if(!ORGSTOP&&d.stop)ORGSTOP=new RegExp("^"+d.stop+"$");for(const [k,v] of Object.entries(d.entries||{}))map.set(k,v)}ORGIDX=map;schedule()}catch(e){console.warn("orgdir index",e)}}
-function withCustomer(r){const m=/^ИНН\s*(\d{10,12})$/.exec(String(r.customer||"").trim());if(!m)return r;const c=S.customers&&S.customers[m[1]];if(!c||!c.name)return r;return {...r,customer:c.name,customerInn:m[1],contacts:r.contacts||c.contacts||null}}
+function withCustomer(r){const m=/^ИНН\s*(\d{10,12})$/.exec(String(r.customer||"").trim());if(!m)return r;const c=S.customers&&S.customers[m[1]];if(c&&c.name)return {...r,customer:c.name,customerInn:m[1],contacts:r.contacts||c.contacts||null};const o=S.own&&S.own[m[1]];if(o&&o.name)return {...r,customer:o.name,customerInn:m[1]};return r}
 function recompute(){
   const seen=new Map();const out=[];const custN={};
   for(const set of S.sets)for(const raw of (set.data.leads||[])){const c=normCust(raw.customer);if(c)custN[c]=(custN[c]||0)+1}
   for(const set of S.sets){for(const raw00 of (set.data.leads||[])){const k=keyOf(raw00.id||(raw00.url)||(raw00.title+"|"+raw00.customer));if(seen.has(k))continue;seen.set(k,1);
     const raw0=withCustomer(raw00);
-    const txt=(raw0.title||"")+(raw0.topic?" "+raw0.topic:"");const dirs=dirsOf(txt);const forms=formsOf(txt);const rc=custN[normCust(raw0.customer)]||0;
+    const txt=(raw0.title||"")+(raw0.topic?" "+raw0.topic:"");const dirs=dirsOf(txt);const forms=formsOf(txt);const rc=custN[normCust(raw00.customer)]||0;
     const raw={...raw0,_ctx:{repeat:rc>1?rc:0,mandatory:dirs.includes(MAND),dirs,forms}};
     const h=matchHolding((raw.customer||"")+" "+(raw.title||""));const sc=scoreLead(raw,h);delete raw._ctx;raw.dirs=dirs;raw.forms=forms;raw.mandatory=dirs.includes(MAND);
     const fbs=S.feedback.filter(f=>f.leadKey===k&&f.rating);const avg=fbs.length?fbs.reduce((s,f)=>s+f.rating,0)/fbs.length:null;
@@ -522,7 +505,9 @@ function renderKPIs(){const open=LEADS.filter(l=>l.dl!=null&&l.dl>=0).length;con
   const fresh=LEAST_VISIT_OK?LEADS.filter(l=>String(l.collectedAt||"")>String(LAST_VISIT||"")).length:0;
   const hot=LEADS.filter(l=>(l.status==="work"||l.status==="bid")&&l.dl!=null&&l.dl>=0&&l.dl<=3);
   const alert=(cls,txt,key)=>{const b=el("button",{class:`kpi alert ${cls} ${S.filters[key]?"on":""}`,type:"button",onclick:()=>{S.filters[key]=!S.filters[key];if(S.filters[key]){S.filters[key==="hot"?"fresh":"hot"]=false;if(key==="hot"){S.filters.status="";S.filters.open="";S.filters.fit="";S.filters.mand=false}else{S.filters.fit="";S.filters.mand=false}}S.page=0;renderAll()}});b.append(el("b",{text:txt[0]}),el("span",{text:txt[1]}));return b};
-  $("#kpis").replaceChildren(k(LEADS.length,"лидов в базе"),k(mid,"с fit от 40"),k(hi,"с fit от 65"),k(open,"приём заявок идёт"),k(inH,`в холдингах реестра · заказчик известен у ${named}`),k(`${srcOk} из ${S.sources.length}`,"источников работает"),fresh?alert("fresh",[fresh,`новых с вашего прошлого визита${S.filters.fresh?" · показаны":" · показать"}`],"fresh"):null,hot.length?alert("hot",[hot.length,`горят сроки: до 3 дней по лидам в работе${S.filters.hot?" · показаны":" · показать"}`],"hot"):null);
+  const top=LEADS.filter(l=>l.fit>=75&&l.dl!=null&&l.dl>=0&&!l.mandatory).length;const topOn=S.filters.fit==="75"&&S.filters.open==="open";
+  const topBtn=el("button",{class:`kpi alert top ${topOn?"on":""}`,type:"button",title:"Лиды с fit от 75 и открытым приёмом заявок (без обязательного обучения)",onclick:()=>{if(topOn){S.filters.fit="40";S.filters.open=""}else{S.filters.fit="75";S.filters.open="open";S.filters.mand=true;S.filters.fresh=false;S.filters.hot=false}$("#fFit").value=S.filters.fit;$("#fOpen").value=S.filters.open;$("#fMand").checked=!!S.filters.mand;S.page=0;switchTab("leads");renderAll()}},el("b",{text:top}),el("span",{text:`с fit от 75 и приём заявок идёт${topOn?" · показаны":" · показать"}`}));
+  $("#kpis").replaceChildren(topBtn,k(LEADS.length,"лидов в базе"),k(mid,"с fit от 40"),k(hi,"с fit от 65"),k(open,"приём заявок идёт"),k(inH,`в холдингах реестра · заказчик известен у ${named}`),k(`${srcOk} из ${S.sources.length}`,"источников работает"),fresh?alert("fresh",[fresh,`новых с вашего прошлого визита${S.filters.fresh?" · показаны":" · показать"}`],"fresh"):null,hot.length?alert("hot",[hot.length,`горят сроки: до 3 дней по лидам в работе${S.filters.hot?" · показаны":" · показать"}`],"hot"):null);
   const last=S.sets.map(s=>s.data.collectedAt||s.data.importedAt||"").sort().pop();$("#metaNote").textContent=last?`Последнее пополнение: ${fmtDate(String(last).slice(0,10))}`:"База пуста";}
 
 function filtered(){const f=S.filters;const q=(f.q||"").trim().toLowerCase();return LEADS.filter(l=>{
@@ -564,7 +549,7 @@ function renderLeads(){const list=sorted(filtered());const pages=Math.max(1,Math
 
 function altLinks(l){const out=[];const ids=[l.eis,l.id].filter(Boolean);for(const n of ids){if(/^0\d{18}$/.test(n)){out.push(["ЕИС по номеру","https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString="+n]);break}if(/^3\d{10}$/.test(n)){out.push(["ЕИС (223-ФЗ) по номеру","https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString="+n]);break}}
   out.push(["Поиск в Яндексе","https://yandex.ru/search/?text="+encodeURIComponent(`${l.id||""} ${(l.title||"").slice(0,90)} ${l.customer||""}`.trim())]);return out}
-function srcName(s){if(!s)return "";if(s==="import"||s.startsWith("import"))return "Импорт";if(s.startsWith("synapse"))return "СИНАПС"+(s.split(":")[1]?` · ${s.split(":")[1]}`:"");if(s.startsWith("rostender"))return "РосТендер";if(s==="b2b-center:market")return "B2B-Center · «Все»";if(s.startsWith("b2b"))return "B2B-Center";if(s==="bicotender")return "Бикотендер";if(s.startsWith("gosplan"))return "ЕИС · ГосПлан"+(s.includes("223")?" (223-ФЗ)":" (44-ФЗ)");if(s==="komtender")return "КомТендер";return s}
+function srcName(s){if(!s)return "";if(s==="import"||s.startsWith("import"))return "Импорт";if(s.startsWith("synapse"))return "СИНАПС"+(s.split(":")[1]?` · ${s.split(":")[1]}`:"");if(s.startsWith("rostender"))return "РосТендер";if(s.startsWith("b2b"))return "B2B-Center";if(s==="bicotender")return "Бикотендер";if(s.startsWith("gosplan"))return "ЕИС · ГосПлан"+(s.includes("223")?" (223-ФЗ)":" (44-ФЗ)");if(s==="komtender")return "КомТендер";return s}
 
 function fillSelects(){const cat=$("#fCat");if(cat.options.length===1)CATS.forEach(c=>cat.append(el("option",{value:c,text:c})));
   const fd=$("#fDir");const dcur=fd.value;const dn=[...Object.keys(S.config?.directions||{}),"Прочее обучение"];const dc={};LEADS.forEach(l=>l.dirs.forEach(d=>dc[d]=(dc[d]||0)+1));
@@ -637,7 +622,7 @@ function groupExtra(g){const parts=[];const X=(S.hcu||{})[g.name];if(X){parts.pu
   if(P){const pl=Object.entries(P.platforms||{}).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v])=>`${k} — ${v}`).join("; ");
     parts.push(el("div",{style:"font-size:12.5px;margin-top:6px"},el("b",{text:"Где закупает (ЕИС, головная компания, год): "}),el("span",{text:`${P.total??0} закупок${P.total223!=null?` (223-ФЗ: ${P.total223}, 44-ФЗ: ${P.total44??0})`:""}${pl?"; площадки: "+pl:""}. По темам МИСБ: ${P.relevant??0}. Проверено ${fmtDate(P.checkedAt)}.`}),P.note?el("div",{class:"muted",text:P.note}):null,
       ...(P.examples||[]).slice(0,5).map(x=>el("div",{},el("a",{href:x.url,target:"_blank",rel:"noopener",text:`${x.title||x.id}`.slice(0,110)}),el("span",{class:"muted",text:` · ${x.law||""} · ${x.date||""}`})))))}
-  else if(g.inn)parts.push(el("div",{class:"muted",style:"font-size:12.5px;margin-top:4px",text:"Профиль закупок ещё не собран: сбор проходит группы по кругу, 8 групп за запуск."}));
+  else if(g.inn)parts.push(el("div",{class:"muted",style:"font-size:12.5px;margin-top:4px",text:"Профиль закупок пока не собран: этап приостановлен до исправления фильтра ГосПлана по ИНН заказчика."}));
   if(R.length)parts.push(el("details",{style:"margin-top:6px"},el("summary",{style:"font-size:12.5px",text:`Закупочные маршруты из справочника: ${R.length} (в сбор не включены)`}),...R.map(r=>el("div",{style:"font-size:12.5px"},el("a",{href:r.url,target:"_blank",rel:"noopener",text:r.url.replace(/^https?:\/\//,"").slice(0,70)}),el("span",{class:"muted",text:` · ${r.org||""} · ${r.type} · ${r.status||""}`})))));
   return parts.length?el("div",{},...parts):null}
 function renderCorp(){const G=S.holdings?.groups||[];const byNode={};for(const l of LEADS){if(!l.hpath)continue;l.hpath.forEach((n,i)=>{const key=l.hpath.slice(0,i+1).join(" / ");byNode[key]=(byNode[key]||0)+1})}
@@ -807,69 +792,20 @@ async function startRefresh(){if(!S.db)return;if(!triggerId()){S.showSetup=true;
   try{await S.db.doc("progress/current").set(queued)}catch(e){}
   renderRun();
   try{await S.mcp.callTool(MCP_SERVER,"fire_trigger",{trigger_id:triggerId()},{cache:false});toast("Сбор запущен")}
-  catch(e){const {msg,definite}=fireFailure(e,"Обновить","Проверьте номер задания в «Настройке».");
+  catch(e){const c=e&&e.code;let msg;let definite=true;
+    if(c==="server_not_connected")msg="Не подключён коннектор Claude Code Remote. Добавьте его в claude.ai: Настройки → Коннекторы, затем нажмите «Обновить» ещё раз.";
+    else if(c==="needs_reauth")msg="Коннектор Claude Code Remote требует повторного входа: переподключите его в claude.ai (Настройки → Коннекторы).";
+    else if(c==="selection_required")msg="В claude.ai подключено несколько коннекторов Claude Code Remote — выберите один в появившемся запросе и нажмите «Обновить» снова.";
+    else if(c==="not_in_manifest"||c==="consent_required")msg="Странице не разрешено запускать задачи. Нажмите «Обновить» ещё раз и разрешите доступ в запросе.";
+    else if(c==="blocked_by_policy"||c==="approval_required")msg="Запуск задач из страниц запрещён настройками организации. Сбор можно запустить из чата с Claude.";
+    else if(c==="tool_error")msg="Сервис задач отказал: "+(e.message||"без пояснений")+". Проверьте номер задания в «Настройке».";
+    else if(c==="not_granted"||c==="capability_disabled"||c==="capability_removed")msg="Этот просмотр не может запускать сбор. Откройте сайт в Claude.";
+    else{definite=false;msg="Ответ сервиса задач не получен. Возможно, сбор всё же запустился — если через 3 минуты прогресс не сдвинется, нажмите «Обновить» снова."}
     S.fireError=msg;
     if(definite){const t=new Date().toISOString();try{await S.db.doc("progress/current").set({...queued,status:"error",updatedAt:t,stage:"Сбор не запущен",log:[...queued.log,{at:t,text:"Запуск не удался: "+msg}]})}catch(x){}}}
   S.firing=false;renderRun()}
-function fireFailure(e,btn,hint){const c=e&&e.code;
-  if(c==="server_not_connected")return{definite:true,msg:`Не подключён коннектор Claude Code Remote. Добавьте его в claude.ai: Настройки → Коннекторы, затем нажмите «${btn}» ещё раз.`};
-  if(c==="needs_reauth")return{definite:true,msg:"Коннектор Claude Code Remote требует повторного входа: переподключите его в claude.ai (Настройки → Коннекторы)."};
-  if(c==="selection_required")return{definite:true,msg:`В claude.ai подключено несколько коннекторов Claude Code Remote — выберите один в появившемся запросе и нажмите «${btn}» снова.`};
-  if(c==="not_in_manifest"||c==="consent_required")return{definite:true,msg:`Странице не разрешено запускать задачи. Нажмите «${btn}» ещё раз и разрешите доступ в запросе.`};
-  if(c==="blocked_by_policy"||c==="approval_required")return{definite:true,msg:"Запуск задач из страниц запрещён настройками организации. Задание можно запустить из чата с Claude."};
-  if(c==="tool_error")return{definite:true,msg:"Сервис задач отказал: "+(e.message||"без пояснений")+". "+hint};
-  if(c==="not_granted"||c==="capability_disabled"||c==="capability_removed")return{definite:true,msg:"Этот просмотр не может запускать задания. Откройте сайт в Claude."};
-  return{definite:false,msg:`Ответ сервиса задач не получен. Возможно, задание всё же запустилось — если через 3 минуты прогресс не сдвинется, нажмите «${btn}» снова.`}}
 $("#refreshBtn").addEventListener("click",startRefresh);
 setInterval(()=>{if(S.progress)renderRun()},30000);
-
-/* ---------- B2B-Center: manual check of the «Все» tab ---------- */
-const B2B_LABEL={idle:"Ещё не запускалась",queued:"Запускается",running:"Идёт проверка",done:"Готово · охват полный",incomplete:"Охват неполный",blocked:"Остановлено",error:"Ошибка",stale:"Не отвечает"};
-const b2bTrigger=()=>String(S.b2bCfg?.triggerId||"").trim();
-function b2bRunState(P){if(!P||!P.status)return "idle";let st=P.status;const age=P.updatedAt?(Date.now()-new Date(P.updatedAt).getTime())/60000:0;if((st==="running"&&age>20)||(st==="queued"&&age>12))st="stale";return st}
-function stamp(iso){if(!iso)return "—";try{return new Date(iso).toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})}catch(e){return String(iso)}}
-function renderB2B(){const box=$("#b2bPanel");const btn=$("#b2bBtn");if(!box)return;const P=S.b2bProgress;const st=b2bRunState(P);const busy=st==="running"||st==="queued";const ST=S.b2bState||{};
-  if(btn){btn.disabled=busy||!!S.b2bFiring||!S.mcp||!b2bTrigger();btn.classList.toggle("spin",busy||!!S.b2bFiring);btn.querySelector("span").textContent=busy?"B2B-Center · идёт проверка":S.b2bFiring?"Запускаю…":"Проверить B2B-Center";
-    btn.title=!b2bTrigger()?"Не задан номер задания в config/b2b-market":!S.mcp?"Проверку запускает владелец сайта, открыв его в Claude":"Проверить новые закупки на вкладке «Все» B2B-Center"}
-  if(!P&&!S.owner){box.hidden=true;return}
-  box.hidden=false;const c=P?.counters||{};
-  const head=el("div",{class:"run-head"},el("h2",{},"B2B-Center · вкладка «Все»",el("span",{class:`pill st-${st}`,text:B2B_LABEL[st]||st})),
-    el("span",{class:"run-time",text:[P?.runId?`задача ${P.runId}`:"",P?.startedAt?`запущена ${hhmm(P.startedAt)}`:P?.requestedAt?`запрошена ${hhmm(P.requestedAt)}`:"",P?.updatedAt?`обновлено ${ago(P.updatedAt)}`:""].filter(Boolean).join(" · ")}));
-  const stageText=st==="stale"?"Проверка давно не присылала новостей — вероятно, облачный сеанс прервался. Контрольная отметка не сдвинута, проверку можно запустить заново.":P?(P.stage||""):"Проверка ещё не запускалась. Первое нажатие просмотрит закупки за 14 дней.";
-  const cell=(v,t)=>el("div",{},el("b",{text:v??0}),el("span",{text:t}));
-  const grid=P&&st!=="queued"&&st!=="idle"?el("div",{class:"b2b-grid"},cell(c.pages,"страниц списка"),cell(c.listed,"закупок в окне"),cell(`${c.cardsViewed??0}${c.cardsPlanned?" из "+c.cardsPlanned:""}`,"карточек просмотрено"),cell(c.new,"новых"),cell(c.updated,"обновлено"),cell(c.relevant,"по темам МИСБ"),cell(c.sales,"продаж пропущено"),cell(c.cardErrors,"ошибок карточек")):null;
-  const lr=ST.lastRun;const facts=el("dl",{class:"b2b-facts"},
-    el("dt",{text:"Контрольная отметка"}),el("dd",{text:ST.watermark?`${stamp(ST.watermark)} — начало последней полностью успешной проверки`:"ещё нет: первая проверка охватит 14 дней"}),
-    P?.cutoff?el("dt",{text:"Окно этой проверки"}):null,P?.cutoff?el("dd",{text:`закупки, опубликованные с ${stamp(P.cutoff)}`}):null,
-    ST.resume?el("dt",{text:"Недочитанный участок"}):null,ST.resume?el("dd",{text:`список прочитан до ${stamp(ST.resume.oldestPublishedAt)}; следующее нажатие продолжит с этого места`}):null,
-    lr?el("dt",{text:"Последний итог"}):null,lr?el("dd",{text:`${B2B_LABEL[lr.status]||lr.status} · ${stamp(lr.startedAt)}${lr.note?" · "+lr.note:""}`}):null);
-  if(!S.b2bDepthEl)S.b2bDepthEl=el("input",{type:"number",id:"b2bDepth",min:"1",max:"365",step:"1",inputmode:"numeric",placeholder:"авто"});
-  S.b2bDepthEl.disabled=busy;
-  const opts=S.owner?el("div",{class:"b2b-opts"},el("label",{for:"b2bDepth"},"Глубина истории, дней:"),S.b2bDepthEl,el("span",{class:"muted",text:"пусто — от контрольной отметки минус 2 дня, при первой проверке 14 дней"})):null;
-  const errNote=S.b2bError?el("div",{class:"run-err",text:S.b2bError}):null;
-  const log=(P?.log||[]).slice(-40).reverse();const wasOpen=box.querySelector("details.b2b-log")?.open;
-  const lg=log.length?el("details",{class:"b2b-log"},el("summary",{text:`Журнал проверки (${log.length})`}),el("ul",{class:"runlog"},...log.map(r=>el("li",{},el("time",{text:hhmm(r.at)}),document.createTextNode(r.text||""))))):null;
-  if(lg)lg.open=wasOpen??busy;
-  const runs=S.b2bRuns||[];const hist=runs.length?el("div",{class:"run-hist",text:"Прошлые проверки: "+runs.slice(0,5).map(r=>`${stamp(r.startedAt)} — ${B2B_LABEL[r.status]||r.status}, новых ${r.counters?.new??0}`).join("; ")}):null;
-  const how=el("div",{class:"run-note",text:"Кнопка запускает отдельное облачное задание, только по нажатию. Оно сначала проверяет robots.txt B2B-Center и при запрете останавливается. Затем листает вкладку «Все» от новых закупок к старым до контрольной отметки минус 2 дня, пропускает объявления о продаже и открывает карточку каждой новой закупки. Сохраняются все закупки, в таблицу лидов попадают только подходящие по словарю института. Контрольная отметка сдвигается, только когда прочитаны все страницы и карточки; иначе — «охват неполный», и следующее нажатие дочитывает."});
-  box.replaceChildren(...[head,el("div",{class:"run-stage",style:"margin-top:8px"},el("span",{text:stageText})),errNote,grid,facts,opts,lg,hist,how].filter(Boolean))}
-async function startB2B(){if(!S.db||!S.mcp||!b2bTrigger()||S.b2bFiring)return;if(["running","queued"].includes(b2bRunState(S.b2bProgress)))return;
-  S.b2bFiring=true;S.b2bError="";renderB2B();const ref=S.db.doc("b2b/progress");
-  try{const lease=await ref.acquire({holder:S.uid||"owner",ttlMs:20000});if(!lease.acquired){S.b2bError="Проверку уже запускают из другой вкладки.";S.b2bFiring=false;renderB2B();return}
-    const cur=await ref.get();if(["running","queued"].includes(b2bRunState(cur.exists?cur.data():null))){S.b2bFiring=false;renderB2B();return}}
-  catch(e){S.b2bError="Не удалось проверить, не идёт ли уже проверка: нет доступа к базе сайта.";S.b2bFiring=false;renderB2B();return}
-  const now=new Date().toISOString();const runId="b2b-"+now.slice(0,10).replace(/-/g,"")+"-"+now.slice(11,19).replace(/:/g,"");
-  const dv=parseInt(S.b2bDepthEl?.value,10);const lookbackDays=dv>0?Math.min(dv,365):null;
-  const queued={runId,taskId:runId,status:"queued",requestedAt:now,updatedAt:now,requestedBy:S.uid||"",params:{lookbackDays},stage:"Задание отправлено: запускается облачный сеанс, обычно 1–2 минуты",counters:{},coverage:"",log:[{at:now,text:"Нажата кнопка «Проверить B2B-Center»"+(lookbackDays?`, глубина ${lookbackDays} дн.`:"")}]};
-  try{await ref.set(queued)}catch(e){}
-  try{const r=await S.mcp.callTool(MCP_SERVER,"fire_trigger",{trigger_id:b2bTrigger(),text:JSON.stringify({runId,lookbackDays,requestedAt:now,requestedBy:S.uid||""})},{cache:false});
-    const sid=r&&r.payload&&typeof r.payload==="object"?r.payload.session_id:null;if(sid){try{await ref.update({sessionId:String(sid)})}catch(e){}}
-    toast(`Проверка B2B-Center запущена · задача ${runId}`)}
-  catch(e){const f=fireFailure(e,"Проверить B2B-Center","Проверьте номер задания в config/b2b-market.");S.b2bError=f.msg;
-    if(f.definite){const t=new Date().toISOString();try{await ref.set({...queued,status:"error",updatedAt:t,stage:"Проверка не запущена",log:[...queued.log,{at:t,text:"Запуск не удался: "+f.msg}]})}catch(x){}}}
-  S.b2bFiring=false;renderB2B()}
-$("#b2bBtn").addEventListener("click",startB2B);
-setInterval(()=>{if(S.b2bProgress)renderB2B()},30000);
 
 function quant(a,q){if(!a.length)return null;const s=[...a].sort((x,y)=>x-y);const i=(s.length-1)*q;const lo=Math.floor(i),hi=Math.ceil(i);return s[lo]+(s[hi]-s[lo])*(i-lo)}
 function renderFunnel(){const box=$("#funnel");if(!box)return;const cnt={};for(const l of LEADS)cnt[l.status]=(cnt[l.status]||0)+1;
@@ -944,11 +880,12 @@ function renderOrgs(){if($("#tab-orgs").hidden)return;const D=S.orgDir;const st=
   if(sp.length||ol.length)parts.push(el("h4",{text:"Порталы поставщика и организаторы закупок"}),...sp.map(p=>el("div",{class:"org-node"},el("a",{href:p.url,target:"_blank",rel:"noopener",text:p.title||p.url}),el("span",{class:"meta",text:` · доступ: ${p.access_mode||"—"} · ${p.status||""}`}))),...ol.map(x=>el("div",{class:"org-node"},el("a",{href:x.organizer_url,target:"_blank",rel:"noopener",text:`${x.platform}: ${x.organizer_name}`}),el("span",{class:"meta",text:` · организатор закупок, не владение · ${x.status||""}`}))));
   panel.replaceChildren(...parts.filter(Boolean))}
 $("#orgQ")?.addEventListener("input",e=>{S.orgQ=e.target.value;S.orgSel=null;renderOrgs()});
-const CAT_STATUS={candidate:"кандидат","next-wave":"следующая волна (P1)",queued:"в проверке","verified-origin":"проверен в исходном проекте",paid:"платный доступ",duplicate:"дубль строки"};
+const CAT_STATUS={active:"действует: включён в сбор","via-eis":"действует через ЕИС/ГосПлан","via-aggregator":"действует через агрегаторы",registration:"нужна регистрация",failed:"не работает",blocked:"закрыта для облака (нужен российский адрес)","no-list":"нет открытого списка на странице",js:"нужен разбор (список грузится скриптом)",candidate:"кандидат","next-wave":"следующая волна (P1)",queued:"в проверке","verified-origin":"проверен в исходном проекте",paid:"платный доступ",duplicate:"дубль строки"};
 const VER_STATUS={"card-ok":"карточка проверена","list-only":"есть список, карточки нет",registration:"нужна регистрация",blocked:"не пускает",failed:"не ответил"};
 function renderCatalog(){const box=$("#catBox");if(!box)return;const rows=(S.catalog||[]).filter(r=>!r.inactive);const V=S.catVerify?.results||{};const f=$("#catF")?.value||"";
-  const list=rows.filter(r=>!f||(f==="queued"&&(r.localStatus==="queued"||V[r.source_key]))||(f==="new"&&!r.overlap)||(f==="overlap"&&r.overlap)||(f==="high"&&r.relevance==="Высокая")||(f==="p0"&&r.registry?.priority==="P0")||(f==="wave"&&r.localStatus==="next-wave"));
-  box.replaceChildren(el("p",{class:"muted",style:"margin:0 0 6px",text:`Показано ${list.length} из ${rows.length}. Проверено карточек: ${Object.values(V).filter(v=>v.status==="card-ok").length}${S.catVerify?.checkedAt?" (последняя проверка "+fmtDate(S.catVerify.checkedAt)+")":""}.`}),
+  const list=rows.filter(r=>!f||(f==="live"&&/^(active|via-)/.test(r.localStatus||""))||(f==="direct"&&r.localStatus==="active")||(f==="queued"&&(r.localStatus==="queued"||V[r.source_key]))||(f==="new"&&!r.overlap)||(f==="overlap"&&r.overlap)||(f==="high"&&r.relevance==="Высокая")||(f==="p0"&&r.registry?.priority==="P0")||(f==="wave"&&r.localStatus==="next-wave"));
+  const cs={};rows.forEach(r=>{const k=r.localStatus||"candidate";cs[k]=(cs[k]||0)+1});
+  box.replaceChildren(el("p",{style:"margin:0 0 6px",text:`Действуют: ${(cs.active||0)+(cs["via-eis"]||0)+(cs["via-aggregator"]||0)} из ${rows.length} (включены в сбор ${cs.active||0}, через ЕИС/ГосПлан ${cs["via-eis"]||0}, через агрегаторы ${cs["via-aggregator"]||0}). В проверке: ${cs.queued||0}, следующая волна: ${cs["next-wave"]||0}, кандидатов: ${cs.candidate||0}.`}),el("p",{class:"muted",style:"margin:0 0 6px",text:`Показано ${list.length} из ${rows.length}. Проверено карточек: ${Object.values(V).filter(v=>v.status==="card-ok").length}${S.catVerify?.checkedAt?" (последняя проверка "+fmtDate(S.catVerify.checkedAt)+")":""}.`}),
     el("div",{class:"tablebox"},el("table",{style:"min-width:760px"},el("thead",{},el("tr",{},el("th",{text:"Площадка"}),el("th",{text:"Раздел / регион"}),el("th",{text:"Очередь"}),el("th",{text:"Релевантность"}),el("th",{text:"Доступ (заявлено)"}),el("th",{text:"Статус"}),el("th",{text:"Сбор"}))),
       el("tbody",{},...list.map(r=>{const v=V[r.source_key];return el("tr",{style:"cursor:default"},el("td",{},el("a",{href:r.source_url,target:"_blank",rel:"noopener",text:r.source_name}),el("div",{class:"muted",style:"font-size:11px",text:r.source_key})),el("td",{text:[r.procurement_section,r.region_scope].filter(Boolean).join(" · ")}),el("td",{title:r.registry?[r.registry.regRoute,r.registry.regApi,r.registry.regStatus].filter(Boolean).join("\n"):"",text:r.registry?.priority||"—"}),el("td",{text:r.relevance||"—"}),el("td",{title:r.automation_claim?("автоматизация: "+r.automation_claim):"",text:r.access_claim||"—"}),
         el("td",{},el("div",{text:v?VER_STATUS[v.status]||v.status:CAT_STATUS[r.localStatus]||r.localStatus||"кандидат"}),v&&v.cardUrl?el("a",{href:v.cardUrl,target:"_blank",rel:"noopener",style:"font-size:12px",text:`${v.cardTitle?v.cardTitle.slice(0,60):"карточка"}${v.cardDate?" · "+v.cardDate:""}`}):null,v?.note?el("div",{class:"muted",style:"font-size:11px",text:v.note}):r.localNote?el("div",{class:"muted",style:"font-size:11px",text:r.localNote}):null),
@@ -957,7 +894,7 @@ $("#catF")?.addEventListener("change",renderCatalog);
 function renderProviders(){const b=$("#provBox");if(!b)return;const P=S.providers?.providers||[];if(!P.length){b.replaceChildren();return}const cols=Object.keys(P[0]);
   b.replaceChildren(el("div",{class:"tablebox"},el("table",{style:"min-width:760px"},el("thead",{},el("tr",{},...cols.map(c=>el("th",{text:c})))),el("tbody",{},...P.map(p=>el("tr",{style:"cursor:default"},...cols.map(c=>{const v=String(p[c]??"");return el("td",{style:"font-size:12.5px"},/^https?:\/\//.test(v)?el("a",{href:v,target:"_blank",rel:"noopener",text:v.replace(/^https?:\/\//,"").slice(0,40)}):v)})))))))}
 
-function renderAll(){buildAliases();recompute();fillSelects();renderKPIs();renderLeads();renderAccounts();renderCorp();renderSubject();renderSources();renderCatalog();renderOrgs();renderMethod();renderFunnel();renderSets();renderRun();renderB2B();if(S.openKey)renderDrawer()}
+function renderAll(){buildAliases();recompute();fillSelects();renderKPIs();renderLeads();renderAccounts();renderCorp();renderSubject();renderSources();renderCatalog();renderOrgs();renderMethod();renderFunnel();renderSets();renderRun();if(S.openKey)renderDrawer()}
 let raf=0;const schedule=()=>{if(raf)return;raf=requestAnimationFrame(()=>{raf=0;renderAll()})};
 
 /* ---------- boot ---------- */
@@ -993,12 +930,8 @@ renderAll();
   db.doc("config/collector").onSnapshot(d=>{S.collector=d.exists?d.data():null;renderRun()},err);
   db.doc("progress/current").onSnapshot(d=>{S.progress=d.exists?d.data():null;renderRun()},err);
   db.collection("runs").onSnapshot(s=>{S.runs=s.docs.map(d=>d.data()).sort((a,b)=>String(b.startedAt||"").localeCompare(String(a.startedAt||"")));renderRun()},err);
-  db.doc("config/b2b-market").onSnapshot(d=>{S.b2bCfg=d.exists?d.data():null;renderB2B()},()=>{});
-  db.doc("b2b/progress").onSnapshot(d=>{S.b2bProgress=d.exists?d.data():null;renderB2B()},()=>{});
-  db.doc("b2b/state").onSnapshot(d=>{S.b2bState=d.exists?d.data():null;renderB2B()},()=>{});
-  db.collection("b2b-runs").onSnapshot(s=>{S.b2bRuns=s.docs.map(d=>d.data()).sort((a,b)=>String(b.startedAt||"").localeCompare(String(a.startedAt||"")));renderB2B()},()=>{});
   let owner=false;try{owner=user?await user.isOwner():false}catch(e){}
-  if(owner){S.owner=true;$("#refreshBtn").hidden=false;$("#b2bBtn").hidden=false;renderRun();renderB2B();S.mcp=await claude.use("mcp");renderRun();renderB2B()}
+  if(owner){S.owner=true;$("#refreshBtn").hidden=false;renderRun();S.mcp=await claude.use("mcp");renderRun()}
 })();
 })();
 </script>
