@@ -1,0 +1,1004 @@
+<title>Монитор-консолидатор МИСБ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F3F6F5; --surface:#FFFFFF; --surface2:#EAF0EE; --ink:#15201C; --muted:#5A6964; --line:#D6DFDB;
+  --accent:#1D6B58; --accent-ink:#FFFFFF; --accent-soft:#DCEEE8;
+  --hi:#1D6B58; --hi-bg:#D5EDE5; --mid:#8A5A00; --mid-bg:#F6EACC; --lo:#8D3B32; --lo-bg:#F5DEDA;
+  --info:#2F5A8A; --info-bg:#DEE8F4; --focus:#2F7FD6;
+  --sans:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E1412; --surface:#151D1A; --surface2:#1B2622; --ink:#E4ECE9; --muted:#95A59F; --line:#29352F;
+    --accent:#4DB396; --accent-ink:#06120E; --accent-soft:#1D3A31;
+    --hi:#6FD0B2; --hi-bg:#173A30; --mid:#E6B659; --mid-bg:#3A2E14; --lo:#EE9A8E; --lo-bg:#3C1F1B;
+    --info:#8DB7E8; --info-bg:#1B2B3F; --focus:#7FB6F2;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E1412; --surface:#151D1A; --surface2:#1B2622; --ink:#E4ECE9; --muted:#95A59F; --line:#29352F;
+  --accent:#4DB396; --accent-ink:#06120E; --accent-soft:#1D3A31;
+  --hi:#6FD0B2; --hi-bg:#173A30; --mid:#E6B659; --mid-bg:#3A2E14; --lo:#EE9A8E; --lo-bg:#3C1F1B;
+  --info:#8DB7E8; --info-bg:#1B2B3F; --focus:#7FB6F2;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+.wrap{max-width:1320px;margin:0 auto;padding-inline:20px;padding-block:20px 48px}
+@media (max-width:520px){.wrap{padding-inline:16px}}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.brand{display:flex;flex-direction:column;gap:4px}
+.brand .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:26px;line-height:1.15;margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+.brand p{margin:0;color:var(--muted);max-width:70ch}
+.meta-note{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-block:16px}
+.kpi{background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.kpi b{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi span{color:var(--muted);font-size:12.5px}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:16px}
+nav.tabs button{appearance:none;border:0;background:none;font:inherit;font-weight:500;color:var(--muted);padding:10px 12px;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+nav.tabs button:hover{color:var(--ink)}
+button,select,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.btn{appearance:none;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;cursor:pointer;font-weight:500}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.filters input[type=search]{flex:1 1 240px;min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.filters select{padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);max-width:100%}
+.filters label.chk{display:flex;align-items:center;gap:6px;color:var(--muted)}
+.bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;color:var(--muted)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:980px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;font-weight:600;color:var(--muted);background:var(--surface2);position:sticky;top:0;white-space:nowrap;user-select:none}
+th.sort{cursor:pointer}
+th.sort:hover{color:var(--ink)}
+th .arr{font-family:var(--mono);margin-left:4px}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:var(--surface2)}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.t-title{font-weight:500;max-width:52ch}
+.t-sub{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;color:var(--muted);font-size:12px}
+.cust{max-width:30ch}
+.cust small{display:block;color:var(--accent);font-weight:500}
+.muted{color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:600;white-space:nowrap}
+.fit{font-family:var(--mono);min-width:44px;justify-content:center}
+.fit.hi{background:var(--hi-bg);color:var(--hi)} .fit.mid{background:var(--mid-bg);color:var(--mid)} .fit.lo{background:var(--lo-bg);color:var(--lo)}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:0 6px;font-size:11.5px;color:var(--muted);background:var(--surface)}
+.chip.dir{border-color:transparent;background:var(--accent-soft);color:var(--ink)}
+.chip.mand{border-color:transparent;background:var(--lo-bg);color:var(--lo)}
+.st{font-size:12px;border-radius:6px;padding:2px 7px;background:var(--surface2);color:var(--muted);white-space:nowrap}
+.st.work{background:var(--info-bg);color:var(--info)} .st.won{background:var(--hi-bg);color:var(--hi)} .st.lost,.st.skip{background:var(--lo-bg);color:var(--lo)} .st.bid{background:var(--mid-bg);color:var(--mid)}
+.dl.open{color:var(--hi);font-weight:500} .dl.soon{color:var(--mid);font-weight:600} .dl.closed{color:var(--muted)}
+.pager{display:flex;gap:6px;align-items:center;justify-content:flex-end;margin-top:10px;flex-wrap:wrap}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.notice{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.notice.warn{border-color:var(--mid);background:var(--mid-bg)}
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(10,16,14,.38);z-index:20}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--surface);z-index:21;overflow-y:auto;border-left:1px solid var(--line);padding:calc(env(safe-area-inset-top,0px) + 18px) 20px calc(env(safe-area-inset-bottom,0px) + 24px);display:flex;flex-direction:column;gap:16px}
+.drawer h2{font-size:18px;margin:0;line-height:1.3;text-wrap:balance}
+.drawer .close{align-self:flex-end}
+.facts{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0}
+.facts dt{color:var(--muted)} .facts dd{margin:0;overflow-wrap:anywhere}
+.section-h{font-size:12px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.breakdown{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px;font-size:13px}
+.breakdown li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding-block:3px}
+.breakdown .w{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.w.pos{color:var(--hi)} .w.neg{color:var(--lo)}
+.stars{display:flex;gap:4px}
+.stars button{width:38px;height:34px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer;font-family:var(--mono);font-weight:600}
+.stars button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.reasons{display:flex;flex-wrap:wrap;gap:6px}
+.reasons button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 10px;cursor:pointer;font-size:12.5px}
+.reasons button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+#stSel{padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+textarea{width:100%;min-height:72px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--surface);resize:vertical}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fb-list{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.fb-item{border-left:3px solid var(--line);padding-left:8px}
+.hdr-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+@media (max-width:640px){.hdr-right{align-items:flex-start}}
+.btn.refresh{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;font-weight:600}
+.btn.refresh svg{width:16px;height:16px}
+.btn.refresh.spin svg{animation:rot 1.1s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.btn.refresh.spin svg{animation:none}}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.run{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.run-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;justify-content:space-between}
+.run-head h2{font-size:15px;margin:0;display:flex;align-items:center;gap:8px}
+.run-time{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.kpi.alert{cursor:pointer;text-align:left;border:1px solid var(--line);font:inherit;color:inherit;background:var(--surface)}.kpi.alert.fresh b{color:var(--accent)}.kpi.alert.hot b{color:var(--lo)}.kpi.alert.on{outline:2px solid var(--accent)}
+.chip.flag{background:var(--surface2);border:1px dashed var(--line)}.chip.flag.tek{border-style:solid;border-color:var(--accent);color:var(--accent)}.chip.flag.license{border-style:solid}
+.chip.claim{background:var(--surface2);border:1px dotted var(--muted)}.chip.claim.c-egrul{border:1px solid var(--accent);color:var(--accent);background:var(--surface)}.chip.claim.c-verified{border:1px solid var(--accent);color:var(--accent)}.chip.claim.c-historical,.chip.claim.c-procurement-only,.chip.claim.c-needs-proof{color:var(--muted)}
+.org-g{display:flex;justify-content:space-between;gap:8px;padding:5px 6px;border-radius:6px;cursor:pointer;font-size:13.5px}.org-g:hover,.org-g.on{background:var(--surface2)}
+.org-tree{list-style:none;margin:0;padding-left:16px;border-left:1px dashed var(--line)}.org-tree li{margin:4px 0}.org-node{font-size:13.5px}.org-node .meta{color:var(--muted);font-size:12px}
+.pbar{height:10px;border-radius:999px;background:var(--surface2);overflow:hidden;margin:12px 0 6px}
+.pbar>i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .6s ease}
+.pbar.err>i{background:var(--lo)}
+.rs-skipped{background:var(--surface2);color:var(--muted)}
+.setup{display:flex;flex-direction:column;gap:8px;margin-top:10px;font-size:13.5px}
+.setup ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.setup .row input{flex:1 1 220px;min-width:0;font-family:var(--mono);padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.run-stage{display:flex;justify-content:space-between;gap:12px;font-size:13.5px}
+.run-stage b{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.st-running,.st-queued{background:var(--info-bg);color:var(--info)} .st-done{background:var(--hi-bg);color:var(--hi)} .st-idle{background:var(--surface2);color:var(--muted)} .st-error,.st-stale{background:var(--lo-bg);color:var(--lo)}
+.rsrc{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,2fr) 170px auto;gap:6px 14px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:13px}
+.rsrc:first-child{border-top:0}
+.rsrc .m{color:var(--muted);font-size:12.5px}
+.rsrc>.pill{justify-self:end}
+@media (max-width:760px){.rsrc>.pill{justify-self:start}}
+.rsrc .n{font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.mini{height:5px;border-radius:999px;background:var(--surface2);overflow:hidden}.mini>i{display:block;height:100%;background:var(--accent)}
+@media (max-width:760px){.rsrc{grid-template-columns:1fr auto}.rsrc .m{grid-column:1/-1}.rsrc .n{grid-column:1/-1}}
+.rs-wait{background:var(--surface2);color:var(--muted)} .rs-reading{background:var(--info-bg);color:var(--info)} .rs-ok{background:var(--hi-bg);color:var(--hi)} .rs-partial{background:var(--mid-bg);color:var(--mid)} .rs-failed{background:var(--lo-bg);color:var(--lo)}
+.run details{margin-top:10px}
+.run summary{cursor:pointer;font-weight:500;font-size:13px}
+.runlog{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:3px;font-size:12.5px;max-height:240px;overflow:auto}
+.runlog time{font-family:var(--mono);color:var(--muted);margin-right:8px}
+.run-hist{font-size:12.5px;color:var(--muted);margin-top:8px}
+.run-note{font-size:12.5px;color:var(--muted);margin-top:8px}
+.run-err{border:1px solid var(--lo);background:var(--lo-bg);color:var(--ink);border-radius:8px;padding:8px 10px;margin-top:10px;font-size:13px}
+/* B2B-Center manual check */
+.hdr-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+@media (max-width:640px){.hdr-btns{justify-content:flex-start}}
+.st-incomplete{background:var(--mid-bg);color:var(--mid)} .st-blocked{background:var(--lo-bg);color:var(--lo)}
+.b2b-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;margin-top:10px}
+.b2b-grid>div{background:var(--surface2);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.b2b-grid b{font-family:var(--mono);font-size:16px;font-weight:500;font-variant-numeric:tabular-nums}
+.b2b-grid span{color:var(--muted);font-size:12px}
+.b2b-facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:4px 14px;margin:10px 0 0;font-size:13px}
+.b2b-facts dt{color:var(--muted)} .b2b-facts dd{margin:0;overflow-wrap:anywhere}
+@media (max-width:520px){.b2b-facts{grid-template-columns:1fr}.b2b-facts dd{margin-bottom:4px}}
+.b2b-opts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:10px;font-size:13px}
+.b2b-opts input{width:88px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font-family:var(--mono)}
+/* holdings */
+.groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px}
+.group{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.group summary{cursor:pointer;display:flex;justify-content:space-between;gap:10px;font-weight:600;list-style:none}
+.group summary::-webkit-details-marker{display:none}
+.group ul{list-style:none;margin:8px 0 0;padding:0 0 0 12px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.group li{display:flex;flex-direction:column;gap:4px}
+.node{display:flex;justify-content:space-between;gap:8px}
+.cnt{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.cnt.has{color:var(--accent);font-weight:600}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);cursor:pointer;font:inherit;font-size:12.5px;text-decoration:underline;text-underline-offset:2px}
+.subj-intro h4{margin:14px 0 4px;font-size:14px}
+.card.prose.subj-intro{max-width:none}
+.subj-body{column-width:430px;column-gap:32px}
+.subj-body h4{break-after:avoid}.subj-body p{break-inside:avoid-column}
+#taxForms,#taxDirs{align-items:start}
+.subj-h{margin:18px 0 8px;font-size:15px}
+.tx-desc{font-size:13px;color:var(--muted);margin:6px 0}
+.tx-ex{margin:6px 0 0;padding-left:18px;font-size:13px}
+.badge-misb{font-size:11px;border-radius:999px;padding:1px 7px;background:var(--accent-soft);color:var(--accent);font-weight:600;margin-left:6px}
+/* sources */
+.srcs{display:flex;flex-direction:column;gap:8px}
+.src{display:grid;grid-template-columns:minmax(0,1.3fr) auto minmax(0,2fr) auto;gap:6px 16px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+@media (max-width:760px){.src{grid-template-columns:1fr auto}.src .note{grid-column:1/-1}}
+.src .name{font-weight:600} .src .name a{color:inherit}
+.s-ok{background:var(--hi-bg);color:var(--hi)} .s-partial,.s-ready{background:var(--info-bg);color:var(--info)} .s-needs_key{background:var(--mid-bg);color:var(--mid)} .s-blocked{background:var(--lo-bg);color:var(--lo)}
+.src .note{color:var(--muted)}
+/* method */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card h3{margin:0 0 8px;font-size:15px}
+.terms{display:flex;flex-wrap:wrap;gap:4px}
+.term{font-family:var(--mono);font-size:12px;border-radius:6px;padding:1px 6px;background:var(--surface2)}
+.term.neg{color:var(--lo)} .term.pos{color:var(--hi)}
+.prose{max-width:72ch} .prose p{margin:0 0 8px}
+code{font-family:var(--mono);font-size:12.5px;background:var(--surface2);padding:0 4px;border-radius:4px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 18px);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:8px;z-index:30;font-weight:500}
+input[type=file]{max-width:100%}
+@media (prefers-reduced-motion:no-preference){.drawer{animation:slide .18s ease-out}@keyframes slide{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="eyebrow">МИСБ · мониторинг закупок обучения</span>
+      <h1>Монитор-консолидатор МИСБ</h1>
+      <p>Закупки обучения, бизнес-тренингов, семинаров, вебинаров, деловых конференций и консалтинга у корпоративных и государственных заказчиков РФ — из всех подключённых источников в одной таблице.</p>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-btns">
+        <button class="btn refresh" id="b2bBtn" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Проверить B2B-Center</span></button>
+        <button class="btn primary refresh" id="refreshBtn" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 4v5h-5"/></svg><span>Обновить</span></button>
+      </div>
+      <div class="meta-note" id="metaNote">Загрузка базы…</div>
+    </div>
+  </header>
+
+  <section class="kpis" id="kpis" aria-label="Сводка"></section>
+  <section class="run" id="runPanel" hidden aria-live="polite"></section>
+  <section class="run" id="b2bPanel" hidden aria-live="polite"></section>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-tab="leads" aria-selected="true">Лиды</button>
+    <button role="tab" data-tab="accounts" aria-selected="false">Кому предложить</button>
+    <button role="tab" data-tab="corp" aria-selected="false">Корпорации</button>
+    <button role="tab" data-tab="orgs" aria-selected="false">Организации</button>
+    <button role="tab" data-tab="subject" aria-selected="false">Предмет закупки</button>
+    <button role="tab" data-tab="funnel" aria-selected="false">Воронка и цены</button>
+    <button role="tab" data-tab="sources" aria-selected="false">Источники</button>
+    <button role="tab" data-tab="method" aria-selected="false">Оценка fit и обучение</button>
+    <button role="tab" data-tab="import" aria-selected="false">Импорт</button>
+  </nav>
+
+  <div id="dbNotice" hidden class="notice warn"></div>
+
+  <section id="tab-leads">
+    <div class="filters">
+      <input type="search" id="q" placeholder="Поиск по названию, заказчику, региону…" aria-label="Поиск">
+      <select id="fCat" aria-label="Формат"><option value="">Все форматы</option></select>
+      <select id="fDir" aria-label="Направление"><option value="">Все направления</option></select>
+      <select id="fForm" aria-label="Форма обучения"><option value="">Все формы обучения</option></select>
+      <select id="fOpen" aria-label="Приём заявок"><option value="">Все сроки</option><option value="open">Приём идёт</option><option value="closed">Завершён (сигнал потребности)</option></select>
+      <select id="fFit" aria-label="Fit"><option value="">Любой fit</option><option value="65">Fit от 65</option><option value="40" selected>Fit от 40</option><option value="lt40">Fit ниже 40</option></select>
+      <select id="fLaw" aria-label="Тип закупки"><option value="">Все типы</option><option>44-ФЗ</option><option>223-ФЗ</option><option>Коммерческий</option><option value="none">Не указан</option></select>
+      <select id="fHold" aria-label="Холдинг"><option value="">Все заказчики</option><option value="__any">Только холдинги из реестра</option></select>
+      <select id="fStatus" aria-label="Статус работы"><option value="">Любой статус</option></select>
+      <select id="fFlag" aria-label="Признак"><option value="">Любые признаки</option><option value="tek">Заказчик из ТЭК и промышленности</option><option value="license">Нужна лицензия на образование</option><option value="smp">Только для СМП</option><option value="mandatory">Обязательное обучение</option><option value="plan">Планы закупок (до объявления)</option><option value="grant">Гранты и конкурсы проектов</option></select>
+      <label class="chk"><input type="checkbox" id="fCust"> с названием заказчика</label>
+      <label class="chk"><input type="checkbox" id="fMand" checked> скрыть обязательное обучение</label>
+    </div>
+    <div class="bar"><span id="countLine"></span><span class="row"><button class="btn" id="resetBtn">Сбросить фильтры</button><button class="btn" id="csvBtn" hidden>Выгрузить CSV</button></span></div>
+    <div class="tablebox"><table>
+      <thead><tr>
+        <th class="sort num" data-sort="fit">Fit<span class="arr"></span></th>
+        <th class="sort" data-sort="title">Закупка<span class="arr"></span></th>
+        <th class="sort" data-sort="customer">Заказчик / группа<span class="arr"></span></th>
+        <th class="sort" data-sort="region">Регион<span class="arr"></span></th>
+        <th class="sort num" data-sort="price">НМЦ, ₽<span class="arr"></span></th>
+        <th class="sort" data-sort="deadline">Срок подачи<span class="arr"></span></th>
+        <th class="sort num" data-sort="rating">Оценка<span class="arr"></span></th>
+        <th class="sort" data-sort="status">Статус<span class="arr"></span></th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+    <div class="pager" id="pager"></div>
+  </section>
+
+  <section id="tab-accounts" hidden>
+    <div class="notice prose">
+      <p><b>Заказчики, которые уже покупали обучение.</b> Здесь собраны все заказчики с известным названием: сколько закупок, на какую сумму, по каким направлениям и когда. Самые ценные — повторные покупатели и компании из холдингов.</p>
+      <p class="muted">Прогноз простой: считаем, что заказчик повторит закупку через год в том же месяце, а при нескольких закупках — с тем же интервалом. Данных пока за февраль–октябрь 2026 года, поэтому прогноз ориентировочный.</p>
+    </div>
+    <div class="filters">
+      <input type="search" id="aq" placeholder="Поиск заказчика или группы…" aria-label="Поиск заказчика">
+      <select id="aSort" aria-label="Сортировка заказчиков"><option value="score">Сначала самые перспективные</option><option value="next">По дате следующей закупки</option><option value="sum">По сумме закупок</option><option value="n">По числу закупок</option></select>
+      <label class="chk"><input type="checkbox" id="aHold"> только холдинги</label>
+    </div>
+    <div class="tablebox"><table style="min-width:900px">
+      <thead><tr><th>Заказчик / группа</th><th class="num">Закупок</th><th class="num">Сумма НМЦ, ₽</th><th>Направления</th><th>Когда покупал</th><th>Ожидаемая следующая</th><th class="num">Лучший fit</th><th></th></tr></thead>
+      <tbody id="accRows"></tbody>
+    </table></div>
+  </section>
+
+  <section id="tab-corp" hidden>
+    <div class="notice" id="corpNote"></div>
+    <div class="groups" id="groups"></div>
+  </section>
+
+  <section id="tab-subject" hidden>
+    <div class="card prose subj-intro">
+      <h3>Что мы ищем: предмет закупки для МИСБ</h3>
+      <div class="subj-body">
+      <p>Монитор ищет закупки, в которых заказчик покупает <b>развитие знаний, навыков и управленческих решений своих работников</b>. Это не только «обучение» в узком смысле. Под одной потребностью скрываются десятки форм и формулировок, и заказчик редко называет её так, как её назвал бы институт. Ниже — рабочая типология, по которой строится словарь поиска и оценка fit.</p>
+      <h4>1. По документу и правовому статусу</h4>
+      <p><b>Дополнительное профессиональное образование</b> — повышение квалификации (от 16 академических часов, удостоверение) и профессиональная переподготовка (от 250 часов, диплом, новая квалификация: специалист по закупкам, HR, охране труда, ДОУ). Это основная форма в закупках по 44-ФЗ и в бюджетных учреждениях: заказчику нужен документ установленного образца, у исполнителя должна быть образовательная лицензия. <b>Профессиональное обучение</b> — рабочие профессии и разряды, для МИСБ периферия. <b>Неформальное обучение без обязательного документа</b> — семинары, тренинги, вебинары, мастер-классы, стратегические сессии; выдаётся сертификат, а закупка часто оформлена как «информационно-консультационные» или «консультационные услуги» (ОКПД2 70.22), а не как образование.</p>
+      <h4>2. По цели обучения</h4>
+      <p><b>Обязательное (нормативное)</b> — охрана труда, промышленная и пожарная безопасность, первая помощь, электробезопасность, ГО и ЧС, антикоррупция, воинский учёт: закупается массово, дёшево и регулярно. <b>Функциональное</b> — изменения законодательства и практика для служб: кадры, юристы, закупки, бухгалтерия и налоги, экономисты, финансисты и казначейство, сметчики, делопроизводство и архив, экологи, энергетики, метрологи. Это ядро открытых семинаров МИСБ. <b>Развивающее</b> — управленческие и «гибкие» навыки: лидерство, управление командой и изменениями, переговоры и конфликты, деловое письмо, эмоциональный интеллект, тайм- и стресс-менеджмент, системное мышление, принятие решений. <b>Стратегическое</b> — стратегические и проектные сессии, форсайты, фасилитация, оценка и развитие кадрового резерва, программы для первых лиц. <b>Обмен опытом</b> — стажировки, бенчмаркинг-визиты, круглые столы, отраслевые конференции и семинары-совещания.</p>
+      <h4>3. По способу взаимодействия</h4>
+      <p>Лекционно-семинарский (эксперт разбирает изменения и отвечает на вопросы); тренинговый (отработка навыка в упражнениях и ролевых играх); игровой (деловые игры, бизнес-симуляции, кейс-чемпионаты); фасилитационный (группа сама вырабатывает решение под модерацией); коучинговый и наставнический (индивидуальная работа, подготовка внутренних тренеров и наставников); проектный (обучение на реальных задачах компании, защита проектов); стажировочный и конференционный (обмен практиками между предприятиями).</p>
+      <h4>4. По способу доставки</h4>
+      <p>Открытый семинар со сборной группой из разных компаний (заказчик покупает «участие» одного-двух сотрудников); корпоративный, или внутрифирменный, семинар для закрытой группы одной компании, на её площадке или выездной; выездные программы в регионах, в том числе с деловой и культурной программой; синхронный онлайн — вебинар, ВКС, онлайн-трансляция с доступом к записи; асинхронный — электронные курсы в СДО или LMS, видеокурсы, микрообучение; смешанный формат, где онлайн-подготовка сочетается с очными модулями.</p>
+      <h4>5. По масштабу и длительности</h4>
+      <p>Разовое мероприятие (1 день, вебинар, мастер-класс) → курс на 2–5 дней (типичный семинар МИСБ, 16–40 часов) → модульная программа на 3–9 месяцев (Мини-MBA, «Школа руководителя», программа кадрового резерва, 72–250 часов) → рамочный или годовой договор (серия тренингов, план обучения на год, закупки корпоративного университета, «комплекс услуг по обучению»). Чем выше по этой лестнице, тем крупнее лот и тем важнее такой лид.</p>
+      <h4>6. По аудитории</h4>
+      <p>Первые лица и топ-менеджмент; руководители среднего звена и линейные руководители; кадровый резерв и молодые специалисты; наставники и внутренние тренеры; специалисты функциональных служб; государственные и муниципальные служащие; предприниматели и МСП (через центры «Мой бизнес»).</p>
+      <h4>7. Смежные услуги, которые закупают вместе с обучением</h4>
+      <p>Разработка и адаптация программ и учебно-методических материалов, онлайн-курсов и тестов; оценка персонала (ассессмент, центр оценки и развития, 360°, независимая оценка квалификации); организация конференций, форумов и семинаров-совещаний «под ключ»; методологическое сопровождение и консалтинг по кадровым, закупочным, финансовым процессам; организация участия сотрудников в чужих мероприятиях.</p>
+      <h4>Как это видно в закупках</h4>
+      <p>Один и тот же предмет встречается под разными формулировками: «оказание образовательных услуг по программе повышения квалификации…», «информационно-консультационные услуги в форме семинара», «консультационные услуги в формате тренинга», «организация и проведение стратегической сессии», «услуги по организации участия в конференции», «развивающее обучение персонала», «доступ к электронным курсам». Тема часто спрятана в кавычках после формы. Поэтому монитор ищет сразу по двум осям — <b>форма</b> (как покупают) и <b>направление</b> (чему учат), — а завершённые закупки считает сигналом повторяющейся потребности заказчика.</p>
+      <h4>Как это используется в поиске и в fit</h4>
+      <p>Каждая форма и каждое направление ниже имеют свой набор ключевых слов. Эти слова служат запросами к агрегаторам при сборе и разметкой лидов на сайте: у каждого лида видно, какие форма и направление распознаны, по ним есть фильтры. Вес направления и формы добавляется к fit один раз, с потолком, поэтому длинное название с десятком совпадений не получает лишних баллов. Направления из каталога МИСБ весят больше; рутинное обязательное обучение ограничено по fit и по умолчанию скрыто. Слова сравниваются с началом слова в названии: «право» не срабатывает на «справочник», а оборот «право заключения договора» вообще не учитывается.</p>
+      </div>
+      <p class="muted" id="taxMeta"></p>
+    </div>
+    <h3 class="subj-h">Формы и виды обучения</h3>
+    <div class="groups" id="taxForms"></div>
+    <h3 class="subj-h">Направления (по каталогу МИСБ и смежные)</h3>
+    <div class="groups" id="taxDirs"></div>
+    <div class="cols" style="margin-top:14px">
+      <div class="card prose"><h3>Как заказчики формулируют предмет</h3><ul id="taxPhrases"></ul></div>
+      <div class="card prose"><h3>Коды ОКПД2</h3><ul id="taxOkpd"></ul></div>
+      <div class="card prose"><h3>Аудитория</h3><ul id="taxAud"></ul><h3 style="margin-top:12px">Не наш профиль (лид остаётся, fit ниже)</h3><ul id="taxNot"></ul></div>
+    </div>
+  </section>
+
+  <section id="tab-funnel" hidden>
+    <div class="cols">
+      <div class="card prose">
+        <h3>Воронка работы с лидами</h3>
+        <p class="muted">Статусы ставятся на карточке лида. Считается по всей базе; «в работе» и «заявка подана» — открытые дела. Строка кликабельна.</p>
+        <div id="funnel"></div>
+      </div>
+      <div class="card prose">
+        <h3>Проверка словаря</h3>
+        <p class="muted">Раз в месяц просмотрите 50 случайных лидов с низким fit: если среди них есть наши, словарю не хватает слов. Оценки на карточках потом превращаются в предложения по весам на вкладке «Оценка fit и обучение».</p>
+        <button class="btn primary" type="button" id="sampleBtn">Показать 50 случайных с fit ниже 40</button>
+      </div>
+    </div>
+    <h3 style="margin:18px 0 8px;font-size:15px">Эффективность источников</h3>
+    <p class="muted" style="margin:0 0 8px">Сколько лидов дал каждый источник и сколько из них подходят МИСБ. Лид, найденный сразу в нескольких источниках, считается у того, где найден впервые.</p>
+    <div id="srcEff"></div>
+    <h3 style="margin:18px 0 8px;font-size:15px">Поиск по холдингам</h3>
+    <p class="muted" style="margin:0 0 8px">Сбор проходит 100 крупнейших групп и их дочерние общества по кругу, порцией за запуск. Здесь видно, что уже проверено и где нашлись закупки.</p>
+    <div id="holdBox"></div>
+    <h3 style="margin:18px 0 8px;font-size:15px">Кто выигрывает закупки обучения</h3>
+    <p class="muted" style="margin:0 0 8px">Конкуренты и возможные партнёры по субподряду. Первые 30 по числу побед.</p>
+    <div id="winBox"></div>
+    <h3 style="margin:18px 0 8px;font-size:15px">Почему проигрываем</h3>
+    <div id="lossBox"></div>
+    <h3 style="margin:18px 0 8px;font-size:15px">Ориентиры НМЦ по направлениям</h3>
+    <p class="muted" style="margin:0 0 8px">Считается по лидам с указанной ценой, без обязательного обучения. Медиана — половина закупок дешевле, половина дороже; 25% и 75% — границы средней половины. Это ориентир для своей цены в заявке, а не норма. Строка кликабельна.</p>
+    <div id="prices"></div>
+  </section>
+
+  <section id="tab-orgs" hidden>
+    <div class="notice prose">
+      <p><b>Справочник организаций</b> перенесён из проекта «Монитор тендеров РФ» (снимок 26.09.2026): российские компании, заявленные дочерние и внучатые общества и отдельно проработанная структура Роснефти. <b>Связи из таблицы показаны как заявленные</b> — это не доказанное владение; совпадение ИНН подтверждает только, что это то же юрлицо. У Роснефти сохранены исходный тип и статус связи и ссылки на доказательства.</p>
+    </div>
+    <div id="orgStats" class="muted" style="margin:10px 0"></div>
+    <div class="filters"><input type="search" id="orgQ" placeholder="Название, ИНН или группа…" aria-label="Поиск организации"></div>
+    <div class="cols" style="align-items:start">
+      <div class="card" style="max-height:70vh;overflow:auto"><h3 style="margin-top:0">Группы</h3><div id="orgGroups"></div></div>
+      <div class="card" style="min-width:0"><div id="orgPanel"><p class="muted">Выберите группу слева или найдите организацию.</p></div></div>
+    </div>
+  </section>
+
+  <section id="tab-sources" hidden>
+    <div class="notice prose">
+      <p><b>Как читать статусы.</b> «Работает» — сайт читается автоматически и дал лиды. «Нужен ключ» — есть официальный канал (токен, API), но ключа пока нет. «Закрыт» — площадка запрещает автоматическое чтение; её лоты частично видны через агрегаторы. Статус проверяется при каждом сборе.</p>
+    </div>
+    <div class="srcs" id="srcs"></div>
+    <h3 style="margin:22px 0 8px;font-size:15px">Каталог площадок из справочника (кандидаты)</h3>
+    <p class="muted" style="margin:0 0 8px">150 российских площадок из таблиц ДПО и малых закупок. Ни одна не включена в сбор автоматически: сначала проверяется открытая выдача и одна реальная карточка. «Уже в сборе» — тот же сайт и раздел, что у работающего источника; «тот же сайт» — другой раздел, склеивать нельзя.</p>
+    <div class="filters"><select id="catF" aria-label="Фильтр каталога"><option value="">Все</option><option value="queued">В проверке и проверенные</option><option value="new">Новые сайты</option><option value="overlap">Уже в сборе</option><option value="high">Высокая релевантность</option><option value="p0">Приоритет P0 по реестру</option><option value="wave">Следующая волна (P1)</option></select></div>
+    <div id="catBox"></div>
+    <h3 style="margin:22px 0 8px;font-size:15px">API и пробный доступ</h3>
+    <p class="muted" style="margin:0 0 8px">Из реестра источников 100+100. Ключи сюда не записываются: они хранятся только в задании сбора.</p>
+    <div id="provBox"></div>
+  </section>
+
+  <section id="tab-method" hidden>
+    <div class="cols">
+      <div class="card prose">
+        <h3>Как считается fit (0–100)</h3>
+        <p>База <b id="mBase"></b>. С версии 4 в названии распознаются <b>направление</b> и <b>форма обучения</b> по словарю со вкладки «Предмет закупки»: вес каждого направления и формы добавляется один раз, суммарно до +24 за направления и до +16 за формы. Дополнительные плюсы за общие слова бизнес-тематики, минусы за рутинное обязательное и узкотехническое обучение (ПТМ, первая помощь, медицина, сварка) и за нецелевые услуги (аренда, питание, праздники, поставка оборудования).</p>
+        <p>Бонус <b id="mCorp"></b> — корпоративный заказчик (223-ФЗ, коммерческая закупка, АО/ПАО/ООО). Бонус <b id="mHold"></b> — заказчик найден в реестре холдингов. Сумма лота: от 100 тыс. ₽ +3, от 300 тыс. +6, от 1 млн +9, от 3 млн +12, до 20 тыс. −8. Приём заявок идёт +<span id="mAct"></span>, завершён <span id="mArc"></span>.</p>
+        <p>С версии 3 учитываются ещё: повторный покупатель (заказчик встречается в базе больше одного раза) <b id="mRep"></b>, программа или серия занятий <b id="mProg"></b>, целевая аудитория — руководители, кадровый резерв, наставники, молодые специалисты <b id="mAud"></b>. У рутинного обязательного обучения (ПТМ, пожарная и электробезопасность, первая помощь, ГО и ЧС, аттестации, медицина, рабочие допуски) fit не выше <b id="mCap"></b>; по умолчанию такие лиды скрыты в таблице. Охрана труда и промбезопасность с версии 4 — отдельное направление каталога МИСБ: они видны, но с небольшим штрафом.</p>
+        <p>Уровни: <span class="pill fit hi">65+</span> высокий, <span class="pill fit mid">40–64</span> средний, <span class="pill fit lo">&lt;40</span> низкий. Ложные срабатывания допустимы: низкий fit не прячет лид, а опускает его вниз.</p>
+      </div>
+      <div class="card prose">
+        <h3>Как система учится на ваших оценках</h3>
+        <p>Каждая оценка 1–5 на карточке лида сохраняется в общей базе. Для каждого слова из правил система считает среднюю оценку лидов, где оно встречается. Если оценок не меньше трёх, она предлагает сдвинуть вес: средняя выше 3 — вес растёт, ниже 3 — падает.</p>
+        <p>Предложения ниже применяет редактор сайта одной кнопкой; изменение записывается в журнал. При каждом новом сборе Claude тоже разбирает оценки и комментарии и дополняет словарь.</p>
+        <p class="muted" id="fbStats"></p>
+      </div>
+    </div>
+    <h3 style="margin:18px 0 8px;font-size:15px">Предложения по весам на основе оценок</h3>
+    <div id="suggest"></div>
+    <h3 style="margin:18px 0 8px;font-size:15px">Словарь правил</h3>
+    <div class="cols" id="termCards"></div>
+    <h3 style="margin:18px 0 8px;font-size:15px">Журнал изменений правил</h3>
+    <div id="log" class="fb-list"></div>
+  </section>
+
+  <section id="tab-import" hidden>
+    <div class="cols">
+      <div class="card prose">
+        <h3>Загрузить лиды из файла</h3>
+        <p>Подходит выгрузка вашего сборщика, Excel, сохранённый как CSV (разделитель «;» или «,»), или JSON-массив. Колонки распознаются по названию:</p>
+        <p><code>номер</code> <code>название</code> <code>заказчик</code> <code>регион</code> <code>цена</code> <code>срок</code> <code>тип</code> (44-ФЗ / 223-ФЗ / Коммерческий) <code>ссылка</code> <code>источник</code>. Английские варианты тоже подходят: id, title, customer, region, price, deadline, law, url, source.</p>
+        <p>Дубли по номеру, ссылке или паре «название + заказчик» пропускаются. Fit и привязка к холдингу считаются сразу.</p>
+        <div class="row"><input type="file" id="file" accept=".csv,.json,.txt,text/csv,application/json"></div>
+      </div>
+      <div class="card" id="impPreview"><h3>Предпросмотр</h3><p class="muted">Файл не выбран.</p></div>
+    </div>
+    <h3 style="margin:18px 0 8px;font-size:15px">Загруженные наборы</h3>
+    <div id="sets" class="fb-list"></div>
+  </section>
+</div>
+
+<div id="drawerRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+(function(){
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+const STATUSES = [["new","Новый"],["work","В работе"],["bid","Заявка подана"],["won","Выиграли"],["lost","Проиграли"],["skip","Не наш лид"]];
+const STATUS_LABEL = Object.fromEntries(STATUSES);
+const LOSS_REASONS=["Цена выше победителя","Не хватило опыта или квалификации","Документы или оформление","Нужна лицензия или аккредитация","Не успели к сроку","Заказчик выбрал своего","Закупка отменена","Другое"];
+const REASONS = ["Наш профиль","Не наш профиль","Обязательное обучение","Мало денег","Развлекательное","Дубль","Интересный заказчик"];
+const CATS = ["Тренинг","Семинар / вебинар","Конференция / мероприятие","Консалтинг","Обучение / ДПО"];
+const $ = s=>document.querySelector(s);
+const el = (tag, attrs={}, ...kids)=>{const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs)){if(v==null||v===false)continue;if(k==="class")e.className=v;else if(k==="text")e.textContent=v;else if(k.startsWith("on"))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v===true?"":v)}for(const k of kids.flat()){if(k==null||k===false)continue;e.append(k.nodeType?k:document.createTextNode(String(k)))}return e};
+
+const S = { sets:[], state:{}, feedback:[], config:null, holdings:null, sources:[], uid:null, canEdit:false, canWrite:null,
+  sort:{key:"fit",dir:-1}, page:0, per:50, filters:{}, db:null, downloads:null, openKey:null };
+
+/* ---------- helpers ---------- */
+function keyOf(id){const s=String(id||"");if(/^[A-Za-z0-9_\-.~:@+]{1,150}$/.test(s))return s;let h=2166136261;for(const c of s){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0}return "h"+h.toString(36)+"-"+s.replace(/[^A-Za-z0-9]/g,"").slice(0,40)}
+const fmtMoney = n=>n?new Intl.NumberFormat("ru-RU").format(Math.round(n)):"—";
+const fmtDate = iso=>{if(!iso)return "—";const[y,m,d]=iso.split("-");return `${d}.${m}.${y}`};
+function daysLeft(iso){if(!iso)return null;const d=new Date(iso+"T00:00:00");return Math.round((d-TODAY)/864e5)}
+function catOf(t){t=t.toLowerCase();if(/конференц|форум|конгресс|мероприят|сесси|салон/.test(t))return CATS[2];if(/тренинг|бизнес-игр/.test(t))return CATS[0];if(/семинар|вебинар/.test(t))return CATS[1];if(/консульт|консалт|методолог|исследован/.test(t))return CATS[3];return CATS[4]}
+function grade(f){return f>=65?"hi":f>=40?"mid":"lo"}
+function toast(msg){const r=$("#toastRoot");r.replaceChildren(el("div",{class:"toast",role:"status",text:msg}));setTimeout(()=>{r.replaceChildren()},2600)}
+
+/* holdings matching */
+let ALIASES=[];
+function buildAliases(){ALIASES=[];const walk=(n,root,path)=>{const p=[...path,n.name];for(const a of n.aliases||[]){const al=a.toLowerCase();const esc=al.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");let src="(^|[^а-яёa-z0-9])"+esc;if(al.length<=4&&!al.endsWith("-"))src+="(?=$|[^а-яёa-z0-9])";ALIASES.push({re:new RegExp(src,"i"),len:al.length,root,node:n.name,depth:p.length,path:p})}for(const c of n.children||[])walk(c,root,p)};for(const g of (S.holdings?.groups||[]))walk(g,g.name,[])}
+function matchHolding(text){const t=text.toLowerCase();let best=null;for(const a of ALIASES){if(a.re.test(t)){if(!best||a.depth>best.depth||(a.depth===best.depth&&a.len>best.len))best=a}}return best}
+
+/* fit */
+const KRE=new Map();const WCH="а-яёa-z0-9";
+function kre(k){let r=KRE.get(k);if(r)return r;const raw=k.toLowerCase();const t=raw.trim();const words=t.split(/\s+/).map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));let src="(^|[^"+WCH+"])"+words.join("["+WCH+"-]*[\\s,.«»\"()/-]+");if(raw.endsWith(" ")||(t.length<=3&&!t.endsWith("-")))src+="(?=$|[^"+WCH+"])";r=new RegExp(src);KRE.set(k,r);return r}
+const km=(t,k)=>kre(k).test(t);
+let STRIP=null,STRIPSRC="";
+function prep(title){const re=S.config?.v4?.stripRe||"";if(re!==STRIPSRC){STRIPSRC=re;STRIP=re?new RegExp(re,"g"):null}let t=(title||"").toLowerCase().replace(/ё/g,"е");if(STRIP)t=t.replace(STRIP," ");return t}
+function hits(map,t){const out=[];for(const[name,keys]of Object.entries(map||{})){if(keys.some(k=>km(t,k.replace(/ё/g,"е"))))out.push(name)}return out}
+function dirsOf(title){const o=hits(S.config?.directions,prep(title));return o.length?o:["Прочее обучение"]}
+function formsOf(title){return hits(S.config?.forms,prep(title))}
+function scoreLead(l,h){const C=S.config;if(!C)return{fit:0,parts:[]};const t=prep((l.title||"")+(l.topic?" "+l.topic:""));const parts=[["База",C.base]];const V4=C.v4;
+  if(V4){const ds=l._ctx?.dirs||dirsOf(l.title);const fs=l._ctx?.forms||formsOf(l.title);
+    const dw=ds.map(d=>[d,V4.dirW?.[d]||0]).filter(x=>x[1]);let dsum=dw.reduce((a,x)=>a+x[1],0);
+    if(dw.length){const cap=Math.min(dsum,V4.dirCap??99);parts.push([`Направление: ${dw.map(x=>x[0]).join(", ")}${cap<dsum?" (потолок)":""}`,cap])}
+    const fw=fs.map(f=>[f,V4.formW?.[f]||0]).filter(x=>x[1]);let fsum=fw.reduce((a,x)=>a+x[1],0);
+    if(fw.length){const cap=Math.min(fsum,V4.formCap??99);parts.push([`Форма: ${fw.map(x=>x[0]).join(", ")}${cap<fsum?" (потолок)":""}`,cap])}}
+  for(const[g,terms]of Object.entries(C.terms||{}))for(const[k,w]of Object.entries(terms)){if(km(t,k.toLowerCase().replace(/ё/g,"е")))parts.push([`«${k}»`,w])}
+  const cust=(l.customer||"").toLowerCase();
+  if(l.law==="223-ФЗ"||l.law==="Коммерческий"||/(^|[^а-яё])(пао|ао|ооо|зао|оао)([^а-яё]|$)/.test(cust))parts.push(["Корпоративный заказчик",C.corpBonus]);
+  if(h)parts.push([`Группа: ${h.root}`,C.holdingBonus]);
+  const p=l.price;if(p){for(const[th,w]of C.price){if(p>=th){parts.push([`НМЦ от ${fmtMoney(th)} ₽`,w]);break}}if(p<C.smallPrice[0])parts.push(["Небольшой лот",C.smallPrice[1]])}
+  const dl=daysLeft(l.deadline);if(dl!=null){if(dl>=0)parts.push(["Приём заявок идёт",C.activeBonus]);else parts.push(["Приём завершён",C.archivePenalty])}
+  const V=C.v2||{};const ctx=l._ctx||{};
+  if(V.repeatBonus&&ctx.repeat)parts.push([`Повторный покупатель (${ctx.repeat} закуп.)`,V.repeatBonus]);
+  if(V.programBonus&&new RegExp(V.programRe||"(цикл|сери[ия]|программ|курсов|ежегодн|2027|договоров на проведение)","i").test(t))parts.push(["Программа или серия занятий",V.programBonus]);
+  if(V.audienceBonus&&new RegExp(V.audienceRe||"(руковод|резерв|менеджер|молод[а-я]* специалист|наставник|топ-)","i").test(t))parts.push(["Целевая аудитория: руководители, резерв",V.audienceBonus]);
+  let sum=parts.reduce((s,x)=>s+x[1],0);
+  if(ctx.mandatory&&V.mandatoryCap!=null&&sum>V.mandatoryCap){parts.push(["Обязательное обучение: потолок",V.mandatoryCap-sum]);sum=V.mandatoryCap}
+  return{fit:Math.max(0,Math.min(100,sum)),parts}}
+const MAND="Обязательное обучение";
+const FLAG_LABEL={plan:"План закупки",grant:"Грант или конкурс",tek:"ТЭК и промышленность",license:"Нужна лицензия",smp:"Только СМП",mandatory:"Обязательное"};
+const TEK_RE=/(^|[^а-яёa-z])(нефт|газпром|газов|энерг|электроэнерг|электросет|россет|сетев[а-яё]* компан|тэк|росатом|атомн|транснефт|угол|угл[яеи]|уголь|шахт|разрез|металлург|горно|рудн|рудо|стал[ьи]|норникел|норильск|русал|сибур|татнефт|лукойл|роснефт|новатэк|ржд|железн[а-яё]* дорог|теплов[а-яё]* сет|генерир|гидро|тэц|грэс|аэс|гэс)/i;
+const TEK_NAME_RE=/(^|[^а-яёa-z])(газпром|роснефт|лукойл|транснефт|росатом|россет|русал|норникел|сибур|татнефт|новатэк|сургутнефтегаз|ржд|шахтоуправлен|грэс|тэц|аэс|гэс|интер рао|русгидро|суэк|евраз|северстал|нлмк|ммк)/i;
+function flagsOf(l){const f=new Set(Array.isArray(l.flags)?l.flags:[]);const t=((l.title||"")+" "+(l.topic||"")).toLowerCase();const c=(l.customer||"").toLowerCase();
+  if(l.holding||TEK_RE.test(c)||TEK_NAME_RE.test(t))f.add("tek");if(/лиценз/.test(t))f.add("license");if(/(^|[^а-яё])(смп|сонко)([^а-яё]|$)|субъект[а-яё]* малого/.test(t))f.add("smp");if(l.mandatory)f.add("mandatory");return[...f].filter(x=>FLAG_LABEL[x])}
+const normCust=c=>(c||"").toLowerCase().replace(/[«»"'`]/g,"").replace(/\s+/g," ").trim();
+
+/* ---------- derived leads ---------- */
+let LEADS=[];
+let LAST_VISIT="",LEAST_VISIT_OK=false;try{LAST_VISIT=localStorage.getItem("misb-last-visit")||"";LEAST_VISIT_OK=!!LAST_VISIT}catch(e){}
+function markVisit(){try{localStorage.setItem("misb-last-visit",new Date().toISOString().slice(0,10))}catch(e){}}
+setTimeout(markVisit,90000);window.addEventListener("pagehide",markVisit);
+let ORGIDX=new Map(),ORGSTOP=null;
+function normOrg(s){if(!ORGSTOP)return"";const w=String(s||"").toLowerCase().replace(/ё/g,"е").replace(/[^0-9a-zа-я]+/g," ").trim().split(/\s+/).filter(x=>x&&!ORGSTOP.test(x));return w.join(" ")}
+function innOf(l){return l.customerInn||((/^ИНН\s*(\d{10,12})$/.exec(String(l.customer||"").trim())||[])[1])||""}
+function claimOf(l){const inn=innOf(l);const O=inn&&S.own?S.own[inn]:null;if(O&&O.group)return {g:O.group,p:(O.chain&&O.chain[0]&&O.chain[0].name)||"",lvl:O.groupShare?`доля ${O.groupShare}%`:"",st:"egrul",by:"ЕГРЮЛ",k:"own:"+inn};if(!ORGIDX.size)return null;if(inn){const e=ORGIDX.get("i:"+inn);if(e)return {...e,by:"ИНН"}}const n=normOrg(l.customer);if(n&&n.length>4){const e=ORGIDX.get("n:"+n);if(e)return {...e,by:"названию"}}return null}
+const CLAIM_LABEL={egrul:"подтверждено по ЕГРЮЛ",claimed:"заявлено по таблице",verified:"подтверждено",historical:"историческая связь","procurement-only":"только закупочная связь","needs-proof":"требует подтверждения"};
+async function loadOrgIndex(db){try{const m=await db.doc("orgdir/meta").get();if(!m.exists)return;S.orgMeta=m.data();const n=S.orgMeta.parts?.index||0;const parts=await Promise.all(Array.from({length:n},(_,i)=>db.doc(`orgdir/index-${i+1}`).get()));const map=new Map();for(const p of parts){if(!p.exists)continue;const d=p.data();if(!ORGSTOP&&d.stop)ORGSTOP=new RegExp("^"+d.stop+"$");for(const [k,v] of Object.entries(d.entries||{}))map.set(k,v)}ORGIDX=map;schedule()}catch(e){console.warn("orgdir index",e)}}
+function withCustomer(r){const m=/^ИНН\s*(\d{10,12})$/.exec(String(r.customer||"").trim());if(!m)return r;const c=S.customers&&S.customers[m[1]];if(!c||!c.name)return r;return {...r,customer:c.name,customerInn:m[1],contacts:r.contacts||c.contacts||null}}
+function recompute(){
+  const seen=new Map();const out=[];const custN={};
+  for(const set of S.sets)for(const raw of (set.data.leads||[])){const c=normCust(raw.customer);if(c)custN[c]=(custN[c]||0)+1}
+  for(const set of S.sets){for(const raw00 of (set.data.leads||[])){const k=keyOf(raw00.id||(raw00.url)||(raw00.title+"|"+raw00.customer));if(seen.has(k))continue;seen.set(k,1);
+    const raw0=withCustomer(raw00);
+    const txt=(raw0.title||"")+(raw0.topic?" "+raw0.topic:"");const dirs=dirsOf(txt);const forms=formsOf(txt);const rc=custN[normCust(raw0.customer)]||0;
+    const raw={...raw0,_ctx:{repeat:rc>1?rc:0,mandatory:dirs.includes(MAND),dirs,forms}};
+    const h=matchHolding((raw.customer||"")+" "+(raw.title||""));const sc=scoreLead(raw,h);delete raw._ctx;raw.dirs=dirs;raw.forms=forms;raw.mandatory=dirs.includes(MAND);
+    const fbs=S.feedback.filter(f=>f.leadKey===k&&f.rating);const avg=fbs.length?fbs.reduce((s,f)=>s+f.rating,0)/fbs.length:null;
+    out.push({...raw,key:k,set:set.id,holding:h?h.root:"",company:h&&h.depth>1?h.node:"",hpath:h?h.path:null,cat:catOf(raw.title||""),fit:sc.fit,parts:sc.parts,rating:avg,ratingN:fbs.length,status:(S.state[k]?.status)||"new",lossReason:S.state[k]?.lossReason||"",dl:daysLeft(raw.deadline)});const L0=out[out.length-1];L0.flags=flagsOf(L0);L0.claim=claimOf(L0);if(!L0.holding&&L0.claim&&L0.claim.st==="egrul"){L0.holding=L0.claim.g;L0.hpath=[L0.claim.g]}}}
+  LEADS=out;
+}
+
+/* ---------- rendering ---------- */
+function renderKPIs(){const open=LEADS.filter(l=>l.dl!=null&&l.dl>=0).length;const hi=LEADS.filter(l=>l.fit>=65).length;const mid=LEADS.filter(l=>l.fit>=40).length;const named=LEADS.filter(l=>l.customer).length;const inH=LEADS.filter(l=>l.holding).length;const srcOk=S.sources.filter(s=>s.status==="ok").length;
+  const k=(b,s)=>el("div",{class:"kpi"},el("b",{text:b}),el("span",{text:s}));
+  const fresh=LEAST_VISIT_OK?LEADS.filter(l=>String(l.collectedAt||"")>String(LAST_VISIT||"")).length:0;
+  const hot=LEADS.filter(l=>(l.status==="work"||l.status==="bid")&&l.dl!=null&&l.dl>=0&&l.dl<=3);
+  const alert=(cls,txt,key)=>{const b=el("button",{class:`kpi alert ${cls} ${S.filters[key]?"on":""}`,type:"button",onclick:()=>{S.filters[key]=!S.filters[key];if(S.filters[key]){S.filters[key==="hot"?"fresh":"hot"]=false;if(key==="hot"){S.filters.status="";S.filters.open="";S.filters.fit="";S.filters.mand=false}else{S.filters.fit="";S.filters.mand=false}}S.page=0;renderAll()}});b.append(el("b",{text:txt[0]}),el("span",{text:txt[1]}));return b};
+  $("#kpis").replaceChildren(k(LEADS.length,"лидов в базе"),k(mid,"с fit от 40"),k(hi,"с fit от 65"),k(open,"приём заявок идёт"),k(inH,`в холдингах реестра · заказчик известен у ${named}`),k(`${srcOk} из ${S.sources.length}`,"источников работает"),fresh?alert("fresh",[fresh,`новых с вашего прошлого визита${S.filters.fresh?" · показаны":" · показать"}`],"fresh"):null,hot.length?alert("hot",[hot.length,`горят сроки: до 3 дней по лидам в работе${S.filters.hot?" · показаны":" · показать"}`],"hot"):null);
+  const last=S.sets.map(s=>s.data.collectedAt||s.data.importedAt||"").sort().pop();$("#metaNote").textContent=last?`Последнее пополнение: ${fmtDate(String(last).slice(0,10))}`:"База пуста";}
+
+function filtered(){const f=S.filters;const q=(f.q||"").trim().toLowerCase();return LEADS.filter(l=>{
+  if(q&&!((l.title+" "+(l.topic||"")+" "+(l.customer||"")+" "+(l.region||"")+" "+l.holding+" "+l.company).toLowerCase().includes(q)))return false;
+  if(f.cat&&l.cat!==f.cat)return false;
+  if(f.dir&&!l.dirs.includes(f.dir))return false;
+  if(f.form&&!(f.form==="__none"?!l.forms.length:l.forms.includes(f.form)))return false;
+  if(f.mand!==false&&l.mandatory&&f.dir!==MAND)return false;
+  if(f.open==="open"&&!(l.dl!=null&&l.dl>=0))return false;
+  if(f.open==="closed"&&!(l.dl!=null&&l.dl<0))return false;
+  if(f.fit==="lt40"&&l.fit>=40)return false; else if(f.fit&&f.fit!=="lt40"&&l.fit<+f.fit)return false;
+  if(f.law==="none"&&l.law)return false; else if(f.law&&f.law!=="none"&&l.law!==f.law)return false;
+  if(f.hold==="__any"&&!l.holding)return false; else if(f.hold&&f.hold!=="__any"&&l.holding!==f.hold)return false;
+  if(f.status&&l.status!==f.status)return false;
+  if(f.cust&&!l.customer)return false;
+  if(f.fresh&&!(String(l.collectedAt||"")>String(LAST_VISIT||"")))return false;
+  if(f.sample&&!f.sample.has(l.key))return false;
+  if(f.claimG&&!(l.claim&&l.claim.g===f.claimG))return false;
+  if(f.flag&&!l.flags.includes(f.flag))return false;
+  if(f.hot&&!((l.status==="work"||l.status==="bid")&&l.dl!=null&&l.dl>=0&&l.dl<=3))return false;return true})}
+function sorted(arr){const{key,dir}=S.sort;const v=l=>key==="deadline"?(l.deadline||""):key==="price"?(l.price||0):key==="rating"?(l.rating??-1):key==="status"?STATUSES.findIndex(s=>s[0]===l.status):key==="customer"?((l.holding||"~")+(l.customer||"~")):key==="fit"?l.fit:(l[key]||"").toString().toLowerCase();
+  return [...arr].sort((a,b)=>{const x=v(a),y=v(b);return (x<y?-1:x>y?1:0)*dir||(b.fit-a.fit)})}
+
+function renderLeads(){const list=sorted(filtered());const pages=Math.max(1,Math.ceil(list.length/S.per));if(S.page>=pages)S.page=pages-1;const slice=list.slice(S.page*S.per,(S.page+1)*S.per);
+  $("#countLine").textContent=`Показано ${list.length} из ${LEADS.length}`;
+  document.querySelectorAll("th.sort").forEach(th=>{th.querySelector(".arr").textContent=th.dataset.sort===S.sort.key?(S.sort.dir>0?"↑":"↓"):"";th.setAttribute("aria-sort",th.dataset.sort===S.sort.key?(S.sort.dir>0?"ascending":"descending"):"none")});
+  const rows=slice.map(l=>{const dl=l.dl;const dlc=dl==null?"":dl<0?"closed":dl<=3?"soon":"open";
+    return el("tr",{tabindex:"0",onclick:()=>openLead(l.key),onkeydown:e=>{if(e.key==="Enter")openLead(l.key)}},
+      el("td",{class:"num"},el("span",{class:`pill fit ${grade(l.fit)}`,text:l.fit})),
+      el("td",{},el("div",{class:"t-title",text:l.title}),el("div",{class:"t-sub"},el("span",{class:"chip",text:l.cat}),...l.dirs.slice(0,2).map(d=>el("span",{class:d===MAND?"chip mand":"chip dir",text:d})),l.law?el("span",{class:"chip",text:l.law}):null,...l.flags.filter(x=>x!=="mandatory").map(x=>el("span",{class:`chip flag ${x}`,text:FLAG_LABEL[x]})),l.claim&&!l.holding?el("span",{class:`chip claim c-${l.claim.st}`,title:`Группа по справочнику: ${CLAIM_LABEL[l.claim.st]||l.claim.st}; совпадение по ${l.claim.by}`,text:`${l.claim.g} · ${l.claim.st==="claimed"?"заявл.":CLAIM_LABEL[l.claim.st]||l.claim.st}`}):null,el("span",{text:srcName(l.source)}))),
+      el("td",{class:"cust"},l.customer?el("span",{text:l.customer}):el("span",{class:"muted",text:"не указан в источнике"}),l.holding?el("small",{text:l.company?`${l.holding} → ${l.company}`:l.holding}):null),
+      el("td",{text:l.region||"—"}),
+      el("td",{class:"num",text:fmtMoney(l.price)}),
+      el("td",{},el("div",{class:`dl ${dlc}`,text:fmtDate(l.deadline)}),el("div",{class:"muted",style:"font-size:12px",text:dl==null?"":dl<0?"приём завершён":dl===0?"сегодня":`осталось ${dl} дн.`})),
+      el("td",{class:"num",text:l.rating!=null?`${l.rating.toFixed(1)} · ${l.ratingN}`:"—"}),
+      el("td",{},el("span",{class:`st ${l.status}`,text:STATUS_LABEL[l.status]||"Новый"})))});
+  $("#rows").replaceChildren(...(rows.length?rows:[el("tr",{},el("td",{colspan:"8",class:"empty",text:LEADS.length?"Под фильтры ничего не подходит. Ослабьте фильтр fit или сбросьте фильтры.":"В базе пока нет лидов."}))]));
+  const pg=$("#pager");pg.replaceChildren();if(pages>1){pg.append(el("button",{class:"btn",disabled:S.page===0,onclick:()=>{S.page--;renderLeads()}},"Назад"),el("span",{class:"muted",text:`Стр. ${S.page+1} из ${pages}`}),el("button",{class:"btn",disabled:S.page>=pages-1,onclick:()=>{S.page++;renderLeads()}},"Дальше"))}}
+
+function altLinks(l){const out=[];const ids=[l.eis,l.id].filter(Boolean);for(const n of ids){if(/^0\d{18}$/.test(n)){out.push(["ЕИС по номеру","https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString="+n]);break}if(/^3\d{10}$/.test(n)){out.push(["ЕИС (223-ФЗ) по номеру","https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString="+n]);break}}
+  out.push(["Поиск в Яндексе","https://yandex.ru/search/?text="+encodeURIComponent(`${l.id||""} ${(l.title||"").slice(0,90)} ${l.customer||""}`.trim())]);return out}
+function srcName(s){if(!s)return "";if(s==="import"||s.startsWith("import"))return "Импорт";if(s.startsWith("synapse"))return "СИНАПС"+(s.split(":")[1]?` · ${s.split(":")[1]}`:"");if(s.startsWith("rostender"))return "РосТендер";if(s==="b2b-center:market")return "B2B-Center · «Все»";if(s.startsWith("b2b"))return "B2B-Center";if(s==="bicotender")return "Бикотендер";if(s.startsWith("gosplan"))return "ЕИС · ГосПлан"+(s.includes("223")?" (223-ФЗ)":" (44-ФЗ)");if(s==="komtender")return "КомТендер";return s}
+
+function fillSelects(){const cat=$("#fCat");if(cat.options.length===1)CATS.forEach(c=>cat.append(el("option",{value:c,text:c})));
+  const fd=$("#fDir");const dcur=fd.value;const dn=[...Object.keys(S.config?.directions||{}),"Прочее обучение"];const dc={};LEADS.forEach(l=>l.dirs.forEach(d=>dc[d]=(dc[d]||0)+1));
+  fd.replaceChildren(el("option",{value:"",text:"Все направления"}),...dn.map(d=>el("option",{value:d,text:`${d} (${dc[d]||0})`})));fd.value=dn.includes(dcur)?dcur:"";
+  const ff=$("#fForm");const fcur=ff.value;const fn=Object.keys(S.config?.forms||{});const fc={};let fnone=0;LEADS.forEach(l=>{l.forms.forEach(x=>fc[x]=(fc[x]||0)+1);if(!l.forms.length)fnone++});
+  ff.replaceChildren(el("option",{value:"",text:"Все формы обучения"}),...fn.filter(x=>fc[x]).map(x=>el("option",{value:x,text:`${x} (${fc[x]})`})),el("option",{value:"__none",text:`Форма не распознана (${fnone})`}));ff.value=(fn.includes(fcur)||fcur==="__none")?fcur:"";
+  const st=$("#fStatus");if(st.options.length===1)STATUSES.forEach(([v,t])=>st.append(el("option",{value:v,text:t})));
+  const hs=$("#fHold");const cur=hs.value;const names=[...new Set(LEADS.map(l=>l.holding).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ru"));
+  hs.replaceChildren(el("option",{value:"",text:"Все заказчики"}),el("option",{value:"__any",text:"Только холдинги из реестра"}),...names.map(n=>el("option",{value:n,text:n})));hs.value=names.includes(cur)||cur==="__any"?cur:(S.filters.hold||"")}
+
+/* drawer */
+function openLead(k){S.openKey=k;renderDrawer()}
+function closeDrawer(){S.openKey=null;$("#drawerRoot").replaceChildren()}
+function renderDrawer(){const l=LEADS.find(x=>x.key===S.openKey);if(!l){closeDrawer();return}
+  const mine=S.uid?S.feedback.find(f=>f.leadKey===l.key&&f.by===S.uid):null;
+  let rating=mine?.rating||0;let reasons=new Set(mine?.reasons||[]);
+  const others=S.feedback.filter(f=>f.leadKey===l.key&&(f.comment||f.rating));
+  const stars=el("div",{class:"stars",role:"group","aria-label":"Оценка качества лида"});
+  const drawStars=()=>stars.replaceChildren(...[1,2,3,4,5].map(n=>el("button",{"aria-pressed":String(n===rating),title:["","Мусор","Слабый","Средний","Хороший","Отличный"][n],onclick:()=>{rating=n;drawStars()}},n)));drawStars();
+  const rs=el("div",{class:"reasons"});const drawR=()=>rs.replaceChildren(...REASONS.map(r=>el("button",{"aria-pressed":String(reasons.has(r)),onclick:()=>{reasons.has(r)?reasons.delete(r):reasons.add(r);drawR()}},r)));drawR();
+  const ta=el("textarea",{id:"fbComment",placeholder:"Что не так или что хорошо: тема, заказчик, формат…"});ta.value=mine?.comment||"";
+  const canFb=!!(S.db&&S.uid);
+  const save=el("button",{class:"btn primary",disabled:!canFb,onclick:async()=>{if(!rating){toast("Поставьте оценку от 1 до 5");return}save.disabled=true;try{await S.db.doc(`feedback/${l.key}__${S.uid}`).set({leadKey:l.key,title:l.title,rating,reasons:[...reasons],comment:ta.value.trim().slice(0,2000),by:S.uid,at:new Date().toISOString(),fitAtRating:l.fit});toast("Оценка сохранена")}catch(e){toast(e.code==="invalid_argument"?"Нет прав на запись в эту базу":"Не удалось сохранить, попробуйте ещё раз")}save.disabled=false}},"Сохранить оценку");
+  const sel=el("select",{id:"stSel","aria-label":"Статус работы"},...STATUSES.map(([v,t])=>el("option",{value:v,text:t})));sel.value=l.status;
+  sel.addEventListener("change",async()=>{if(!S.db)return;try{await S.db.doc(`state/${l.key}`).set({status:sel.value,lossReason:sel.value==="lost"?(l.lossReason||""):"",by:S.uid||null,at:new Date().toISOString()});toast("Статус обновлён")}catch(e){toast("Не удалось сменить статус");sel.value=l.status}});
+  const lossSel=el("select",{"aria-label":"Причина проигрыша"},el("option",{value:"",text:"Причина не указана"}),...LOSS_REASONS.map(r=>el("option",{value:r,text:r})));lossSel.value=l.lossReason||"";
+  lossSel.addEventListener("change",async()=>{if(!S.db)return;try{await S.db.doc(`state/${l.key}`).set({status:"lost",lossReason:lossSel.value,by:S.uid||null,at:new Date().toISOString()});toast("Причина сохранена")}catch(e){toast("Не удалось сохранить причину")}});
+  const d=el("aside",{class:"drawer",role:"dialog","aria-modal":"true","aria-label":"Карточка лида"},
+    el("button",{class:"btn close",onclick:closeDrawer},"Закрыть"),
+    el("div",{class:"row"},el("span",{class:`pill fit ${grade(l.fit)}`,text:`fit ${l.fit}`}),el("span",{class:"chip",text:l.cat}),l.law?el("span",{class:"chip",text:l.law}):null),
+    el("h2",{text:l.title}),
+    el("dl",{class:"facts"},
+      el("dt",{text:"Заказчик"}),el("dd",{},...(function(){if(l.customerInn)return[el("span",{text:l.customer+" · ИНН "+l.customerInn+" · "}),el("a",{href:"https://zakupki.gov.ru/epz/organization/search/results.html?searchString="+l.customerInn,target:"_blank",rel:"noopener"},"в ЕИС")];const m=/^ИНН\s*(\d{10,12})$/.exec(l.customer||"");if(!m)return[l.customer||"не указан в источнике — откройте карточку по ссылке"];const inn=m[1];return[el("span",{text:l.customer+" · "}),el("a",{href:"https://zakupki.gov.ru/epz/organization/search/results.html?searchString="+inn,target:"_blank",rel:"noopener"},"кто это в ЕИС"),el("span",{text:" · "}),el("a",{href:"https://yandex.ru/search/?text=ИНН+"+inn,target:"_blank",rel:"noopener"},"поиск по ИНН")]})()),
+      l.holding?el("dt",{text:"Группа"}):null,l.holding?el("dd",{text:(l.hpath||[l.holding]).join(" → ")}):null,
+      el("dt",{text:"Направления"}),el("dd",{class:"row"},...l.dirs.map(d=>el("span",{class:d===MAND?"chip mand":"chip dir",text:d}))),
+      l.topic?el("dt",{text:"Тема по документации"}):null,l.topic?el("dd",{text:l.topic}):null,
+      el("dt",{text:"Форма обучения"}),el("dd",{class:"row"},...(l.forms.length?l.forms.map(x=>el("span",{class:"chip",text:x})):[el("span",{class:"muted",text:"не распознана"})])),
+      (function(){const O=S.own&&S.own[innOf(l)];return O?el("dt",{text:"По ЕГРЮЛ"}):null})(),(function(){const O=S.own&&S.own[innOf(l)];if(!O)return null;const c=O.contacts||{};return el("dd",{},el("div",{text:[O.name,O.status,O.okved,O.staff?`сотрудников: ${O.staff}`:""].filter(Boolean).join(" · ")}),(O.chain||[]).length?el("div",{class:"muted",text:"Владение: "+O.chain.map(x=>`${x.name}${x.share?" ("+x.share+"%)":""}`).join(" → ")}):null,(c.phone||c.email||c.site)?el("div",{text:"Контакты компании: "+[].concat(c.phone||[],c.email||[],c.site||[]).slice(0,5).join(" · ")}):null,el("div",{class:"muted",style:"font-size:11px",text:`проверено ${fmtDate(O.checkedAt)}`}))})(),
+      l.claim?el("dt",{text:"Группа по справочнику"}):null,l.claim?el("dd",{},el("span",{text:`${l.claim.g}${l.claim.p?" · родитель: "+l.claim.p:""}${l.claim.lvl?" · "+l.claim.lvl:""} · `}),el("span",{class:`chip claim c-${l.claim.st}`,text:CLAIM_LABEL[l.claim.st]||l.claim.st}),el("span",{class:"muted",text:` (совпадение по ${l.claim.by})`}),el("a",{href:"#",style:"margin-left:6px",onclick:e=>{e.preventDefault();closeDrawer&&closeDrawer();switchTab("orgs");S.orgSel=l.claim.g;renderOrgs()}},"открыть группу")):null,
+      l.contacts&&(l.contacts.name||l.contacts.phone||l.contacts.email)?el("dt",{text:"Контакт закупки"}):null,l.contacts&&(l.contacts.name||l.contacts.phone||l.contacts.email)?el("dd",{text:[l.contacts.name,l.contacts.phone,l.contacts.email].filter(Boolean).join(" · ")}):null,
+      l.flags.length?el("dt",{text:"Признаки"}):null,l.flags.length?el("dd",{class:"row"},...l.flags.map(x=>el("span",{class:`chip flag ${x}`,text:FLAG_LABEL[x]}))):null,
+      el("dt",{text:"Регион"}),el("dd",{text:l.region||"—"}),
+      el("dt",{text:"НМЦ"}),el("dd",{text:l.price?fmtMoney(l.price)+" ₽":"не указана"}),
+      el("dt",{text:"Срок подачи"}),el("dd",{text:fmtDate(l.deadline)+(l.dl==null?"":l.dl<0?" · приём завершён":` · осталось ${l.dl} дн.`)}),
+      el("dt",{text:"Номер"}),el("dd",{style:"font-family:var(--mono)",text:l.id||"—"}),
+      el("dt",{text:"Источник"}),el("dd",{},l.url?el("a",{href:l.url,target:"_blank",rel:"noopener"},srcName(l.source)+" — открыть карточку"):srcName(l.source)),
+      l.platform?el("dt",{text:"Площадка"}):null,l.platform?el("dd",{text:l.platform}):null,
+      el("dt",{text:"Найти ещё"}),el("dd",{class:"row"},...altLinks(l).map(([t,u])=>el("a",{href:u,target:"_blank",rel:"noopener"},t))),
+      l.verify?el("dt",{text:"Проверить"}):null,l.verify?el("dd",{class:"muted",text:l.verify}):null,
+      l.note?el("dt",{text:"Примечание"}):null,l.note?el("dd",{text:l.note}):null,
+      el("dt",{text:"Собрано"}),el("dd",{text:fmtDate(l.collectedAt||"")})),
+    el("div",{},el("p",{class:"section-h",text:"Статус работы"}),sel,l.status==="lost"?el("div",{style:"margin-top:8px"},el("p",{class:"section-h",text:"Почему проиграли"}),lossSel):null),
+    el("div",{},el("p",{class:"section-h",text:"Почему такой fit"}),el("ul",{class:"breakdown"},...l.parts.map(([n,w])=>el("li",{},el("span",{text:n}),el("span",{class:`w ${w>0?"pos":w<0?"neg":""}`,text:(w>0?"+":"")+w}))),el("li",{},el("b",{text:"Итого (0–100)"}),el("b",{class:"w",text:l.fit})))),
+    el("div",{},el("p",{class:"section-h",text:"Ваша оценка качества лида"}),canFb?null:el("p",{class:"muted",text:"Оценки доступны участникам с правом взаимодействия, вошедшим в аккаунт."}),stars,el("div",{style:"height:8px"}),rs,el("div",{style:"height:8px"}),ta,el("div",{style:"height:8px"}),save),
+    others.length?el("div",{},el("p",{class:"section-h",text:`Оценки команды (${others.length})`}),el("div",{class:"fb-list",id:"fbOthers"},...others.map(f=>el("div",{class:"fb-item"},el("b",{text:`${f.rating||"—"}/5`}),el("span",{class:"muted",text:` · ${(f.reasons||[]).join(", ")}`}),f.comment?el("div",{text:f.comment}):null,el("div",{class:"muted",style:"font-size:12px","data-uid":f.by,text:fmtDate((f.at||"").slice(0,10))}))))):null);
+  $("#drawerRoot").replaceChildren(el("div",{class:"scrim",onclick:closeDrawer}),d);d.querySelector(".close").focus();
+  resolveNames(d);}
+async function resolveNames(root){if(!S.user)return;const nodes=[...root.querySelectorAll("[data-uid]")];const ids=[...new Set(nodes.map(n=>n.dataset.uid).filter(Boolean))];if(!ids.length)return;try{const ps=await S.user.profiles(ids);for(const n of nodes){const p=ps[n.dataset.uid];n.textContent=(p?.name||"Коллега")+" · "+n.textContent}}catch(e){}}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&S.openKey)closeDrawer()});
+
+/* corporations */
+function cuBlock(x,title){if(!x)return null;const ok=/^Подтвержд/.test(x.cuStatus||"");const lk=(u,t)=>u?el("a",{href:u,target:"_blank",rel:"noopener",text:t||u.replace(/^https?:\/\//,"").slice(0,60)}):null;
+  return el("div",{style:"font-size:12.5px;margin-top:6px"},title?el("b",{text:title+": "}):null,
+    x.cu&&x.cu!=="Не установлен"?el("span",{},el("b",{text:"Обучение: "}),x.cuSite?lk(x.cuSite,x.cu):el("span",{text:x.cu}),el("span",{class:ok?"":"muted",text:` · ${x.cuStatus||""}`})):el("span",{class:"muted",text:"Корпоративный университет не установлен. "}),
+    x.proc?el("div",{},el("b",{text:"Закупки: "}),lk(x.proc),el("span",{class:"muted",text:` · ${x.procType||""} · ${x.procStatus||""}`})):null,
+    x.site?el("div",{},el("span",{class:"muted",text:"Сайт группы: "}),lk(x.site)):null,
+    ...(x.otherCenters||[]).map(o=>el("div",{},el("span",{text:"Учебный центр: "}),lk(o.site,o.name),el("span",{class:"muted",text:` · ${o.unit} · ${o.limit||""}`}))))}
+function groupExtra(g){const parts=[];const X=(S.hcu||{})[g.name];if(X){parts.push(cuBlock(X));(X.units||[]).forEach(u=>parts.push(cuBlock(u,u.company)))}const P=g.inn&&S.gprof?S.gprof[g.inn]:null;const R=(S.hroutes||{})[g.name]||[];
+  if(g.subsClaimed)parts.push(el("div",{class:"muted",style:"font-size:12.5px;margin-top:4px"},el("span",{text:`Заявленных дочерних и внучатых обществ в справочнике: ${g.subsClaimed} · `}),el("a",{href:"#",onclick:e=>{e.preventDefault();switchTab("orgs");S.orgSel=g.hierGroup||g.name;renderOrgs()}},"открыть структуру")));
+  if(P){const pl=Object.entries(P.platforms||{}).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v])=>`${k} — ${v}`).join("; ");
+    parts.push(el("div",{style:"font-size:12.5px;margin-top:6px"},el("b",{text:"Где закупает (ЕИС, головная компания, год): "}),el("span",{text:`${P.total??0} закупок${P.total223!=null?` (223-ФЗ: ${P.total223}, 44-ФЗ: ${P.total44??0})`:""}${pl?"; площадки: "+pl:""}. По темам МИСБ: ${P.relevant??0}. Проверено ${fmtDate(P.checkedAt)}.`}),P.note?el("div",{class:"muted",text:P.note}):null,
+      ...(P.examples||[]).slice(0,5).map(x=>el("div",{},el("a",{href:x.url,target:"_blank",rel:"noopener",text:`${x.title||x.id}`.slice(0,110)}),el("span",{class:"muted",text:` · ${x.law||""} · ${x.date||""}`})))))}
+  else if(g.inn)parts.push(el("div",{class:"muted",style:"font-size:12.5px;margin-top:4px",text:"Профиль закупок ещё не собран: сбор проходит группы по кругу, 8 групп за запуск."}));
+  if(R.length)parts.push(el("details",{style:"margin-top:6px"},el("summary",{style:"font-size:12.5px",text:`Закупочные маршруты из справочника: ${R.length} (в сбор не включены)`}),...R.map(r=>el("div",{style:"font-size:12.5px"},el("a",{href:r.url,target:"_blank",rel:"noopener",text:r.url.replace(/^https?:\/\//,"").slice(0,70)}),el("span",{class:"muted",text:` · ${r.org||""} · ${r.type} · ${r.status||""}`})))));
+  return parts.length?el("div",{},...parts):null}
+function renderCorp(){const G=S.holdings?.groups||[];const byNode={};for(const l of LEADS){if(!l.hpath)continue;l.hpath.forEach((n,i)=>{const key=l.hpath.slice(0,i+1).join(" / ");byNode[key]=(byNode[key]||0)+1})}
+  const withLeads=G.filter(g=>byNode[g.name]).length;const total=G.reduce(function c(s,n){return s+1+(n.children||[]).reduce(c,0)},0);
+  const GC=S.gcand?.candidates||[];const prof=Object.keys(S.gprof||{}).length;
+  $("#corpNote").replaceChildren(el("span",{},`Реестр: ${G.length} групп, ${total} компаний с дочерними и внучатыми обществами. Лиды найдены у ${withLeads} групп. Профили закупок собраны у ${prof} групп. Корпоративных университетов подтверждено: ${Object.values(S.hcu||{}).filter(x=>/^Подтвержд/.test(x.cuStatus||"")).length}. `),el("span",{class:"muted",text:S.holdings?.note||""}),
+    GC.length?el("details",{style:"margin-top:8px"},el("summary",{text:`Кандидаты до 1 000 групп: ${GC.length} крупнейших компаний без группы — ждут проверки владельца по ЕГРЮЛ`}),el("p",{class:"muted",text:S.gcand.note||""}),el("div",{class:"tablebox"},el("table",{},el("thead",{},el("tr",{},el("th",{class:"num",text:"Место"}),el("th",{text:"Компания"}),el("th",{text:"Группа (по рейтингу)"}),el("th",{class:"num",text:"Выручка 2025, млн ₽"}))),el("tbody",{},...GC.map(c=>el("tr",{style:"cursor:default"},el("td",{class:"num",text:c.rank}),el("td",{text:c.name}),el("td",{text:c.group||"—"}),el("td",{class:"num",text:fmtMoney(c.revenue_mln)}))))))):null);
+  const nodeEl=(n,path)=>{const p=[...path,n.name];const c=byNode[p.join(" / ")]||0;return el("li",{},el("div",{class:"node"},el("span",{text:n.name}),el("span",{class:`cnt ${c?"has":""}`,text:c})),n.children?el("ul",{},...n.children.map(ch=>nodeEl(ch,p))):null)};
+  const sortedG=[...G].sort((a,b)=>(byNode[b.name]||0)-(byNode[a.name]||0)||a.name.localeCompare(b.name,"ru"));
+  $("#groups").replaceChildren(...sortedG.map(g=>{const c=byNode[g.name]||0;return el("details",{class:"group"},el("summary",{},el("span",{text:g.name}),/^Подтвержд/.test(((S.hcu||{})[g.name]||{}).cuStatus||"")?el("span",{class:"chip",style:"margin-left:6px",title:(S.hcu[g.name].cu||""),text:"КУ"}):null,el("span",{class:`cnt ${c?"has":""}`,text:c?`${c} лид.`:"0"})),g.inn||g.procurementRoute||g.sector?el("div",{class:"muted",style:"font-size:12.5px;margin-top:6px"},el("span",{text:[g.sector,g.head?"головная: "+g.head:"",g.inn?"ИНН "+g.inn:"",g.subsReported!=null&&g.subsReported!==""?`дочек/внучек по реестру: ${g.subsReported}`:""].filter(Boolean).join(" · ")}),g.procurementRoute?el("span",{},el("span",{text:" · закупки: "}),el("a",{href:g.procurementRoute,target:"_blank",rel:"noopener",text:g.procurementRoute.replace(/^https?:\/\//,"").slice(0,40)})):null,g.routeStatus?el("div",{text:g.routeStatus}):null):null,
+      groupExtra(g),
+      el("div",{class:"row",style:"margin-top:6px"},el("span",{class:"muted",style:"font-size:12px",text:"Ищем по: "+(g.aliases||[]).join(", ")}),c?el("button",{class:"linkbtn",onclick:()=>{S.filters.hold=g.name;$("#fHold").value=g.name;S.filters.fit="";$("#fFit").value="";switchTab("leads");renderLeads()}},"Показать лиды"):null),g.children?el("ul",{},...g.children.map(ch=>nodeEl(ch,[g.name]))):null)}))}
+
+/* sources */
+const SLABEL={ok:"Работает",partial:"Частично",needs_key:"Нужен ключ",needs_test:"Ключ есть, ждёт проверки",blocked:"Закрыт",ready:"Готов к загрузке"};
+function renderSources(){const order={ok:0,partial:1,ready:2,needs_key:3,blocked:4};
+  $("#srcs").replaceChildren(...[...S.sources].sort((a,b)=>order[a.status]-order[b.status]).map(s=>{const cnt=(s.match||[]).length?LEADS.filter(l=>(s.match||[]).some(m=>(l.source||"").startsWith(m))).length:0;
+    return el("div",{class:"src"},el("div",{class:"name"},s.url?el("a",{href:s.url,target:"_blank",rel:"noopener",text:s.name}):s.name),el("span",{class:`pill s-${s.status}`,text:SLABEL[s.status]||s.status}),el("div",{class:"note",text:s.note}),el("div",{class:"cnt",style:"text-align:right"},el("div",{class:cnt?"cnt has":"cnt",text:`${cnt} лид.`}),el("div",{text:`проверка ${fmtDate(s.checkedAt)}`})))}))}
+
+/* subject taxonomy */
+function renderSubject(){const T=S.taxonomy;const C=S.config;if(!T){$("#taxMeta").textContent="Словарь ещё не загружен.";return}
+  $("#taxMeta").textContent=`Источник: ${T.source||""}. Обновлено ${fmtDate(T.updatedAt)}. Форм: ${T.forms.length}, направлений: ${T.directions.length}.`;
+  const fc={},dc={};LEADS.forEach(l=>{l.forms.forEach(x=>fc[x]=(fc[x]||0)+1);l.dirs.forEach(x=>dc[x]=(dc[x]||0)+1)});
+  const show=(k,v)=>()=>{S.filters={[k]:v,mand:false};["#q","#fCat","#fDir","#fForm","#fOpen","#fFit","#fLaw","#fHold","#fStatus","#fFlag"].forEach(x=>$(x).value="");$(k==="dir"?"#fDir":"#fForm").value=v;$("#fCust").checked=false;$("#fMand").checked=false;S.page=0;switchTab("leads");renderLeads()};
+  const keysOf=(map,name)=>(C?.[map]?.[name])||[];
+  $("#taxForms").replaceChildren(...T.forms.map(f=>{const c=fc[f.name]||0;const w=C?.v4?.formW?.[f.name];return el("details",{class:"group"},el("summary",{},el("span",{text:f.name}),el("span",{class:`cnt ${c?"has":""}`,text:c?`${c} лид.`:"0"})),el("p",{class:"tx-desc",text:f.desc}),el("div",{class:"row",style:"margin-bottom:6px"},w!=null?el("span",{class:"muted",style:"font-size:12px",text:`Вес в fit: ${w>0?"+":""}${w}`}):null,c?el("button",{class:"linkbtn",onclick:show("form",f.name)},"Показать лиды"):null),el("div",{class:"terms"},...keysOf("forms",f.name).map(k=>el("span",{class:"term",text:k}))))}));
+  $("#taxDirs").replaceChildren(...T.directions.map(d=>{const c=dc[d.name]||0;const w=C?.v4?.dirW?.[d.name];return el("details",{class:"group"},el("summary",{},el("span",{},d.name,d.misb?el("span",{class:"badge-misb",text:"МИСБ"}):null),el("span",{class:`cnt ${c?"has":""}`,text:c?`${c} лид.`:"0"})),el("ul",{class:"tx-ex"},...d.examples.map(x=>el("li",{text:x}))),el("div",{class:"row",style:"margin:6px 0"},w!=null?el("span",{class:"muted",style:"font-size:12px",text:`Вес в fit: +${w}`}):null,c?el("button",{class:"linkbtn",onclick:show("dir",d.name)},"Показать лиды"):null),el("div",{class:"terms"},...keysOf("directions",d.name).map(k=>el("span",{class:"term",text:k}))))}));
+  const li=a=>a.map(x=>el("li",{text:Array.isArray(x)?`${x[0]} — ${x[1]}`:x}));
+  $("#taxPhrases").replaceChildren(...li(T.phrases||[]));$("#taxOkpd").replaceChildren(...li(T.okpd||[]));$("#taxAud").replaceChildren(...li(T.audience||[]));$("#taxNot").replaceChildren(...li(T.notOurs||[]))}
+
+/* method + learning */
+function suggestions(){const C=S.config;if(!C)return[];const res=[];const rated=LEADS.filter(l=>l.rating!=null);
+  for(const[g,terms]of Object.entries(C.terms||{}))for(const[k,w]of Object.entries(terms)){const ls=rated.filter(l=>km(prep(l.title),k.toLowerCase()));if(ls.length<3)continue;const avg=ls.reduce((s,l)=>s+l.rating,0)/ls.length;const delta=Math.round((avg-3)*3);if(!delta)continue;res.push({g,k,w,n:ls.length,avg,nw:Math.max(-40,Math.min(30,w+delta))})}
+  const V4=C.v4;if(V4)for(const[g,wm,fld]of[["Направление",V4.dirW||{},"dirs"],["Форма",V4.formW||{},"forms"]])for(const[k,w]of Object.entries(wm)){const ls=rated.filter(l=>l[fld].includes(k));if(ls.length<3)continue;const avg=ls.reduce((s,l)=>s+l.rating,0)/ls.length;const delta=Math.round((avg-3)*2);if(!delta)continue;res.push({g,k,w,n:ls.length,avg,nw:Math.max(-10,Math.min(20,w+delta)),v4:fld==="dirs"?"dirW":"formW"})}
+  return res.sort((a,b)=>Math.abs(b.nw-b.w)-Math.abs(a.nw-a.w))}
+function renderMethod(){const C=S.config;if(!C)return;$("#mBase").textContent=C.base;$("#mCorp").textContent="+"+C.corpBonus;$("#mHold").textContent="+"+C.holdingBonus;$("#mAct").textContent=C.activeBonus;$("#mArc").textContent=C.archivePenalty;const V=C.v2||{};$("#mRep").textContent="+"+(V.repeatBonus||0);$("#mProg").textContent="+"+(V.programBonus||0);$("#mAud").textContent="+"+(V.audienceBonus||0);$("#mCap").textContent=V.mandatoryCap??"—";
+  const n=S.feedback.filter(f=>f.rating).length;const people=new Set(S.feedback.map(f=>f.by)).size;$("#fbStats").textContent=`Сейчас в базе ${n} оценок от ${people} человек. Версия правил: ${C.version}.`;
+  const sug=suggestions();const box=$("#suggest");
+  if(!sug.length)box.replaceChildren(el("p",{class:"muted",text:"Пока мало оценок: предложение появляется, когда слово встречается хотя бы в трёх оценённых лидах."}));
+  else{const apply=el("button",{class:"btn primary",disabled:!S.canEdit,onclick:async()=>{apply.disabled=true;const nc=JSON.parse(JSON.stringify(C));for(const s of sug){if(s.v4)nc.v4[s.v4][s.k]=s.nw;else nc.terms[s.g][s.k]=s.nw}nc.version=(C.version||1)+1;nc.log=[...(C.log||[]),{at:new Date().toISOString().slice(0,10),by:S.uid||"",text:"Применены веса по оценкам: "+sug.map(s=>`«${s.k}» ${s.w}→${s.nw}`).join(", ")}];try{await S.db.doc("config/fit").set(nc);toast("Правила обновлены")}catch(e){toast("Не удалось сохранить правила");apply.disabled=false}}},"Применить предложения");
+    box.replaceChildren(el("div",{class:"tablebox"},el("table",{style:"min-width:520px"},el("thead",{},el("tr",{},el("th",{text:"Слово"}),el("th",{text:"Группа"}),el("th",{class:"num",text:"Оценок"}),el("th",{class:"num",text:"Средняя"}),el("th",{class:"num",text:"Вес сейчас"}),el("th",{class:"num",text:"Предложение"}))),el("tbody",{},...sug.map(s=>el("tr",{style:"cursor:default"},el("td",{text:s.k}),el("td",{text:s.g}),el("td",{class:"num",text:s.n}),el("td",{class:"num",text:s.avg.toFixed(1)}),el("td",{class:"num",text:s.w}),el("td",{class:"num",text:s.nw})))))),el("div",{class:"row",style:"margin-top:8px"},apply,S.canEdit?null:el("span",{class:"muted",text:"Применять может редактор сайта."})))}
+  const wcards=C.v4?[["Веса направлений (один раз, до +"+C.v4.dirCap+")",C.v4.dirW],["Веса форм обучения (один раз, до +"+C.v4.formCap+")",C.v4.formW]]:[];
+  $("#termCards").replaceChildren(...wcards.map(([g,m])=>el("div",{class:"card"},el("h3",{text:g}),el("div",{class:"terms"},...Object.entries(m).sort((a,b)=>b[1]-a[1]).map(([k,w])=>el("span",{class:`term ${w<=0?"neg":"pos"}`,text:`${k} ${w>0?"+":""}${w}`}))))),...Object.entries(C.terms).map(([g,terms])=>el("div",{class:"card"},el("h3",{text:g}),el("div",{class:"terms"},...Object.entries(terms).sort((a,b)=>b[1]-a[1]).map(([k,w])=>el("span",{class:`term ${w<0?"neg":"pos"}`,text:`${k} ${w>0?"+":""}${w}`}))))));
+  $("#log").replaceChildren(...[...(C.log||[])].reverse().map(x=>el("div",{class:"fb-item"},el("b",{text:fmtDate(x.at)}),el("span",{class:"muted",text:" · "}),el("span",{text:x.text}))))}
+
+/* import */
+const MAP={id:["id","номер","№","регномер","номер закупки","reg","number"],title:["title","название","наименование","предмет","предмет закупки","name"],customer:["customer","заказчик","организатор","организация"],region:["region","регион","город"],price:["price","цена","нмц","нмцк","сумма","начальная цена"],deadline:["deadline","срок","окончание","дата окончания","окончание подачи","дедлайн"],law:["law","тип","закон","фз"],url:["url","ссылка","link"],source:["source","источник","площадка"]};
+function parseCSV(text){const d=(text.split("\n")[0].match(/;/g)||[]).length>=(text.split("\n")[0].match(/,/g)||[]).length?";":",";const rows=[];let row=[],cur="",q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'){if(text[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}else if(c==='"')q=true;else if(c===d){row.push(cur);cur=""}else if(c==="\n"){row.push(cur);rows.push(row);row=[];cur=""}else if(c!=="\r")cur+=c}if(cur||row.length){row.push(cur);rows.push(row)}return rows.filter(r=>r.some(x=>x.trim()))}
+function normDate(v){v=String(v||"").trim();let m=v.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);if(m)return `${m[3]}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`;m=v.match(/(\d{4})-(\d{2})-(\d{2})/);return m?m[0]:""}
+function normLaw(v){v=String(v||"").toLowerCase();if(v.includes("44"))return "44-ФЗ";if(v.includes("223"))return "223-ФЗ";if(v.includes("ком"))return "Коммерческий";return ""}
+function toLead(o){const pick=f=>{for(const k of Object.keys(o)){if(MAP[f].includes(k.trim().toLowerCase()))return o[k]}return ""};const price=parseFloat(String(pick("price")).replace(/\s| /g,"").replace(",","."));
+  return {id:String(pick("id")||"").trim(),title:String(pick("title")||"").trim(),customer:String(pick("customer")||"").trim(),region:String(pick("region")||"").trim(),price:isFinite(price)&&price>0?price:null,deadline:normDate(pick("deadline")),law:normLaw(pick("law")),url:String(pick("url")||"").trim(),source:"import:"+(String(pick("source")||"").trim()||"файл"),collectedAt:new Date().toISOString().slice(0,10)}}
+let PENDING=null;
+$("#file").addEventListener("change",async e=>{const f=e.target.files[0];const box=$("#impPreview");if(!f)return;let text;try{text=await f.text()}catch(err){box.replaceChildren(el("h3",{text:"Предпросмотр"}),el("p",{text:"Не удалось прочитать файл."}));return}
+  let objs=[];try{if(/\.json$/i.test(f.name)||/^\s*[\[{]/.test(text)){const j=JSON.parse(text);objs=Array.isArray(j)?j:(j.leads||j.items||[])}else{const rows=parseCSV(text);const head=rows.shift()||[];objs=rows.map(r=>Object.fromEntries(head.map((h,i)=>[h,r[i]??""])))}}catch(err){box.replaceChildren(el("h3",{text:"Предпросмотр"}),el("p",{text:"Файл не похож на CSV или JSON. Проверьте формат и первую строку с названиями колонок."}));return}
+  const leads=objs.map(toLead).filter(l=>l.title);const have=new Set(LEADS.flatMap(l=>[l.key,l.url,(l.title+"|"+(l.customer||"")).toLowerCase()]).filter(Boolean));
+  const fresh=[];for(const l of leads){const k=keyOf(l.id||l.url||(l.title+"|"+l.customer));if(have.has(k)||(l.url&&have.has(l.url))||have.has((l.title+"|"+(l.customer||"")).toLowerCase()))continue;have.add(k);fresh.push(l)}
+  PENDING={name:f.name,leads:fresh};
+  const add=el("button",{class:"btn primary",disabled:!fresh.length||!S.db,onclick:async()=>{add.disabled=true;try{const ts=Date.now();for(let i=0;i<PENDING.leads.length;i+=300){await S.db.doc(`leadsets/imp-${ts}-${i/300}`).set({source:"import",name:PENDING.name,importedAt:new Date().toISOString(),by:S.uid||null,leads:PENDING.leads.slice(i,i+300)})}toast(`Добавлено лидов: ${PENDING.leads.length}`);PENDING=null;e.target.value="";box.replaceChildren(el("h3",{text:"Предпросмотр"}),el("p",{class:"muted",text:"Готово. Лиды уже в таблице."}))}catch(err){toast(err.code==="invalid_argument"?"Нет прав на запись в эту базу":err.code==="quota_exceeded"?"База заполнена: удалите старые наборы":"Не удалось загрузить");add.disabled=false}}},`Добавить ${fresh.length} лид.`);
+  box.replaceChildren(el("h3",{text:"Предпросмотр"}),el("p",{text:`Строк с названием: ${leads.length}. Новых: ${fresh.length}. Дублей пропущено: ${leads.length-fresh.length}.`}),
+    el("div",{class:"fb-list"},...fresh.slice(0,5).map(l=>{const h=matchHolding(l.customer+" "+l.title);return el("div",{class:"fb-item"},el("b",{text:`fit ${scoreLead(l,h).fit}`}),el("span",{text:" · "+l.title}),el("div",{class:"muted",text:[l.customer,h?.root,fmtDate(l.deadline)].filter(Boolean).join(" · ")}))})),
+    el("div",{style:"height:10px"}),add)});
+function renderSets(){$("#sets").replaceChildren(...S.sets.map(s=>el("div",{class:"fb-item"},el("b",{text:s.data.name||s.data.source||s.id}),el("span",{class:"muted",text:` · ${(s.data.leads||[]).length} лид. · ${fmtDate(String(s.data.collectedAt||s.data.importedAt||"").slice(0,10))}`}))))}
+
+
+/* accounts: who to offer */
+const MONTHS=["январь","февраль","март","апрель","май","июнь","июль","август","сентябрь","октябрь","ноябрь","декабрь"];
+const MSHORT=["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"];
+function accounts(){const map=new Map();for(const l of LEADS){if(!l.customer||l.mandatory)continue;const k=normCust(l.customer);if(!map.has(k))map.set(k,{name:l.customer,holding:l.holding,company:l.company,leads:[]});const a=map.get(k);a.leads.push(l);if(!a.holding&&l.holding){a.holding=l.holding;a.company=l.company}}
+  const out=[];for(const a of map.values()){const ds=a.leads.map(l=>l.deadline).filter(Boolean).sort();const sum=a.leads.reduce((s,l)=>s+(l.price||0),0);const best=Math.max(...a.leads.map(l=>l.fit));const open=a.leads.some(l=>l.dl!=null&&l.dl>=0);
+    let next=null,why="";const um=[...new Set(ds.map(d=>d.slice(0,7)))];if(ds.length){const last=new Date(ds[ds.length-1]+"T00:00:00");if(um.length>=3){next=new Date(last.getFullYear(),last.getMonth()+1,1);why="покупает регулярно, почти каждый месяц"}else if(ds.length>=2){const first=new Date(ds[0]+"T00:00:00");const gap=(last-first)/(ds.length-1);if(gap>=45*864e5){next=new Date(+last+gap);why=`интервал ~${Math.round(gap/2592e6)} мес.`}}if(!next){next=new Date(last);next.setFullYear(next.getFullYear()+1);why="годовой цикл"}}
+    const dirs={};a.leads.forEach(l=>l.dirs.forEach(d=>{if(d!=="Прочее обучение")dirs[d]=(dirs[d]||0)+1}));
+    const score=a.leads.length*10+best+(a.holding?12:0)+(open?8:0)+Math.min(15,Math.log10(1+sum)*2);
+    out.push({...a,n:a.leads.length,sum,best,open,ds,next,why,dirs:Object.entries(dirs).sort((x,y)=>y[1]-x[1]).map(x=>x[0]),score})}
+  return out}
+function renderAccounts(){let list=accounts();const q=($("#aq").value||"").toLowerCase().trim();if(q)list=list.filter(a=>(a.name+" "+a.holding+" "+a.company).toLowerCase().includes(q));if($("#aHold").checked)list=list.filter(a=>a.holding);
+  const s=$("#aSort").value;list.sort((a,b)=>s==="next"?((a.next||Infinity)-(b.next||Infinity)):s==="sum"?b.sum-a.sum:s==="n"?b.n-a.n||b.best-a.best:b.score-a.score);
+  const rows=list.map(a=>{const nx=a.next?`${MONTHS[a.next.getMonth()]} ${a.next.getFullYear()}`:"—";
+    return el("tr",{style:"cursor:default"},
+      el("td",{class:"cust"},el("span",{text:a.name}),a.holding?el("small",{text:a.company?`${a.holding} → ${a.company}`:a.holding}):null,a.open?el("div",{},el("span",{class:"pill fit hi",style:"margin-top:4px",text:"есть открытая закупка"})):null),
+      el("td",{class:"num",text:a.n}),el("td",{class:"num",text:fmtMoney(a.sum)}),
+      el("td",{},el("div",{class:"t-sub"},...(a.dirs.length?a.dirs.slice(0,3):["Прочее обучение"]).map(d=>el("span",{class:"chip dir",text:d})))),
+      el("td",{class:"muted",text:(()=>{const c={};a.ds.forEach(d=>{const[y,m]=d.split("-");const k=`${MSHORT[+m-1]} ${y.slice(2)}`;c[k]=(c[k]||0)+1});return Object.entries(c).map(([k,v])=>v>1?`${k} ×${v}`:k).join(", ")||"—"})()}),
+      el("td",{},el("div",{text:nx}),el("div",{class:"muted",style:"font-size:12px",text:a.why})),
+      el("td",{class:"num"},el("span",{class:`pill fit ${grade(a.best)}`,text:a.best})),
+      el("td",{},el("button",{class:"linkbtn",onclick:()=>{S.filters={q:a.name,mand:false};$("#q").value=a.name;["#fCat","#fDir","#fForm","#fOpen","#fFit","#fLaw","#fHold","#fStatus"].forEach(x=>$(x).value="");$("#fCust").checked=false;$("#fMand").checked=false;S.page=0;switchTab("leads");renderLeads()}},"Лиды")))});
+  $("#accRows").replaceChildren(...(rows.length?rows:[el("tr",{},el("td",{colspan:"8",class:"empty",text:"Нет заказчиков под этот фильтр."}))]))}
+["#aq","#aSort","#aHold"].forEach(id=>$(id).addEventListener(id==="#aq"?"input":"change",()=>renderAccounts()));
+
+/* tabs */
+function switchTab(t){document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===t)));["leads","accounts","corp","orgs","subject","funnel","sources","method","import"].forEach(x=>$("#tab-"+x).hidden=x!==t);if(t==="orgs")loadOrgDir();try{localStorage.setItem("misb-tab",t)}catch(e){}}
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest("button[data-tab]");if(b)switchTab(b.dataset.tab)});
+try{const t=localStorage.getItem("misb-tab");if(t&&$("#tab-"+t))switchTab(t)}catch(e){}
+
+/* filters */
+const bind=(id,key,ev="change")=>$(id).addEventListener(ev,e=>{S.filters[key]=e.target.type==="checkbox"?e.target.checked:e.target.value;S.page=0;renderLeads()});
+bind("#q","q","input");bind("#fCat","cat");bind("#fOpen","open");bind("#fFit","fit");bind("#fLaw","law");bind("#fHold","hold");bind("#fStatus","status");bind("#fCust","cust");bind("#fDir","dir");bind("#fForm","form");bind("#fMand","mand");bind("#fFlag","flag");
+S.filters.fit="40";
+$("#resetBtn").addEventListener("click",()=>{S.filters={};["#q","#fCat","#fDir","#fForm","#fOpen","#fFit","#fLaw","#fHold","#fStatus","#fFlag"].forEach(s=>$(s).value="");$("#fCust").checked=false;$("#fMand").checked=true;S.page=0;renderLeads()});
+document.querySelectorAll("th.sort").forEach(th=>th.addEventListener("click",()=>{const k=th.dataset.sort;if(S.sort.key===k)S.sort.dir*=-1;else S.sort={key:k,dir:["fit","price","rating"].includes(k)?-1:1};renderLeads()}));
+$("#csvBtn").addEventListener("click",async()=>{const list=sorted(filtered());const esc=v=>`"${String(v??"").replace(/"/g,'""')}"`;const head=["fit","номер","название","заказчик","группа","компания группы","регион","нмц","срок","тип","формат","статус","оценка","источник","ссылка"];
+  const lines=[head.join(";"),...list.map(l=>[l.fit,l.id,l.title,l.customer,l.holding,l.company,l.region,l.price||"",fmtDate(l.deadline),l.law,l.cat,STATUS_LABEL[l.status],l.rating!=null?l.rating.toFixed(1):"",srcName(l.source),l.url].map(esc).join(";"))];
+  try{await S.downloads.save({filename:`misb-leads-${new Date().toISOString().slice(0,10)}.csv`,data:"﻿"+lines.join("\r\n")})}catch(e){if(e.code!=="declined")toast("Выгрузка недоступна в этом просмотре")}});
+
+/* ---------- refresh / collection progress ---------- */
+const MCP_SERVER="Claude Code Remote";
+const triggerId=()=>String(S.collector?.triggerId||"").trim();
+const RS_LABEL={wait:"ждёт",reading:"читается",ok:"готово",partial:"частично",failed:"не ответил",skipped:"пропущен"};
+const RUN_LABEL={idle:"Не запускался",queued:"Запускается",running:"Идёт сбор",done:"Готово",error:"Ошибка",stale:"Не отвечает"};
+function ago(iso){if(!iso)return"";const m=Math.round((Date.now()-new Date(iso).getTime())/60000);if(m<1)return"только что";if(m<60)return`${m} мин назад`;const h=Math.round(m/60);if(h<24)return`${h} ч назад`;return fmtDate(String(iso).slice(0,10))}
+function hhmm(iso){try{return new Date(iso).toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"})}catch(e){return""}}
+function runState(P){if(!P)return null;let st=P.status;const age=P.updatedAt?(Date.now()-new Date(P.updatedAt).getTime())/60000:0;if((st==="running"&&age>25)||(st==="queued"&&age>12))st="stale";return st}
+function renderRun(){const P=S.progress;const box=$("#runPanel");const btn=$("#refreshBtn");const st=runState(P);
+  const busy=st==="running"||st==="queued";
+  if(btn){btn.disabled=busy||!!S.firing||(!S.mcp&&!!triggerId());btn.classList.toggle("spin",busy||!!S.firing);btn.querySelector("span").textContent=busy?`Идёт сбор · ${P.percent||0}%`:S.firing?"Запускаю…":"Обновить";
+    btn.title=!triggerId()?"Сначала настройте задание сбора":!S.mcp?"Запуск сбора доступен владельцу сайта при открытии в Claude":"Собрать свежие закупки по всем источникам"}
+  if(S.owner&&S.showSetup){box.hidden=false;if(box.dataset.mode!=="setup"){box.replaceChildren(setupPanel());box.dataset.mode="setup"}return}
+  box.dataset.mode="";
+  if(!P){box.hidden=true;return}
+  box.hidden=false;const pct=Math.max(0,Math.min(100,Math.round(P.percent||0)));
+  const srcs=P.sources||[];const log=(P.log||[]).slice(-40).reverse();
+  const setBtn=S.owner?el("button",{class:"btn",type:"button",onclick:()=>{S.showSetup=true;renderRun()}},"Настройка"):null;
+  const head=el("div",{class:"run-head"},el("h2",{},"Сбор данных",el("span",{class:`pill st-${st}`,text:RUN_LABEL[st]||st})),
+    el("span",{class:"run-time",text:[P.startedAt?`запущен ${hhmm(P.startedAt)}`:P.requestedAt?`запрошен ${hhmm(P.requestedAt)}`:"",P.updatedAt?`обновлено ${ago(P.updatedAt)}`:""].filter(Boolean).join(" · ")}),setBtn);
+  const bar=el("div",{class:`pbar ${st==="error"||st==="stale"?"err":""}`,role:"progressbar","aria-valuemin":"0","aria-valuemax":"100","aria-valuenow":String(pct),"aria-label":"Выполнено"},el("i",{style:`width:${pct}%`}));
+  const stageText=st==="stale"?"Сбор давно не присылал новостей — вероятно, облачный сеанс прервался. Можно запустить заново.":(P.stage||"");
+  const stage=el("div",{class:"run-stage"},el("span",{text:stageText}),el("b",{text:`${pct}%`}));
+  const list=srcs.length?el("div",{style:"margin-top:10px"},...srcs.map(x=>{const pl=x.planned||0,dn=x.done||0;return el("div",{class:"rsrc"},
+      el("div",{},el("b",{text:x.name||x.key})),el("div",{class:"m",text:x.method||""}),
+      el("div",{class:"n"},el("div",{class:"mini"},el("i",{style:`width:${pl?Math.round(100*dn/pl):0}%`})),el("span",{text:`стр. ${dn} из ${pl} · строк ${x.found||0} · новых ${x.fresh||0}`}),x.note?el("span",{style:"font-family:var(--sans)",text:x.note}):null),
+      el("span",{class:`pill rs-${x.status||"wait"}`,text:RS_LABEL[x.status]||x.status||""}))})):null;
+  const wasOpen=box.querySelector("details")?.open;
+  const lg=log.length?el("details",{},el("summary",{text:`Журнал (${log.length})`}),el("ul",{class:"runlog"},...log.map(r=>el("li",{},el("time",{text:hhmm(r.at)}),document.createTextNode(r.text||""))))):null;
+  if(lg)lg.open=wasOpen??busy;
+  const res=P.result&&st==="done"?el("div",{class:"run-note",text:`Итог: новых лидов ${P.result.new??0}, из них с открытым приёмом ${P.result.active??0}. Всего в базе ${P.result.total??LEADS.length}.`}):null;
+  const hist=(S.runs||[]).length?el("div",{class:"run-hist",text:"Прошлые запуски: "+S.runs.slice(0,5).map(r=>`${fmtDate(String(r.startedAt||"").slice(0,10))} ${hhmm(r.startedAt)} — новых ${r.new??0}`).join("; ")}):null;
+  const how=el("div",{class:"run-note",text:"Как это работает: кнопка запускает облачный сеанс Claude. Он проходит все источники: читает открытые разделы РосТендера, КомТендера, СИНАПСа, B2B-Center и Бикотендера, запрашивает ЕИС через ГосПлан, ищет свежие лоты крупных холдингов и проверяет, не открылись ли закрытые площадки. Уже известные закупки отбрасываются, новые записываются в базу. Ход работы приходит сюда в реальном времени; полный запуск занимает 30–45 минут, в основном из-за пауз между запросами к ГосПлану."});
+  const errNote=S.fireError?el("div",{class:"run-err",text:S.fireError}):null;
+  box.replaceChildren(...[head,bar,stage,errNote,list,res,lg,hist,how].filter(Boolean));
+}
+function copyText(t,ta){const done=()=>toast("Текст задания скопирован");
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,()=>fallback())}else fallback();
+  function fallback(){try{ta.hidden=false;ta.focus();ta.select();if(document.execCommand("copy"))done();else toast("Выделите текст и скопируйте вручную")}catch(e){toast("Выделите текст и скопируйте вручную")}}}
+function setupPanel(){const C=S.collector||{};const prompt=String(C.routineText||C.prompt||"");const cur=triggerId();
+  const ta=el("textarea",{readonly:"",rows:"8",style:"width:100%;font-family:var(--mono);font-size:12px",hidden:""});ta.value=prompt;
+  const inp=el("input",{type:"text",placeholder:"trig_…",value:cur,"aria-label":"Номер задания"});
+  const msg=el("div",{class:"run-note"});
+  const save=async()=>{const v=inp.value.trim();if(v&&!/^trig_[A-Za-z0-9_-]+$/.test(v)){msg.textContent="Номер задания начинается с trig_ и состоит из латинских букв, цифр, _ и -.";return}
+    try{await S.db.doc("config/collector").set({...C,triggerId:v,updatedAt:new Date().toISOString()});S.showSetup=!v;S.fireError="";toast(v?"Номер задания сохранён":"Номер задания удалён");renderRun()}
+    catch(e){msg.textContent="Не удалось сохранить: "+(e&&e.message||"нет доступа к базе")}};
+  return el("div",{},
+    el("div",{class:"run-head"},el("h2",{},"Настройка сбора по кнопке"),el("button",{class:"btn",type:"button",onclick:()=>{S.showSetup=false;renderRun()}},"Закрыть")),
+    el("div",{class:"setup"},
+      el("div",{text:"Кнопка «Обновить» запускает задание Claude Code, которое проходит все источники и пишет результат в базу сайта. Задание создаётся один раз:"}),
+      el("ol",{},
+        el("li",{},"Скопируйте текст задания. ",el("span",{class:"row",style:"display:inline-flex;gap:6px"},
+          el("button",{class:"btn",type:"button",disabled:prompt?null:"",onclick:()=>copyText(prompt,ta)},"Скопировать"),
+          S.downloads?el("button",{class:"btn",type:"button",disabled:prompt?null:"",onclick:async()=>{try{await S.downloads.save({filename:"misb-collector-task.txt",data:prompt})}catch(e){if(e.code!=="declined")toast("Скачивание недоступно в этом просмотре")}}},"Скачать .txt"):null)),
+        el("li",{text:"Попросите Claude в Claude Code создать через create_trigger задание без расписания с этим текстом, вставив ключ ГосПлана вместо {GOSPLAN_KEY}. Задание, созданное вручную в Routines, кнопка запустить не сможет. Сама инструкция по сбору, список источников и словарь хранятся в базе сайта (config/collector, config/sources-plan, config/dictionary), поэтому менять текст задания при их правках не нужно."}),
+        el("li",{},"Вставьте сюда номер созданного задания и сохраните:",el("div",{class:"row",style:"margin-top:6px"},inp,el("button",{class:"btn primary",type:"button",onclick:save},"Сохранить")))),
+      ta,msg,
+      el("div",{class:"run-note",text:"При первом нажатии «Обновить» Claude попросит разрешить сайту подключение Claude Code Remote."})));
+}
+async function startRefresh(){if(!S.db)return;if(!triggerId()){S.showSetup=true;renderRun();return}if(!S.mcp)return;const st=runState(S.progress);if(st==="running"||st==="queued")return;
+  S.firing=true;S.fireError="";const now=new Date().toISOString();
+  const queued={status:"queued",requestedAt:now,updatedAt:now,requestedBy:S.uid||"",percent:0,stage:"Задание отправлено: запускается облачный сеанс, обычно 1–2 минуты",sources:[],log:[{at:now,text:"Нажата кнопка «Обновить»"}]};
+  try{await S.db.doc("progress/current").set(queued)}catch(e){}
+  renderRun();
+  try{await S.mcp.callTool(MCP_SERVER,"fire_trigger",{trigger_id:triggerId()},{cache:false});toast("Сбор запущен")}
+  catch(e){const {msg,definite}=fireFailure(e,"Обновить","Проверьте номер задания в «Настройке».");
+    S.fireError=msg;
+    if(definite){const t=new Date().toISOString();try{await S.db.doc("progress/current").set({...queued,status:"error",updatedAt:t,stage:"Сбор не запущен",log:[...queued.log,{at:t,text:"Запуск не удался: "+msg}]})}catch(x){}}}
+  S.firing=false;renderRun()}
+function fireFailure(e,btn,hint){const c=e&&e.code;
+  if(c==="server_not_connected")return{definite:true,msg:`Не подключён коннектор Claude Code Remote. Добавьте его в claude.ai: Настройки → Коннекторы, затем нажмите «${btn}» ещё раз.`};
+  if(c==="needs_reauth")return{definite:true,msg:"Коннектор Claude Code Remote требует повторного входа: переподключите его в claude.ai (Настройки → Коннекторы)."};
+  if(c==="selection_required")return{definite:true,msg:`В claude.ai подключено несколько коннекторов Claude Code Remote — выберите один в появившемся запросе и нажмите «${btn}» снова.`};
+  if(c==="not_in_manifest"||c==="consent_required")return{definite:true,msg:`Странице не разрешено запускать задачи. Нажмите «${btn}» ещё раз и разрешите доступ в запросе.`};
+  if(c==="blocked_by_policy"||c==="approval_required")return{definite:true,msg:"Запуск задач из страниц запрещён настройками организации. Задание можно запустить из чата с Claude."};
+  if(c==="tool_error")return{definite:true,msg:"Сервис задач отказал: "+(e.message||"без пояснений")+". "+hint};
+  if(c==="not_granted"||c==="capability_disabled"||c==="capability_removed")return{definite:true,msg:"Этот просмотр не может запускать задания. Откройте сайт в Claude."};
+  return{definite:false,msg:`Ответ сервиса задач не получен. Возможно, задание всё же запустилось — если через 3 минуты прогресс не сдвинется, нажмите «${btn}» снова.`}}
+$("#refreshBtn").addEventListener("click",startRefresh);
+setInterval(()=>{if(S.progress)renderRun()},30000);
+
+/* ---------- B2B-Center: manual check of the «Все» tab ---------- */
+const B2B_LABEL={idle:"Ещё не запускалась",queued:"Запускается",running:"Идёт проверка",done:"Готово · охват полный",incomplete:"Охват неполный",blocked:"Остановлено",error:"Ошибка",stale:"Не отвечает"};
+const b2bTrigger=()=>String(S.b2bCfg?.triggerId||"").trim();
+function b2bRunState(P){if(!P||!P.status)return "idle";let st=P.status;const age=P.updatedAt?(Date.now()-new Date(P.updatedAt).getTime())/60000:0;if((st==="running"&&age>20)||(st==="queued"&&age>12))st="stale";return st}
+function stamp(iso){if(!iso)return "—";try{return new Date(iso).toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})}catch(e){return String(iso)}}
+function renderB2B(){const box=$("#b2bPanel");const btn=$("#b2bBtn");if(!box)return;const P=S.b2bProgress;const st=b2bRunState(P);const busy=st==="running"||st==="queued";const ST=S.b2bState||{};
+  if(btn){btn.disabled=busy||!!S.b2bFiring||!S.mcp||!b2bTrigger();btn.classList.toggle("spin",busy||!!S.b2bFiring);btn.querySelector("span").textContent=busy?"B2B-Center · идёт проверка":S.b2bFiring?"Запускаю…":"Проверить B2B-Center";
+    btn.title=!b2bTrigger()?"Не задан номер задания в config/b2b-market":!S.mcp?"Проверку запускает владелец сайта, открыв его в Claude":"Проверить новые закупки на вкладке «Все» B2B-Center"}
+  if(!P&&!S.owner){box.hidden=true;return}
+  box.hidden=false;const c=P?.counters||{};
+  const head=el("div",{class:"run-head"},el("h2",{},"B2B-Center · вкладка «Все»",el("span",{class:`pill st-${st}`,text:B2B_LABEL[st]||st})),
+    el("span",{class:"run-time",text:[P?.runId?`задача ${P.runId}`:"",P?.startedAt?`запущена ${hhmm(P.startedAt)}`:P?.requestedAt?`запрошена ${hhmm(P.requestedAt)}`:"",P?.updatedAt?`обновлено ${ago(P.updatedAt)}`:""].filter(Boolean).join(" · ")}));
+  const stageText=st==="stale"?"Проверка давно не присылала новостей — вероятно, облачный сеанс прервался. Контрольная отметка не сдвинута, проверку можно запустить заново.":P?(P.stage||""):"Проверка ещё не запускалась. Первое нажатие просмотрит закупки за 14 дней.";
+  const cell=(v,t)=>el("div",{},el("b",{text:v??0}),el("span",{text:t}));
+  const grid=P&&st!=="queued"&&st!=="idle"?el("div",{class:"b2b-grid"},cell(c.pages,"страниц списка"),cell(c.listed,"закупок в окне"),cell(`${c.cardsViewed??0}${c.cardsPlanned?" из "+c.cardsPlanned:""}`,"карточек просмотрено"),cell(c.new,"новых"),cell(c.updated,"обновлено"),cell(c.relevant,"по темам МИСБ"),cell(c.sales,"продаж пропущено"),cell(c.cardErrors,"ошибок карточек")):null;
+  const lr=ST.lastRun;const facts=el("dl",{class:"b2b-facts"},
+    el("dt",{text:"Контрольная отметка"}),el("dd",{text:ST.watermark?`${stamp(ST.watermark)} — начало последней полностью успешной проверки`:"ещё нет: первая проверка охватит 14 дней"}),
+    P?.cutoff?el("dt",{text:"Окно этой проверки"}):null,P?.cutoff?el("dd",{text:`закупки, опубликованные с ${stamp(P.cutoff)}`}):null,
+    ST.resume?el("dt",{text:"Недочитанный участок"}):null,ST.resume?el("dd",{text:`список прочитан до ${stamp(ST.resume.oldestPublishedAt)}; следующее нажатие продолжит с этого места`}):null,
+    lr?el("dt",{text:"Последний итог"}):null,lr?el("dd",{text:`${B2B_LABEL[lr.status]||lr.status} · ${stamp(lr.startedAt)}${lr.note?" · "+lr.note:""}`}):null);
+  if(!S.b2bDepthEl)S.b2bDepthEl=el("input",{type:"number",id:"b2bDepth",min:"1",max:"365",step:"1",inputmode:"numeric",placeholder:"авто"});
+  S.b2bDepthEl.disabled=busy;
+  const opts=S.owner?el("div",{class:"b2b-opts"},el("label",{for:"b2bDepth"},"Глубина истории, дней:"),S.b2bDepthEl,el("span",{class:"muted",text:"пусто — от контрольной отметки минус 2 дня, при первой проверке 14 дней"})):null;
+  const errNote=S.b2bError?el("div",{class:"run-err",text:S.b2bError}):null;
+  const log=(P?.log||[]).slice(-40).reverse();const wasOpen=box.querySelector("details.b2b-log")?.open;
+  const lg=log.length?el("details",{class:"b2b-log"},el("summary",{text:`Журнал проверки (${log.length})`}),el("ul",{class:"runlog"},...log.map(r=>el("li",{},el("time",{text:hhmm(r.at)}),document.createTextNode(r.text||""))))):null;
+  if(lg)lg.open=wasOpen??busy;
+  const runs=S.b2bRuns||[];const hist=runs.length?el("div",{class:"run-hist",text:"Прошлые проверки: "+runs.slice(0,5).map(r=>`${stamp(r.startedAt)} — ${B2B_LABEL[r.status]||r.status}, новых ${r.counters?.new??0}`).join("; ")}):null;
+  const how=el("div",{class:"run-note",text:"Кнопка запускает отдельное облачное задание, только по нажатию. Оно сначала проверяет robots.txt B2B-Center и при запрете останавливается. Затем листает вкладку «Все» от новых закупок к старым до контрольной отметки минус 2 дня, пропускает объявления о продаже и открывает карточку каждой новой закупки. Сохраняются все закупки, в таблицу лидов попадают только подходящие по словарю института. Контрольная отметка сдвигается, только когда прочитаны все страницы и карточки; иначе — «охват неполный», и следующее нажатие дочитывает."});
+  box.replaceChildren(...[head,el("div",{class:"run-stage",style:"margin-top:8px"},el("span",{text:stageText})),errNote,grid,facts,opts,lg,hist,how].filter(Boolean))}
+async function startB2B(){if(!S.db||!S.mcp||!b2bTrigger()||S.b2bFiring)return;if(["running","queued"].includes(b2bRunState(S.b2bProgress)))return;
+  S.b2bFiring=true;S.b2bError="";renderB2B();const ref=S.db.doc("b2b/progress");
+  try{const lease=await ref.acquire({holder:S.uid||"owner",ttlMs:20000});if(!lease.acquired){S.b2bError="Проверку уже запускают из другой вкладки.";S.b2bFiring=false;renderB2B();return}
+    const cur=await ref.get();if(["running","queued"].includes(b2bRunState(cur.exists?cur.data():null))){S.b2bFiring=false;renderB2B();return}}
+  catch(e){S.b2bError="Не удалось проверить, не идёт ли уже проверка: нет доступа к базе сайта.";S.b2bFiring=false;renderB2B();return}
+  const now=new Date().toISOString();const runId="b2b-"+now.slice(0,10).replace(/-/g,"")+"-"+now.slice(11,19).replace(/:/g,"");
+  const dv=parseInt(S.b2bDepthEl?.value,10);const lookbackDays=dv>0?Math.min(dv,365):null;
+  const queued={runId,taskId:runId,status:"queued",requestedAt:now,updatedAt:now,requestedBy:S.uid||"",params:{lookbackDays},stage:"Задание отправлено: запускается облачный сеанс, обычно 1–2 минуты",counters:{},coverage:"",log:[{at:now,text:"Нажата кнопка «Проверить B2B-Center»"+(lookbackDays?`, глубина ${lookbackDays} дн.`:"")}]};
+  try{await ref.set(queued)}catch(e){}
+  try{const r=await S.mcp.callTool(MCP_SERVER,"fire_trigger",{trigger_id:b2bTrigger(),text:JSON.stringify({runId,lookbackDays,requestedAt:now,requestedBy:S.uid||""})},{cache:false});
+    const sid=r&&r.payload&&typeof r.payload==="object"?r.payload.session_id:null;if(sid){try{await ref.update({sessionId:String(sid)})}catch(e){}}
+    toast(`Проверка B2B-Center запущена · задача ${runId}`)}
+  catch(e){const f=fireFailure(e,"Проверить B2B-Center","Проверьте номер задания в config/b2b-market.");S.b2bError=f.msg;
+    if(f.definite){const t=new Date().toISOString();try{await ref.set({...queued,status:"error",updatedAt:t,stage:"Проверка не запущена",log:[...queued.log,{at:t,text:"Запуск не удался: "+f.msg}]})}catch(x){}}}
+  S.b2bFiring=false;renderB2B()}
+$("#b2bBtn").addEventListener("click",startB2B);
+setInterval(()=>{if(S.b2bProgress)renderB2B()},30000);
+
+function quant(a,q){if(!a.length)return null;const s=[...a].sort((x,y)=>x-y);const i=(s.length-1)*q;const lo=Math.floor(i),hi=Math.ceil(i);return s[lo]+(s[hi]-s[lo])*(i-lo)}
+function renderFunnel(){const box=$("#funnel");if(!box)return;const cnt={};for(const l of LEADS)cnt[l.status]=(cnt[l.status]||0)+1;
+  const won=LEADS.filter(l=>l.status==="won");const wonSum=won.reduce((a,l)=>a+(l.price||0),0);const bidN=(cnt.bid||0)+(cnt.won||0)+(cnt.lost||0);const conv=bidN?Math.round(100*(cnt.won||0)/bidN):null;
+  const rows=STATUSES.map(([v,t])=>el("tr",{style:"cursor:pointer",onclick:()=>{S.filters={status:v,mand:false};$("#fStatus").value=v;S.page=0;renderAll();switchTab("leads")}},el("td",{},el("span",{class:`st ${v}`,text:t})),el("td",{class:"num",text:cnt[v]||0})));
+  box.replaceChildren(el("div",{class:"tablebox"},el("table",{},el("thead",{},el("tr",{},el("th",{text:"Статус"}),el("th",{class:"num",text:"Лидов"}))),el("tbody",{},...rows))),
+    el("p",{style:"margin:10px 0 0",text:`Подано заявок (включая решённые): ${bidN}. Выиграно: ${cnt.won||0}${conv!=null?` (${conv}% от поданных)`:""}. Сумма НМЦ выигранных: ${wonSum?fmtMoney(wonSum)+" ₽":"—"}.`}));
+  const sb=$("#srcEff");if(sb){const g={};for(const l of LEADS){const n=srcName(l.source)||"Прочее";const r=g[n]=g[n]||{n,all:0,good:0,open:0,work:0,won:0};r.all++;if(l.fit>=40&&!l.mandatory)r.good++;if(l.dl!=null&&l.dl>=0)r.open++;if(["work","bid","won","lost"].includes(l.status))r.work++;if(l.status==="won")r.won++}
+    const rows2=Object.values(g).sort((a,b)=>b.good-a.good);
+    sb.replaceChildren(el("div",{class:"tablebox"},el("table",{style:"min-width:620px"},el("thead",{},el("tr",{},el("th",{text:"Источник"}),el("th",{class:"num",text:"Лидов"}),el("th",{class:"num",text:"Подходящих (fit от 40)"}),el("th",{class:"num",text:"Доля подходящих"}),el("th",{class:"num",text:"Приём идёт"}),el("th",{class:"num",text:"В работу"}),el("th",{class:"num",text:"Выиграно"}))),
+      el("tbody",{},...rows2.map(r=>el("tr",{style:"cursor:default"},el("td",{text:r.n}),el("td",{class:"num",text:r.all}),el("td",{class:"num",text:r.good}),el("td",{class:"num",text:Math.round(100*r.good/r.all)+"%"}),el("td",{class:"num",text:r.open}),el("td",{class:"num",text:r.work}),el("td",{class:"num",text:r.won})))))))}
+  const lb=$("#lossBox");if(lb){const lost=LEADS.filter(l=>l.status==="lost");const c={};for(const l of lost){const r=l.lossReason||"Причина не указана";c[r]=(c[r]||0)+1}
+    lb.replaceChildren(lost.length?el("div",{class:"tablebox"},el("table",{},el("thead",{},el("tr",{},el("th",{text:"Причина"}),el("th",{class:"num",text:"Проигрышей"}))),el("tbody",{},...Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([r,n])=>el("tr",{style:"cursor:default"},el("td",{text:r}),el("td",{class:"num",text:n})))))):el("p",{class:"muted",text:"Проигранных пока нет. Причину проигрыша можно указать на карточке лида со статусом «Проиграли»."}))}
+  const hb=$("#holdBox");if(hb){const H=S.hstats;const T=Object.entries(H?.terms||{});const groupsN=(S.holdings?.groups||[]).length;const byG={};for(const [q,v] of T){const g=byG[v.group]=byG[v.group]||{group:v.group,terms:0,rows:0,fresh:0,last:""};g.terms++;g.rows+=v.rows||0;g.fresh+=v.fresh||0;if((v.checkedAt||"")>g.last)g.last=v.checkedAt}
+    const leadsByG={};for(const l of LEADS){if(l.holding)leadsByG[l.holding]=(leadsByG[l.holding]||0)+1}
+    const rowsG=Object.values(byG).sort((a,b)=>b.fresh-a.fresh||b.rows-a.rows);
+    hb.replaceChildren(el("p",{style:"margin:0 0 8px",text:T.length?`Проверено элементов реестра: ${T.length}; групп: ${rowsG.length} из ${groupsN}. Найдено строк: ${rowsG.reduce((a,g)=>a+g.rows,0)}, новых лидов: ${rowsG.reduce((a,g)=>a+g.fresh,0)}.`:`В реестре ${groupsN} групп. Поиск по ним начнётся со следующего сбора.`}),
+      rowsG.length?el("div",{class:"tablebox"},el("table",{style:"min-width:600px"},el("thead",{},el("tr",{},el("th",{text:"Группа"}),el("th",{class:"num",text:"Проверено названий"}),el("th",{class:"num",text:"Строк в поиске"}),el("th",{class:"num",text:"Новых лидов"}),el("th",{class:"num",text:"Лидов группы в базе"}),el("th",{text:"Проверено"}))),
+        el("tbody",{},...rowsG.map(g=>el("tr",{style:"cursor:pointer",onclick:()=>{S.filters={q:"",hold:g.group,mand:false};$("#fHold").value=g.group;S.page=0;renderAll();switchTab("leads")}},el("td",{text:g.group}),el("td",{class:"num",text:g.terms}),el("td",{class:"num",text:g.rows}),el("td",{class:"num",text:g.fresh}),el("td",{class:"num",text:leadsByG[g.group]||0}),el("td",{text:fmtDate(g.last)})))))):null)}
+  const wb=$("#winBox");if(wb){const W=[...(S.winners||[])].sort((a,b)=>(b.wins||0)-(a.wins||0)).slice(0,30);
+    wb.replaceChildren(W.length?el("div",{class:"tablebox"},el("table",{style:"min-width:640px"},el("thead",{},el("tr",{},el("th",{text:"Победитель"}),el("th",{text:"ИНН"}),el("th",{class:"num",text:"Побед"}),el("th",{class:"num",text:"Сумма, ₽"}),el("th",{text:"Последняя"}),el("th",{text:"Примеры закупок"}))),
+      el("tbody",{},...W.map(w=>el("tr",{style:"cursor:default"},el("td",{text:w.name||"—"}),el("td",{style:"font-family:var(--mono)",text:w.inn||""}),el("td",{class:"num",text:w.wins||0}),el("td",{class:"num",text:fmtMoney(w.sum)}),el("td",{text:fmtDate(String(w.lastDate||"").slice(0,10))}),el("td",{class:"muted",style:"font-size:12px",text:(w.topics||[]).slice(0,3).join("; ")})))))):el("p",{class:"muted",text:"Пока пусто. Реестр победителей заполняет сбор через TenderGuru, если тариф даёт доступ к разделу «Победители закупок»."}))}
+  const pb=$("#prices");if(!pb)return;const by={};for(const l of LEADS){if(!l.price||l.mandatory)continue;for(const d of l.dirs){(by[d]=by[d]||[]).push(l.price)}}
+  const list=Object.entries(by).filter(([d,a])=>a.length>=5).sort((a,b)=>b[1].length-a[1].length);
+  pb.replaceChildren(el("div",{class:"tablebox"},el("table",{style:"min-width:640px"},el("thead",{},el("tr",{},el("th",{text:"Направление"}),el("th",{class:"num",text:"Лидов с ценой"}),el("th",{class:"num",text:"25%, ₽"}),el("th",{class:"num",text:"Медиана, ₽"}),el("th",{class:"num",text:"75%, ₽"}),el("th",{class:"num",text:"Максимум, ₽"}))),
+    el("tbody",{},...list.map(([d,a])=>el("tr",{style:"cursor:pointer",onclick:()=>{S.filters={dir:d,mand:false};$("#fDir").value=d;S.page=0;renderAll();switchTab("leads")}},el("td",{text:d}),el("td",{class:"num",text:a.length}),el("td",{class:"num",text:fmtMoney(Math.round(quant(a,.25)))}),el("td",{class:"num",text:fmtMoney(Math.round(quant(a,.5)))}),el("td",{class:"num",text:fmtMoney(Math.round(quant(a,.75)))}),el("td",{class:"num",text:fmtMoney(Math.max(...a))})))))));}
+$("#sampleBtn")?.addEventListener("click",()=>{const pool=LEADS.filter(l=>l.fit<40&&!l.mandatory);for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}S.filters={sample:new Set(pool.slice(0,50).map(l=>l.key)),mand:false};S.page=0;renderAll();switchTab("leads");toast("Показаны 50 случайных лидов с fit ниже 40")});
+
+/* organizations directory (orgdir) */
+const ROS_STATUS={verified:"Подтверждённые текущие связи",historical:"Исторические и выбывшие","procurement-only":"Только закупочные связи (без доказательства владения)","needs-proof":"Требуют подтверждения"};
+async function loadOrgDir(){if(S.orgDir||S.orgDirLoading||!S.db)return;S.orgDirLoading=true;const box=$("#orgPanel");if(box&&!S.orgSel)box.replaceChildren(el("p",{class:"muted",text:"Загружаю справочник…"}));
+  try{const meta=S.orgMeta||(await S.db.doc("orgdir/meta").get()).data();const P=meta.parts||{};const get=async(pfx,n)=>{const ds=await Promise.all(Array.from({length:n},(_,i)=>S.db.doc(`orgdir/${pfx}-${i+1}`).get()));return ds.flatMap(d=>d.exists?(d.data().rows||[]):[])};
+    const [orgs,hier,ros,routes,misc]=await Promise.all([get("orgs",P.orgs||0),get("hier",P.hier||0),get("rosneft",P.rosneft||0),get("routes",P.routes||0),S.db.doc("orgdir/misc").get()]);
+    const D={meta,orgs,hier,ros,routes,misc:misc.exists?misc.data():{},groups:new Map(),routesBy:new Map()};
+    const G=g=>{let x=D.groups.get(g);if(!x){x={name:g,hier:[],orgs:[]};D.groups.set(g,x)}return x};
+    for(const h of hier)if(h.g)G(h.g).hier.push(h);for(const o of orgs)if(o.g)G(o.g).orgs.push(o);
+    for(const r of routes){if(!D.routesBy.has(r.uid))D.routesBy.set(r.uid,[]);D.routesBy.get(r.uid).push(r)}
+    D.rosByUid=new Map(ros.map(r=>[r.universe_id,r]));S.orgDir=D}catch(e){console.warn(e);S.orgDirErr=String(e&&e.message||e)}
+  S.orgDirLoading=false;renderOrgs()}
+function leadsByClaimKey(){const m=new Map(),g=new Map();for(const l of LEADS){if(!l.claim)continue;if(l.claim.k)m.set(l.claim.k,(m.get(l.claim.k)||0)+1);g.set(l.claim.g,(g.get(l.claim.g)||0)+1)}return {byKey:m,byGroup:g}}
+function renderOrgs(){if($("#tab-orgs").hidden)return;const D=S.orgDir;const st=$("#orgStats");
+  if(!D){st.textContent=S.orgDirErr?("Не удалось загрузить справочник: "+S.orgDirErr):"";return}
+  const LC=leadsByClaimKey();const claimed=D.hier.filter(h=>h.lvl!=="group").length;const rv=D.ros.filter(r=>r.relation_status==="verified"&&r.entity_status==="current_confirmed").length;
+  st.textContent=`Организаций РФ: ${D.orgs.length} (с ИНН: ${D.orgs.filter(o=>o.inn).length}) · групп: ${D.groups.size} · заявленных связей: ${claimed} · Роснефть: подтверждённых текущих ${rv} из ${D.ros.length} · лидов, привязанных к группам справочника: ${LEADS.filter(l=>l.claim).length}`;
+  const q=(S.orgQ||"").trim().toLowerCase();
+  const groups=[...D.groups.values()].filter(g=>!q||g.name.toLowerCase().includes(q)).sort((a,b)=>(LC.byGroup.get(b.name)||0)-(LC.byGroup.get(a.name)||0)||(b.hier.length+b.orgs.length)-(a.hier.length+a.orgs.length));
+  $("#orgGroups").replaceChildren(...groups.slice(0,400).map(g=>el("div",{class:`org-g ${S.orgSel===g.name?"on":""}`,onclick:()=>{S.orgSel=g.name;renderOrgs()}},el("span",{text:g.name}),el("span",{class:"muted",style:"white-space:nowrap",text:`${LC.byGroup.get(g.name)?LC.byGroup.get(g.name)+" лид. · ":""}${Math.max(g.hier.length,g.orgs.length)}`}))));
+  const panel=$("#orgPanel");
+  if(q.length>=3&&!S.orgSel){const qd=q.replace(/\D/g,"");const hits=[];for(const h of D.hier){if(h.n.toLowerCase().includes(q)||(qd.length>=5&&(h.inn||"").includes(qd)))hits.push({n:h.n,inn:h.inn,g:h.g,what:`${h.lvl} · заявлено по таблице`})}for(const o of D.orgs){if(o.n.toLowerCase().includes(q)||(qd.length>=5&&(o.inn||"").includes(qd)))hits.push({n:o.n,inn:o.inn,g:o.g,what:"справочник"})}
+    panel.replaceChildren(el("h3",{style:"margin-top:0",text:`Найдено: ${hits.length}`}),...hits.slice(0,80).map(h=>el("div",{class:"org-node",style:"margin:6px 0"},el("b",{text:h.n}),el("span",{class:"meta",text:` ${h.inn?"ИНН "+h.inn+" · ":""}${h.what}${h.g?" · группа ":""}`}),h.g?el("a",{href:"#",onclick:e=>{e.preventDefault();S.orgSel=h.g;renderOrgs()}},h.g):null)));return}
+  const g=D.groups.get(S.orgSel);if(!g){panel.replaceChildren(el("p",{class:"muted",text:"Выберите группу слева или найдите организацию (от 3 символов)."}));return}
+  const norm=x=>normOrg(x)||String(x||"").toLowerCase();const byName=new Map();for(const h of g.hier)byName.set(norm(h.n),h);
+  const kids=new Map();const roots=[];const orphans=new Map();
+  for(const h of g.hier){if(h.lvl==="group"){roots.push(h);continue}const pk=norm(h.p);if(byName.has(pk)&&pk!==norm(h.n)){if(!kids.has(pk))kids.set(pk,[]);kids.get(pk).push(h)}else{if(!orphans.has(h.p||"—"))orphans.set(h.p||"—",[]);orphans.get(h.p||"—").push(h)}}
+  const node=h=>{const lc=LC.byKey.get(h.k)||0;const ch=kids.get(norm(h.n))||[];return el("li",{},el("div",{class:"org-node",title:`Источник: ${h.src}${h.prov?"; "+h.prov:""}${h.ms?"; сопоставление: "+h.ms:""}`},el("b",{text:h.n}),el("span",{class:"meta",text:` · ${h.lvl==="group"?"головная":h.lvl}${h.inn?" · ИНН "+h.inn:""}${h.share?" · доля "+h.share:""}${h.reg?" · "+h.reg:""}${h.trade?" · торговая":""}`}),h.lvl!=="group"?el("span",{class:"chip claim c-claimed",style:"margin-left:6px",text:"заявлено"}):null,lc?el("span",{class:"chip",style:"margin-left:6px",text:`${lc} лид.`}):null,h.site?el("a",{href:/^https?:/.test(h.site)?h.site:"https://"+h.site,target:"_blank",rel:"noopener",style:"margin-left:6px;font-size:12px"},"сайт"):null),ch.length?el("ul",{class:"org-tree"},...ch.map(node)):null)};
+  const leadsN=LC.byGroup.get(g.name)||0;
+  const parts=[el("h3",{style:"margin-top:0",text:g.name}),el("p",{class:"muted",text:`В таблице дочек и внучек: ${g.hier.length} строк · в справочнике организаций: ${g.orgs.length}. Связи из таблицы — заявленные, не доказанное владение.`}),
+    leadsN?el("button",{class:"btn primary",type:"button",onclick:()=>{S.filters={claimG:g.name,mand:false};S.page=0;renderAll();switchTab("leads")}},`Показать ${leadsN} лид. этой группы`):null];
+  if(roots.length||kids.size){parts.push(el("h4",{text:"Структура по исходной таблице"}),el("ul",{class:"org-tree",style:"border-left:none;padding-left:0"},...(roots.length?roots:[]).map(node)))}
+  if(orphans.size){parts.push(el("h4",{text:"Строки, родитель которых не найден среди строк таблицы"}));for(const [p,rows] of orphans)parts.push(el("div",{class:"muted",style:"margin-top:6px",text:`Заявленный родитель: ${p}`}),el("ul",{class:"org-tree"},...rows.map(node)))}
+  if(/роснефт/i.test(g.name)&&D.ros.length){parts.push(el("h4",{text:"Проработанная структура Роснефти"}),el("p",{class:"muted",text:"Тип и статус связи — из исходного проекта. «Подсказка о родителе» не всегда юридически доказанный прямой родитель."}));
+    const buckets={verified:[],historical:[],"procurement-only":[],"needs-proof":[]};for(const r of D.ros){let b=r.relation_status;if(b==="verified"&&r.entity_status!=="current_confirmed")b="historical";(buckets[b]||(buckets[b]=[])).push(r)}
+    for(const [b,rows] of Object.entries(buckets)){if(!rows.length)continue;const byT={};rows.forEach(r=>{(byT[r.relation_type||"—"]=byT[r.relation_type||"—"]||[]).push(r)});
+      const det=el("details",{open:b==="verified"?"":null},el("summary",{text:`${ROS_STATUS[b]||b}: ${rows.length}`}));
+      for(const [t,rs] of Object.entries(byT).sort((a,b)=>b[1].length-a[1].length)){det.append(el("div",{class:"muted",style:"margin:8px 0 2px",text:`${t} · ${rs.length}`}),el("ul",{class:"org-tree"},...rs.map(r=>{const url=r.relation_source_url||r.status_source_url||r.source_url;return el("li",{},el("div",{class:"org-node",title:[r.relation_evidence,r.status_evidence,r.evidence].filter(Boolean).join("\n")},el("b",{text:r.company_name}),el("span",{class:"meta",text:`${r.parent_hint?" · подсказка о родителе: "+r.parent_hint:""}${r.cluster_name?" · "+r.cluster_name:""} · ${r.entity_status||""}`}),url?el("a",{href:url,target:"_blank",rel:"noopener",style:"margin-left:6px;font-size:12px"},"доказательство"):null))})))}
+      parts.push(det)}}
+  const extra=g.orgs.filter(o=>!g.hier.some(h=>(h.inn&&h.inn===o.inn)||norm(h.n)===norm(o.n)));
+  if(extra.length){parts.push(el("details",{},el("summary",{text:`Ещё в справочнике организаций этой группы: ${extra.length}`}),el("ul",{class:"org-tree"},...extra.slice(0,300).map(o=>el("li",{},el("div",{class:"org-node"},el("b",{text:o.n}),el("span",{class:"meta",text:`${o.inn?" · ИНН "+o.inn:""}${o.ind?" · "+o.ind:""}${o.t?" · уровень "+o.t:""}`}),o.url?el("a",{href:o.url,target:"_blank",rel:"noopener",style:"margin-left:6px;font-size:12px"},"закупки"):null))))))}
+  const rts=g.orgs.flatMap(o=>(D.routesBy.get(o.i)||[]).filter(r=>/procurement|plan|tektorg|registry/.test(r.type)).map(r=>({...r,org:o.n})));
+  if(rts.length)parts.push(el("details",{},el("summary",{text:`Закупочные маршруты из справочника: ${rts.length} (в сбор не включены)`}),el("ul",{class:"org-tree"},...rts.map(r=>el("li",{},el("div",{class:"org-node"},el("a",{href:r.url,target:"_blank",rel:"noopener",text:r.title||r.url}),el("span",{class:"meta",text:` · ${r.org} · ${r.type} · статус в исходном проекте: ${r.status}`})))))));
+  const sp=(D.misc.supplier_portals||[]).filter(p=>p.group_name===g.name);const ol=(D.misc.organizer_links||[]).filter(x=>g.orgs.some(o=>o.i===x.buyer_universe_id));
+  if(sp.length||ol.length)parts.push(el("h4",{text:"Порталы поставщика и организаторы закупок"}),...sp.map(p=>el("div",{class:"org-node"},el("a",{href:p.url,target:"_blank",rel:"noopener",text:p.title||p.url}),el("span",{class:"meta",text:` · доступ: ${p.access_mode||"—"} · ${p.status||""}`}))),...ol.map(x=>el("div",{class:"org-node"},el("a",{href:x.organizer_url,target:"_blank",rel:"noopener",text:`${x.platform}: ${x.organizer_name}`}),el("span",{class:"meta",text:` · организатор закупок, не владение · ${x.status||""}`}))));
+  panel.replaceChildren(...parts.filter(Boolean))}
+$("#orgQ")?.addEventListener("input",e=>{S.orgQ=e.target.value;S.orgSel=null;renderOrgs()});
+const CAT_STATUS={candidate:"кандидат","next-wave":"следующая волна (P1)",queued:"в проверке","verified-origin":"проверен в исходном проекте",paid:"платный доступ",duplicate:"дубль строки"};
+const VER_STATUS={"card-ok":"карточка проверена","list-only":"есть список, карточки нет",registration:"нужна регистрация",blocked:"не пускает",failed:"не ответил"};
+function renderCatalog(){const box=$("#catBox");if(!box)return;const rows=(S.catalog||[]).filter(r=>!r.inactive);const V=S.catVerify?.results||{};const f=$("#catF")?.value||"";
+  const list=rows.filter(r=>!f||(f==="queued"&&(r.localStatus==="queued"||V[r.source_key]))||(f==="new"&&!r.overlap)||(f==="overlap"&&r.overlap)||(f==="high"&&r.relevance==="Высокая")||(f==="p0"&&r.registry?.priority==="P0")||(f==="wave"&&r.localStatus==="next-wave"));
+  box.replaceChildren(el("p",{class:"muted",style:"margin:0 0 6px",text:`Показано ${list.length} из ${rows.length}. Проверено карточек: ${Object.values(V).filter(v=>v.status==="card-ok").length}${S.catVerify?.checkedAt?" (последняя проверка "+fmtDate(S.catVerify.checkedAt)+")":""}.`}),
+    el("div",{class:"tablebox"},el("table",{style:"min-width:760px"},el("thead",{},el("tr",{},el("th",{text:"Площадка"}),el("th",{text:"Раздел / регион"}),el("th",{text:"Очередь"}),el("th",{text:"Релевантность"}),el("th",{text:"Доступ (заявлено)"}),el("th",{text:"Статус"}),el("th",{text:"Сбор"}))),
+      el("tbody",{},...list.map(r=>{const v=V[r.source_key];return el("tr",{style:"cursor:default"},el("td",{},el("a",{href:r.source_url,target:"_blank",rel:"noopener",text:r.source_name}),el("div",{class:"muted",style:"font-size:11px",text:r.source_key})),el("td",{text:[r.procurement_section,r.region_scope].filter(Boolean).join(" · ")}),el("td",{title:r.registry?[r.registry.regRoute,r.registry.regApi,r.registry.regStatus].filter(Boolean).join("\n"):"",text:r.registry?.priority||"—"}),el("td",{text:r.relevance||"—"}),el("td",{title:r.automation_claim?("автоматизация: "+r.automation_claim):"",text:r.access_claim||"—"}),
+        el("td",{},el("div",{text:v?VER_STATUS[v.status]||v.status:CAT_STATUS[r.localStatus]||r.localStatus||"кандидат"}),v&&v.cardUrl?el("a",{href:v.cardUrl,target:"_blank",rel:"noopener",style:"font-size:12px",text:`${v.cardTitle?v.cardTitle.slice(0,60):"карточка"}${v.cardDate?" · "+v.cardDate:""}`}):null,v?.note?el("div",{class:"muted",style:"font-size:11px",text:v.note}):r.localNote?el("div",{class:"muted",style:"font-size:11px",text:r.localNote}):null),
+        el("td",{text:r.overlap==="same-section"?"уже в сборе":r.overlap==="same-host"?"тот же сайт, другой раздел":"—"}))})))))}
+$("#catF")?.addEventListener("change",renderCatalog);
+function renderProviders(){const b=$("#provBox");if(!b)return;const P=S.providers?.providers||[];if(!P.length){b.replaceChildren();return}const cols=Object.keys(P[0]);
+  b.replaceChildren(el("div",{class:"tablebox"},el("table",{style:"min-width:760px"},el("thead",{},el("tr",{},...cols.map(c=>el("th",{text:c})))),el("tbody",{},...P.map(p=>el("tr",{style:"cursor:default"},...cols.map(c=>{const v=String(p[c]??"");return el("td",{style:"font-size:12.5px"},/^https?:\/\//.test(v)?el("a",{href:v,target:"_blank",rel:"noopener",text:v.replace(/^https?:\/\//,"").slice(0,40)}):v)})))))))}
+
+function renderAll(){buildAliases();recompute();fillSelects();renderKPIs();renderLeads();renderAccounts();renderCorp();renderSubject();renderSources();renderCatalog();renderOrgs();renderMethod();renderFunnel();renderSets();renderRun();renderB2B();if(S.openKey)renderDrawer()}
+let raf=0;const schedule=()=>{if(raf)return;raf=requestAnimationFrame(()=>{raf=0;renderAll()})};
+
+/* ---------- boot ---------- */
+renderAll();
+(async function boot(){
+  const claude=window.claude;
+  if(!claude||!claude.use){$("#metaNote").textContent="База недоступна в этом просмотре";$("#dbNotice").hidden=false;$("#dbNotice").textContent="Данные монитора хранятся в общей базе сайта. Откройте страницу в Claude, войдя в аккаунт, чтобы увидеть лиды.";return}
+  const [db,user,downloads]=await Promise.all([claude.use("db"),claude.use("user"),claude.use("downloads")]);
+  S.user=user;S.downloads=downloads;if(downloads)$("#csvBtn").hidden=false;
+  if(!db){$("#metaNote").textContent="База недоступна";$("#dbNotice").hidden=false;$("#dbNotice").textContent="Этот просмотр не получил доступ к общей базе сайта. Откройте ссылку в Claude, войдя в аккаунт организации.";return}
+  S.db=db;
+  if(user){try{S.uid=await user.id();S.canEdit=await user.canEdit();S.canWrite=await user.can("data.write")}catch(e){}}
+  const err=e=>{if(e&&e.code==="revoked"){$("#dbNotice").hidden=false;$("#dbNotice").textContent="Доступ к базе отозван для этого просмотра."}};
+  db.collection("leadsets").onSnapshot(s=>{S.sets=s.docs.filter(d=>d.exists).map(d=>({id:d.id,data:d.data()}));schedule()},err);
+  loadOrgIndex(db);
+  db.doc("orgdir/catalog").onSnapshot(d=>{S.catalog=d.exists?d.data().rows||[]:[];renderCatalog()},()=>{});
+  db.collection("ownership").onSnapshot(s=>{const m={};s.docs.forEach(d=>{m[d.id]=d.data()});S.own=m;schedule()},()=>{});
+  db.doc("meta/holdings-cu").onSnapshot(d=>{S.hcu=d.exists?d.data().groups||{}:{};schedule()},()=>{});
+  db.doc("meta/holdings-routes").onSnapshot(d=>{S.hroutes=d.exists?d.data().routes||{}:{};schedule()},()=>{});
+  db.collection("groupprofiles").onSnapshot(s=>{const m={};s.docs.forEach(d=>{m[d.id]=d.data()});S.gprof=m;schedule()},()=>{});
+  db.doc("orgdir/group-candidates").onSnapshot(d=>{S.gcand=d.exists?d.data():null;schedule()},()=>{});
+  db.doc("orgdir/providers").onSnapshot(d=>{S.providers=d.exists?d.data():null;renderProviders()},()=>{});
+  db.doc("orgdir/catalog-verify").onSnapshot(d=>{S.catVerify=d.exists?d.data():null;renderCatalog()},()=>{});
+  db.collection("customers").onSnapshot(s=>{const m={};s.docs.forEach(d=>{m[d.id]=d.data()});S.customers=m;schedule()},()=>{});
+  db.doc("meta/holdings-stats").onSnapshot(d=>{S.hstats=d.exists?d.data():null;schedule()},()=>{});
+  db.collection("winners").onSnapshot(s=>{S.winners=s.docs.map(d=>d.data());schedule()},()=>{});
+  db.collection("state").onSnapshot(s=>{S.state=Object.fromEntries(s.docs.map(d=>[d.id,d.data()]));schedule()},err);
+  db.collection("feedback").onSnapshot(s=>{S.feedback=s.docs.map(d=>d.data());schedule()},err);
+  db.collection("sources").onSnapshot(s=>{S.sources=s.docs.map(d=>d.data());schedule()},err);
+  db.doc("config/fit").onSnapshot(d=>{S.config=d.exists?d.data():null;schedule()},err);
+  db.doc("meta/holdings").onSnapshot(d=>{S.holdings=d.exists?d.data():null;schedule()},err);
+  db.doc("meta/taxonomy").onSnapshot(d=>{S.taxonomy=d.exists?d.data():null;schedule()},err);
+  db.doc("config/collector").onSnapshot(d=>{S.collector=d.exists?d.data():null;renderRun()},err);
+  db.doc("progress/current").onSnapshot(d=>{S.progress=d.exists?d.data():null;renderRun()},err);
+  db.collection("runs").onSnapshot(s=>{S.runs=s.docs.map(d=>d.data()).sort((a,b)=>String(b.startedAt||"").localeCompare(String(a.startedAt||"")));renderRun()},err);
+  db.doc("config/b2b-market").onSnapshot(d=>{S.b2bCfg=d.exists?d.data():null;renderB2B()},()=>{});
+  db.doc("b2b/progress").onSnapshot(d=>{S.b2bProgress=d.exists?d.data():null;renderB2B()},()=>{});
+  db.doc("b2b/state").onSnapshot(d=>{S.b2bState=d.exists?d.data():null;renderB2B()},()=>{});
+  db.collection("b2b-runs").onSnapshot(s=>{S.b2bRuns=s.docs.map(d=>d.data()).sort((a,b)=>String(b.startedAt||"").localeCompare(String(a.startedAt||"")));renderB2B()},()=>{});
+  let owner=false;try{owner=user?await user.isOwner():false}catch(e){}
+  if(owner){S.owner=true;$("#refreshBtn").hidden=false;$("#b2bBtn").hidden=false;renderRun();renderB2B();S.mcp=await claude.use("mcp");renderRun();renderB2B()}
+})();
+})();
+</script>
