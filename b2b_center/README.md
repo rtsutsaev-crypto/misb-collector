@@ -51,13 +51,15 @@ cd b2b_center && python3 -m unittest -v test_b2b_core
 Отдельной кнопки и отдельного запуска больше нет: B2B-Center проверяется при каждом нажатии «Обновить»
 (задание `trig_01ALPRkTNsF4km5yA4s5FAP2`). Отдельное задание `trig_01TmzSopdvndQ6EGPDQb8eza` выключено, не удалено.
 
-В плане `config/sources-plan` (версия 4.6) три источника B2B-Center:
+В плане `config/sources-plan` (версия 4.8) три источника B2B-Center; работает один:
 
-| key | Что читает | Журнал `sources/…` |
+| key | Что читает | Итог первого запуска (run-20260926-1834) |
 |---|---|---|
-| `b2b` | подборки `/search-tender/tendery-obuchenie/` и `/tendery-konsultatsionnye-uslugi/` | `b2b-landing` |
-| `b2b-market` | лента `/market/` (вкладка по умолчанию — действующие процедуры), листание `?from=N`, до 5 страниц | `b2b-search` |
-| `b2b-themes` | поиск соседних подборок `/search-tender/tendery-…/` по темам МИСБ, по одной странице | `b2b-landing` |
+| `b2b` | подборки `/search-tender/tendery-obuchenie/` и `/tendery-konsultatsionnye-uslugi/` → журнал `sources/b2b-landing` | работает: 19 строк, новых 0 |
+| `b2b-market` | лента `/market/` → журнал `sources/b2b-search` | выключен (skip): первая страница из облака — только объявления о продаже, `?from=N` — 403 |
+| `b2b-themes` | поиск соседних подборок `/search-tender/tendery-…/` | выключен (skip): ссылок на другие подборки нет, `/search-tender/` — 404 |
+
+Выключенные источники хранят прежние `type`/`planned` в полях `typeWas`/`plannedWas`. Новые подборки можно добавить адресами в `urls` источника `b2b`.
 
 robots.txt (проверено 26.09 модулем `b2b_core.robots_allows` для агента Claude-User): `/market/`, `/market/?from=N`,
 `/search-tender/…` и карточки `/market/…/tender-…/` разрешены; `/market/?show=`, `/market/?all=`, `/search/…` запрещены.
