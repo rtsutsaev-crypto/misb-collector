@@ -58,6 +58,9 @@ def lead_id(t: dict, url: str) -> str:
     m = re.search(r"b2b-center\.ru/.*tender-(\d+)", url)
     if m:
         return m.group(1)
+    m = re.search(r"energybase\.ru/tender(?:-outdated)?/([0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})", url)
+    if m:
+        return m.group(1)  # the collector's energybase source uses the bare card id too
     m = re.search(r"energybase\.ru/tender(?:-outdated)?/([\w-]{6,})", url)
     if m:
         return "energybase-" + m.group(1)

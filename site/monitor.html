@@ -563,7 +563,7 @@ function renderLeads(){const list=sorted(filtered());const pages=Math.max(1,Math
 
 function altLinks(l){const out=[];const ids=[l.eis,l.id].filter(Boolean);for(const n of ids){if(/^0\d{18}$/.test(n)){out.push(["ЕИС по номеру","https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString="+n]);break}if(/^3\d{10}$/.test(n)){out.push(["ЕИС (223-ФЗ) по номеру","https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString="+n]);break}}
   out.push(["Поиск в Яндексе","https://yandex.ru/search/?text="+encodeURIComponent(`${l.id||""} ${(l.title||"").slice(0,90)} ${l.customer||""}`.trim())]);return out}
-function srcName(s){if(!s)return "";if(s==="import"||s.startsWith("import"))return "Импорт";if(s.startsWith("synapse"))return "СИНАПС"+(s.split(":")[1]?` · ${s.split(":")[1]}`:"");if(s.startsWith("rostender"))return "РосТендер";if(s.startsWith("b2b"))return "B2B-Center";if(s==="bicotender")return "Бикотендер";if(s==="gosplan:group")return "ЕИС · ГосПлан (профиль группы)";if(s.startsWith("gosplan"))return "ЕИС · ГосПлан"+(s.includes("223")?" (223-ФЗ)":" (44-ФЗ)");if(s==="komtender")return "КомТендер";if(s.startsWith("mtrf"))return "Монитор тендеров РФ"+(s.slice(5)?` · ${s.slice(5)}`:"");return s}
+function srcName(s){if(!s)return "";if(s==="import"||s.startsWith("import"))return "Импорт";if(s.startsWith("synapse"))return "СИНАПС"+(s.split(":")[1]?` · ${s.split(":")[1]}`:"");if(s.startsWith("rostender"))return "РосТендер";if(s.startsWith("b2b"))return "B2B-Center";if(s==="bicotender")return "Бикотендер";if(s==="gosplan:group")return "ЕИС · ГосПлан (профиль группы)";if(s.startsWith("gosplan"))return "ЕИС · ГосПлан"+(s.includes("223")?" (223-ФЗ)":" (44-ФЗ)");if(s==="komtender")return "КомТендер";if(s.startsWith("mtrf"))return "Монитор тендеров РФ"+(s.slice(5)?` · ${s.slice(5)}`:"");if(s.startsWith("energybase"))return "Energybase"+(s.split(":")[1]?` · ${s.split(":")[1]}`:"");return s}
 
 function fillSelects(){const cat=$("#fCat");if(cat.options.length===1)CATS.forEach(c=>cat.append(el("option",{value:c,text:c})));
   const fd=$("#fDir");const dcur=fd.value;const dn=[...Object.keys(S.config?.directions||{}),"Прочее обучение"];const dc={};LEADS.forEach(l=>l.dirs.forEach(d=>dc[d]=(dc[d]||0)+1));
@@ -710,6 +710,7 @@ function mtrfId(t,url){const ext=String(t.external_id||"");let m;
   const num=ext.replace(/^[\w-]+:/,"");if(/^(0\d{18}|3\d{10})$/.test(num))return num;
   if((m=/regNumber=(\d{11,19})/.exec(url)))return m[1];
   if((m=/b2b-center\.ru\/.*tender-(\d+)/.exec(url)))return m[1];
+  if((m=/energybase\.ru\/tender(?:-outdated)?\/([0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})/.exec(url)))return m[1];
   if((m=/energybase\.ru\/tender(?:-outdated)?\/([\w-]{6,})/.exec(url)))return "energybase-"+m[1];
   return "mtrf-"+t.id}
 function mtrfLeads(X){const today=new Date().toISOString().slice(0,10);const ex=d10(X.exported_at||X.generated_at);const exS=ex?ex.split("-").reverse().join("."):"без даты";const out=[];const skip={};

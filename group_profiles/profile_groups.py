@@ -96,7 +96,8 @@ EXTRA_NEG = ["детей", "детям", "детьми", "детях", "детс
 WEAK_FORMS = {"тестирование", "аттестация", "модерация", "экспертная оценка", "методическое сопровождение",
               "информационно-консультационные услуги", "корпоративная программа", "модульная программа",
               "executive", "олимпиада", "практикум", "интенсив", "кадровый резерв", "деловая программа",
-              "образовательн", "корпоративн мероприяти", "оценк персонал", "развити персонал"}
+              "образовательн", "корпоративн мероприяти", "оценк персонал", "развити персонал",
+              "дпо"}  # «АНО ДПО …» is often the customer's own name
 
 
 class GroupMatcher:
@@ -115,9 +116,16 @@ class GroupMatcher:
 
     @staticmethod
     def _stem(w):
-        # Shorter cut than b2b_core._stem: "продажи" must not become "прод" (= "продукция").
+        """Drop up to two ending vowels ("обучение" -> "обучен", "экология" -> "эколог");
+        a word ending in a consonant loses one letter at most ("видеокурс" -> "видеокур",
+        so it does not match "видеокамеры"; "продажи" -> "продаж", not "прод")."""
         n = len(w)
-        return w if n <= 5 else w[:5] if n == 6 else w[:max(5, n - 3)]
+        if n <= 5:
+            return w
+        s = w
+        while len(s) > 4 and n - len(s) < 2 and s[-1] in "аеёиоуыэюяйь":
+            s = s[:-1]
+        return s if len(s) < n else w[:max(5, n - 1)]
 
     @classmethod
     def _parts(cls, phrase):
