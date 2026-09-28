@@ -500,14 +500,27 @@ function recompute(){
 }
 
 /* ---------- rendering ---------- */
+const DEFAULT_FILTERS={fit:"40",mand:true};
+function syncFilterInputs(){const f=S.filters;const set=(id,v)=>{const e=$(id);if(e)e.value=v||""};set("#q",f.q);set("#fCat",f.cat);set("#fDir",f.dir);set("#fForm",f.form);set("#fOpen",f.open);set("#fFit",f.fit);set("#fLaw",f.law);set("#fHold",f.hold);set("#fStatus",f.status);set("#fFlag",f.flag);if($("#fCust"))$("#fCust").checked=!!f.cust;if($("#fMand"))$("#fMand").checked=f.mand!==false}
+function normF(o){const r={};for(const [k,v] of Object.entries(o||{})){if(v===""||v===undefined||v===null)continue;if(v===false&&k!=="mand")continue;if(k==="sample")continue;r[k]=v}if(r.mand===undefined)r.mand=true;return JSON.stringify(Object.keys(r).sort().map(k=>[k,r[k]]))}
+function samePreset(p){return normF(S.filters)===normF(p)}
+function applyPreset(p){S.filters=samePreset(p)?{...DEFAULT_FILTERS}:{...p};syncFilterInputs();S.page=0;switchTab("leads");renderAll()}
 function renderKPIs(){const open=LEADS.filter(l=>l.dl!=null&&l.dl>=0).length;const hi=LEADS.filter(l=>l.fit>=65).length;const mid=LEADS.filter(l=>l.fit>=40).length;const named=LEADS.filter(l=>l.customer).length;const inH=LEADS.filter(l=>l.holding).length;const srcOk=S.sources.filter(s=>s.status==="ok").length;
-  const k=(b,s)=>el("div",{class:"kpi"},el("b",{text:b}),el("span",{text:s}));
+  const tile=(n,label,preset,title)=>{const on=preset&&samePreset(preset);return el("button",{class:`kpi alert ${on?"on":""}`,type:"button",title:title||"",onclick:()=>preset?applyPreset(preset):null},el("b",{text:n}),el("span",{text:`${label}${preset?(on?" · показаны":" · показать"):""}`}))};
   const fresh=LEAST_VISIT_OK?LEADS.filter(l=>String(l.collectedAt||"")>String(LAST_VISIT||"")).length:0;
-  const hot=LEADS.filter(l=>(l.status==="work"||l.status==="bid")&&l.dl!=null&&l.dl>=0&&l.dl<=3);
-  const alert=(cls,txt,key)=>{const b=el("button",{class:`kpi alert ${cls} ${S.filters[key]?"on":""}`,type:"button",onclick:()=>{S.filters[key]=!S.filters[key];if(S.filters[key]){S.filters[key==="hot"?"fresh":"hot"]=false;if(key==="hot"){S.filters.status="";S.filters.open="";S.filters.fit="";S.filters.mand=false}else{S.filters.fit="";S.filters.mand=false}}S.page=0;renderAll()}});b.append(el("b",{text:txt[0]}),el("span",{text:txt[1]}));return b};
-  const top=LEADS.filter(l=>l.fit>=75&&l.dl!=null&&l.dl>=0&&!l.mandatory).length;const topOn=S.filters.fit==="75"&&S.filters.open==="open";
-  const topBtn=el("button",{class:`kpi alert top ${topOn?"on":""}`,type:"button",title:"Лиды с fit от 75 и открытым приёмом заявок (без обязательного обучения)",onclick:()=>{if(topOn){S.filters.fit="40";S.filters.open=""}else{S.filters.fit="75";S.filters.open="open";S.filters.mand=true;S.filters.fresh=false;S.filters.hot=false}$("#fFit").value=S.filters.fit;$("#fOpen").value=S.filters.open;$("#fMand").checked=!!S.filters.mand;S.page=0;switchTab("leads");renderAll()}},el("b",{text:top}),el("span",{text:`с fit от 75 и приём заявок идёт${topOn?" · показаны":" · показать"}`}));
-  $("#kpis").replaceChildren(topBtn,k(LEADS.length,"лидов в базе"),k(mid,"с fit от 40"),k(hi,"с fit от 65"),k(open,"приём заявок идёт"),k(inH,`в холдингах реестра · заказчик известен у ${named}`),k(`${srcOk} из ${S.sources.length}`,"источников работает"),fresh?alert("fresh",[fresh,`новых с вашего прошлого визита${S.filters.fresh?" · показаны":" · показать"}`],"fresh"):null,hot.length?alert("hot",[hot.length,`горят сроки: до 3 дней по лидам в работе${S.filters.hot?" · показаны":" · показать"}`],"hot"):null);
+  const hot=LEADS.filter(l=>(l.status==="work"||l.status==="bid")&&l.dl!=null&&l.dl>=0&&l.dl<=3).length;
+  const top=LEADS.filter(l=>l.fit>=75&&l.dl!=null&&l.dl>=0&&!l.mandatory).length;
+  const topT=tile(top,"с fit от 75 и приём заявок идёт",{fit:"75",open:"open",mand:true},"Лиды с fit от 75 и открытым приёмом заявок (без обязательного обучения)");topT.classList.add("top");
+  const srcT=el("button",{class:"kpi alert",type:"button",title:"Открыть вкладку «Источники»",onclick:()=>switchTab("sources")},el("b",{text:`${srcOk} из ${S.sources.length}`}),el("span",{text:"источников работает · открыть"}));
+  $("#kpis").replaceChildren(topT,
+    tile(LEADS.length,"лидов в базе",{fit:"",mand:false},"Все лиды без фильтров, включая обязательное обучение"),
+    tile(mid,"с fit от 40",{fit:"40",mand:false}),
+    tile(hi,"с fit от 65",{fit:"65",mand:false}),
+    tile(open,"приём заявок идёт",{fit:"",open:"open",mand:false}),
+    tile(inH,`в холдингах реестра · заказчик известен у ${named}`,{fit:"",hold:"__any",mand:false},"Лиды, заказчик которых относится к группе из реестра"),
+    srcT,
+    fresh?tile(fresh,"новых с вашего прошлого визита",{fit:"",fresh:true,mand:false}):null,
+    hot?tile(hot,"горят сроки: до 3 дней по лидам в работе",{fit:"",hot:true,mand:false}):null);
   const last=S.sets.map(s=>s.data.collectedAt||s.data.importedAt||"").sort().pop();$("#metaNote").textContent=last?`Последнее пополнение: ${fmtDate(String(last).slice(0,10))}`:"База пуста";}
 
 function filtered(){const f=S.filters;const q=(f.q||"").trim().toLowerCase();return LEADS.filter(l=>{
@@ -617,18 +630,28 @@ function cuBlock(x,title){if(!x)return null;const ok=/^Подтвержд/.test(
     x.proc?el("div",{},el("b",{text:"Закупки: "}),lk(x.proc),el("span",{class:"muted",text:` · ${x.procType||""} · ${x.procStatus||""}`})):null,
     x.site?el("div",{},el("span",{class:"muted",text:"Сайт группы: "}),lk(x.site)):null,
     ...(x.otherCenters||[]).map(o=>el("div",{},el("span",{text:"Учебный центр: "}),lk(o.site,o.name),el("span",{class:"muted",text:` · ${o.unit} · ${o.limit||""}`}))))}
+const PTYPE={purchaseNotice:"закупка (способ по положению)",purchaseNoticeEP:"единственный поставщик",purchaseNoticeZKESMBO:"запрос котировок, МСП",purchaseNoticeZPESMBO:"запрос предложений, МСП",purchaseNoticeKESMBO:"конкурс, МСП",purchaseNoticeAESMBO:"аукцион, МСП",purchaseNoticeAE:"аукцион",purchaseNoticeAE94:"аукцион",purchaseNoticeOA:"открытый аукцион",purchaseNoticeOK:"открытый конкурс",purchaseNoticeZK:"запрос котировок",purchaseNoticeZP:"запрос предложений",purchaseNoticeIS:"иной способ",epNotificationEF2020:"электронный аукцион",epNotificationEOK2020:"электронный конкурс",epNotificationEZK2020:"электронный запрос котировок",epNotificationEZP2020:"электронный запрос предложений"};
+function gprofBlock(P){const fs=12.5;const pl=Object.entries(P.platforms||{}).filter(([k])=>k&&k!=="—").sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`${PTYPE[k]||k} — ${v}`).join("; ");
+  const M=P.members||null;const scope=M?`вся группа: ${P.companies} комп.`:"головная компания";
+  const exLine=x=>el("div",{},el("a",{href:x.url,target:"_blank",rel:"noopener",text:`${x.title||x.id}`.slice(0,110)}),el("span",{class:"muted",text:` · ${[x.company&&M?x.company:"",x.law,x.date?fmtDate(x.date):"",x.deadline&&x.deadline>=new Date().toISOString().slice(0,10)?"приём до "+fmtDate(x.deadline):""].filter(Boolean).join(" · ")}`}));
+  const box=el("div",{style:`font-size:${fs}px;margin-top:6px`},el("b",{text:`Где закупает (ЕИС за год, ${scope}): `}),
+    el("span",{text:`${P.total??0} закупок${P.total223!=null?` (223-ФЗ: ${P.total223}, 44-ФЗ: ${P.total44??0})`:""}${M?`, закупают ${P.withPurchases} из ${P.companies} компаний`:""}${pl?"; способы: "+pl:""}. По темам МИСБ: ${P.relevant??0}. Проверено ${fmtDate(P.checkedAt)}.`}),
+    P.note?el("div",{class:"muted",text:P.note}):null,...(P.examples||[]).slice(0,5).map(exLine));
+  if(M&&M.length){const buy=M.filter(m=>m.total).sort((a,b)=>(b.relevant-a.relevant)||(b.total-a.total));const none=M.filter(m=>!m.total);
+    const row=m=>el("div",{},el("span",{text:m.name||("ИНН "+m.inn)}),el("span",{class:"muted",text:` · ${m.level}${m.parent&&m.level!=="головная"?" ← "+m.parent:""} · ИНН ${m.inn} · `}),el("span",{text:m.total?`${m.total} закуп.${m.t44?` (44-ФЗ: ${m.t44})`:""}${m.relevant?`, по темам МИСБ: ${m.relevant}`:""}`:"закупок нет"}),m.note?el("span",{class:"muted",text:` · ${m.note}`}):null,el("a",{href:"https://zakupki.gov.ru/epz/organization/search/results.html?searchString="+m.inn,target:"_blank",rel:"noopener",style:"margin-left:6px"},"ЕИС"));
+    box.append(el("details",{style:"margin-top:4px"},el("summary",{text:`Компании группы с закупками в ЕИС: ${buy.length} из ${M.length}`}),...buy.map(row),
+      none.length?el("details",{style:"margin-top:4px"},el("summary",{class:"muted",text:`Без закупок в ЕИС за год: ${none.length}`}),...none.map(row)):null))}
+  return box}
 function groupExtra(g){const parts=[];const X=(S.hcu||{})[g.name];if(X){parts.push(cuBlock(X));(X.units||[]).forEach(u=>parts.push(cuBlock(u,u.company)))}const P=g.inn&&S.gprof?S.gprof[g.inn]:null;const R=(S.hroutes||{})[g.name]||[];
   if(g.subsClaimed)parts.push(el("div",{class:"muted",style:"font-size:12.5px;margin-top:4px"},el("span",{text:`Заявленных дочерних и внучатых обществ в справочнике: ${g.subsClaimed} · `}),el("a",{href:"#",onclick:e=>{e.preventDefault();switchTab("orgs");S.orgSel=g.hierGroup||g.name;renderOrgs()}},"открыть структуру")));
-  if(P){const pl=Object.entries(P.platforms||{}).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v])=>`${k} — ${v}`).join("; ");
-    parts.push(el("div",{style:"font-size:12.5px;margin-top:6px"},el("b",{text:"Где закупает (ЕИС, головная компания, год): "}),el("span",{text:`${P.total??0} закупок${P.total223!=null?` (223-ФЗ: ${P.total223}, 44-ФЗ: ${P.total44??0})`:""}${pl?"; площадки: "+pl:""}. По темам МИСБ: ${P.relevant??0}. Проверено ${fmtDate(P.checkedAt)}.`}),P.note?el("div",{class:"muted",text:P.note}):null,
-      ...(P.examples||[]).slice(0,5).map(x=>el("div",{},el("a",{href:x.url,target:"_blank",rel:"noopener",text:`${x.title||x.id}`.slice(0,110)}),el("span",{class:"muted",text:` · ${x.law||""} · ${x.date||""}`})))))}
-  else if(g.inn)parts.push(el("div",{class:"muted",style:"font-size:12.5px;margin-top:4px",text:"Профиль закупок ещё не собран: сбор проходит группы по кругу, несколько групп за запуск."}));
+  if(P)parts.push(gprofBlock(P));
+  else if(g.inn)parts.push(el("div",{class:"muted",style:"font-size:12.5px;margin-top:4px",text:"Профиль закупок группы ещё не собран: сбор обновляет профили групп по кругу."}));
   if(R.length)parts.push(el("details",{style:"margin-top:6px"},el("summary",{style:"font-size:12.5px",text:`Закупочные маршруты из справочника: ${R.length} (в сбор не включены)`}),...R.map(r=>el("div",{style:"font-size:12.5px"},el("a",{href:r.url,target:"_blank",rel:"noopener",text:r.url.replace(/^https?:\/\//,"").slice(0,70)}),el("span",{class:"muted",text:` · ${r.org||""} · ${r.type} · ${r.status||""}`})))));
   return parts.length?el("div",{},...parts):null}
 function renderCorp(){const G=S.holdings?.groups||[];const byNode={};for(const l of LEADS){if(!l.hpath)continue;l.hpath.forEach((n,i)=>{const key=l.hpath.slice(0,i+1).join(" / ");byNode[key]=(byNode[key]||0)+1})}
   const withLeads=G.filter(g=>byNode[g.name]).length;const total=G.reduce(function c(s,n){return s+1+(n.children||[]).reduce(c,0)},0);
-  const GC=S.gcand?.candidates||[];const prof=Object.keys(S.gprof||{}).length;
-  $("#corpNote").replaceChildren(el("span",{},`Реестр: ${G.length} групп, ${total} компаний с дочерними и внучатыми обществами. Лиды найдены у ${withLeads} групп. Профили закупок собраны у ${prof} групп. Корпоративных университетов подтверждено: ${Object.values(S.hcu||{}).filter(x=>/^Подтвержд/.test(x.cuStatus||"")).length}. `),el("span",{class:"muted",text:S.holdings?.note||""}),
+  const GC=S.gcand?.candidates||[];const GP=Object.values(S.gprof||{});const prof=GP.length;const profCo=GP.reduce((a,p)=>a+(p.companies||1),0);const profBuy=GP.reduce((a,p)=>a+(p.members?p.withPurchases||0:(p.total?1:0)),0);
+  $("#corpNote").replaceChildren(el("span",{},`Реестр: ${G.length} групп, ${total} компаний с дочерними и внучатыми обществами. Лиды найдены у ${withLeads} групп. Профили закупок собраны у ${prof} групп: проверено ${profCo} компаний (головные, дочки, внучки), закупки в ЕИС за год есть у ${profBuy}. Корпоративных университетов подтверждено: ${Object.values(S.hcu||{}).filter(x=>/^Подтвержд/.test(x.cuStatus||"")).length}. `),el("span",{class:"muted",text:S.holdings?.note||""}),
     GC.length?el("details",{style:"margin-top:8px"},el("summary",{text:`Кандидаты до 1 000 групп: ${GC.length} крупнейших компаний без группы — ждут проверки владельца по ЕГРЮЛ`}),el("p",{class:"muted",text:S.gcand.note||""}),el("div",{class:"tablebox"},el("table",{},el("thead",{},el("tr",{},el("th",{class:"num",text:"Место"}),el("th",{text:"Компания"}),el("th",{text:"Группа (по рейтингу)"}),el("th",{class:"num",text:"Выручка 2025, млн ₽"}))),el("tbody",{},...GC.map(c=>el("tr",{style:"cursor:default"},el("td",{class:"num",text:c.rank}),el("td",{text:c.name}),el("td",{text:c.group||"—"}),el("td",{class:"num",text:fmtMoney(c.revenue_mln)}))))))):null);
   const nodeEl=(n,path)=>{const p=[...path,n.name];const c=byNode[p.join(" / ")]||0;return el("li",{},el("div",{class:"node"},el("span",{text:n.name}),el("span",{class:`cnt ${c?"has":""}`,text:c})),n.children?el("ul",{},...n.children.map(ch=>nodeEl(ch,p))):null)};
   const sortedG=[...G].sort((a,b)=>(byNode[b.name]||0)-(byNode[a.name]||0)||a.name.localeCompare(b.name,"ru"));
