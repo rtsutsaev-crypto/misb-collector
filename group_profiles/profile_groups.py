@@ -87,7 +87,8 @@ def rows_of(pattern):
 
 # ---------- relevance ----------
 # Forms the dictionary stems miss ("дети" does not prefix "детей").
-EXTRA_NEG = ["детей", "детям", "детьми", "детях", "детск", "ребен", "ребён", "школьник", "учащихся"]
+EXTRA_NEG = ["детей", "детям", "детьми", "детях", "детск", "ребен", "ребён", "школьник", "учащихся",
+             "застройк", "выставочн"]  # stand build-outs at forums carry the events OKPD2 code
 
 
 # Forms too generic to count alone (software testing, attestation of workplaces,
@@ -107,7 +108,8 @@ class GroupMatcher:
     def __init__(self, dic):
         dic = dic or {}
         self.topics = self._phrases(dic, ("topics",))
-        self.forms = self._phrases(dic, ("formats",)) + [(s, self._parts(s)) for s in STEMS]
+        # STEMS are already stems: match them as prefixes as they are
+        self.forms = self._phrases(dic, ("formats",)) + [(s, [(w, w, False) for w in words(s)]) for s in STEMS]
         self.neg = self._phrases(dic, ("exclude",)) + [(s, [(s, s, False)]) for s in EXTRA_NEG]
         self.okpd = tuple(str(c) for c in dic.get("okpd2", []) or [])
 
