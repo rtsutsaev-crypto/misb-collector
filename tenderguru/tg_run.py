@@ -2,7 +2,7 @@
 """TenderGuru API v2.3 queries from tenderguru/queries.json -> new leads.
 
 Usage:
-  TENDERGURU_KEY=... python3 tg_run.py W [--part extra|etp|all] [--start N] [--count N] [--pause 3]
+  TENDERGURU_KEY=... python3 tg_run.py W [--part extra|etp|quotes|all] [--start N] [--count N] [--pause 3]
 
 W is a work dir holding the site's database dump (ArtifactData out_dir):
   W/db/config/dictionary.json, W/db/leadsets/*.json.
@@ -63,6 +63,8 @@ def requests_of(part: str) -> list[dict]:
         out += [{"kwords": q} for q in doc["extra"]]
     if part in ("etp", "all"):
         out += doc["etp"]
+    if part == "quotes":  # not part of "all": direct demand (price requests, market analysis) is its own source
+        out += [{"kwords": q, "rfq": True} for q in doc.get("quotes", [])]
     return out
 
 
@@ -74,7 +76,7 @@ def run(W: str, part: str, start: int, count: int | None, pause: float, key: str
     reqs = reqs[start:start + count] if count else reqs[start:]
     leads, stat = [], {"requests": 0, "rows": 0, "не по теме": 0, "давно закрыты": 0, "уже в базе": 0, "errors": {}}
     for r in reqs:
-        params = {k: v for k, v in r.items() if k != "platform"}
+        params = {k: v for k, v in r.items() if k not in ("platform", "rfq")}
         status, rows = call(params, key)
         stat["requests"] += 1
         if status != "ok":
@@ -98,8 +100,12 @@ def run(W: str, part: str, start: int, count: int | None, pause: float, key: str
                 lead = {"id": str(x["ID"]), "title": title, "customer": "", "region": str(x.get("Region") or ""),
                         "price": float(price) if price.replace(".", "", 1).isdigit() and float(price) > 0 else None,
                         "deadline": end, "law": "", "url": str(x.get("TenderLinkInner") or f"https://www.tenderguru.ru/tender/{x['ID']}"),
-                        "source": "tenderguru:etp" if r.get("platform") else "tenderguru", "collectedAt": today.isoformat(), "flags": []}
-                if r.get("platform"):
+                        "source": "tenderguru:etp" if r.get("platform") else "tenderguru", "collectedAt": today.isoformat(), "flags": [],
+                        "country": "RU", "currency": "RUB"}
+                if r.get("rfq"):
+                    lead["flags"] = ["rfq"]
+                    lead["note"] = f"TenderGuru, прямой спрос: запрос цен или предложений; запрос «{r['kwords']}»"
+                elif r.get("platform"):
                     lead["platform"] = r["platform"]
                     lead["note"] = f"TenderGuru, фильтр площадки: {r['platform']}; запрос «{r['kwords']}»"
                 else:

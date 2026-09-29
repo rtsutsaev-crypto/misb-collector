@@ -28,8 +28,27 @@ from b2b_core import existing_leads, norm_title  # noqa: E402
 
 FORMAT = "tender-monitor-consolidated-v1"
 PER_DOC = 200
-FOREIGN_RE = re.compile(r"казахстан|таджикистан|узбекистан|беларус|киргиз|кыргыз|qazaq|kazmunay|казмунайгаз|uzbekneftegaz|mitwork", re.I)
-FOREIGN_HOSTS = (".kz", ".tj", ".uz", ".by", ".kg")
+# Neighbouring markets taken with country/currency fields (same mechanism as Kazakhstan); other countries are dropped
+COUNTRY_BY_CURRENCY = {"KZT": ("KZ", "Казахстан"), "BYN": ("BY", "Беларусь"), "UZS": ("UZ", "Узбекистан"), "KGS": ("KG", "Кыргызстан")}
+COUNTRY_BY_REGION = {"Казахстан": "KZ", "Беларусь": "BY", "Узбекистан": "UZ", "Кыргызстан": "KG"}
+COUNTRY_NAMES = {"KZ": "Казахстан", "BY": "Беларусь", "UZ": "Узбекистан", "KG": "Кыргызстан"}
+OTHER_RE = re.compile(r"таджикистан|туркмен|армени|азербайджан|грузи|украин|молдов", re.I)
+OTHER_HOSTS = (".tj", ".tm", ".am", ".az", ".ge", ".ua", ".md")
+NEIGHBOUR_HOSTS = {".kz": "KZ", ".by": "BY", ".uz": "UZ", ".kg": "KG"}
+
+
+def country_of(t: dict, url: str) -> str:
+    cur = str(t.get("currency") or "RUB")
+    if cur in COUNTRY_BY_CURRENCY:
+        return COUNTRY_BY_CURRENCY[cur][0]
+    cc = COUNTRY_BY_REGION.get(str(t.get("region") or "").strip())
+    if cc:
+        return cc
+    host = urlparse(url).netloc
+    for suf, code in NEIGHBOUR_HOSTS.items():
+        if host.endswith(suf):
+            return code
+    return "RU"
 LAW = {"44-ФЗ": "44-ФЗ", "223-ФЗ": "223-ФЗ", "Коммерческая": "Коммерческий", "Коммерческий": "Коммерческий"}
 
 
@@ -58,6 +77,9 @@ def lead_id(t: dict, url: str) -> str:
     m = re.search(r"b2b-center\.ru/.*tender-(\d+)", url)
     if m:
         return m.group(1)
+    m = re.search(r"goszakup\.gov\.kz/ru/announce/index/(\d+)", url)
+    if m:
+        return "kz-" + m.group(1)
     m = re.search(r"energybase\.ru/tender(?:-outdated)?/([0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})", url)
     if m:
         return m.group(1)  # the collector's energybase source uses the bare card id too
@@ -77,10 +99,10 @@ def skip_reason(t: dict, url: str) -> str:
         return "вне профиля"
     if t.get("canonical_tender_id"):
         return "дубль внутри выгрузки"
-    if (t.get("currency") or "RUB") != "RUB" or str(t.get("region") or "").strip() in ("Казахстан", "Беларусь", "Таджикистан", "Узбекистан"):
-        return "не РФ"
-    if urlparse(url).netloc.endswith(FOREIGN_HOSTS) or FOREIGN_RE.search(str(t.get("source") or "")):
-        return "не РФ"
+    cur = t.get("currency") or "RUB"
+    if (cur != "RUB" and cur not in COUNTRY_BY_CURRENCY) or OTHER_RE.search(str(t.get("region") or "")) \
+            or urlparse(url).netloc.endswith(OTHER_HOSTS):
+        return "страна вне списка (РФ, KZ, BY, UZ, KG)"
     if not str(t.get("title") or "").strip():
         return "без названия"
     return ""
@@ -97,12 +119,14 @@ def to_lead(t: dict, today: str, exported: str) -> dict:
     note = f"«Монитор тендеров РФ», выгрузка {exported}: {t.get('category') or 'без категории'}, fit там {t.get('fit_score')}"
     if reasons:
         note += "; " + reasons[:200]
+    cc = country_of(t, url)
     lead = {"id": lead_id(t, url), "title": " ".join(str(t["title"]).split()), "customer": cust,
-            "region": str(t.get("region") or "") if t.get("region") not in ("Россия", None) else "",
+            "region": (str(t.get("region") or "") if t.get("region") not in ("Россия", None) else "") or (COUNTRY_NAMES[cc] if cc != "RU" else ""),
             "price": t.get("amount") if isinstance(t.get("amount"), (int, float)) and t.get("amount") > 0 else None,
             "deadline": date10(t.get("deadline_at")), "law": LAW.get(t.get("law") or "", ""), "url": url,
             "source": "mtrf:" + str(t.get("source") or "прочее"),
-            "collectedAt": date10(t.get("updated_at")) or today, "flags": [], "note": note}
+            "collectedAt": date10(t.get("updated_at")) or today, "flags": [], "note": note,
+            "country": cc, "currency": (t.get("currency") or "RUB") if cc != "RU" else "RUB"}
     if inn:
         lead["customerInn"] = inn
     if not lead["law"]:

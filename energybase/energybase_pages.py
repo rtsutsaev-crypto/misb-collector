@@ -39,7 +39,8 @@ COMPANIES = ["integrated/gazprom-neft", "integrated/rosneft", "integrated/lukoil
 URLS = [f"{BASE}/tender/catalog/training-services"] + [f"{BASE}/{c}/{SECTION}" for c in COMPANIES]
 MONTHS = {m: i + 1 for i, m in enumerate(["января", "февраля", "марта", "апреля", "мая", "июня", "июля",
                                           "августа", "сентября", "октября", "ноября", "декабря"])}
-FOREIGN = re.compile(r"(^|[^А-Яа-яЁё])ТОО([^А-Яа-яЁё]|$)|Казахстан|Беларус")
+KZ_RE = re.compile(r"(^|[^А-Яа-яЁё])ТОО([^А-Яа-яЁё]|$)|Казахстан|Қазақ|Kazakh")
+BY_RE = re.compile(r"Беларус|Белорус")
 
 
 def ru_date(text: str) -> str:
@@ -92,15 +93,18 @@ def parse(d: str, W: str) -> dict:
             seen.add(c["id"])
             stat["cards"] += 1
             terms, ok = M.terms(c["title"])
-            if FOREIGN.search(c["customer"]):
-                stat["не РФ"] += 1
-            elif not ok:
+            if not ok:
                 stat["не по теме"] += 1
             elif c["id"] in ids or (norm_title(c["title"]), c["deadline"]) in pairs:
                 stat["уже в базе"] += 1
             else:
-                leads.append({"id": c["id"], "title": c["title"], "customer": c["customer"], "region": "",
-                              "price": c["price"], "deadline": c["deadline"], "law": "", "url": f"{BASE}/tender/{c['id']}",
+                cc = "KZ" if KZ_RE.search(c["customer"]) else "BY" if BY_RE.search(c["customer"]) else "RU"
+                if cc != "RU":
+                    stat["не РФ"] += 1  # counted, not dropped: neighbouring markets are taken with country/currency
+                leads.append({"id": c["id"], "title": c["title"], "customer": c["customer"],
+                              "region": {"KZ": "Казахстан", "BY": "Беларусь"}.get(cc, ""), "country": cc,
+                              "currency": {"KZ": "KZT", "BY": "BYN"}.get(cc, "RUB"),
+                              "price": c["price"] if cc == "RU" else None, "deadline": c["deadline"], "law": "", "url": f"{BASE}/tender/{c['id']}",
                               "source": "energybase", "collectedAt": today, "flags": [],
                               "note": f"Energybase, раздел «Подготовка персонала»{'; ' + c['kind'] if c['kind'] else ''}; объявлено {c['published'] or '—'}; совпало: {', '.join(terms[:3])}"})
     stat["new"] = len(leads)
