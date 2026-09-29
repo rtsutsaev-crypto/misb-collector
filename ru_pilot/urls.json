@@ -1,0 +1,1132 @@
+[
+ {
+  "name": "ЕИС Закупки",
+  "url": "https://zakupki.gov.ru/epz/order/extendedsearch/results.html",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Tender.Pro",
+  "url": "https://www.tender.pro/",
+  "kinds": [
+   "registry",
+   "source"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "ТЭК-Торг",
+  "url": "https://www.tektorg.ru/",
+  "kinds": [
+   "registry",
+   "source"
+  ],
+  "cloud": {
+   "status": 307,
+   "gate": "",
+   "robots": "unknown",
+   "note": ""
+  }
+ },
+ {
+  "name": "ЭТП ГПБ",
+  "url": "https://etpgpb.ru/",
+  "kinds": [
+   "registry",
+   "source"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Росэлторг",
+  "url": "https://www.roseltorg.ru/",
+  "kinds": [
+   "registry",
+   "source"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Сбербанк-АСТ",
+  "url": "https://www.sberbank-ast.ru/",
+  "kinds": [
+   "registry",
+   "catalog"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "РТС-тендер",
+  "url": "https://www.rts-tender.ru/",
+  "kinds": [
+   "registry",
+   "catalog"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in vio"
+  }
+ },
+ {
+  "name": "ЗаказРФ",
+  "url": "https://etp.zakazrf.ru/",
+  "kinds": [
+   "registry",
+   "catalog"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Национальная электронная площадка",
+  "url": "https://www.etp-ets.ru/",
+  "kinds": [
+   "registry",
+   "catalog"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "OTC",
+  "url": "https://otc.ru/",
+  "kinds": [
+   "registry",
+   "source"
+  ],
+  "cloud": {
+   "status": 200,
+   "gate": "captcha",
+   "robots": "unknown",
+   "note": "Captcha"
+  }
+ },
+ {
+  "name": "Bidzaar",
+  "url": "https://bidzaar.com/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 200,
+   "gate": "captcha",
+   "robots": "allowed",
+   "note": "Вы не робот?"
+  }
+ },
+ {
+  "name": "ЭТПРФ",
+  "url": "https://etprf.ru/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Портал поставщиков Москвы",
+  "url": "https://zakupki.mos.ru/",
+  "kinds": [
+   "registry",
+   "source"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "ЕАТ Берёзка",
+  "url": "https://agregatoreat.ru/",
+  "kinds": [
+   "registry",
+   "catalog"
+  ],
+  "cloud": {
+   "status": 200,
+   "gate": "captcha",
+   "robots": "unknown",
+   "note": "Captcha"
+  }
+ },
+ {
+  "name": "Электронный магазин Московской области",
+  "url": "https://market.mosreg.ru/",
+  "kinds": [
+   "registry",
+   "catalog"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Госзакупки Казахстана",
+  "url": "https://procurement.gov.kz/ru",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai"
+  }
+ },
+ {
+  "name": "Евразийский электронный портал MITWORK",
+  "url": "https://eep.mitwork.kz/",
+  "kinds": [
+   "registry",
+   "source"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Реестр NADLoC",
+  "url": "https://reestr.nadloc.kz/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error Tunnel connection failed: 502 Bad Gateway>"
+  }
+ },
+ {
+  "name": "ICETRADE, ИС Тендеры",
+  "url": "https://icetrade.by/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai"
+  }
+ },
+ {
+  "name": "ГИАС",
+  "url": "https://gias.by/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "ЭТП НЦПЭ, goszakupki.by",
+  "url": "https://goszakupki.by/",
+  "kinds": [
+   "registry",
+   "source"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Контур.Закупки",
+  "url": "https://zakupki.kontur.ru/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 403,
+   "gate": "",
+   "robots": "unknown",
+   "note": "Контур | Доступ запрещен"
+  }
+ },
+ {
+  "name": "Тендерплан",
+  "url": "https://tenderplan.ru/api/doc/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "disallowed",
+   "note": ""
+  }
+ },
+ {
+  "name": "Up-Tender",
+  "url": "https://up-tender.by/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 502,
+   "gate": "",
+   "robots": "unknown",
+   "note": ""
+  }
+ },
+ {
+  "name": "EnergyBase",
+  "url": "https://energybase.ru/tenders",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 404,
+   "gate": "",
+   "robots": "allowed",
+   "note": "Страница не найдена (#404)"
+  }
+ },
+ {
+  "name": "Роснефть",
+  "url": "https://zakupki.rosneft.ru/",
+  "kinds": [
+   "registry",
+   "source"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai"
+  }
+ },
+ {
+  "name": "Газпром",
+  "url": "https://tenders.gazprom.ru/",
+  "kinds": [
+   "registry",
+   "source"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai"
+  }
+ },
+ {
+  "name": "РусГидро",
+  "url": "https://zakupki.rushydro.ru/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Интер РАО",
+  "url": "https://www.interrao.ru/custom/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Т Плюс",
+  "url": "https://www.tplusgroup.ru/procurement/",
+  "kinds": [
+   "registry",
+   "catalog"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "ЛУКОЙЛ",
+  "url": "https://lukoil.ru/Company/Tendersandauctions/Tenders",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "allowed",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Газпром нефть",
+  "url": "https://zakupki.gazprom-neft.ru/atlas/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "ЕВРАЗ",
+  "url": "https://supply.evraz.com/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 403,
+   "gate": "",
+   "robots": "unknown",
+   "note": ""
+  }
+ },
+ {
+  "name": "СУЭК",
+  "url": "https://www.suek.ru/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error Tunnel connection failed: 502 Bad Gateway>"
+  }
+ },
+ {
+  "name": "Сургутнефтегаз",
+  "url": "https://www.surgutneftegas.ru/procurement/",
+  "kinds": [
+   "registry",
+   "catalog"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai"
+  }
+ },
+ {
+  "name": "Славнефть",
+  "url": "https://www.slavneft.ru/supplier/procurement/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai"
+  }
+ },
+ {
+  "name": "ВТБ",
+  "url": "https://www.vtb.ru/about/bank/procurement/",
+  "kinds": [
+   "registry",
+   "catalog"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai"
+  }
+ },
+ {
+  "name": "Альфа-Банк",
+  "url": "https://alfabank.ru/tenders/",
+  "kinds": [
+   "registry",
+   "catalog"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai"
+  }
+ },
+ {
+  "name": "Яндекс",
+  "url": "https://yandex.ru/company/procurement",
+  "kinds": [
+   "registry",
+   "catalog"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "disallowed",
+   "note": ""
+  }
+ },
+ {
+  "name": "Ростех",
+  "url": "https://rostec.ru/purchase/documents/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai"
+  }
+ },
+ {
+  "name": "РЖД",
+  "url": "https://company.rzd.ru/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "NCOC",
+  "url": "https://procon-supplier.ncoc.kz/",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify fai"
+  }
+ },
+ {
+  "name": "Белоруснефть",
+  "url": "https://belorusneft.by/ru/procurement/procurement-bn/index.html",
+  "kinds": [
+   "registry"
+  ],
+  "cloud": {
+   "status": 0,
+   "gate": "",
+   "robots": "unknown",
+   "note": "URLError: <urlopen error [Errno 104] Connection reset by peer>"
+  }
+ },
+ {
+  "name": "Закупки: Интер РАО",
+  "url": "https://www.interrao.ru/custom/notice/",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "interrao.ru/custom/notice: HTTP 503"
+  }
+ },
+ {
+  "name": "Закупки: Россети",
+  "url": "https://www.rosseti.ru/suppliers/",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "rosseti.ru/suppliers: экран «Проверка безопасности» (антибот)"
+  }
+ },
+ {
+  "name": "Закупки: Сбербанк",
+  "url": "https://www.sberbank.ru/ru/fpartners/purchase/useful_info",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "sberbank.ru/ru/fpartners/purchase/useful_info: HTTP 503"
+  }
+ },
+ {
+  "name": "Закупки: Металлоинвест",
+  "url": "https://www.metalloinvest.com/purchases/",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "HTTP 503"
+  }
+ },
+ {
+  "name": "Закупки: X5 Group",
+  "url": "https://x5.b2b-center.ru/",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "x5.b2b-center.ru: HTTP 403"
+  }
+ },
+ {
+  "name": "Российский аукционный дом (РАД)",
+  "url": "https://lot-online.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "lot-online.ru (РАД): HTTP 503"
+  }
+ },
+ {
+  "name": "B2B-Energo",
+  "url": "https://b2b-energo.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "failed",
+   "note": "пустая страница, контент не загрузился"
+  }
+ },
+ {
+  "name": "ЭТП РЭСТ",
+  "url": "https://r-est.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "failed",
+   "note": "на странице только название площадки, содержимого нет"
+  }
+ },
+ {
+  "name": "Электронный магазин Санкт-Петербурга",
+  "url": "https://estore.gz-spb.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "estore.gz-spb.ru: HTTP 503"
+  }
+ },
+ {
+  "name": "Витрина малых закупок Краснодарского края",
+  "url": "https://krd-market.rts-tender.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "krd-market.rts-tender.ru: HTTP 503"
+  }
+ },
+ {
+  "name": "Электронный магазин Новосибирской области",
+  "url": "https://novobl-zmo.rts-tender.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "novobl-zmo.rts-tender.ru: HTTP 503"
+  }
+ },
+ {
+  "name": "ЗМО Свердловской области",
+  "url": "https://torgi.egov66.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "failed",
+   "note": "torgi.egov66.ru: пустая заглушка IIS Windows Server, сайт не настроен"
+  }
+ },
+ {
+  "name": "Агрегатор Республики Башкортостан",
+  "url": "https://zakaz.bashkortostan.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "zakaz.bashkortostan.ru: HTTP 503"
+  }
+ },
+ {
+  "name": "Витрина ЗМО г.о. Самара",
+  "url": "https://torgi.dfsamara.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "HTTP 503 из облака"
+  }
+ },
+ {
+  "name": "Закупки Оренбуржья — витрина закупок",
+  "url": "https://zakupki.orb.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "HTTP 403 из облака"
+  }
+ },
+ {
+  "name": "Малые закупки Удмуртской Республики",
+  "url": "https://wt.udmr.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "failed",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "Малые закупки Республики Мордовия",
+  "url": "https://goszakaz44.e-mordovia.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "failed",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "Электронный магазин ЯНАО",
+  "url": "https://magazin.yanao.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "failed",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "Закупки Тульской области",
+  "url": "https://zakupki.tularegion.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "failed",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "РТС-маркет (электронный магазин ЗМО)",
+  "url": "https://market.rts-tender.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "market.rts-tender.ru: HTTP 503"
+  }
+ },
+ {
+  "name": "Малые закупки Курской области",
+  "url": "https://zak.imkursk.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "failed",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "Малые закупки Тамбовской области",
+  "url": "https://torgi.tambov.gov.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "failed",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "WEB-Маркет Липецкой области",
+  "url": "https://goszakaz.ufin48.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "failed",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "Электронный магазин Брянской области",
+  "url": "https://zm-tender32.rts-tender.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "РТС-тендер ЗМО — новая версия",
+  "url": "https://zmo.rts-tender.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "zmo.rts-tender.ru: HTTP 503"
+  }
+ },
+ {
+  "name": "Малые закупки г. Твери",
+  "url": "https://zakaz.adm.tver.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "Региональный заказ Вологодской области",
+  "url": "https://szvo.gov35.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "Электронный магазин Петрозаводского ГО",
+  "url": "https://eshop-ptz.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "failed",
+   "note": "пустая страница, контент не отдан"
+  }
+ },
+ {
+  "name": "Малые закупки Курганской области",
+  "url": "https://zakupki.45fin.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "403 из облака"
+  }
+ },
+ {
+  "name": "Биржевая площадка АГЗ РТ",
+  "url": "https://bp.zakazrf.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "bp.zakazrf.ru: HTTP 503"
+  }
+ },
+ {
+  "name": "Закупки администрации г. Керчи",
+  "url": "https://kerch.rk.gov.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "Региональная контрактная система Севастополя",
+  "url": "https://rks.sevzakaz.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "503 из облака"
+  }
+ },
+ {
+  "name": "OTC-Market",
+  "url": "https://market.otc.ru",
+  "kinds": [
+   "catalog"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "market.otc.ru: только JS-загрузчик (ajaxload), список не виден статично"
+  }
+ },
+ {
+  "name": "Bidzaar",
+  "url": "https://bidzaar.com/app/requests/public/buy",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "Открытый список запросов (bidzaar.com/app/requests/public/buy) виден из облака н"
+  }
+ },
+ {
+  "name": "Беларусь · Портал государственных закупок (icetrade.by)",
+  "url": "https://www.icetrade.by/search/auctions",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "Проверено 29.09.2026 из облака сеанса Claude: сайт не открылся — ошибка цепочки "
+  }
+ },
+ {
+  "name": "Тендеры Уралхима",
+  "url": "https://www.uralchem.ru/purchase/tenders/",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "только промышленные закупки"
+  }
+ },
+ {
+  "name": "ЕИС (zakupki.gov.ru)",
+  "url": "https://zakupki.gov.ru",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "covered",
+   "note": "Напрямую из облака ЕИС отвечает 503. Все извещения 44-ФЗ и 223-ФЗ приходят из ЕИ"
+  }
+ },
+ {
+  "name": "Фабрикант",
+  "url": "https://www.fabrikant.ru",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "covered",
+   "note": "Из облака 503. 44-ФЗ и 223-ФЗ — через ГосПлан; коммерческий раздел — через Бикот"
+  }
+ },
+ {
+  "name": "Закупки Газпром нефти",
+  "url": "https://zakupki.gazprom-neft.ru/tenderix/",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "covered",
+   "note": "Из облака 503. Закупки Газпром нефти по 223-ФЗ — через ГосПлан; портал в индексе"
+  }
+ },
+ {
+  "name": "Казахстан · Портал госзакупок (goszakup.gov.kz)",
+  "url": "https://goszakup.gov.kz/ru/search/lots",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": ""
+  }
+ },
+ {
+  "name": "Казахстан · Закупки Самрук-Казына (zakup.sk.kz)",
+  "url": "https://zakup.sk.kz",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": ""
+  }
+ },
+ {
+  "name": "Закупки Росатома",
+  "url": "https://zakupki.rosatom.ru",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "covered",
+   "note": "Сайт закупок Росатома отклоняет запросы облака. Закупки Росатома и Академии Роса"
+  }
+ },
+ {
+  "name": "ЭТП Россетей",
+  "url": "https://etp.rosseti.ru",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "covered",
+   "note": "Из облака 503. Россети и дочерние сетевые компании — заказчики по 223-ФЗ, закупк"
+  }
+ },
+ {
+  "name": "ЭТЗП РЖД",
+  "url": "https://etzp.rzd.ru",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "covered",
+   "note": "Из облака 503. РЖД — заказчик по 223-ФЗ, закупки приходят через ГосПлан; ЭТЗП и "
+  }
+ },
+ {
+  "name": "B2B СИБУР",
+  "url": "https://b2b.sibur.ru",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "covered",
+   "note": "Домен b2b.sibur.ru из облака не резолвится. Вместо него включён открытый раздел "
+  }
+ },
+ {
+  "name": "СИНАПС (synapsenet.ru) — подборки",
+  "url": "https://synapsenet.ru/search/populyarnie-zaprosi/provedenie-seminarov",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "covered",
+   "note": "СИНАПС отдаёт 503. Он сам агрегатор: те же закупки приходят через РосТендер, Бик"
+  }
+ },
+ {
+  "name": "ЭТП Татнефти",
+  "url": "https://etp.tatneft.ru",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "covered",
+   "note": "Из облака 503. Татнефть — заказчик по 223-ФЗ, закупки через ГосПлан; ЭТП Татнефт"
+  }
+ },
+ {
+  "name": "Закупки ТМК",
+  "url": "https://zakupki.tmk-group.com/",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "covered",
+   "note": "ЭТП ТМК из облака не догружается. Площадка есть в индексе Бикотендера."
+  }
+ },
+ {
+  "name": "ЭТП УГМК",
+  "url": "https://etp.ugmk.com",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "covered",
+   "note": "Домен etp.ugmk.com из облака не резолвится. ЭТП УГМК есть в индексе Бикотендера."
+  }
+ },
+ {
+  "name": "Узбекистан · UZEX eTender (etender.uzex.uz)",
+  "url": "https://etender.uzex.uz/lots/2/0",
+  "kinds": [
+   "source"
+  ],
+  "cloud": {
+   "status": "blocked",
+   "note": "Страница строится скриптом: из облака сеанса Claude отдаёт только оболочку. Прик"
+  }
+ }
+]
