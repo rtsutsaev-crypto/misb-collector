@@ -78,16 +78,24 @@ block3 = ("cd ~/pilot\n"
 open(os.path.join(HERE, "paste_round3.txt"), "w", encoding="utf-8").write(block3)
 print(f"paste_round3.txt {len(block3)} bytes")
 
-# fourth block: how many open training requests Bidzaar has (public JSON list, search by word) + the page's own request URLs and links
+# fourth block: how many open training requests Bidzaar has for the words of the dictionary (public JSON list, search by word)
 bz = open(os.path.join(HERE, "bidzaar_count.py"), encoding="utf-8").read()
-block4 = ("cd ~/pilot\n"
+terms = open(os.path.join(HERE, "dictionary_terms.json"), encoding="utf-8").read()
+block4 = ("mkdir -p ~/pilot && cd ~/pilot\n"
           "base64 -d <<'PILOT_EOF' | gunzip > pilot.py\n" + b64lines(one) + "\nPILOT_EOF\n"
           "base64 -d <<'PILOT_EOF' | gunzip > recon.cjs\n" + b64lines(recon) + "\nPILOT_EOF\n"
           "base64 -d <<'PILOT_EOF' | gunzip > bidzaar_count.py\n" + b64lines(bz) + "\nPILOT_EOF\n"
+          "base64 -d <<'PILOT_EOF' | gunzip > dictionary_terms.json\n" + b64lines(terms) + "\nPILOT_EOF\n"
+          "cat > run_round4.sh <<'RUN_EOF'\n"
+          "cd ~/pilot\n"
           "export PLAYWRIGHT_MODULE=$HOME/node_modules/playwright\n"
-          "python3 bidzaar_count.py > bidzaar_log.txt 2>&1\n"
+          "python3 bidzaar_count.py --terms dictionary_terms.json > bidzaar_log.txt 2>&1\n"
           "node recon.cjs 'https://bidzaar.com/app/requests/public/buy?sorting.key=searchRank&sorting.direction=desc&search=%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5' > recon_bidzaar2.txt 2>&1\n"
-          "cat bidzaar_out.txt > for_claude.txt; echo >> for_claude.txt; echo '##### recon' >> for_claude.txt; cat recon_bidzaar2.txt >> for_claude.txt\n"
-          "echo '=== ГОТОВО. Файл для передачи: ~/pilot/for_claude.txt (в нём '$(wc -l < for_claude.txt)' строк) ==='\n")
+          "python3 -m zipfile -c for_claude.zip bidzaar_out.txt bidzaar_items.json recon_bidzaar2.txt bidzaar_log.txt\n"
+          "echo done > round4.done\n"
+          "RUN_EOF\n"
+          "rm -f round4.done for_claude.zip\n"
+          "nohup bash run_round4.sh > /dev/null 2>&1 &\n"
+          "echo '=== Запущено в фоне (около 300 слов, 20-30 минут; можно закрыть окно). Проверка: tail -n 2 ~/pilot/bidzaar_log.txt   Готово, когда команда  ls ~/pilot/round4.done  находит файл ==='\n")
 open(os.path.join(HERE, "paste_round4.txt"), "w", encoding="utf-8").write(block4)
 print(f"paste_round4.txt {len(block4)} bytes")
