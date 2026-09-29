@@ -195,6 +195,7 @@ def main() -> int:
     ap.add_argument("--error-contains", default="", help="with --from-result: only rows whose error text contains this")
     ap.add_argument("--cafile", default="", help="extra root certificate (PEM) added to the trust store; verification stays on")
     ap.add_argument("--summary", nargs="+", default=[], help="print a compact summary of result files and exit")
+    ap.add_argument("--getjson", default="", help="one GET of a public JSON address (robots.txt is checked); prints status, counts and the first item")
     ap.add_argument("--peek", default="", help="print the first text lines of one page (robots.txt is checked) and exit")
     ap.add_argument("--browser", action="store_true", help="read pages that open without a list with headless Chromium (needs node + playwright)")
     a = ap.parse_args()
@@ -204,6 +205,23 @@ def main() -> int:
         global SSL_CTX
         SSL_CTX = ssl.create_default_context()
         SSL_CTX.load_verify_locations(cafile=a.cafile)
+    if a.getjson:
+        ok, why = robots_allows(a.getjson, a.timeout)
+        print(f"===== {a.getjson[:150]} ({why}) =====")
+        if ok:
+            st, final, text, err = fetch(a.getjson, a.timeout)
+            print(f"HTTP {st} {err} final={final[:100] if final != a.getjson else '-'} size={len(text)}")
+            try:
+                j = json.loads(text)
+                arr = j if isinstance(j, list) else next((v for v in j.values() if isinstance(v, list)), None) if isinstance(j, dict) else None
+                if isinstance(j, dict):
+                    print("top:", {k: v for k, v in j.items() if isinstance(v, (int, float)) or (isinstance(v, str) and len(v) < 30)})
+                print("items:", None if arr is None else len(arr))
+                if arr:
+                    print("first:", json.dumps(arr[0], ensure_ascii=False)[:700])
+            except Exception:  # noqa: BLE001
+                print("not json:", strip_html(text)[:300].replace("\n", " "))
+        return 0
     if a.peek:
         ok, why = robots_allows(a.peek, a.timeout)
         print(f"===== {a.peek} ({why}) =====")

@@ -61,3 +61,19 @@ block2 = ("cd ~/pilot\n"
           "echo '=== ГОТОВО. Дальше: clear, затем  python3 pilot.py --summary result_ca.json result_browser.json result_ca_browser.json ; cat peek_synapsenet.txt ==='\n")
 open(os.path.join(HERE, "paste_round2.txt"), "w", encoding="utf-8").write(block2)
 print(f"paste_round2.txt {len(block2)} bytes")
+
+# third block: what the JSON requests of the sites that are open only from a Russian address look like (search by one word, as a visitor)
+recon = open(os.path.join(HERE, "recon.cjs"), encoding="utf-8").read()
+block3 = ("cd ~/pilot\n"
+          "base64 -d <<'PILOT_EOF' | gunzip > pilot.py\n" + b64lines(one) + "\nPILOT_EOF\n"
+          "base64 -d <<'PILOT_EOF' | gunzip > recon.cjs\n" + b64lines(recon) + "\nPILOT_EOF\n"
+          "export PLAYWRIGHT_MODULE=$HOME/node_modules/playwright\n"
+          "(\n"
+          "python3 pilot.py --getjson 'https://bidzaar.com/api/process/light/procedures/available?paging.page=1&paging.size=25&sorting.key=publishDate&sorting.direction=desc'\n"
+          "echo; echo '##### Bidzaar'; node recon.cjs https://bidzaar.com/app/requests/public/buy обучение\n"
+          "echo; echo '##### Свердловская область'; node recon.cjs https://torgi.egov66.ru обучение\n"
+          "echo; echo '##### Московская область'; node recon.cjs https://market.mosreg.ru обучение\n"
+          ") > recon_out.txt 2>&1\n"
+          "echo '=== ГОТОВО. Дальше: clear, затем  cat recon_out.txt ==='\n")
+open(os.path.join(HERE, "paste_round3.txt"), "w", encoding="utf-8").write(block3)
+print(f"paste_round3.txt {len(block3)} bytes")
