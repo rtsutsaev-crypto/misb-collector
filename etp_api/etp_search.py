@@ -17,7 +17,8 @@ Sources (key of the plan -> address):
 
 --terms takes the dictionary document of the site (config/dictionary: formats, topics, exclude; groups written as comma-separated strings) or the
 flat dictionary_terms.json of ru_pilot.
-A record becomes a lead when its title contains a dictionary term (prefix match of every word of the term). Closed procedures are kept: the site
+A record becomes a lead when its title contains a dictionary term (prefix match of every word of the term) AND a word of training (is_training: обучение, повышение
+квалификации, курсы, семинар, тренинг, вебинар, конференция...); «поставка…» without such a word is dropped. Closed procedures are kept: the site
 shows them as "завершён (сигнал потребности)". Output follows the leadsets of the site (see bidzaar_to_leads.py).
 """
 import argparse
@@ -69,6 +70,17 @@ class Dict:
             if st and all(any(w.startswith(s) and len(w) <= mx for w in words) for s, mx in st):
                 return t
         return None
+
+
+# A lead needs a word of training in the title: the dictionary groups also hold "тестирование", "аттестация", "электробезопасность", which name audits and equipment checks.
+TRAIN_TITLE = re.compile(r"(обучени|повышени\w* квалификац|профессиональн\w* переподготов|переподготовк|\bкурс(?:ы|ов|ах|ам)?\b|семинар|тренинг|вебинар|мастер-класс|воркшоп|"
+                         r"образовательн|дополнительн\w* (?:профессиональн\w*|образован\w*)|подготовк\w* (?:персонал|кадров|специалист|руковод)|стратегическ\w* сесси|"
+                         r"коучинг|наставнич|ассессмент|конференц|\bфорум|деловая игр|бизнес-симуляц|стажировк|лекци|практикум|тимбилдинг)", re.I)
+GOODS_START = re.compile(r"^\W*(?:поставка|приобретение|закупка|изготовление|ремонт|монтаж)\b", re.I)
+
+
+def is_training(title):
+    return bool(TRAIN_TITLE.search(title)) and not (GOODS_START.match(title) and not re.search(r"обучени|курс|семинар|тренинг", title, re.I))
 
 
 def num(s):
@@ -243,7 +255,7 @@ def main():
                 st["records"] += len(rows)
                 for r in rows:
                     t = dic.hit(r["title"])
-                    if not t or any(x in r["title"].lower() for x in exclude):
+                    if not t or not is_training(r["title"]) or any(x in r["title"].lower() for x in exclude):
                         continue
                     if r["deadline"] and r["deadline"] < a.since:
                         continue
