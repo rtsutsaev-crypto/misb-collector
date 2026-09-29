@@ -14,6 +14,8 @@ Sources (key of the plan -> address):
   fedtorgi Торги Федерации      POST lk.fedtorgi.ru/api/v1/procedures/search?page=N&limit=10  (та же форма)
   rzdm     РЖД-Медицина         GET  zakupki.rzd-medicine.ru/api/purchase/orders/compressed/main?limit=15&page=N&search=<слово>
   lsr      ЭТП Группы ЛСР       POST zakupki.lsr.ru/ajax (форма action=get-tenders&subject=<слово>&offset=N&limit=10)
+  setonline СЭТ                 GET  etp.setonline.ru/searchServlet (та же платформа, что РЭСТ; из облака не открывается: цепочка Минцифры, нужен --cafile;
+                                проверено только по форме запроса из разведки 29.09.2026)
 
 --terms takes the dictionary document of the site (config/dictionary: formats, topics, exclude; groups written as comma-separated strings) or the
 flat dictionary_terms.json of ru_pilot.
@@ -31,6 +33,9 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+import ssl
+
+CTX = None  # set by --cafile: an extra root certificate (PEM) added to the trust store; verification stays on
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36 misb-collector"
 STAT = {}
 
@@ -44,7 +49,7 @@ def http(url, body=None, tries=4):
     err = None
     for i in range(tries):
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, data=data, headers=hdr), timeout=45) as r:
+            with urllib.request.urlopen(urllib.request.Request(url, data=data, headers=hdr), timeout=45, context=CTX) as r:
                 return json.loads(r.read().decode("utf-8", "replace"))
         except urllib.error.HTTPError as e:
             if e.code in (429, 500, 502, 503, 504) and i < tries - 1:
@@ -123,24 +128,31 @@ def mts(word, page):
 
 
 # ---------------------------------------------------------------- РЭСТ
-def rest(word, page):
-    q = {"types": ["BUYING", "RFI", "SMALL_PURCHASE"], "title": word}
-    lim = {"min": page * 50, "max": page * 50 + 50, "updateTotalCount": True}
-    j = http("https://etp.r-est.ru/searchServlet?" + urllib.parse.urlencode(
-        {"query": json.dumps(q, ensure_ascii=False), "filter": json.dumps({"state": ["ALL"]}), "sort": json.dumps({"placementDate": False}),
-         "limit": json.dumps(lim)}))
-    rows = []
-    for x in j.get("list", []):
-        ident = str(x.get("identifier") or "")
-        cust = (x.get("customer") or [{}])[0] if x.get("customer") else {}
-        org = x.get("organizer") or {}
-        eis = bool(re.fullmatch(r"3\d{10}", ident))
-        rows.append(lead(id=ident if eis else "REST-" + str(x.get("uuid")), title=(x.get("title") or "").strip(),
-                         customer=cust.get("title") or org.get("title") or "", customerInn=cust.get("inn") or org.get("inn"),
-                         deadline=dmy(x.get("gdEndDate")), price=num(re.sub("<[^>]+>", " ", x.get("price") or "")),
-                         law="223-ФЗ" if eis else "Коммерческий", platform="ЭТП РЭСТ", source="ЭТП РЭСТ", url=x.get("lotLink") or "https://etp.r-est.ru/",
-                         note=f"ЭТП РЭСТ {ident}, {x.get('placementType') or x.get('type')}, {(x.get('state') or {}).get('title', '')}".strip(", ")))
-    return rows, -(-int(j.get("totalCount") or 0) // 50)
+def _servlet(host, plat, prefix):
+    """The tender servlet of the platform behind ЭТП РЭСТ and СЭТ (etp.setonline.ru): GET /searchServlet?query={"types":[...],"title":<word>}&..."""
+    def run(word, page):
+        q = {"types": ["BUYING", "RFI", "SMALL_PURCHASE"], "title": word}
+        lim = {"min": page * 50, "max": page * 50 + 50, "updateTotalCount": True}
+        j = http(f"https://{host}/searchServlet?" + urllib.parse.urlencode(
+            {"query": json.dumps(q, ensure_ascii=False), "filter": json.dumps({"state": ["ALL"]}), "sort": json.dumps({"placementDate": False}),
+             "limit": json.dumps(lim)}))
+        rows = []
+        for x in j.get("list", []):
+            ident = str(x.get("identifier") or "")
+            cust = (x.get("customer") or [{}])[0] if x.get("customer") else {}
+            org = x.get("organizer") or {}
+            eis = bool(re.fullmatch(r"3\d{10}", ident))
+            rows.append(lead(id=ident if eis else f"{prefix}-" + str(x.get("uuid")), title=(x.get("title") or "").strip(),
+                             customer=cust.get("title") or org.get("title") or "", customerInn=cust.get("inn") or org.get("inn"),
+                             deadline=dmy(x.get("gdEndDate")), price=num(re.sub("<[^>]+>", " ", x.get("price") or "")),
+                             law="223-ФЗ" if eis else "Коммерческий", platform=plat, source=plat, url=x.get("lotLink") or f"https://{host}/",
+                             note=f"{plat} {ident}, {x.get('placementType') or x.get('type')}, {(x.get('state') or {}).get('title', '')}".strip(", ")))
+        return rows, -(-int(j.get("totalCount") or 0) // 50)
+    return run
+
+
+rest = _servlet("etp.r-est.ru", "ЭТП РЭСТ", "REST")
+setonline = _servlet("etp.setonline.ru", "СЭТ", "SET")
 
 
 # ---------------------------------------------------------------- Торги РФ / Торги Федерации
@@ -205,7 +217,7 @@ def lsr(word, page):
     return rows, -(-int((j.get("Paging") or {}).get("Total") or 0) // 10)
 
 SOURCES = {"mts": (mts, 3), "rest": (rest, 3), "rftorgi": (_fed("lk.rftorgi.ru", "Торги РФ", "rftorgi", "RFT"), 5),
-           "fedtorgi": (_fed("lk.fedtorgi.ru", "Торги Федерации", "fedtorgi", "FT"), 5), "rzdm": (rzdm, 4), "lsr": (lsr, 3)}
+           "fedtorgi": (_fed("lk.fedtorgi.ru", "Торги Федерации", "fedtorgi", "FT"), 5), "rzdm": (rzdm, 4), "lsr": (lsr, 3), "setonline": (setonline, 3)}
 
 
 def main():
@@ -213,6 +225,7 @@ def main():
     ap.add_argument("--terms", required=True)
     ap.add_argument("--out", default="leads.json")
     ap.add_argument("--sources", default="mts,rest,rftorgi,fedtorgi,rzdm,lsr")
+    ap.add_argument("--cafile", default="", help="extra root certificate (PEM), e.g. Russian Trusted Root CA for setonline; TLS verification stays on")
     ap.add_argument("--pause", type=float, default=1.2)
     ap.add_argument("--topics", action="store_true", help="add the topic words of the dictionary to the format words")
     ap.add_argument("--limit-words", type=int, default=0, help="take only this many words (a rotation batch)")
@@ -221,6 +234,10 @@ def main():
     ap.add_argument("--since", default=(dt.date.today() - dt.timedelta(days=365)).isoformat(), help="drop procedures whose deadline is older (default: a year)")
     ap.add_argument("--known", default="", help="file with lead ids (one per line) that are already in the base")
     a = ap.parse_args()
+    if a.cafile:
+        global CTX
+        CTX = ssl.create_default_context()
+        CTX.load_verify_locations(cafile=a.cafile)
     d = json.load(open(a.terms, encoding="utf-8"))
     d = d.get("data", d)
 
