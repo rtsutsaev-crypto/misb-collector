@@ -99,3 +99,21 @@ block4 = ("mkdir -p ~/pilot && cd ~/pilot\n"
           "echo '=== Запущено в фоне (около 300 слов, 20-30 минут; можно закрыть окно). Проверка: tail -n 2 ~/pilot/bidzaar_log.txt   Готово, когда команда  ls ~/pilot/round4.done  находит файл ==='\n")
 open(os.path.join(HERE, "paste_round4.txt"), "w", encoding="utf-8").write(block4)
 print(f"paste_round4.txt {len(block4)} bytes")
+
+# fifth block: repeat run for a fresh Russian server (python3 only): the whole dictionary on Bidzaar, in the background
+block5 = ("command -v python3 >/dev/null || (apt-get update && apt-get install -y python3)\n"
+          "mkdir -p ~/pilot && cd ~/pilot\n"
+          "base64 -d <<'PILOT_EOF' | gunzip > pilot.py\n" + b64lines(one) + "\nPILOT_EOF\n"
+          "base64 -d <<'PILOT_EOF' | gunzip > bidzaar_count.py\n" + b64lines(bz) + "\nPILOT_EOF\n"
+          "base64 -d <<'PILOT_EOF' | gunzip > dictionary_terms.json\n" + b64lines(terms) + "\nPILOT_EOF\n"
+          "cat > run_bidzaar.sh <<'RUN_EOF'\n"
+          "cd ~/pilot\n"
+          "python3 bidzaar_count.py --terms dictionary_terms.json > bidzaar_log.txt 2>&1\n"
+          "python3 -m zipfile -c for_claude.zip bidzaar_out.txt bidzaar_items.json bidzaar_log.txt\n"
+          "echo done > bidzaar.done\n"
+          "RUN_EOF\n"
+          "rm -f bidzaar.done for_claude.zip\n"
+          "nohup bash run_bidzaar.sh > /dev/null 2>&1 &\n"
+          "echo '=== Запущено в фоне (около 300 слов, 20-30 минут). Проверка: tail -n 2 ~/pilot/bidzaar_log.txt   Готово, когда  ls ~/pilot/bidzaar.done  находит файл; результат ~/pilot/for_claude.zip ==='\n")
+open(os.path.join(HERE, "paste_bidzaar.txt"), "w", encoding="utf-8").write(block5)
+print(f"paste_bidzaar.txt {len(block5)} bytes")
