@@ -12,6 +12,8 @@ Sources (key of the plan -> address):
   rest     ЭТП РЭСТ             GET  etp.r-est.ru/searchServlet?query={"types":[...],"title":<слово>}&limit={"min":N,"max":N+50}
   rftorgi  Торги РФ             POST lk.rftorgi.ru/api/v1/procedures/search?page=N&limit=10   тело {"name":<слово>,...}
   fedtorgi Торги Федерации      POST lk.fedtorgi.ru/api/v1/procedures/search?page=N&limit=10  (та же форма)
+  rzdm     РЖД-Медицина         GET  zakupki.rzd-medicine.ru/api/purchase/orders/compressed/main?limit=15&page=N&search=<слово>
+  lsr      ЭТП Группы ЛСР       POST zakupki.lsr.ru/ajax (форма action=get-tenders&subject=<слово>&offset=N&limit=10)
 
 --terms takes the dictionary document of the site (config/dictionary: formats, topics, exclude; groups written as comma-separated strings) or the
 flat dictionary_terms.json of ru_pilot.
@@ -149,15 +151,56 @@ def _fed(host, plat, key, prefix):
     return run
 
 
+
+# ---------------------------------------------------------------- РЖД-Медицина, электронный магазин
+def rzdm(word, page):
+    j = http("https://zakupki.rzd-medicine.ru/api/purchase/orders/compressed/main?" + urllib.parse.urlencode({"limit": 15, "page": page + 1, "search": word}))
+    rows = []
+    for x in j.get("data", []):
+        if (x.get("status") or {}).get("name") == "Отмена":
+            continue
+        co = x.get("company") or {}
+        name = co.get("name") or co.get("title") or (co.get("legal_detail") or {}).get("name") or "" if isinstance(co, dict) else ""
+        rows.append(lead(id="RZDM-" + str(x["id"]), title=(x.get("name") or "").strip(), customer=name or "РЖД-Медицина, заказчик не указан в списке",
+                         region=(x.get("regions") or {}).get("name") or "", deadline=(x.get("application_deadline") or "")[:10] or None,
+                         price=num(x.get("average_price")), law="Коммерческий", platform="РЖД-Медицина", source="РЖД-Медицина",
+                         url="https://zakupki.rzd-medicine.ru/", note=f"РЖД-Медицина, электронный магазин, № {x['id']}, статус: {(x.get('status') or {}).get('name')}",
+                         verify="Прямой адрес карточки не найден (одностраничный сайт); ссылка ведёт на главную, найти закупку по номеру."))
+    return rows, (j.get("meta") or {}).get("last_page", 1)
+
+
+# ---------------------------------------------------------------- ЛСР, закупки группы
+def lsr(word, page):
+    form = {"action": "get-tenders", "offset": page * 10, "limit": 10, "sortColumn": "startDate", "sortAsc": "false", "subject": word, "status": "", "region": "",
+            "method": "", "format": "", "startDate": "", "endDate": ""}
+    req = urllib.request.Request("https://zakupki.lsr.ru/ajax", data=urllib.parse.urlencode(form).encode(), headers={"User-Agent": UA, "X-Requested-With": "XMLHttpRequest"})
+    j = None
+    for i in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=45) as r:
+                j = json.loads(r.read().decode("utf-8", "replace")); break
+        except Exception as e:  # noqa: BLE001
+            if i == 2:
+                raise RuntimeError(f"network: {str(e)[:80]}") from e
+            time.sleep(3 * (i + 1))
+    strip = lambda s: re.sub(r"<[^>]+>", " ", s or "").strip()
+    rows = []
+    for x in j.get("Rows", []):
+        m = re.search(r'href="([^"]+)"', x.get("subject") or "")
+        rows.append(lead(id="LSR-" + strip(x.get("number")).replace("/", "-"), title=re.sub(r"\s+", " ", strip(x.get("subject"))), customer=x.get("customer") or "ЛСР",
+                         deadline=dmy(strip(x.get("endDate"))), law="Коммерческий", platform="ЭТП Группы ЛСР", source="ЭТП Группы ЛСР",
+                         url="https://zakupki.lsr.ru/" + (m.group(1) if m else "tenders"), note=f"ЭТП Группы ЛСР № {strip(x.get('number'))}, {x.get('method')}, {x.get('status')}"))
+    return rows, -(-int((j.get("Paging") or {}).get("Total") or 0) // 10)
+
 SOURCES = {"mts": (mts, 3), "rest": (rest, 3), "rftorgi": (_fed("lk.rftorgi.ru", "Торги РФ", "rftorgi", "RFT"), 5),
-           "fedtorgi": (_fed("lk.fedtorgi.ru", "Торги Федерации", "fedtorgi", "FT"), 5)}
+           "fedtorgi": (_fed("lk.fedtorgi.ru", "Торги Федерации", "fedtorgi", "FT"), 5), "rzdm": (rzdm, 4), "lsr": (lsr, 3)}
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--terms", required=True)
     ap.add_argument("--out", default="leads.json")
-    ap.add_argument("--sources", default="mts,rest,rftorgi,fedtorgi")
+    ap.add_argument("--sources", default="mts,rest,rftorgi,fedtorgi,rzdm,lsr")
     ap.add_argument("--pause", type=float, default=1.2)
     ap.add_argument("--topics", action="store_true", help="add the topic words of the dictionary to the format words")
     ap.add_argument("--limit-words", type=int, default=0, help="take only this many words (a rotation batch)")

@@ -1,0 +1,90 @@
+command -v python3 >/dev/null || (apt-get update && apt-get install -y python3)
+mkdir -p ~/pilot_new && cd ~/pilot_new
+base64 -d <<'PILOT_EOF' | gunzip > recon_sites.cjs
+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
+PILOT_EOF
+base64 -d <<'PILOT_EOF' | gunzip > russian_root.pem
+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
+PILOT_EOF
+echo '=== 1/3: браузер (node, Playwright 1.49.1, Chromium) ==='
+apt-get update -qq && apt-get install -y -qq nodejs npm ca-certificates
+(cd ~ && npm install playwright@1.49.1 && npx playwright install --with-deps chromium)
+echo '=== 2/3: корень Минцифры для сайтов с российской цепочкой (отпечаток проверяется; TLS остаётся включённым) ==='
+if openssl x509 -in russian_root.pem -noout -fingerprint -sha256 | grep -qF 'D2:6D:2D:02:31:B7:C3:9F:92:CC:73:85:12:BA:54:10:35:19:E4:40:5D:68:B5:BD:70:3E:97:88:CA:8E:CF:31'; then
+  cp russian_root.pem /usr/local/share/ca-certificates/russian_root.crt && update-ca-certificates >/dev/null 2>&1
+  export NODE_EXTRA_CA_CERTS=$HOME/pilot_new/russian_root.pem
+  mkdir -p ~/.pki/nssdb && apt-get install -y -qq libnss3-tools >/dev/null 2>&1 && { [ -f ~/.pki/nssdb/cert9.db ] || certutil -N -d sql:$HOME/.pki/nssdb --empty-password; certutil -A -d sql:$HOME/.pki/nssdb -n russian-root -t 'C,,' -i russian_root.pem; }
+else echo 'ОТПЕЧАТОК НЕ СОВПАЛ, корень не добавлен'; fi
+echo '=== 3/3: разведка ' 14' сайтов (около 15-25 минут) ==='
+export PLAYWRIGHT_MODULE=$HOME/node_modules/playwright
+node recon_sites.cjs https://agregatoreat.ru https://zakupki.tochka.com https://market.mosreg.ru https://torgi.egov66.ru https://new.etpgpb.ru https://onlinecontract.ru https://supply.evraz.com https://estp.ru https://etp-region.ru https://zakupki223.eltorg.org https://torgi223.ru https://www.etp-avtodor.ru https://etp.setonline.ru https://portal-zakupok.tatar --follow 4 --pause 3 --out recon_ru.json > recon_ru.txt 2>&1
+python3 -m zipfile -c recon_ru.zip recon_ru.json recon_ru.txt
+echo '=== ГОТОВО. Дальше: clear, затем  grep -E "^########|LIST|GATE|ERR|robots" recon_ru.txt | cut -c1-220 ; ls -la ~/pilot_new/recon_ru.zip ==='
