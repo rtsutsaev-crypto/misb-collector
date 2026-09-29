@@ -57,7 +57,8 @@ python3 probe_ru.py --only tektorg  # адреса, в названии или �
 - `gate` — экран-заслон (капча и т. п.), `blocked` — 401, 403, 404, 429, 451 или 5xx, `error` — нет ответа,
   `redirect` — переадресация без результата, `robots` — раздел закрыт в `robots.txt`.
 
-Для «оболочек» есть второй этап с браузером (по желанию): `python3 probe_ru.py --only <часть> --browser`. Ему нужны node и Playwright:
+Для «оболочек» второй этап одним блоком: `paste_browser.txt` (вставить в консоль сервера после первого прогона в той же папке `~/pilot`; ставит node, Playwright 1.49.1 и Chromium, читает только страницы класса `shell` из `result.json`, пишет `result_browser.json` и `report_browser.md`).
+Вручную то же самое (по желанию): `python3 probe_ru.py --only <часть> --browser`. Ему нужны node и Playwright:
 ```
 sudo apt-get install -y nodejs npm
 npm install playwright && npx playwright install --with-deps chromium

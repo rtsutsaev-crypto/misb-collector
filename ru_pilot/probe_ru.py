@@ -143,7 +143,7 @@ def cloud_text(c: dict) -> str:
     return "нет ответа" if not st else f"HTTP {st}"
 
 
-def browser_step(r: dict, timeout: int) -> None:
+def browser_step(r: dict, url: str, timeout: int) -> None:
     """Second stage for pages that open but show no list: read with headless Chromium (browser_lists/render_list.cjs)."""
     js = os.path.join(HERE, "..", "browser_lists", "render_list.cjs")
     if not (shutil.which("node") and os.path.exists(js)):
@@ -151,7 +151,7 @@ def browser_step(r: dict, timeout: int) -> None:
         return
     tmp = os.path.join(HERE, ".render_tmp.json")
     try:
-        subprocess.run(["node", js, r["url"], "--out", tmp], timeout=timeout + 60, check=False,
+        subprocess.run(["node", js, url, "--out", tmp], timeout=timeout + 60, check=False,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         d = json.load(open(tmp, encoding="utf-8"))
     except Exception as e:  # noqa: BLE001
@@ -186,11 +186,17 @@ def main() -> int:
     ap.add_argument("--only", default="")
     ap.add_argument("--pause", type=float, default=2.0, help="seconds between requests")
     ap.add_argument("--timeout", type=int, default=40)
+    ap.add_argument("--from-result", default="", help="take the addresses from an earlier result.json (with --classes)")
+    ap.add_argument("--classes", default="shell", help="with --from-result: which classes to re-read, comma separated")
     ap.add_argument("--browser", action="store_true", help="read pages that open without a list with headless Chromium (needs node + playwright)")
     a = ap.parse_args()
 
     src = a.urls or os.path.join(HERE, "urls.json")
-    if os.path.exists(src):
+    if a.from_result:
+        prev = json.load(open(a.from_result, encoding="utf-8"))["results"]
+        want = set(a.classes.split(","))
+        urls = [{"name": r["name"], "url": r["url"], "kinds": r["kinds"], "cloud": r["cloud"]} for r in prev if r["class"] in want]
+    elif os.path.exists(src):
         urls = json.load(open(src, encoding="utf-8"))
     elif EMBEDDED_URLS:
         import base64
@@ -226,7 +232,7 @@ def main() -> int:
             r["finalUrl"] = final if final != u["url"] else ""
             r["seconds"] = round(time.monotonic() - t0, 1)
             if a.browser and r["class"] == "shell":
-                browser_step(r, a.timeout)
+                browser_step(r, u["url"], a.timeout)
         last_t = time.monotonic()
         r.update({"name": u["name"], "url": u["url"], "kinds": u["kinds"], "cloud": u["cloud"], "robots": why})
         results.append(r)
