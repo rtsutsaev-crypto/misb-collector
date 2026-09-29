@@ -1,0 +1,3975 @@
+[
+ {
+  "name": "РТС-тендер",
+  "url": "https://www.rts-tender.ru",
+  "from": [
+   "top50",
+   "r100"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Сбер А / Сбербанк-АСТ",
+  "url": "https://www.sberbank-ast.ru",
+  "from": [
+   "top50",
+   "r100"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "ЭТП Газпромбанка",
+  "url": "https://new.etpgpb.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "ЗаказРФ",
+  "url": "https://etp.zakazrf.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "РАД / Lot-online",
+  "url": "https://gz.lot-online.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 1,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ONLINECONTRACT",
+  "url": "https://onlinecontract.ru",
+  "from": [
+   "top50",
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "ЕСТП / ESTP.RU",
+  "url": "https://estp.ru",
+  "from": [
+   "top50",
+   "r100"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 19,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ЭТПРФ",
+  "url": "https://etprf.ru",
+  "from": [
+   "top50",
+   "r100"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Торги223",
+  "url": "https://torgi223.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 64,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "КОМИТА",
+  "url": "https://etp.comita.ru",
+  "from": [
+   "top50",
+   "r100"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "Автодор — Торговая Площадка",
+  "url": "https://www.etp-avtodor.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Электронный магазин МО",
+  "url": "https://market.mosreg.ru",
+  "from": [
+   "top50",
+   "r100"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Электронный магазин СПб",
+  "url": "https://estore.gz-spb.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "ЕАТ «Берёзка»",
+  "url": "https://agregatoreat.ru",
+  "from": [
+   "top50",
+   "r100"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "captcha",
+  "proc": 0,
+  "dates": 0,
+  "cls": "gate:captcha"
+ },
+ {
+  "name": "ЭТП РЕГИОН",
+  "url": "https://etp-region.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 3,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Торги Федерации / ЕТП ТПП",
+  "url": "https://etpp.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "ELTorg / Элторг",
+  "url": "https://zakupki223.eltorg.org",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 16,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "РЭСТ",
+  "url": "https://r-est.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "ТОРГИ-ОНЛАЙН",
+  "url": "https://torgi-online.com",
+  "from": [
+   "top50"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "SETonline",
+  "url": "https://etp.setonline.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Портал закупок Татарстана",
+  "url": "https://portal-zakupok.tatar",
+  "from": [
+   "top50"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Малые закупки Самарской области",
+  "url": "https://webtorgi.samregion.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Малые закупки Ярославской области",
+  "url": "https://zakupki.yarregion.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 403,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http403"
+ },
+ {
+  "name": "РЖД-Медицина — Электронный ордер",
+  "url": "https://zakupki.rzd-medicine.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "SberB2B",
+  "url": "https://sberb2b.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Норникель — SRM",
+  "url": "https://ttk.nornickel.ru/suppliers/how-to-become-a-supplier/",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 15,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "НЛМК — SAP SRM / B2B Altis",
+  "url": "https://nlmk.com/ru/for-suppliers-and-contractors/",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 104,
+  "dates": 6,
+  "cls": "LIST"
+ },
+ {
+  "name": "ММК — ЭТП",
+  "url": "https://mmk.ru/ru/for-suppliers/auction/",
+  "from": [
+   "top50"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Акрон — ЭТП",
+  "url": "https://etp.acron.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "ФосАгро — ЭТП",
+  "url": "https://www.phosagro.ru/procurement/to-suppliers/how-to-be-a-supplier/",
+  "from": [
+   "top50"
+  ],
+  "status": 0,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "МТС — система закупок",
+  "url": "https://tenders.mts.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 26,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ЕВРАЗ — Supply",
+  "url": "https://supply.evraz.com",
+  "from": [
+   "top50"
+  ],
+  "status": 403,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http403"
+ },
+ {
+  "name": "ЛСР — закупочная площадка",
+  "url": "https://zakupki.lsr.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 6,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Аэрофлот — ЭТП",
+  "url": "https://trade.aeroflot.ru",
+  "from": [
+   "top50"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "TenderGuru / TenderDataHub",
+  "url": "https://www.tenderguru.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 159,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ГосПлан API v2",
+  "url": "https://gosplan.info/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 4,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Контур.Закупки",
+  "url": "https://zakupki.kontur.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 403,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http403"
+ },
+ {
+  "name": "Saby Торги и закупки (СБИС)",
+  "url": "https://saby.ru/tenders",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 33,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Seldon",
+  "url": "https://www.seldon.info/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 56,
+  "dates": 5,
+  "cls": "LIST"
+ },
+ {
+  "name": "Тендерплан",
+  "url": "https://tenderplan.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "TenderLand",
+  "url": "https://tenderland.ru/Home/Landing",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 14,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Awindex",
+  "url": "https://www.awindex.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 31,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Мультитендер",
+  "url": "https://multitender.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 9,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "FindTenders",
+  "url": "https://findtenders.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 101,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Tender Media",
+  "url": "https://tendermedia.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 60,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Инитпро",
+  "url": "https://zakupki.initpro.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 75,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Закупки360",
+  "url": "https://zakupki360.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "ПоискТендеров",
+  "url": "https://poisktenderov.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 24,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ТендерМонитор",
+  "url": "https://tenmon.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 62,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "I-TENDERS",
+  "url": "https://i-tenders.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 19,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "СТАР",
+  "url": "https://star-pro.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 53,
+  "dates": 16,
+  "cls": "LIST"
+ },
+ {
+  "name": "Tenderer",
+  "url": "https://www.tenderer.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 36,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Тендем",
+  "url": "https://tendem.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 33,
+  "dates": 17,
+  "cls": "LIST"
+ },
+ {
+  "name": "ЗакупкиБай",
+  "url": "https://zakupki.by/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 1,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "MarbTender",
+  "url": "https://marbtend.by/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 14,
+  "dates": 12,
+  "cls": "LIST"
+ },
+ {
+  "name": "XTenders",
+  "url": "https://xtenders.by/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 71,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "eTenders.by",
+  "url": "https://etender.by/",
+  "from": [
+   "r100"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Tenderbot Казахстан",
+  "url": "https://tenderbot.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 47,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "TenderPlus",
+  "url": "https://tenderplus.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 26,
+  "dates": 9,
+  "cls": "LIST"
+ },
+ {
+  "name": "Zakupki.kz",
+  "url": "https://zakupki.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "KazContract",
+  "url": "https://kazcontract.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 27,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Smart Tender Казахстан",
+  "url": "https://smarttender.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 38,
+  "dates": 3,
+  "cls": "LIST"
+ },
+ {
+  "name": "gettenderai",
+  "url": "https://gettenderai.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 23,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ADATA Закупки",
+  "url": "https://zakupki.adata.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 3,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "GosTender Кыргызстан",
+  "url": "https://www.gostender.kg/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Procurement.kg",
+  "url": "https://procurement.kg/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 22,
+  "dates": 25,
+  "cls": "LIST"
+ },
+ {
+  "name": "Tenders.kg",
+  "url": "https://www.tenders.kg/",
+  "from": [
+   "r100"
+  ],
+  "status": 403,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http403"
+ },
+ {
+  "name": "Tenderinfo.org",
+  "url": "https://ru.tenderinfo.org/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 12,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "TendersInfo",
+  "url": "https://www.tendersinfo.com/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "GlobalTenders",
+  "url": "https://www.globaltenders.com/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "TendersOnTime",
+  "url": "https://www.tendersontime.com/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Tender Impulse",
+  "url": "https://tenderimpulse.com/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Bid Detail",
+  "url": "https://www.biddetail.com/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Bidding Source",
+  "url": "https://www.biddingsource.com/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "dgMarket",
+  "url": "https://www.dgmarket.com/",
+  "from": [
+   "r100"
+  ],
+  "status": 403,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http403"
+ },
+ {
+  "name": "Точка Закупки",
+  "url": "https://zakupki.tochka.com/",
+  "from": [
+   "r100"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Закупки Газпрома",
+  "url": "https://zakupki.gazprom.ru/",
+  "from": [
+   "r100"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "ГИАС управления госзакупками",
+  "url": "https://gias.by/",
+  "from": [
+   "r100"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "БУТБ — закупки",
+  "url": "https://zakupki.butb.by/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 22,
+  "dates": 4,
+  "cls": "LIST"
+ },
+ {
+  "name": "Госзакупки Казахстана",
+  "url": "https://procurement.gov.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Самрук-Қазына",
+  "url": "https://zakup.sk.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "MITWORK",
+  "url": "https://mitwork.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 16,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ГИС «Реестр» (Надлок)",
+  "url": "https://reestr.nadloc.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Электронный торговый портал e-port.kz",
+  "url": "https://e-port.kz/ru/Home/General",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 2,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ETS-Tender",
+  "url": "https://www.ets-tender.kz/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 52,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "Закупки госкомпаний Кыргызстана",
+  "url": "https://zakupki.okmot.kg/popp/",
+  "from": [
+   "r100"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Kumtor Gold Company",
+  "url": "https://www.kumtor.kg/en/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "UN Global Marketplace (UNGM)",
+  "url": "https://www.ungm.org/Public/Notice",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "World Bank Procurement Notices",
+  "url": "https://projects.worldbank.org/en/projects-operations/procurement",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "EBRD ECEPP",
+  "url": "https://ecepp.ebrd.com/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 6,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Asian Development Bank",
+  "url": "https://www.adb.org/projects/tenders",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Islamic Development Bank",
+  "url": "https://www.isdb.org/project-procurement/tenders",
+  "from": [
+   "r100"
+  ],
+  "status": 0,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "GIZ",
+  "url": "https://www.giz.de/en/partner/contractor/tenders",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Helvetas Кыргызстан",
+  "url": "https://www.helvetas.org/en/kyrgyzstan/who-we-are/follow-us/press-releases",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Donors.kg",
+  "url": "https://donors.kg/ru/ob-yavleniya/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 21,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Acted",
+  "url": "https://www.acted.org/en/call-for-tenders/",
+  "from": [
+   "r100"
+  ],
+  "status": 403,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http403"
+ },
+ {
+  "name": "OSCE Procurement",
+  "url": "https://procurement.osce.org/",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "UNDP Procurement Notices",
+  "url": "https://procurement-notices.undp.org/",
+  "from": [
+   "r100"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "UNICEF Procurement",
+  "url": "https://www.unicef.org/supply/procurement-opportunities",
+  "from": [
+   "r100"
+  ],
+  "status": 404,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http404"
+ },
+ {
+  "name": "UNOPS Business Opportunities",
+  "url": "https://www.unops.org/business-opportunities",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "IOM Procurement",
+  "url": "https://www.iom.int/procurement",
+  "from": [
+   "r100"
+  ],
+  "status": 403,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http403"
+ },
+ {
+  "name": "UNESCO Procurement",
+  "url": "https://www.unesco.org/en/procurement",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "UN Women Procurement",
+  "url": "https://www.unwomen.org/en/about-us/procurement",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "DevelopmentAid",
+  "url": "https://www.developmentaid.org/tenders",
+  "from": [
+   "r100"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Devex Funding",
+  "url": "https://www.devex.com/funding-overview",
+  "from": [
+   "r100"
+  ],
+  "status": 403,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http403"
+ },
+ {
+  "name": "Найти спикера",
+  "url": "https://find-speaker.ru/spiker-tema/biznes-trener/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 3,
+  "dates": 14,
+  "cls": "LIST"
+ },
+ {
+  "name": "BestSpeakers",
+  "url": "https://bestspeakers.ru/category/zaprosy-na-spikerov/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 10,
+  "cls": "weak"
+ },
+ {
+  "name": "Планета тренингов",
+  "url": "https://planetatreningov.ru/kakie-treningi/zaprosy-na-treningi/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 6,
+  "dates": 20,
+  "cls": "LIST"
+ },
+ {
+  "name": "SpeakerMarket",
+  "url": "https://speakermarket.ru/marketplace/requests/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Требуется",
+  "url": "https://trebuetsya.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 30,
+  "cls": "weak"
+ },
+ {
+  "name": "Тренер тренеру",
+  "url": "https://t.me/edu_feed",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "СПИКЕРСКАЯ",
+  "url": "https://t.me/speakers_l",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "PR for SPEAKERS",
+  "url": "https://t.me/PR_for_SPEAKERS",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Спикерский вайб",
+  "url": "https://t.me/spikervibe",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "HRTime",
+  "url": "https://hrtime.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 4,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR Voice",
+  "url": "https://hrvoice.ru/projects",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "HRlead",
+  "url": "https://t.me/HRlead",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Digital Learning",
+  "url": "https://t.me/npsonline",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Как делать",
+  "url": "https://kakdelat.club/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR Орден",
+  "url": "https://hr-orden.talenttech.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR Summit Club",
+  "url": "https://hrsummit.ru/hrclub",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR-PM Club",
+  "url": "https://www.hrpmclub.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HRPROSVET",
+  "url": "https://hrprosvet.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Recruitment for Friends",
+  "url": "https://t.me/rff_chat",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Сообщество методистов",
+  "url": "https://t.me/newmethodologist",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Ассоциация HR-менеджеров Казахстана",
+  "url": "https://hrbp.kz/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 7,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR AREA Central Asia",
+  "url": "https://t.me/hr_central_asia",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "HR Казахстан",
+  "url": "https://t.me/hrkaz",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "HR Ассоциация Кыргызстана",
+  "url": "https://kg.linkedin.com/company/hrassociation-of-kyrgyzstan",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "HR Breakfast Live",
+  "url": "https://t.me/HRBreakfast_Live",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Методический кружок",
+  "url": "https://t.me/metod_krug",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Профи.ру",
+  "url": "https://profi.ru/buhgaltery_i_yuristy/business-trainer/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 3,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "YouDo",
+  "url": "https://youdo.com/",
+  "from": [
+   "r200"
+  ],
+  "status": 403,
+  "robots": "unknown",
+  "gate": "captcha",
+  "proc": 0,
+  "dates": 0,
+  "cls": "gate:captcha"
+ },
+ {
+  "name": "Kwork",
+  "url": "https://kwork.ru/projects",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "FL.ru",
+  "url": "https://www.fl.ru/projects/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 12,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "eTXT",
+  "url": "https://www.etxt.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 16,
+  "cls": "weak"
+ },
+ {
+  "name": "Workzilla",
+  "url": "https://work-zilla.com/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HeadHunter РФ",
+  "url": "https://hh.ru/vacancies/biznes_trener",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 4,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Rabota.by",
+  "url": "https://rabota.by/vacancies/biznes_trener",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "HH.kz",
+  "url": "https://hh.kz/vacancies/biznes_trener",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 4,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HeadHunter Кыргызстан",
+  "url": "https://headhunter.kg/vacancies/trener-po-obucheniyu-personala",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 4,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Enbek",
+  "url": "https://enbek.kz/ru",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Работа.ру",
+  "url": "https://www.rabota.ru/vacancy/catalogue",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 20,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "SuperJob",
+  "url": "https://www.superjob.ru/vakansii/pryamoj-rabotodatel-muzhchiny/menedzher-po-obucheniyu.html?geo%5Bt%5D%5B0%5D=4",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Job.kg",
+  "url": "https://t.me/jobkg_official",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "HR[хаб] вакансии",
+  "url": "https://t.me/hrhubvacancy",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "R2B.Work",
+  "url": "https://t.me/r2bwork",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Workzilla вакансии",
+  "url": "https://t.me/workzilla_vacancies",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Сетка",
+  "url": "https://setka.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "captcha",
+  "proc": 0,
+  "dates": 0,
+  "cls": "gate:captcha"
+ },
+ {
+  "name": "Stafflow: мероприятия HR",
+  "url": "https://landing.stafflow.by/events",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 11,
+  "cls": "weak"
+ },
+ {
+  "name": "СберУниверситет",
+  "url": "https://sberuniversity.ru/news/",
+  "from": [
+   "r200"
+  ],
+  "status": 403,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http403"
+ },
+ {
+  "name": "Газпром университет",
+  "url": "https://institute.gazprom.ru/about/news/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Корпоративная академия Росатома",
+  "url": "https://rosatom-academy.ru/media/novosti/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 3,
+  "dates": 20,
+  "cls": "LIST"
+ },
+ {
+  "name": "Корпоративный университет РЖД",
+  "url": "https://universitetrzd.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 1,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Академия Ростеха",
+  "url": "https://rostec.academy/hr-community",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 1,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Корпоративный университет Норникеля",
+  "url": "https://university.nornik.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Корпоративный университет СИБУРа",
+  "url": "https://www.sibur.ru/ru/corporate-university/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 14,
+  "dates": 17,
+  "cls": "LIST"
+ },
+ {
+  "name": "Корпоративный университет Татнефти",
+  "url": "https://cu.tatneft.ru/ob-universitete/struktura/otdel-obshchekorporativnih-i-upravlencheskih-kompetentsiy?lang=ru",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ЛУКОЙЛ: развитие персонала",
+  "url": "https://lukoil.ru/Sustainability/Ouremployees/PersonnelDevelopment",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 8,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "Роснефть: развитие персонала",
+  "url": "https://rosneft.ru/Development/personnel/staff_development/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "НОВАТЭК: обучение персонала",
+  "url": "https://www.novatek.ru/ru/esg/staff/training/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 1,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "АЛРОСА: корпоративное обучение",
+  "url": "https://www.alrosa.ru/press-center/news/2026/35-let-raboty-korporativnogo-universiteta-alrosa-/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 7,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Корпоративный университет НЛМК",
+  "url": "https://university.nlmk.com/news/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Корпоративный университет ТМХ",
+  "url": "https://tmh-university.ru/news/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ОМК: карьера и развитие",
+  "url": "https://omk-job.ru/office/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 1,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Вестник РусГидро",
+  "url": "https://www.vestnik-rushydro.ru/articles/news/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 30,
+  "dates": 110,
+  "cls": "LIST"
+ },
+ {
+  "name": "Россети: обучение и развитие",
+  "url": "https://www.rosseti.ru/career/training-and-development/corporate-training-centers/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Ростелеком: новости компании",
+  "url": "https://www.company.rt.ru/press/news/2026/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 8,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "X5: обучение и развитие",
+  "url": "https://esg.x5.ru/ru/programs/training/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "МТС: новости компании",
+  "url": "https://moskva.mts.ru/about/media-centr/soobshheniya-kompanii/novosti-mts-v-rossii-i-mire",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 5,
+  "cls": "weak"
+ },
+ {
+  "name": "Магнит: обучение персонала",
+  "url": "https://sr2022.magnit.com/ru/our-employees/recruitment-training/training-development",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 1,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ВТБ Образование",
+  "url": "https://www.vtbeducation.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 1,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Т-Банк: карьера и обучение",
+  "url": "https://www.tbank.ru/career/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "КазМунайГаз: новости обучения",
+  "url": "https://www.kmg.kz/ru/press-center/press-releases/187/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 3,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "Казатомпром: новости",
+  "url": "https://www.kazatomprom.kz/ru/media",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 2,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Samruk Business Academy",
+  "url": "https://sba.kz/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "QazaqGaz: развитие сотрудников",
+  "url": "https://qazaqgaz.kz/ru/socialnaya-otvetstvennost/employee-development-programs",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 6,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "KEGOC: развитие персонала",
+  "url": "https://www.kegoc.kz/ru/corporate-governance/ustoychivoe-razvitie/kadrovaya-politika/razvitie-personala/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 2,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Казахтелеком: кадровая политика",
+  "url": "https://ar2024.telecom.kz/ru/workforce-size-and-structure.html",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 11,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "Беларусбанк: новости",
+  "url": "https://t.me/belarusbank_channel",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Белагропромбанк: корпоративная лента",
+  "url": "https://by.linkedin.com/company/belagroprombank",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "МТБанк: корпоративная лента",
+  "url": "https://by.linkedin.com/company/mtbank",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "MBANK: карьера",
+  "url": "https://mbank.kg/en/career/specialist-po-obucheniyu-v-upravlenie-pryamyh-prod",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Kulikov: корпоративная лента",
+  "url": "https://kg.linkedin.com/company/kulikovteam",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "Банк Компаньон: устойчивое развитие",
+  "url": "https://www.kompanion.kg/ru/esg/",
+  "from": [
+   "r200"
+  ],
+  "status": 500,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http500"
+ },
+ {
+  "name": "HR Russia",
+  "url": "https://hrrussia.com/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "WOWHR Club",
+  "url": "https://club.wowhr.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Школа HR",
+  "url": "https://hrstudy.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR Компас",
+  "url": "https://hrcompass.ru/club_hr_compass",
+  "from": [
+   "r200"
+  ],
+  "status": 404,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http404"
+ },
+ {
+  "name": "HRnet",
+  "url": "https://hrnet.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR Leaders Community НАРК",
+  "url": "https://hrclub.nark.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR клуб АПКИТ",
+  "url": "https://apkit.ru/committees/hr-klub-apkit/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR-mnenie",
+  "url": "https://hr-mnenie.com/new-hr-club",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR-SREDA",
+  "url": "https://www.hr-sreda.com/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "HR-эксперт",
+  "url": "https://hr-expert.club/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 5,
+  "cls": "weak"
+ },
+ {
+  "name": "HR-клуб Владимир",
+  "url": "https://hrclub33.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ТТ: HR Team Talk",
+  "url": "https://t.me/hrteamtalk",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "IT HR Сибирь",
+  "url": "https://t.me/ithr_siberia",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Культура обучения и развития",
+  "url": "https://t.me/culture_tnd",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Кто взял кликер",
+  "url": "https://t.me/corp_edu",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Metodichka",
+  "url": "https://t.me/metodichka_online",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "PRO elearning",
+  "url": "https://t.me/howwelearn",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "В потоке работы L&D",
+  "url": "https://t.me/flowofwork",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Рекрутеры, HR и T&D",
+  "url": "https://t.me/hrandtd",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Ассоциация кадровиков Беларуси",
+  "url": "https://hrm.by/o-nas/assotsiatsiya-kadrovikov",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 2,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR-менеджеры Беларуси в ОК",
+  "url": "https://ok.ru/group/50493422370881",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR SCHOOL Беларусь",
+  "url": "https://hrschool.by/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR UP SKILL",
+  "url": "https://www.hrdok.kz/akademia",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 3,
+  "dates": 9,
+  "cls": "LIST"
+ },
+ {
+  "name": "HR Expert Казахстан",
+  "url": "https://hr-expert.kz/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Тренерская по продажам",
+  "url": "https://kuraj-prodaj.com/trenerskaya_po_prodazham/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "Живое обучение",
+  "url": "https://t.me/prolearning",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "LX notes",
+  "url": "https://t.me/lxnotes",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Дизайн образования",
+  "url": "https://t.me/LXD_education",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Лаборатория онлайн-обучения",
+  "url": "https://t.me/educational_lab",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Современное курсостроение",
+  "url": "https://t.me/howtomooc",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Digital Tools for Creative Education",
+  "url": "https://t.me/toolsforedutainment",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "HR за работой",
+  "url": "https://t.me/HRatWork",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "HR CODE TalentCraft",
+  "url": "https://talentcraft.kz/hrcode2026",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR Forum Бишкек",
+  "url": "https://www.hrforumasia.com/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "HR-Медиа",
+  "url": "https://hr-media.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 53,
+  "cls": "weak"
+ },
+ {
+  "name": "HR-Кухня",
+  "url": "https://www.hrkitchen.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 2,
+  "cls": "weak"
+ },
+ {
+  "name": "The HRD",
+  "url": "https://thehrd.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 4,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HR-мудрость",
+  "url": "https://hrmag.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "Управление персоналом",
+  "url": "https://www.top-personal.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Штат",
+  "url": "https://www.hrmedia.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 10,
+  "cls": "weak"
+ },
+ {
+  "name": "Конференция фасилитаторов",
+  "url": "https://facilitators.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 7,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "HREXPO PRO Людей",
+  "url": "https://ok.ru/group/70000047904913",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "МАКО",
+  "url": "https://www.makonews.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 10,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "РАБО",
+  "url": "https://rabe.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 2,
+  "dates": 24,
+  "cls": "weak"
+ },
+ {
+  "name": "Атамекен",
+  "url": "https://atameken.kz/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "ТПП Кыргызстана",
+  "url": "https://cci.kg/news/1.html",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 27,
+  "cls": "weak"
+ },
+ {
+  "name": "РСПП",
+  "url": "https://rspp.ru/events/news/nedelya-rossiyskogo-biznesa-2026-forum-kadry-budushchego-vzaimodeystvie-biznesa-i-vlasti-699ffee27600c/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "ОПОРА России: образование",
+  "url": "https://opora.ru/komitety-i-komissii/komitety/predprinimatelskomu-obrazovaniyu/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 1,
+  "dates": 2,
+  "cls": "weak"
+ },
+ {
+  "name": "Деловая Россия",
+  "url": "https://www.deloros.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 1,
+  "dates": 87,
+  "cls": "weak"
+ },
+ {
+  "name": "CNews",
+  "url": "https://www.cnews.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 2,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "TAdviser",
+  "url": "https://www.tadviser.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 404,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http404"
+ },
+ {
+  "name": "vc.ru",
+  "url": "https://vc.ru/hr",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "TenChat",
+  "url": "https://tenchat.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 18,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Habr: корпоративные блоги",
+  "url": "https://habr.com/ru/hubs/hr_management/articles/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "РБК Компании",
+  "url": "https://companies.rbc.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 401,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http401"
+ },
+ {
+  "name": "Ведомости",
+  "url": "https://www.vedomosti.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 1,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Коммерсантъ",
+  "url": "https://www.kommersant.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "Эксперт",
+  "url": "https://expert.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Управление производством",
+  "url": "https://up-pro.ru/library/personnel_management/personnel_training/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "CFO Russia",
+  "url": "https://www.cfo-russia.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 12,
+  "dates": 26,
+  "cls": "LIST"
+ },
+ {
+  "name": "IT Week",
+  "url": "https://www.itweek.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 7,
+  "cls": "weak"
+ },
+ {
+  "name": "Новости IT-канала",
+  "url": "https://www.novostiitkanala.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Skillbox Media: корпоративное обучение",
+  "url": "https://skillbox.ru/media/education/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Теории и практики",
+  "url": "https://theoryandpractice.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "eLearning center: кейсы и новости",
+  "url": "https://e-learningcenter.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "iSpring: корпоративные кейсы",
+  "url": "https://www.ispring.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Mirapolis: проекты клиентов",
+  "url": "https://www.mirapolis.ru/clients/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Websoft: новости проектов",
+  "url": "https://www.websoft.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Кампус: кейсы клиентов",
+  "url": "https://t.me/kampus_team",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Unicraft: корпоративные кейсы",
+  "url": "https://www.unicraft.org/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 2,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "Teachbase: кейсы клиентов",
+  "url": "https://teachbase.ru/cases/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Motivity: проекты клиентов",
+  "url": "https://motivity.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "Про бизнес",
+  "url": "https://probusiness.io/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 8,
+  "cls": "weak"
+ },
+ {
+  "name": "Kapital.kz: обучение сотрудников",
+  "url": "https://kapital.kz/info/obucheniye-sotrudnikov",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 17,
+  "cls": "weak"
+ },
+ {
+  "name": "Курсив Казахстан",
+  "url": "https://kz.kursiv.media/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Tazabek",
+  "url": "https://www.tazabek.kg/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 2,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Акчабар",
+  "url": "https://www.akchabar.kg/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 24,
+  "cls": "weak"
+ },
+ {
+  "name": "Banks.kg",
+  "url": "https://banks.kg/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 64,
+  "cls": "weak"
+ },
+ {
+  "name": "WeProject",
+  "url": "https://weproject.media/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "ТПП РФ",
+  "url": "https://tpprf.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 403,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "http403"
+ },
+ {
+  "name": "Московская ТПП",
+  "url": "https://mostpp.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 6,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "ТПП Санкт-Петербурга",
+  "url": "https://spbtpp.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "Уральская ТПП",
+  "url": "https://uralcci.com/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 26,
+  "dates": 19,
+  "cls": "LIST"
+ },
+ {
+  "name": "БелТПП",
+  "url": "https://www.cci.by/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 13,
+  "dates": 4,
+  "cls": "LIST"
+ },
+ {
+  "name": "Ассоциация европейского бизнеса",
+  "url": "https://aebrus.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 6,
+  "cls": "weak"
+ },
+ {
+  "name": "AmCham Russia",
+  "url": "https://amcham.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "РУССОФТ",
+  "url": "https://russoft.org/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "АКИТ",
+  "url": "https://akit.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "РАЭК",
+  "url": "https://raec.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 2,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "АКМР",
+  "url": "https://corpmedia.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 19,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "РАСО",
+  "url": "https://raso.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "АКАР",
+  "url": "https://www.akarussia.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 10,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "РАМУ",
+  "url": "https://ramu.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 2,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "АКПП",
+  "url": "https://akpp.top/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "СОВНЕТ",
+  "url": "https://sovnet.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 7,
+  "dates": 3,
+  "cls": "LIST"
+ },
+ {
+  "name": "Роскачество",
+  "url": "https://roskachestvo.gov.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 8,
+  "dates": 1,
+  "cls": "weak"
+ },
+ {
+  "name": "Люди Бизнеса: вакансии",
+  "url": "https://ludi-biznesa.ru/vakansii",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "KAZENERGY: человеческий капитал",
+  "url": "https://www.kazenergy.com/operation/human-capital/educational-program/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 711,
+  "dates": 346,
+  "cls": "LIST"
+ },
+ {
+  "name": "Международный деловой совет КР",
+  "url": "https://www.ibc.kg/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 6,
+  "cls": "weak"
+ },
+ {
+  "name": "AmCham Кыргызстан",
+  "url": "https://www.amcham.kg/media-centre/amcham-news/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "AmCham Kazakhstan",
+  "url": "https://amcham.kz/news/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "EUROBAK",
+  "url": "https://eurobak.kz/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Astana Hub",
+  "url": "https://astanahub.com/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 2,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Парк высоких технологий Кыргызстана",
+  "url": "https://htp.kg/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Парк высоких технологий Беларусь",
+  "url": "https://www.park.by/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Бизнес-союз предпринимателей и нанимателей Беларуси",
+  "url": "https://bspn.by/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "Минский столичный союз предпринимателей",
+  "url": "https://allminsk.biz/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 2,
+  "dates": 9,
+  "cls": "weak"
+ },
+ {
+  "name": "Российский институт директоров",
+  "url": "https://rid.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 9,
+  "cls": "weak"
+ },
+ {
+  "name": "Ассоциация менеджеров",
+  "url": "https://amr.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "Kazakhstan HR Forum",
+  "url": "https://hrf.kgforum.kz/hr-club",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "empty"
+ },
+ {
+  "name": "BICC International",
+  "url": "https://www.bicc.co/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "HR Portal",
+  "url": "https://hr-portal.ru/forum",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 1,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Executive.ru",
+  "url": "https://www.e-xecutive.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "disallowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "robots"
+ },
+ {
+  "name": "Клуб продажников",
+  "url": "https://www.prodaznik.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "BizLog: обучение продажам",
+  "url": "https://forum.bizlog.ru/forum74.html",
+  "from": [
+   "r200"
+  ],
+  "status": 0,
+  "robots": "unknown",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "noread"
+ },
+ {
+  "name": "PartnerSearch",
+  "url": "https://www.partnersearch.ru/business/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 9,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Ассоциация бизнес-тренеров",
+  "url": "https://biznes-trainer.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 2,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "TnD Association",
+  "url": "https://www.tndassociation.com/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Ассоциация фасилитаторов АРТА",
+  "url": "https://www.artatraining.com/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 0,
+  "dates": 0,
+  "cls": "weak"
+ },
+ {
+  "name": "Ассоциация HRASC",
+  "url": "https://hrasc.ru/",
+  "from": [
+   "r200"
+  ],
+  "status": 200,
+  "robots": "allowed",
+  "gate": "",
+  "proc": 1,
+  "dates": 3,
+  "cls": "weak"
+ }
+]
