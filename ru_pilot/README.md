@@ -57,8 +57,12 @@ python3 probe_ru.py --only tektorg  # адреса, в названии или �
 - `gate` — экран-заслон (капча и т. п.), `blocked` — 401, 403, 404, 429, 451 или 5xx, `error` — нет ответа,
   `redirect` — переадресация без результата, `robots` — раздел закрыт в `robots.txt`.
 
-Для «оболочек» второй этап одним блоком: `paste_browser.txt` (вставить в консоль сервера после первого прогона в той же папке `~/pilot`; ставит node, Playwright 1.49.1 и Chromium, читает только страницы класса `shell` из `result.json`, пишет `result_browser.json` и `report_browser.md`).
-Вручную то же самое (по желанию): `python3 probe_ru.py --only <часть> --browser`. Ему нужны node и Playwright:
+Второй этап одним блоком: `paste_round2.txt` (вставить в консоль сервера после первого прогона в той же папке `~/pilot`, идёт 20–40 минут).
+Он делает три вещи: (1) повторяет адреса, которые упали на ошибке сертификата (у российских площадок цепочка Минцифры, которой нет в Ubuntu):
+корень «Russian Trusted Root CA» добавляется только для скрипта и сверяется по отпечатку `D2:6D:2D:02:...:CF:31`, проверка TLS остаётся включённой;
+(2) печатает начало страницы СИНАПС (`peek_synapsenet.txt`); (3) ставит node, Playwright 1.49.1 и Chromium и читает браузером страницы класса `shell`.
+После него: `clear`, затем `python3 pilot.py --summary result_ca.json result_browser.json result_ca_browser.json ; cat peek_synapsenet.txt` — этот вывод копируется в чат.
+Вручную то же самое (по желанию):
 ```
 sudo apt-get install -y nodejs npm
 npm install playwright && npx playwright install --with-deps chromium

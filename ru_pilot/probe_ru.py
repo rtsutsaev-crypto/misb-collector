@@ -37,6 +37,7 @@ import subprocess
 import shutil
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+SSL_CTX = None  # set by --cafile: default trust store plus one extra root; verification stays on
 EMBEDDED_URLS = ""  # zlib+base64 of urls.json, filled in by make_one.py for the single-file variant
 UA = "misb-collector-pilot/1.0 (research of public procurement lists; single request per page; contact: MISB)"
 
@@ -53,7 +54,10 @@ NOISE = re.compile(r"(поставк|ремонт|аренд|уборк|пита
 
 def fetch(url: str, timeout: int) -> tuple[int, str, str, str]:
     """-> (status, final_url, text, error). status 0 = no answer. Cookies of one request only, TLS verification on."""
-    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+    handlers = [urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar())]
+    if SSL_CTX is not None:
+        handlers.append(urllib.request.HTTPSHandler(context=SSL_CTX))
+    opener = urllib.request.build_opener(*handlers)
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html,application/json;q=0.9,*/*;q=0.5",
                                                "Accept-Language": "ru,en;q=0.5", "Accept-Encoding": "gzip"})
     try:
@@ -188,14 +192,34 @@ def main() -> int:
     ap.add_argument("--timeout", type=int, default=40)
     ap.add_argument("--from-result", default="", help="take the addresses from an earlier result.json (with --classes)")
     ap.add_argument("--classes", default="shell", help="with --from-result: which classes to re-read, comma separated")
+    ap.add_argument("--error-contains", default="", help="with --from-result: only rows whose error text contains this")
+    ap.add_argument("--cafile", default="", help="extra root certificate (PEM) added to the trust store; verification stays on")
+    ap.add_argument("--summary", nargs="+", default=[], help="print a compact summary of result files and exit")
+    ap.add_argument("--peek", default="", help="print the first text lines of one page (robots.txt is checked) and exit")
     ap.add_argument("--browser", action="store_true", help="read pages that open without a list with headless Chromium (needs node + playwright)")
     a = ap.parse_args()
+    if a.summary:
+        return print_files(a.summary)
+    if a.cafile:
+        global SSL_CTX
+        SSL_CTX = ssl.create_default_context()
+        SSL_CTX.load_verify_locations(cafile=a.cafile)
+    if a.peek:
+        ok, why = robots_allows(a.peek, a.timeout)
+        print(f"===== {a.peek} ({why}) =====")
+        if ok:
+            st, _, text, err = fetch(a.peek, a.timeout)
+            print(f"HTTP {st} {err}")
+            lines = [re.sub(r"\s+", " ", ln).strip() for ln in strip_html(text).split("\n")]
+            for ln in [x for x in lines if len(x) >= 30][:45]:
+                print("-", ln[:220])
+        return 0
 
     src = a.urls or os.path.join(HERE, "urls.json")
     if a.from_result:
         prev = json.load(open(a.from_result, encoding="utf-8"))["results"]
         want = set(a.classes.split(","))
-        urls = [{"name": r["name"], "url": r["url"], "kinds": r["kinds"], "cloud": r["cloud"]} for r in prev if r["class"] in want]
+        urls = [{"name": r["name"], "url": r["url"], "kinds": r["kinds"], "cloud": r["cloud"]} for r in prev if r["class"] in want and a.error_contains in r.get("error", "")]
     elif os.path.exists(src):
         urls = json.load(open(src, encoding="utf-8"))
     elif EMBEDDED_URLS:
@@ -242,6 +266,26 @@ def main() -> int:
     write_report(a.report, env, finished, results)
     print_summary(results)
     print(f"\nDone: {a.out} and {a.report}. Send report.md and result.json back (or copy the text above).")
+    return 0
+
+
+def print_files(paths: list) -> int:
+    """Compact text for pasting into the chat: one line per address, plus sample lines of pages with a list."""
+    for pth in paths:
+        if not os.path.exists(pth):
+            continue
+        data = json.load(open(pth, encoding="utf-8"))
+        res = data["results"]
+        print(f"\n===== {os.path.basename(pth)}: {len(res)} адресов =====")
+        for r in res:
+            err = (r.get("error") or "")[:60]
+            extra = f" proc={r.get('procWords', 0)} dates={r.get('dates', 0)} rows={r.get('rows', '-')}" if r["class"] in ("list", "shell") else ""
+            print(f"{r['class']:8} {r['status']:>3} train={r['trainLines']:<3}{extra} | {r['name'][:38]} | {r['url'][:70]} | {err}{' | browser=' + str(r['browser']) if r.get('browser') else ''}")
+        for r in res:
+            if r["class"] == "list" and r["samples"]:
+                print(f"-- {r['name']}")
+                for sline in r["samples"][:8]:
+                    print(f"   {sline[:200]}")
     return 0
 
 
