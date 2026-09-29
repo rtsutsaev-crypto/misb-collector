@@ -378,7 +378,7 @@ input[type=file]{max-width:100%}
   <section id="tab-sources" hidden>
     <section class="run" id="runPanel" hidden aria-live="polite"></section>
     <div class="notice prose">
-      <p><b>Как читать статусы.</b> «Работает» — сайт читается автоматически и дал лиды. «Нужен ключ» — есть официальный канал (токен, API), но ключа пока нет. «Закрыт» — площадка запрещает автоматическое чтение; её лоты частично видны через агрегаторы. Статус проверяется при каждом сборе.</p>
+      <p><b>Как читать статусы.</b> «Работает» — сайт читается автоматически и дал лиды. «Нужен ключ» — есть официальный канал (токен, API), но ключа пока нет. «Закрыт» — площадка запрещает автоматическое чтение; её лоты частично видны через агрегаторы. «Ждёт первого сбора» — источник добавлен в план, но ещё не запускался: рабочим он считается после запуска, давшего строки. Статус проверяется при каждом сборе.</p>
     </div>
     <div class="srcs" id="srcs"></div>
     <h3 style="margin:26px 0 8px;font-size:15px">Реестр источников МИСБ (пакет от 29.09.2026)</h3>
@@ -498,7 +498,7 @@ function scoreLead(l,h){const C=S.config;if(!C)return{fit:0,parts:[]};const t=pr
   if(l.law==="223-ФЗ"||l.law==="Коммерческий"||/(^|[^а-яё])(пао|ао|ооо|зао|оао)([^а-яё]|$)/.test(cust))parts.push(["Корпоративный заказчик",C.corpBonus]);
   if(h)parts.push([`Группа: ${h.root}`,C.holdingBonus]);
   const p=isRub(l)?l.price:null;if(p){for(const[th,w]of C.price){if(p>=th){parts.push([`НМЦ от ${fmtMoney(th)} ₽`,w]);break}}if(p<C.smallPrice[0])parts.push(["Небольшой лот",C.smallPrice[1]])}
-  const dl=daysLeft(l.deadline);if(dl!=null){if(dl>=0)parts.push(["Приём заявок идёт",C.activeBonus]);else parts.push(["Приём завершён",C.archivePenalty])}
+  const dl=l.cancelled?-1:daysLeft(l.deadline);if(dl!=null){if(dl>=0)parts.push(["Приём заявок идёт",C.activeBonus]);else parts.push([l.cancelled?"Закупка отменена":"Приём завершён",C.archivePenalty])}
   const V=C.v2||{};const ctx=l._ctx||{};
   if(V.repeatBonus&&ctx.repeat)parts.push([`Повторный покупатель (${ctx.repeat} закуп.)`,V.repeatBonus]);
   if(V.programBonus&&new RegExp(V.programRe||"(цикл|сери[ия]|программ|курсов|ежегодн|2027|договоров на проведение)","i").test(t))parts.push(["Программа или серия занятий",V.programBonus]);
@@ -581,7 +581,7 @@ function renderReg(){const box=$("#regRows");if(!box)return;const R=S.reg||[];co
       el("td",{style:"max-width:28ch"},el("div",{style:"font-size:12.5px",text:probeText(p.url)}),p.rss?el("div",{class:"muted",style:"font-size:12px",text:"RSS: "+probeText(p.rss)}):null,p.api?el("div",{class:"muted",style:"font-size:12px",text:"API/документация: "+probeText(p.api)}):null),
       el("td",{},el("span",{class:`pill rs-${rt.state==="success"?"ok":rt.state==="partial"||rt.state==="stale"?"partial":rt.state==="not_connected"||rt.state==="never_run"?"wait":"failed"}`,text:CONN_LABEL[rt.state]}),rt.docs.length?el("div",{class:"muted",style:"font-size:12px",text:rt.docs.map(d=>d.name).slice(0,3).join("; ")+(rt.docs.length>3?" …":"")}):el("div",{class:"muted",style:"font-size:12px",text:r.match&&r.match.status==="candidate"?"домен совпал, раздел не тот — не склеено":"адаптера нет"})),
       el("td",{style:"font-size:12.5px"},el("div",{text:"попытка: "+(lastA?fmtDate(lastA):"—")}),el("div",{text:"успех: "+(rt.ok?fmtDate(rt.ok.date):"—")})),
-      el("td",{style:"max-width:36ch;font-size:12.5px"},rt.last?el("div",{text:`найдено ${rt.last.found??"—"}, новых ${rt.last.fresh??"—"}, обновлённых — не ведётся`}):el("div",{class:"muted",text:"сбор не запускался"}),errs.length?el("div",{class:"muted",text:"Ошибка/ограничение: "+errs[0].slice(0,160)}):null,el("div",{class:"muted",text:"Что нужно: "+(rs.next_action_text||"—")})))});
+      el("td",{style:"max-width:36ch;font-size:12.5px"},rt.last?el("div",{text:`найдено ${rt.last.found??"—"}, новых ${rt.last.fresh??"—"}, обновлённых ${rt.last.updated??"не ведётся"}`}):el("div",{class:"muted",text:"сбор не запускался"}),errs.length?el("div",{class:"muted",text:"Ошибка/ограничение: "+errs[0].slice(0,160)}):null,el("div",{class:"muted",text:"Что нужно: "+(rs.next_action_text||"—")})))});
   box.replaceChildren(...(tr.length?tr:[el("tr",{},el("td",{colspan:"7",class:"empty",text:"Под фильтр ничего не подходит."}))]))}
 ["#rgQ","#rgCountry","#rgType","#rgState"].forEach(id=>$(id)&&$(id).addEventListener(id==="#rgQ"?"input":"change",()=>renderReg()));
 
@@ -598,16 +598,17 @@ function ccOf(l){if(l.country)return String(l.country).toUpperCase();return isKZ
 function countryOk(l){const c=S.filters.country||"ru";if(c==="all")return true;return (l.cc||ccOf(l))===c.toUpperCase()}
 function mergeHoldings(){const R=S.holdingsRu,K=S.holdingsKz;if(!R&&!K){S.holdings=null;return}S.holdings={...(R||{}),groups:[...((R&&R.groups)||[]),...((K&&K.groups)||[])],note:((R&&R.note)||"")+(K?" "+K.note:"")}}
 function withCustomer(r){const m=/^ИНН\s*(\d{10,12})$/.exec(String(r.customer||"").trim());if(!m)return r;const c=S.customers&&S.customers[m[1]];if(c&&c.name)return {...r,customer:c.name,customerInn:m[1],contacts:r.contacts||c.contacts||null};const o=S.own&&S.own[m[1]];if(o&&o.name)return {...r,customer:o.name,customerInn:m[1]};return r}
+function applyUpdate(r,k){const u=S.updates&&S.updates[k];if(!u)return r;const o={...r};if(u.deadline&&/^\d{4}-\d{2}-\d{2}$/.test(u.deadline)){o.deadlineWas=r.deadline||"";o.deadline=u.deadline}if(u.cancelled)o.cancelled=true;o.changedAt=u.changedAt||"";o.upd=u;return o}
 function recompute(){
   const seen=new Map();const out=[];const custN={};
   for(const set of S.sets)for(const raw of (set.data.leads||[])){const c=normCust(raw.customer);if(c)custN[c]=(custN[c]||0)+1}
   for(const set of S.sets){for(const raw00 of (set.data.leads||[])){const k=keyOf(raw00.id||(raw00.url)||(raw00.title+"|"+raw00.customer));if(seen.has(k))continue;seen.set(k,1);
-    const raw0=withCustomer(raw00);
+    const raw0=applyUpdate(withCustomer(raw00),k);
     const txt=(raw0.title||"")+(raw0.topic?" "+raw0.topic:"");const dirs=dirsOf(txt);const forms=formsOf(txt);const rc=custN[normCust(raw00.customer)]||0;
     const raw={...raw0,_ctx:{repeat:rc>1?rc:0,mandatory:dirs.includes(MAND),dirs,forms}};
     const h=matchHolding((raw.customer||"")+" "+(raw.title||""));const sc=scoreLead(raw,h);delete raw._ctx;raw.dirs=dirs;raw.forms=forms;raw.mandatory=dirs.includes(MAND);
     const fbs=S.feedback.filter(f=>f.leadKey===k&&f.rating);const avg=fbs.length?fbs.reduce((s,f)=>s+f.rating,0)/fbs.length:null;
-    out.push({...raw,key:k,set:set.id,holding:h?h.root:"",company:h&&h.depth>1?h.node:"",hpath:h?h.path:null,cat:catOf(raw.title||""),fit:sc.fit,parts:sc.parts,rating:avg,ratingN:fbs.length,status:(S.state[k]?.status)||"new",lossReason:S.state[k]?.lossReason||"",dl:daysLeft(raw.deadline)});const L0=out[out.length-1];L0.flags=flagsOf(L0);L0.claim=claimOf(L0);if(!L0.holding&&L0.claim&&L0.claim.st==="egrul"){L0.holding=L0.claim.g;L0.hpath=[L0.claim.g]}}}
+    out.push({...raw,key:k,set:set.id,holding:h?h.root:"",company:h&&h.depth>1?h.node:"",hpath:h?h.path:null,cat:catOf(raw.title||""),fit:sc.fit,parts:sc.parts,rating:avg,ratingN:fbs.length,status:(S.state[k]?.status)||"new",lossReason:S.state[k]?.lossReason||"",dl:raw.cancelled?-1:daysLeft(raw.deadline)});const L0=out[out.length-1];L0.flags=flagsOf(L0);L0.claim=claimOf(L0);if(!L0.holding&&L0.claim&&L0.claim.st==="egrul"){L0.holding=L0.claim.g;L0.hpath=[L0.claim.g]}}}
   for(const l of out){const g=l.holding||(l.claim&&l.claim.g)||"";const k=g?groupKey(g):"";l.gk=k;l.seg=k&&S.seg&&S.seg.byInn[k]?S.seg.byInn[k].s:"";l.cc=ccOf(l);const c=classifyLead(l);l.cls=c.out;l.why=c.why;l.hits=c.hits}
   LEADS=out;
 }
@@ -668,7 +669,7 @@ function renderLeads(){const list=sorted(filtered());const pages=Math.max(1,Math
   const rows=slice.map(l=>{const dl=l.dl;const dlc=dl==null?"":dl<0?"closed":dl<=3?"soon":"open";
     return el("tr",{tabindex:"0",onclick:()=>openLead(l.key),onkeydown:e=>{if(e.key==="Enter")openLead(l.key)}},
       el("td",{class:"num"},el("span",{class:`pill fit ${grade(l.fit)}`,text:l.fit})),
-      el("td",{},el("div",{class:"t-title",text:l.title}),el("div",{class:"t-sub"},el("span",{class:"chip",text:l.cat}),...l.dirs.slice(0,2).map(d=>el("span",{class:d===MAND?"chip mand":"chip dir",text:d})),l.law?el("span",{class:"chip",text:l.law}):null,l.cc&&l.cc!=="RU"?el("span",{class:"chip",text:COUNTRY_NAME[l.cc]||l.cc}):null,l.cls==="needs_review"?el("span",{class:"chip flag",title:l.why.join("; "),text:"проверить"}):null,l.cls==="excluded"?el("span",{class:"chip mand",title:l.why.join("; "),text:"исключено по профилю"}):null,...l.flags.filter(x=>x!=="mandatory").map(x=>el("span",{class:`chip flag ${x}`,text:FLAG_LABEL[x]})),l.claim&&!l.holding?el("span",{class:`chip claim c-${l.claim.st}`,title:`Группа по справочнику: ${CLAIM_LABEL[l.claim.st]||l.claim.st}; совпадение по ${l.claim.by}`,text:`${l.claim.g} · ${l.claim.st==="claimed"?"заявл.":CLAIM_LABEL[l.claim.st]||l.claim.st}`}):null,el("span",{text:srcNameL(l)}))),
+      el("td",{},el("div",{class:"t-title",text:l.title}),el("div",{class:"t-sub"},el("span",{class:"chip",text:l.cat}),...l.dirs.slice(0,2).map(d=>el("span",{class:d===MAND?"chip mand":"chip dir",text:d})),l.law?el("span",{class:"chip",text:l.law}):null,l.cc&&l.cc!=="RU"?el("span",{class:"chip",text:COUNTRY_NAME[l.cc]||l.cc}):null,l.cls==="needs_review"?el("span",{class:"chip flag",title:l.why.join("; "),text:"проверить"}):null,l.cancelled?el("span",{class:"chip mand",text:"отменена"}):null,l.deadlineWas!==undefined&&l.changedAt?el("span",{class:"chip flag",title:`срок изменён ${fmtDate(l.changedAt)}: был ${l.deadlineWas?fmtDate(l.deadlineWas):"не указан"}`,text:"срок изменён"}):null,l.cls==="excluded"?el("span",{class:"chip mand",title:l.why.join("; "),text:"исключено по профилю"}):null,...l.flags.filter(x=>x!=="mandatory").map(x=>el("span",{class:`chip flag ${x}`,text:FLAG_LABEL[x]})),l.claim&&!l.holding?el("span",{class:`chip claim c-${l.claim.st}`,title:`Группа по справочнику: ${CLAIM_LABEL[l.claim.st]||l.claim.st}; совпадение по ${l.claim.by}`,text:`${l.claim.g} · ${l.claim.st==="claimed"?"заявл.":CLAIM_LABEL[l.claim.st]||l.claim.st}`}):null,el("span",{text:srcNameL(l)}))),
       el("td",{class:"cust"},l.customer?el("span",{text:l.customer}):el("span",{class:"muted",text:"не указан в источнике"}),l.holding?el("small",{text:l.company?`${l.holding} → ${l.company}`:l.holding}):null),
       el("td",{text:l.region||"—"}),
       el("td",{class:"num",text:moneyOf(l)}),
@@ -728,7 +729,7 @@ function renderDrawer(){const l=LEADS.find(x=>x.key===S.openKey);if(!l){closeDra
       el("dt",{text:"Причина отбора"}),el("dd",{text:reasonText(l)}),
       el("dt",{text:"Регион"}),el("dd",{text:l.region||"—"}),
       el("dt",{text:"НМЦ"}),el("dd",{text:l.price?moneyOf(l,true):"не указана"}),l.cc&&l.cc!=="RU"?el("dt",{text:"Страна"}):null,l.cc&&l.cc!=="RU"?el("dd",{text:COUNTRY_NAME[l.cc]||l.cc}):null,l.seg?el("dt",{text:"Отрасль группы"}):null,l.seg?el("dd",{text:l.seg}):null,
-      el("dt",{text:"Срок подачи"}),el("dd",{text:fmtDate(l.deadline)+(l.dl==null?"":l.dl<0?" · приём завершён":` · осталось ${l.dl} дн.`)}),
+      el("dt",{text:"Срок подачи"}),el("dd",{text:fmtDate(l.deadline)+(l.dl==null?"":l.dl<0?" · приём завершён":` · осталось ${l.dl} дн.`)+(l.deadlineWas!==undefined&&l.changedAt?` · изменён ${fmtDate(l.changedAt)}, был ${l.deadlineWas?fmtDate(l.deadlineWas):"не указан"}`:"")+(l.cancelled?" · закупка отменена":"")}),l.upd&&(l.upd.urls||[]).filter(u=>u&&u!==l.url).length?el("dt",{text:"Другие ссылки"}):null,l.upd&&(l.upd.urls||[]).filter(u=>u&&u!==l.url).length?el("dd",{class:"row"},...l.upd.urls.filter(u=>u&&u!==l.url).slice(0,8).map(u=>el("a",{href:u,target:"_blank",rel:"noopener",text:u.replace(/^https?:\/\//,"").slice(0,50)}))):null,
       el("dt",{text:"Номер"}),el("dd",{style:"font-family:var(--mono)",text:l.id||"—"}),
       el("dt",{text:"Источник"}),el("dd",{},l.url?el("a",{href:l.url,target:"_blank",rel:"noopener"},srcName(l.source)+" — открыть карточку"):srcName(l.source)),
       l.platform?el("dt",{text:"Площадка"}):null,l.platform?el("dd",{text:l.platform}):null,
@@ -950,14 +951,14 @@ function renderRun(){const P=S.progress;const box=$("#runPanel");const btn=$("#r
   const stage=el("div",{class:"run-stage"},el("span",{text:stageText}),el("b",{text:`${pct}%`}));
   const list=srcs.length?el("div",{style:"margin-top:10px"},...srcs.map(x=>{const pl=x.planned||0,dn=x.done||0;return el("div",{class:"rsrc"},
       el("div",{},el("b",{text:x.name||x.key})),el("div",{class:"m",text:x.method||""}),
-      el("div",{class:"n"},el("div",{class:"mini"},el("i",{style:`width:${pl?Math.round(100*dn/pl):0}%`})),el("span",{text:`стр. ${dn} из ${pl} · строк ${x.found||0} · новых ${x.fresh||0}`}),x.note?el("span",{style:"font-family:var(--sans)",text:x.note}):null),
+      el("div",{class:"n"},el("div",{class:"mini"},el("i",{style:`width:${pl?Math.round(100*dn/pl):0}%`})),el("span",{text:`стр. ${dn} из ${pl} · строк ${x.found||0} · новых ${x.fresh||0}${x.updated?` · обновлено ${x.updated}`:""}`}),x.note?el("span",{style:"font-family:var(--sans)",text:x.note}):null),
       el("span",{class:`pill rs-${x.status||"wait"}`,text:RS_LABEL[x.status]||x.status||""}))})):null;
   const wasOpen=box.querySelector("details")?.open;
   const lg=log.length?el("details",{},el("summary",{text:`Журнал (${log.length})`}),el("ul",{class:"runlog"},...log.map(r=>el("li",{},el("time",{text:hhmm(r.at)}),document.createTextNode(r.text||""))))):null;
   if(lg)lg.open=wasOpen??busy;
-  const res=P.result&&st==="done"?el("div",{class:"run-note",text:`Итог: новых лидов ${P.result.new??0}, из них с открытым приёмом ${P.result.active??0}. Всего в базе ${P.result.total??LEADS.length}.`}):null;
+  const res=P.result&&st==="done"?el("div",{class:"run-note",text:`Итог: новых лидов ${P.result.new??0}, из них с открытым приёмом ${P.result.active??0}${P.result.updated!=null?`, изменился срок или отмена у ${P.result.updated}`:""}. Всего в базе ${P.result.total??LEADS.length}.`}):null;
   const hist=(S.runs||[]).length?el("div",{class:"run-hist",text:"Прошлые запуски: "+S.runs.slice(0,5).map(r=>`${fmtDate(String(r.startedAt||"").slice(0,10))} ${hhmm(r.startedAt)} — новых ${r.new??0}`).join("; ")}):null;
-  const how=el("div",{class:"run-note",text:"Как это работает: кнопка запускает облачный сеанс Claude. Он проходит все источники: читает открытые разделы РосТендера, КомТендера, СИНАПСа, B2B-Center и Бикотендера, запрашивает ЕИС через ГосПлан, ищет свежие лоты крупных холдингов и проверяет, не открылись ли закрытые площадки. Уже известные закупки отбрасываются, новые записываются в базу. Ход работы приходит сюда в реальном времени; полный запуск занимает 30–45 минут, в основном из-за пауз между запросами к ГосПлану."});
+  const how=el("div",{class:"run-note",text:"Как это работает: кнопка запускает облачный сеанс Claude. Он проходит все источники: читает открытые разделы РосТендера, КомТендера, СИНАПСа, B2B-Center и Бикотендера, запрашивает ЕИС через ГосПлан, ищет свежие лоты крупных холдингов и проверяет, не открылись ли закрытые площадки. Уже известные закупки отбрасываются, новые записываются в базу. Ход работы приходит сюда в реальном времени; полный запуск занимает 20–60 минут, в основном из-за пауз между запросами."});
   const errNote=S.fireError?el("div",{class:"run-err",text:S.fireError}):null;
   box.replaceChildren(...[head,bar,stage,errNote,list,res,lg,hist,how].filter(Boolean));
 }
@@ -1118,6 +1119,7 @@ renderAll();
   db.doc("orgdir/catalog-verify").onSnapshot(d=>{S.catVerify=d.exists?d.data():null;renderCatalog()},()=>{});
   db.collection("customers").onSnapshot(s=>{const m={};s.docs.forEach(d=>{m[d.id]=d.data()});S.customers=m;schedule()},()=>{});
   db.doc("meta/holdings-stats").onSnapshot(d=>{S.hstats=d.exists?d.data():null;schedule()},()=>{});
+  db.collection("leadupdates").onSnapshot(s=>{const m={};s.docs.forEach(d=>{m[d.id]=d.data()});S.updates=m;schedule()},()=>{});
   db.collection("winners").onSnapshot(s=>{S.winners=s.docs.map(d=>d.data());schedule()},()=>{});
   db.collection("state").onSnapshot(s=>{S.state=Object.fromEntries(s.docs.map(d=>[d.id,d.data()]));schedule()},err);
   db.collection("feedback").onSnapshot(s=>{S.feedback=s.docs.map(d=>d.data());schedule()},err);
