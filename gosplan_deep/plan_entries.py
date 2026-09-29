@@ -13,7 +13,7 @@ import json
 import sys
 
 sys.path.insert(0, __file__.rsplit("/", 1)[0])
-from gp_deep import CLASSES_NEW, SMALL_PRICE, TOPIC_STEMS, QUOTE_WORDS  # noqa: E402
+from gp_deep import CLASSES_NEW, OPEN_WORDS, SMALL_PRICE, TOPIC_STEMS, QUOTE_WORDS  # noqa: E402
 
 API = "https://v2.gosplan.info"
 RFQ_TYPES_44 = ["epNotificationEZK", "purchaseNoticeZK", "epNotificationEZP"]
@@ -47,8 +47,18 @@ def entries() -> dict:
     topics = [req(law, classifier="85.42", object_info=w) for law in ("44", "223") for w in TOPIC_STEMS]
     quotes = [req("44", purchase_type=t, object_info=w) for t in RFQ_TYPES_44 for w in RFQ_WORDS] + \
              [req("223", purchase_type=t, object_info=w) for t in RFQ_TYPES_223 for w in RFQ_WORDS]
+    # every open purchase by subject words: the server-side deadline filter keeps closed ones out of the pages;
+    # {today} is replaced by the collector with the current date (YYYY-MM-DD)
+    open_reqs = []
+    for w in OPEN_WORDS + TOPIC_STEMS:
+        open_reqs.append(req("44", object_info=w, collecting_finished_after="{today}"))
+        open_reqs.append(req("223", object_info=w, submission_close_after="{today}"))
     gp = {"base": API, "common": "limit=50&sort=published_at_desc", "pause": 2, "type": "api"}
     new = {
+        "gosplan-open": {**gp, "key": "gosplan-open", "name": "ЕИС через ГосПлан · все открытые закупки по словам", "pause": 1,
+            "batch": 30, "deep": 6, "planned": 30, "source": "gosplan:fz44 | gosplan:fz223", "requests": open_reqs,
+            "method": "Слова форм обучения и тем словаря без привязки к коду ОКПД2 (у многих извещений код не указан) с серверным фильтром «приём заявок ещё идёт»: страницы содержат только открытые закупки.",
+            "note": "Правила как у источника gosplan. В запросах значение {today} — сегодняшняя дата ГГГГ-ММ-ДД. Проверено 29.09.2026: по 73 словам открытых извещений 23 тыс., подходящих по словарю около 1,2 тыс., не известных базе 30 — ЕИС покрыт почти полностью, источник добирает остаток."},
         "gosplan-topics": {**gp, "key": "gosplan-topics", "name": "ЕИС через ГосПлан · темы словаря внутри ОКПД2 85.42",
             "batch": 24, "deep": 2, "planned": 24, "source": "gosplan:fz44 | gosplan:fz223", "requests": topics,
             "method": "Слова из тем словаря (охрана труда, бухгалтерский учёт, кадры, делопроизводство, сметное дело, закупки и др.) внутри учебного класса 85.42: так выдача глубже, чем 50 новейших закупок класса. Порциями по 24 запроса (ротация).",
@@ -93,10 +103,24 @@ def entries() -> dict:
           "planned": 12, "source": "tenderguru", "requests": [{"kwords": q} for q in TG_QUOTES],
           "method": "Запросы TenderGuru по признакам прямого спроса: запрос цен, запрос коммерческих предложений, запрос предложений, изучение и анализ рынка вместе со словами обучения. Заказчик выбирает поставщика до или вместо конкурса. Порциями по 12 запросов (ротация).",
           "note": "Правила как у tenderguru-more; каждому лиду добавь flags [\"rfq\"] и note «Прямой спрос: запрос цен или предложений; запрос «…»». Проверено 29.09.2026: 16 запросов дали 36 новых по теме."}}
-    return {"main_extra": main_extra, "new": new, "country": country, "tg": tg}
+    return {"rad": rad_entry(), "main_extra": main_extra, "new": new, "country": country, "tg": tg}
 
 
 CLASSES_PLAN = ["85.42", "85.41", "82.30", "74.90", "70.22", "78.10"]
+
+
+RAD_WORDS = ["повышение квалификации", "образовательные услуги", "обучение", "семинар", "тренинг", "конференция",
+             "форум", "профессиональная подготовка", "оценка персонала", "коучинг"]
+
+
+def rad_entry() -> dict:
+    """ЭТП РАД (tender.lot-online.ru): public JSON list that the site's own main page loads without login."""
+    return {"key": "rad-lots", "name": "ЭТП РАД · открытые закупки по словам", "type": "api", "country": "RU", "source": "rad",
+            "base": "https://tender.lot-online.ru/api-gateway/indexer/api", "path": "/lots/query-extended",
+            "common": "statusGroup=DEMANDS_STARTED&limit=100", "pause": 2, "planned": len(RAD_WORDS),
+            "requests": [{"search": w} for w in RAD_WORDS],
+            "method": "Публичный список открытых закупок площадки (тот же JSON, что грузит её главная страница без входа), поиск по слову параметром search, до 100 записей на запрос.",
+            "note": "Проверено 29.09.2026 браузером и прямым запросом: 1 993 открытые закупки, по словам МИСБ около 36; у части есть номер ЕИС (уже приходят через ГосПлан). Ответ: {count, data:[{etpNumber, eisNumber, title, organizationTitle, price, publicationDate, demandEndDate, purchaseMethod, regionOkato}]}. robots.txt площадки этот адрес не закрывает."}
 
 
 def apply(plan: dict) -> dict:
@@ -114,7 +138,7 @@ def apply(plan: dict) -> dict:
     g["deep"] = 3
     g["method"] = ("Открытый API с данными ЕИС; 44-ФЗ и 223-ФЗ по кодам ОКПД2 и словам; ключ из задания; пауза 2 с. "
                    "Углубление: страницы 2–3 (skip=50, 100), пока на странице есть новые номера; коды ОКПД2 70.22, 74.90, 85.59, 78.10; малый объём 44-ФЗ (max_price_le=600000)")
-    order = ["gosplan-topics", "gosplan-quotes", "gosplan-plan44", "gosplan-plan223"]
+    order = ["gosplan-topics", "gosplan-open", "gosplan-quotes", "gosplan-plan44", "gosplan-plan223"]
     prev = "gosplan"
     for k in order:
         if k not in keys:
@@ -122,6 +146,8 @@ def apply(plan: dict) -> dict:
         prev = k
     if "tenderguru-quotes" not in keys:
         insert_after("tenderguru-etp", E["tg"]["tenderguru-quotes"])
+    if "rad-lots" not in [s["key"] for s in S]:
+        insert_after("tenderguru-quotes", E["rad"])
     prev = "kz-rostender"
     for k in ("by-icetrade", "by-goszakupki", "uz-uzex", "kg-zakupki"):
         if k not in keys:

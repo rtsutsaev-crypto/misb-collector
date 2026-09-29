@@ -17,6 +17,11 @@ Usage (key only from the environment, never written anywhere):
   GOSPLAN_KEY=... python3 gp_deep.py explore W [--pause 0.3] [--workers 3] [--only NAME_PREFIX]
   GOSPLAN_KEY=... python3 gp_deep.py plans44 W [--pages 6]
   GOSPLAN_KEY=... python3 gp_deep.py plans223 W [--newest 300] [--since ISO]
+  GOSPLAN_KEY=... python3 gp_deep.py open W [--maxpages 40] [--classes 85.42,74.90,...] [--pause 0.15]
+      whole universe of purchases that are still open (collecting_finished_after / submission_close_after
+      = today, so every page holds only open purchases), paged to the end; counts rows, relevant and new
+  GOSPLAN_KEY=... python3 gp_deep.py openwords W [--maxpages 40]   the same by subject words (format words + topics),
+      because many notices carry no OKPD2
 
 W is a work dir with the site's database dump (ArtifactData with out_dir):
   W/db/config/dictionary.json, W/db/config/sources-plan.json, W/db/leadsets/*.json
@@ -219,6 +224,77 @@ def explore(W: str, pause: float, workers: int, only: str | None) -> None:
     print("total new leads:", len(leads), "open:", sum(a[4] for a in by.values()))
 
 
+# ---------- the whole open universe per OKPD2 class ----------
+CLASSES_OPEN = ["85.42", "85.41", "85.59", "85.60", "74.90", "70.22", "82.30", "73.20", "78.30"]
+
+
+OPEN_WORDS = [  # format words: many notices carry no OKPD2, so subject words reach more of them than classes
+    "обучение", "повышение квалификации", "переподготовка", "семинар", "тренинг", "вебинар", "мастер-класс",
+    "курсы", "конференция", "форум", "стратегическая сессия", "организация участия", "консультационные услуги",
+    "консультирование", "образовательные услуги", "дополнительная профессиональная программа", "оценка персонала",
+    "коучинг", "наставничество", "разработка программы обучения", "электронный курс", "деловая игра",
+    "круглый стол", "профессиональная подготовка", "методическое сопровождение", "услуги лектора",
+]
+
+
+def open_universe(W: str, pause: float, workers: int, classes: list[str], maxpages: int, words: bool = False) -> None:
+    """Page every open purchase of each class (or subject word) to the end (server-side deadline filter)
+    and count what is new."""
+    today = dt.date.today().isoformat()
+    M = GroupMatcher(load(os.path.join(W, "db", "config", "dictionary.json"), {}))
+    ids, pairs = existing_leads(W)
+    lim = Limiter(1.0 / max(pause, 0.05))
+    if words:
+        classes = OPEN_WORDS + TOPIC_STEMS
+    jobs = [(law, c) for law in ("44", "223") for c in classes]
+    res: dict = {}
+
+    def one(job):
+        law, c = job
+        rows_all, pages, st = [], 0, 200
+        for n in range(maxpages):
+            params = {("object_info" if words else "classifier"): c, "skip": PAGE * n, "sort": "published_at_desc"}
+            params["collecting_finished_after" if law == "44" else "submission_close_after"] = today
+            st, rows = get(f"/fz{law}/purchases", params, lim)
+            if not rows:
+                break
+            rows_all += rows
+            pages += 1
+            if len(rows) < PAGE:
+                break
+        res[job] = (st, pages, rows_all)
+
+    with ThreadPoolExecutor(workers) as ex:
+        list(ex.map(one, jobs))
+    leads, table, seen = [], [], set()
+    for job in jobs:
+        law, c = job
+        st, pages, rows = res[job]
+        rel = new = 0
+        for r in rows:
+            title = " ".join(str(r.get("object_info") or "").split())
+            terms, ok = M.terms(title, r.get("okpd2"))
+            if not ok:
+                continue
+            rel += 1
+            lead = lead_of(r, law, today, f"ГосПлан, все открытые закупки ({c}); совпало: {', '.join(terms[:3])}")
+            num = lead["id"]
+            if not num or num in ids or num in seen or (norm_title(title), lead["deadline"]) in pairs:
+                continue
+            seen.add(num)
+            new += 1
+            leads.append(lead)
+        table.append({"law": law, "class": c, "status": st, "pages": pages, "open_rows": len(rows), "relevant": rel, "new": new})
+    os.makedirs(os.path.join(W, "out"), exist_ok=True)
+    json.dump({"source": "ГосПлан: все открытые закупки", "collectedAt": today, "leads": leads},
+              open(os.path.join(W, "out", "open-purchases.json"), "w", encoding="utf-8"), ensure_ascii=False)
+    json.dump(table, open(os.path.join(W, "out", "open-purchases-stat.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print("law class pages open_rows relevant new")
+    for t in table:
+        print(t["law"], t["class"], t["pages"], t["open_rows"], t["relevant"], t["new"], t["status"])
+    print("total open rows:", sum(t["open_rows"] for t in table), "relevant:", sum(t["relevant"] for t in table), "new:", len(leads))
+
+
 # ---------- plans ----------
 def plans44(W: str, pages: int) -> None:
     """44-FZ plan positions of the training classes for future years."""
@@ -338,10 +414,13 @@ def plans223(W: str, newest: int, since: str | None) -> None:
 if __name__ == "__main__":
     a = sys.argv[1:]
     opt = lambda k, d, f=str: f(a[a.index(k) + 1]) if k in a else d  # noqa: E731
-    if not a or a[0] not in ("explore", "plans44", "plans223"):
+    if not a or a[0] not in ("explore", "plans44", "plans223", "open", "openwords"):
         sys.exit(__doc__)
     if a[0] == "explore":
         explore(a[1], opt("--pause", 0.3, float), opt("--workers", 3, int), opt("--only", None))
+    elif a[0] in ("open", "openwords"):
+        open_universe(a[1], opt("--pause", 0.15, float), opt("--workers", 3, int),
+                      opt("--classes", ",".join(CLASSES_OPEN)).split(","), opt("--maxpages", 40, int), a[0] == "openwords")
     elif a[0] == "plans44":
         plans44(a[1], opt("--pages", 6, int))
     else:
