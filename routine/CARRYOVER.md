@@ -95,3 +95,7 @@
 14. **Bidzaar (29.09.2026): источник только для российского адреса.** Облако получает капчу Яндекса, задание источник не собирает. 8 лидов внесены вручную
     (`leadsets/run-20260929-1640-bidzaar`, источник `bidzaar-lots`, id вида `BZ-<номер>`); повтор описан в `ru_pilot/RESULTS.md`. В плане `config/sources-plan` источника нет.
 
+15. **Версия 4.7 (29.09.2026): два новых источника в задании.** Абзацы в «Типах источников» перед `enrich`: `etp-search` (МТС Закупки, ЭТП РЭСТ, Торги РФ и Федерации, РЖД-Медицина, ЛСР;
+    код в `config/etpsearch`, исходник `etp_api/etp_search.py`, порции по 60 слов, курсор `cursors.etp-search` в `meta/rotation`) и `speaker-boards` (запросы на спикеров без номера и срока;
+    код в `config/speakerboards`, исходник `etp_api/speaker_boards.py`, лид без срока и без заказчика — норма, id `SP-<хеш текста>`, запрос живёт `maxAgeDays` = 60 дней).
+    В шаге 6 к перечню типов добавлены `etp-search` и `speaker-boards`. Копия текста до правки — `routine/backup/collector-prompt-v19-before-etp.txt`.
