@@ -9,12 +9,11 @@ Boards (all WordPress; robots.txt closes only /wp-admin/): BestSpeakers, ТРЕ�
 Rules for a request without a tender number and, usually, without a deadline:
   * id = SP-<12 hex of the text fingerprint>. The same request is posted on several boards (and reposted by the board «BestSpeakers» with its own number), the
     fingerprint is taken from the text of the request, not from the title or the address, so one request gives one lead. The board number stays in note.
-  * age: a request without a date of the event is kept for --max-age-days days after publication (default 60), then dropped; deadline is empty («срок не указан»).
+  * age: a request without a date of the event is kept for --max-age-days days after publication (default 15), then dropped; deadline is empty («срок не указан»).
   * deadline = the date of the event when the request names it («Дата: 14.07.2026», «Ориентировочные даты»), never invented.
   * customer is empty unless a name is written (requests are mostly anonymous: «один из банков России»); the description goes to note.
   * price = the honorarium only when a number is written («Оплата 500 000 руб.», «до 500 000 руб.»); note says it is the fee of the speaker, not a contract price.
-  * relevance: a dictionary term (formats, topics) or a speaker word (спикер, тренер, ведущий, модератор, фасилитатор, лектор, эксперт для выступления) in the title or in
-    «Мероприятие:»; job-like requests («нужен директор по качеству») are dropped.
+  * relevance: none by topic (any speaker, any topic, any event, as decided 29.09.2026); job-like requests («нужен директор по качеству») are dropped.
   * flags ["rfq"]; law «Коммерческий»; region = the first city; no contacts are collected: the boards show them only after registration or subscription.
 """
 import argparse
@@ -131,7 +130,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--terms", default="")
     ap.add_argument("--out", default="leads.json")
-    ap.add_argument("--max-age-days", type=int, default=60)
+    ap.add_argument("--max-age-days", type=int, default=15)
     ap.add_argument("--date", default=dt.date.today().isoformat())
     ap.add_argument("--known", default="")
     ap.add_argument("--pause", type=float, default=2.0)
@@ -156,11 +155,13 @@ def main():
         if (today - pub).days > a.max_age_days:
             st["old"] += 1
             return
-        # relevance: a dictionary term (formats, topics) in the title, the event line or the start of the speaker's part; job-like requests are dropped
-        head = " ".join([title, field(t, "Мероприятие"), field(t, "Выступление спикера", "Выступление эксперта")[:300]])
-        if JOB.search(title) or not dic.hit(head):
+        # any speaker, any topic, any event: only job-like posts («нужен директор по качеству») are not speaker requests and are dropped;
+        # --terms is optional: with it a request that has a dictionary term is counted in stats.by_dictionary (information only)
+        if JOB.search(title):
             st["not_relevant"] += 1
             return
+        if terms and dic.hit(" ".join([title, field(t, "Мероприятие")])):
+            st["by_dictionary"] = st.get("by_dictionary", 0) + 1
         g = groups.setdefault(fingerprint(t), {"items": []})
         g["items"].append({"board": name, "link": link, "pub": pub, "title": title, "text": t})
 

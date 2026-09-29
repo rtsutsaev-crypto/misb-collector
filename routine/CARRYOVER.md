@@ -99,3 +99,4 @@
     код в `config/etpsearch`, исходник `etp_api/etp_search.py`, порции по 60 слов, курсор `cursors.etp-search` в `meta/rotation`) и `speaker-boards` (запросы на спикеров без номера и срока;
     код в `config/speakerboards`, исходник `etp_api/speaker_boards.py`, лид без срока и без заказчика — норма, id `SP-<хеш текста>`, запрос живёт `maxAgeDays` = 60 дней).
     В шаге 6 к перечню типов добавлены `etp-search` и `speaker-boards`. Копия текста до правки — `routine/backup/collector-prompt-v19-before-etp.txt`.
+    Уточнение 29.09.2026: у `speaker-boards` отбора по словарю нет (любые спикеры, темы и мероприятия), окно `maxAgeDays` = 15 дней; скрипт запускается без `--terms`.
