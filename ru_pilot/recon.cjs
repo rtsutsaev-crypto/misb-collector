@@ -57,7 +57,7 @@ function robotsAllows(txt, p) {
             top = Object.entries(j).filter(([, v]) => typeof v === "number" || typeof v === "string" && v.length < 30).slice(0, 6).map(([k, v]) => k + "=" + v).join(" ");
         }
       } catch (e) { /* not json */ }
-      console.log(`${phase} | ${rq.method()} ${resp.status()} ${size}b items=${items} | ${resp.url().slice(0, 170)} | body=${(rq.postData() || "").slice(0, 200)} | ${top} | ${keys}`);
+      console.log(`${phase} | ${rq.method()} ${resp.status()} ${size}b items=${items} | ${resp.url().slice(0, 420)} | body=${(rq.postData() || "").slice(0, 200)} | ${top} | ${keys}`);
     })());
   });
   try {
@@ -67,6 +67,8 @@ function robotsAllows(txt, p) {
     const title = await page.title();
     const text = (await page.evaluate(() => document.body ? document.body.innerText : "")).replace(/\s+/g, " ").slice(0, 160);
     console.log(`page: ${title} | ${text}`);
+    const links = await page.evaluate(() => Array.from(document.querySelectorAll("a[href]")).map((x) => x.getAttribute("href")).filter((h) => /[0-9a-f]{8}-[0-9a-f]{4}-/.test(h || "")).slice(0, 6));
+    console.log("links with an id: " + JSON.stringify(links));
     if (word) {
       phase = "search";
       const box = page.locator('input[type=search], input[placeholder*="оиск" i], input[placeholder*="айти" i], input[name*="search" i], input[name*="query" i], input[type=text]').first();

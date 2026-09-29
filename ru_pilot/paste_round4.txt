@@ -193,11 +193,43 @@ vCqsufvChKK+bwyhSPc+I6DVqqUXvG9nGjn3zEcfX+tcq5cIUWygWaukR/ViXD+QgmMy7jyj70jnjsT/
 VRR/OBrIBMVB7oH56NeSZlasjb5bRLn7OajvbaVxaT/01jJv9fcoQ+lDIDsoQbg7/q4dNX+csJl6apKUC+o+AlSf0R8sKPnFLSIu
 2qiF4BUNsZnw8N3Di+nK3Lw+vIaxzAxPEVG3N/4HOxMbRdYTAAA=
 PILOT_EOF
+base64 -d <<'PILOT_EOF' | gunzip > bidzaar_count.py
+H4sIAAAAAAACA41Y/W7b1hX/X09xyyIwuci0nKTAoEwdktZbN6RJkDgbNlcQrsUrmbZEMveSVhRVQJKm64YMCLYB218rsO0FnDRG
+XCdxX4F6hT3JfudcUh+2nE6wLfLc833Ppz/8YC0zem07jNZUtC+SYboTR5crjuN8rqTJtOqrKK2LnXgg+jIailu3N26KJNPtHWmU
+0Op+pkxqRByJ62HwUEoNtLS9I9IdJVItwyiMumIQ68AIN8m2e2Fb/PrurZuiF5q0KqJY9OJuGHl+pbIJCoKK0DB1HCn+NmGqViBh
+EImCQSK7QI0l8fzlxqbwfX8t0XFbBdDXrMl9Gfbkdk9VhVESmortIXMjNTx/qqiBUUZI0ZYJNJYijSsyCMDBKIjLUhMGStzJjAkl
+OMVQBprhR2eR6Oi4D1J7GomCzhc63o5T46cP2AytZCA6oTbpVVagcJeQ+BFp2IeGl4SBPZlRV+HjCIeVe0bp1WtduP2q2LxxV+wr
+HXbCtkxDODmOfHGP9Oso6Ox6QkZBIbQlez0YBFjcEUnYi1M/GQrXyL4SnbgXKE1eFuUVi23rhlY7ziJGPf35UAw0fG+mmHjpG3/X
+QA8SW4LhKjKYYqbCfmm1OlmKq2i1RNhPYg1royhO2QJTqZQw3U2kNqp8D2SqyCdCGhGkJZSklc90Wj5nutcLt33LoZLqYb1COrN8
+Nr4UzY6qLvqooh60VZKKXzHKhtaxrpO905uluNMqiRF7sR7OcQYb1dLZe5lXrl+7uyEawtlJ08TU19YKR/ntuL8mk9DGqjFrvbC7
+ky6NXKfy21t3Pr0LJltOfpK/mHw1+SY/zN/lR/mhUxVO/gOgLyfPJn8soSI/zl/mB/mb/GjyFIDj/GDyB3wfWfTJo/wE8MPJ48lj
+QE9ABNzJn+l78lyA3yFQDpnvq/w7ID8hCcSGGZAOj0DymqEHOD205JNnkA31HuP1KxCyPLwd5m8hh7g/YsgTZv+OYd851co0yhzw
+O8xfzCNDKhRkdZmIDJk8ZzZPodkjCHprxTBbqw1Ek48g+phNIh2stZaUmLIbCw3IKDAmnUBQeADohWsKuw+YhWX0lnV5wvB3fPIE
+mC/JKCsZ7y/zk0XjrCmPoTLcRQR8KyRkuesgxXKGNqugfmNVmFrwiK6oMPqIhZ/Q5S+LERINboC8wtOpGyzwmpVKJVAdFO0wQuVY
+/ViEKPdsgEwQfmWS+td0N6NWcJvetOsVKD4qX0sWZ66zurqNtgDp4CmzXtqgVDgXl+sekNNhohodFPR0RnjJr72HrqtMSQd9Z1RX
+zqUx4UO1lOTSR+fSoLDNmeKcqnfOuXRcJ5dRzgpoSUwuTmwVIxamcGy8VxWDnSFOF2u79Mm/VXG5cE7YQQtNgV6fxlyiQ9JirhHh
+yg+4AhxO/oSnw8mTOpSzrLwpnVYo2ZFYZ0CEdt9AFfbLouwD4uKdnh+iT/lZ2ra0idItaqxVwdahU6LQZ6bVjlIqX82qGI3p1xbR
+WIsBQkxweZsp3Y1xIylaRA80taq4CRHTQyJKiEjLqKvcddKdQ0BcFOvejAl97oN+vjX4eFFROw6UO3JAhGmEaZ26SJAjBYSDow62
+9ACwQW0n+J4aAuzYKeKOjPacucMg1KpNLY1QAmXafMiogAzG3oJi7ETTUypxSfts3vX0oWmoBR+oB3hQWsMO2+I7zshe1fjno/tj
+yLhSW6REDGCk+KAhLtVqi86YhUPH2RoNxk2RjJJxXXy2uXlbjEw6FiNIGjveGaptTC57i/qXHXb+swstKZp9HsZcUn6RV9FnfyN7
+mbJt9v9SkGJ6Lkver5mmKa4hIgh33X2Oln2Kll1/n8TSQAQXhSaMEJlRW7n7VZ4zPa+K8DzjSxuFGN4oBs+qWwbprt9VSDN+/YQm
+qFO6khqagxbqnWWDgBcXG0W2LcZBmT1bJtWutmIs1PG8JkTPUPhwGVpV1DzKjjPsQ0pKW4aMSosC5eotJwwcSlWHR3XE71Zz7C2h
+9rOESoI72qsLK3TPY1v3yFaX2CALoqy/rTQ/Yfqkb4w+CdaHm8UrD/Jm51OwolfZpjChy9mIghLYwe4wQylMq57R6Uc/znTA2kTx
+J17YSwJkcPkaJyriZ2+JyTTZw2WlhwPVCzGQD6+Vi4KDcVuLrdG46W3Vmks8tuVo1aUqQVdH3CyjAsjUM2g7TIcWhln6DK8Oaiel
+BjxNfO1VNetLXTKH4MsEFgbu4EysozS6FJ+e+FlR/Oo/knBltS95uoOiblcppD2vsjytZ2nSGPHz2FY3FTRGoKOy1ullZqexqTMU
+RuZCY0loWnQ7bpjO1fkzpahoXfPtiqb10MSITKyjLjnjbIw1fYz4PYmK4Pye4uAi6methuwRH1MDrJwqYhv8hUvjVSGK78u6uH5j
+o1ZbX6bML2SPFhNu5rBABdQMkX2UK2FxhZSFizVqam1zjtKnjuOiFzV6sr8dSFDWxTkm2Qvgmhxk/QRNT6YOFdSBP3MHecgkqt1A
+u2rHEWIEBWOa+bOG7thBps7l0l3U10NTZ2WlX/R9ZwAncq9FbjWcLO2s/pQYq4j+jdCSph2GDXYLRoUowKzUWLfq3iDfdJxiL69i
+Fsc8/IJXmW94TP6epvkf8Erj+THKFOypX/jd6oX+6oVAXPisfuHzsbi3+cn8/l0XI0xQFFnO4kT+LzCmEfhEfCmwQz3m3eGEFgD8
+ecWTMcl8SzIP8u9pZidM2ozeTGdsTPniJ9AZ0Y3DUcp/u2PHTjjICeQDXXLpzOYpNTpO/h8ewY/LPQzL3Nd2VDuG9STtGCb0OBzg
+X/I30F8LXje+hnKCZ7qjyV8w5GPQZ9rJczIsP2Z1abGgDaOwELa9mzzHxviutJgBhRAbat7YF/k/eLspdglsUrb01mliKBvPMrfS
+ikmS59X4krgdsJGvefVi0D95DZkuIQD99+nf8ZcV5u3EaU7HRZssVr2t+vpHtbmCd6MsQ7gIJMTKmYRYaYKk1uTboT5JSHOtaAVF
+u3750uJ5VB6sl5QM5Za2YgEr1RV/Nw4jxue8YYIrwC/GgCI1sCqclxg+/3PFdb6IHMvrBnVsei3m6qKAfhHlf8u/zf+N37/m3+IW
+mOtYuPkRPXNwjD1c27J4OhU/tNUfY8t9hr15ejy9+UJwUcBq2AxRk1ot8kerJRoN4bRatCe2Wo69Ai1Do8TdoYGAjQdh6tot0qv8
+D2ale5RVFAAA
+PILOT_EOF
 export PLAYWRIGHT_MODULE=$HOME/node_modules/playwright
-(
-python3 pilot.py --getjson 'https://bidzaar.com/api/process/light/procedures/available?paging.page=1&paging.size=25&sorting.key=publishDate&sorting.direction=desc'
-echo; echo '##### Bidzaar'; node recon.cjs https://bidzaar.com/app/requests/public/buy обучение
-echo; echo '##### Свердловская область'; node recon.cjs https://torgi.egov66.ru обучение
-echo; echo '##### Московская область'; node recon.cjs https://market.mosreg.ru обучение
-) > recon_out.txt 2>&1
-echo '=== ГОТОВО. Дальше: clear, затем  cat recon_out.txt ==='
+python3 bidzaar_count.py > bidzaar_log.txt 2>&1
+node recon.cjs 'https://bidzaar.com/app/requests/public/buy?sorting.key=searchRank&sorting.direction=desc&search=%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5' > recon_bidzaar2.txt 2>&1
+cat bidzaar_out.txt > for_claude.txt; echo >> for_claude.txt; echo '##### recon' >> for_claude.txt; cat recon_bidzaar2.txt >> for_claude.txt
+echo '=== ГОТОВО. Файл для передачи: ~/pilot/for_claude.txt (в нём '$(wc -l < for_claude.txt)' строк) ==='
