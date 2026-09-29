@@ -99,7 +99,7 @@ def field(t, *labels):
 def fingerprint(t):
     m = re.search(r"Мероприятие\s*:\s*(.+)", t, re.S)
     body = (m.group(1) if m else t)[:400].lower()
-    return re.sub(r"[^0-9a-zа-яё]+", "", body)[:220]
+    return re.sub(r"[^0-9a-zа-яё]+", "", body)[:110]  # the event line and the start of the speech: the same on every board, later text differs by page layout
 
 
 def dmy(s):
@@ -224,7 +224,7 @@ def main():
             continue
         t = first["text"]
         title = re.sub(r"^(?:Поиск|Ищем|Нужен)\s+спикер\w*\s*№\s*\d+\.?\s*", "", first["title"]).strip(" .")
-        num = next((m.group(1) for x in its for m in [re.search(r"№\s*(\d{3,5})", x["title"]) or re.search(r"-(\d{3,5})-", x["link"])] if m), "")
+        num = next((m.group(1) for x in its for m in [re.search(r"№\s*(\d{3,5})", x["title"]) or re.search(r"bestspeakers\.ru/(?:poisk-spikera|ischem-spikera|nuzhen-spiker)-(\d{3,5})-", x["link"])] if m), "")
         event = dmy(field(t, r"Дата", r"Ориентировочные даты(?: проведения)?", r"Даты? проведения")) or dmy(field(t, "Мероприятие"))
         cust = re.search(r"Заказчик\s*[—:-]\s*([^.\n]{5,140})", t)
         price = money(t)
