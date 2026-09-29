@@ -474,9 +474,9 @@ function grade(f){return f>=65?"hi":f>=40?"mid":"lo"}
 function toast(msg){const r=$("#toastRoot");r.replaceChildren(el("div",{class:"toast",role:"status",text:msg}));setTimeout(()=>{r.replaceChildren()},2600)}
 
 /* holdings matching */
-let ALIASES=[];
-function buildAliases(){ALIASES=[];const walk=(n,root,path)=>{const p=[...path,n.name];for(const a of n.aliases||[]){const al=a.toLowerCase();const esc=al.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");let src="(^|[^а-яёa-z0-9])"+esc;if(al.length<=4&&!al.endsWith("-"))src+="(?=$|[^а-яёa-z0-9])";ALIASES.push({re:new RegExp(src,"i"),len:al.length,root,node:n.name,depth:p.length,path:p})}for(const c of n.children||[])walk(c,root,p)};for(const g of (S.holdings?.groups||[]))walk(g,g.name,[])}
-function matchHolding(text){const t=text.toLowerCase();let best=null;for(const a of ALIASES){if(a.re.test(t)){if(!best||a.depth>best.depth||(a.depth===best.depth&&a.len>best.len))best=a}}return best}
+let ALIASES=[],ALIAS_SRC=null,HMEMO=new Map();
+function buildAliases(){if(ALIAS_SRC===S.holdings&&ALIASES.length)return;ALIAS_SRC=S.holdings;HMEMO=new Map();ALIASES=[];const walk=(n,root,path)=>{const p=[...path,n.name];for(const a of n.aliases||[]){const al=a.toLowerCase();const esc=al.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");let src="(^|[^а-яёa-z0-9])"+esc;if(al.length<=4&&!al.endsWith("-"))src+="(?=$|[^а-яёa-z0-9])";ALIASES.push({re:new RegExp(src,"i"),al,len:al.length,root,node:n.name,depth:p.length,path:p})}for(const c of n.children||[])walk(c,root,p)};for(const g of (S.holdings?.groups||[]))walk(g,g.name,[])}
+function matchHolding(text){const t=text.toLowerCase();if(HMEMO.has(t))return HMEMO.get(t);let best=null;for(const a of ALIASES){if(t.indexOf(a.al)>=0&&a.re.test(t)){if(!best||a.depth>best.depth||(a.depth===best.depth&&a.len>best.len))best=a}}HMEMO.set(t,best);return best}
 
 /* fit */
 const KRE=new Map();const WCH="а-яёa-z0-9";
@@ -484,16 +484,21 @@ function kre(k){let r=KRE.get(k);if(r)return r;const raw=k.toLowerCase();const t
 const km=(t,k)=>kre(k).test(t);
 let STRIP=null,STRIPSRC="";
 function prep(title){const re=S.config?.v4?.stripRe||"";if(re!==STRIPSRC){STRIPSRC=re;STRIP=re?new RegExp(re,"g"):null}let t=(title||"").toLowerCase().replace(/ё/g,"е");if(STRIP)t=t.replace(STRIP," ");return t}
-function hits(map,t){const out=[];for(const[name,keys]of Object.entries(map||{})){if(keys.some(k=>km(t,k.replace(/ё/g,"е"))))out.push(name)}return out}
-function dirsOf(title){const o=hits(S.config?.directions,prep(title));return o.length?o:["Прочее обучение"]}
-function formsOf(title){return hits(S.config?.forms,prep(title))}
+const CRX=new WeakMap(),TKS=new WeakMap();
+function anyRe(keys){let r=CRX.get(keys);if(!r){r=keys.length?new RegExp(keys.map(k=>kre(String(k).replace(/ё/g,"е")).source).join("|")):/(?!)/;CRX.set(keys,r)}return r}
+function termKeys(o){let a=TKS.get(o);if(!a){a=Object.keys(o);TKS.set(o,a)}return a}
+function hits(map,t){const out=[];for(const[name,keys]of Object.entries(map||{})){if(anyRe(keys).test(t))out.push(name)}return out}
+let DFM=new Map(),DF_CFG=null;
+function dfmemo(kind,title,fn){if(DF_CFG!==S.config){DF_CFG=S.config;DFM.clear()}const k=kind+"|"+title;let v=DFM.get(k);if(v===undefined){v=fn();DFM.set(k,v)}return v}
+function dirsOf(title){return dfmemo("d",title,()=>{const o=hits(S.config?.directions,prep(title));return o.length?o:["Прочее обучение"]})}
+function formsOf(title){return dfmemo("f",title,()=>hits(S.config?.forms,prep(title)))}
 function scoreLead(l,h){const C=S.config;if(!C)return{fit:0,parts:[]};const t=prep((l.title||"")+(l.topic?" "+l.topic:""));const parts=[["База",C.base]];const V4=C.v4;
   if(V4){const ds=l._ctx?.dirs||dirsOf(l.title);const fs=l._ctx?.forms||formsOf(l.title);
     const dw=ds.map(d=>[d,V4.dirW?.[d]||0]).filter(x=>x[1]);let dsum=dw.reduce((a,x)=>a+x[1],0);
     if(dw.length){const cap=Math.min(dsum,V4.dirCap??99);parts.push([`Направление: ${dw.map(x=>x[0]).join(", ")}${cap<dsum?" (потолок)":""}`,cap])}
     const fw=fs.map(f=>[f,V4.formW?.[f]||0]).filter(x=>x[1]);let fsum=fw.reduce((a,x)=>a+x[1],0);
     if(fw.length){const cap=Math.min(fsum,V4.formCap??99);parts.push([`Форма: ${fw.map(x=>x[0]).join(", ")}${cap<fsum?" (потолок)":""}`,cap])}}
-  for(const[g,terms]of Object.entries(C.terms||{}))for(const[k,w]of Object.entries(terms)){if(km(t,k.toLowerCase().replace(/ё/g,"е")))parts.push([`«${k}»`,w])}
+  for(const[g,terms]of Object.entries(C.terms||{})){if(!anyRe(termKeys(terms)).test(t))continue;for(const[k,w]of Object.entries(terms)){if(km(t,k.toLowerCase().replace(/ё/g,"е")))parts.push([`«${k}»`,w])}}
   const cust=(l.customer||"").toLowerCase();
   if(l.law==="223-ФЗ"||l.law==="Коммерческий"||/(^|[^а-яё])(пао|ао|ооо|зао|оао)([^а-яё]|$)/.test(cust))parts.push(["Корпоративный заказчик",C.corpBonus]);
   if(h)parts.push([`Группа: ${h.root}`,C.holdingBonus]);
@@ -529,23 +534,26 @@ async function loadOrgIndex(db){try{const m=await db.doc("orgdir/meta").get();if
 const PROFILE_INCLUDE=["обучение руководителей","обучение специалистов","повышение квалификации","семинар","вебинар","тренинг","мастер-класс","корпоративный университет","кадровый резерв","управленческое развитие","деловая игра","бизнес-симуляция","электронное обучение","электронный курс","дистанционное обучение","интерактивный курс","видеокурс","разработка учебных материалов","разработка учебного контента","scorm","lms","сдо","деловая конференция","форум","стратегическая сессия","фасилитация","модерация","образовательное мероприятие","оқыту","біліктілікті арттыру","іс-шара","навучанне","павышэнне кваліфікацыі"];
 const RX={
   workers:/(рабоч[а-я]+ професси[а-я]*|по професси[ии] [«"]?(водител|слесар|сварщик|стропальщик|крановщик|машинист|электромонтер|оператор|повар|тракторист|плотник)[а-я]*|профессиональн[а-я]+ подготовк[а-я]+ (рабоч|водител|сварщик|стропальщик|крановщик)[а-я]*|подготовк[а-я]+ (водител|стропальщик|крановщик|сварщик)[а-я]*)/,
-  holiday:/(корпоративн[а-я]+ (праздник|вечер)[а-я]*|новогодн[а-я]+ (праздник|вечер|мероприят|представлен|подарк)[а-я]*|праздничн[а-я]+ (мероприят|вечер|концерт|програм)[а-я]*|корпоратив(?![а-я])|день (рождения|основания) компании|юбилейн[а-я]+ (вечер|мероприят)[а-я]*)/,
-  educ:/(обучен|семинар|тренинг|курс|конференц|форум|стратегическ|образовательн|квалификац|переподготовк|вебинар|мастер-класс|фасилитац|деловая программа|программ[аы] развития)/,
-  goods:/^\s*(поставка|приобретение|закупка)(?![а-я])/,
+  holiday:/(корпоративн[а-я]+ (праздник|вечер)[а-я]*|новогодн[а-я]+ (праздник|вечер|мероприят|представлен|подарк)[а-я]*|праздничн[а-я]+ (мероприят|вечер|концерт|програм)[а-я]*|корпоратив(?![а-я])|день (рождения|основания) компании|юбилейн[а-я]+ (вечер|мероприят)[а-я]*|культурно-массов[а-я]+ мероприят[а-я]*|организаци[а-я]+ (детского |школьного |городского )?праздник[а-я]*|праздничн[а-я]+ мероприят[а-я]*|проведени[а-я]+ (новогодн[а-я]+ )?праздник[а-я]*)/,
+  educ:/(обучен|семинар|тренинг|курс|конференц|форум|стратегическ[а-я]+ (сесси|игр|планирован)|образовательн|квалификац|переподготовк|вебинар|мастер-класс|фасилитац|деловая программа|программ[аы] развития)/,
+  goods:/^\s*(поставка|приобретение|закупка(?!\s+(услуг|работ|на (право|оказание|выполнение|проведение)|в 20\d\d|у единственного|у одного|способом)))(?![а-я])/,
   goodsAny:/(поставка|приобретение)[^.]{0,80}(товар|оборудован|материал|мебел|техник|инвентар|компьютер|канцеляр|принадлежност|средств[а-я]* обучения)/,
   team:/(тимбилдинг|командообразован)/,
   lms:/((лиценз|неисключительн|подписк)[^.]{0,60}(lms|сдо|moodle|платформ[а-я]* обучения)|(lms|сдо)[^.]{0,60}(лиценз|подписк))/
 };
-function classifyLead(l){const t=String(l.title||"").toLowerCase().replace(/ё/g,"е");const hits=PROFILE_INCLUDE.filter(x=>t.includes(x)).slice(0,6);const why=[];let out="relevant";
+const DPO=/(повышени[ея] квалификации|профессиональн[а-я]+ переподготовк|дополнительн[а-я]+ профессиональн)/;
+const NOTRAIN=/(спорт|регби|футбол|кофе-брейк|питани|трансфер|транспорт|санитарн|агротехническ|благоустрой|пожарн|pr-|контент|археолог|исследован|строительств|ремонт|фестивал|концерт|выставк|мониторинг|креатив|btl|маркетингов|лекарств|медицин|противоэпидем|дезинфекц|озеленен|уборк)/;
+function classifyLead(l){let t=String(l.title||"").toLowerCase().replace(/ё/g,"е");t=t.replace(/^\s*закупка у (единственного|одного) поставщика[^:]{0,140}:\s*/,"");const hits=PROFILE_INCLUDE.filter(x=>t.includes(x)).slice(0,6);const why=[];let out="relevant";
   const educ=RX.educ.test(t.replace(/средств[а-я]* обучения|учебн[а-я]+ (пособи|материал|оборудован)[а-я]*/g,""))||hits.length>0;const m1=RX.workers.exec(t),m2=RX.holiday.exec(t);
-  if(m1){out="excluded";why.push("обучение рабочим профессиям: «"+m1[0].trim()+"»")}
+  if(m1&&DPO.test(t)){out="needs_review";why.push("рабочие профессии вместе с ДПО: уточнить состав программ («"+m1[0].trim()+"»)")}
+  else if(m1){out="excluded";why.push("обучение рабочим профессиям: «"+m1[0].trim()+"»")}
   else if(m2&&!educ){out="excluded";why.push("корпоративный праздник без деловой или образовательной программы: «"+m2[0].trim()+"»")}
   else if((RX.goods.test(t)||RX.goodsAny.test(t))&&!educ){out="excluded";why.push("поставка товаров без профильных услуг")}
   else{
     if(RX.goods.test(t)&&educ){out="needs_review";why.push("смешанный лот: поставка и услуги")}
     if(RX.team.test(t)&&!educ){out="needs_review";why.push("тимбилдинг: нет описания образовательной программы")}
     if(RX.lms.test(t)){out="needs_review";why.push("лицензии LMS/СДО: уточнить наличие разработки контента или образовательных услуг")}
-    if(out==="relevant"&&/мероприят/.test(t)&&!educ&&!(l.forms&&l.forms.length)){out="needs_review";why.push("мероприятие без описания программы")}
+    if(out==="relevant"&&/мероприят/.test(t)&&!educ&&!(l.forms&&l.forms.length)&&!NOTRAIN.test(t)){out="needs_review";why.push("мероприятие без описания программы")}
   }
   return {out,why,hits}}
 function reasonText(l){const p=[];if(l.hits&&l.hits.length)p.push("совпало по профилю МИСБ: "+l.hits.join(", "));if(l.forms&&l.forms.length)p.push("форма: "+l.forms.join(", "));const d=(l.dirs||[]).filter(x=>x!=="Прочее обучение");if(d.length)p.push("направление: "+d.join(", "));
@@ -556,10 +564,13 @@ function reasonText(l){const p=[];if(l.hits&&l.hits.length)p.push("совпал�
 const CONN_LABEL={success:"успех",partial:"частично",stale:"устарел",running:"идёт сбор",never_run:"не запускался",auth_required:"нужен доступ",blocked:"закрыт",error:"ошибка",not_connected:"не подключён"};
 const CONN_ORDER=["success","partial","stale","running","never_run","auth_required","blocked","error","not_connected"];
 const daysSince=iso=>{if(!iso)return null;const d=new Date(String(iso).slice(0,10)+"T00:00:00");return isNaN(d)?null:Math.round((TODAY-d)/864e5)};
+/* plan key -> sources document, same rule as step 6 of the collection task */
+function planToDoc(k){return k==="rt-rosatom"?"rostender-cust":/^rt-/.test(k)?"rostender":/^syn-/.test(k)?"synapse":k==="b2b"||k==="b2b-themes"?"b2b-landing":k==="b2b-market"?"b2b-search":k==="bico"?"bicotender":k==="group-profile"?"gosplan":k==="holdings"||/^tg-/.test(k)?"tenderguru":k}
 function runtimeOf(keys){keys=keys||[];if(!keys.length)return {state:"not_connected",docs:[],last:null,ok:null};
-  const docs=keys.map(k=>S.sources.find(x=>x.key===k)).filter(Boolean);if(!docs.length)return {state:"never_run",docs:[],last:null,ok:null};
+  const docs=[...new Set(keys.map(planToDoc))].map(k=>S.sources.find(x=>x.key===k)).filter(Boolean);if(!docs.length)return {state:"never_run",docs:[],last:null,ok:null};
   const hist=docs.flatMap(d=>(d.history||[]).map(h=>({...h,doc:d.name}))).sort((a,b)=>String(a.date).localeCompare(String(b.date)));const last=hist[hist.length-1]||null;const okh=[...hist].reverse().find(h=>h.status==="ok");
-  const st=docs.map(d=>d.status);let state=st.includes("ok")||st.includes("covered")?"success":st.includes("partial")?"partial":st.includes("blocked")?"blocked":st.includes("needs_key")?"auth_required":st.includes("failed")?"error":"never_run";
+  /* «covered»: the site itself is closed and its lots arrive through another source; the connection to the site is judged by its own last attempt */
+  const st=docs.map(d=>{if(d.status!=="covered")return d.status;const lh=(d.history||[]).slice(-1)[0];return !lh?"none":lh.status==="ok"?"partial":lh.status==="failed"?"failed":"blocked"});let state=st.includes("ok")?"success":st.includes("partial")?"partial":st.includes("blocked")?"blocked":st.includes("needs_key")?"auth_required":st.includes("failed")?"error":"never_run";
   if(state==="success"&&okh&&daysSince(okh.date)>14)state="stale";return {state,docs,last,ok:okh}}
 function probeText(p){if(!p)return "не проверялся";if(p.robots==="disallowed")return "robots.txt запрещает чтение";if(p.gate)return "защита: "+(p.gate==="captcha"?"капча":p.gate);if(p.status===200)return p.procWords>=5&&p.dates>=3?"открывается, виден список закупок":"открывается, списка закупок не видно (оболочка или лендинг)";if(!p.status)return "нет ответа: "+String(p.title||"").replace(/^URLError: <urlopen error /,"").replace(/>$/,"").slice(0,70);return "HTTP "+p.status}
 function renderReg(){const box=$("#regRows");if(!box)return;const R=S.reg||[];const note=$("#regNote");
@@ -579,7 +590,7 @@ function renderReg(){const box=$("#regRows");if(!box)return;const R=S.reg||[];co
       el("td",{},el("div",{text:r.countries.join(", ")}),el("div",{class:"muted",style:"font-size:12px",text:TL[r.type]||r.type})),
       el("td",{style:"max-width:30ch"},el("span",{class:"chip",text:rs.page_status_text||"—"}),el("div",{style:"font-size:12.5px",text:rs.page_result_text||""}),el("div",{class:"muted",style:"font-size:12px",text:`проверено ${fmtDate(rs.checked_on)}${r.rss&&r.rss.url?" · RSS: "+(r.rss.research_status_text||"—"):""}${r.api&&r.api.reference_url?" · API: "+(r.api.research_status_text||"—"):""}`})),
       el("td",{style:"max-width:28ch"},el("div",{style:"font-size:12.5px",text:probeText(p.url)}),p.rss?el("div",{class:"muted",style:"font-size:12px",text:"RSS: "+probeText(p.rss)}):null,p.api?el("div",{class:"muted",style:"font-size:12px",text:"API/документация: "+probeText(p.api)}):null),
-      el("td",{},el("span",{class:`pill rs-${rt.state==="success"?"ok":rt.state==="partial"||rt.state==="stale"?"partial":rt.state==="not_connected"||rt.state==="never_run"?"wait":"failed"}`,text:CONN_LABEL[rt.state]}),rt.docs.length?el("div",{class:"muted",style:"font-size:12px",text:rt.docs.map(d=>d.name).slice(0,3).join("; ")+(rt.docs.length>3?" …":"")}):el("div",{class:"muted",style:"font-size:12px",text:r.match&&r.match.status==="candidate"?"домен совпал, раздел не тот — не склеено":"адаптера нет"})),
+      el("td",{},el("span",{class:`pill rs-${rt.state==="success"?"ok":rt.state==="partial"||rt.state==="stale"?"partial":rt.state==="not_connected"||rt.state==="never_run"?"wait":"failed"}`,text:CONN_LABEL[rt.state]}),rt.docs.length?el("div",{class:"muted",style:"font-size:12px",text:rt.docs.map(d=>d.name).slice(0,3).join("; ")+(rt.docs.length>3?" …":"")}):el("div",{class:"muted",style:"font-size:12px",text:r.match&&r.match.status==="candidate"?"домен совпал, раздел не тот — не склеено":(r.match&&(r.match.siteKeys||[]).length?"есть в плане сбора, запусков ещё не было":"адаптера нет")}),rt.docs.some(d=>d.status==="covered")?el("div",{class:"muted",style:"font-size:12px",text:"лоты приходят через "+rt.docs.filter(d=>d.status==="covered").map(d=>((S.sources.find(x=>x.key===d.coveredBy)||{}).name)||d.coveredBy||"другой источник").join("; ")+"; прямое чтение сайта не работает"}):null),
       el("td",{style:"font-size:12.5px"},el("div",{text:"попытка: "+(lastA?fmtDate(lastA):"—")}),el("div",{text:"успех: "+(rt.ok?fmtDate(rt.ok.date):"—")})),
       el("td",{style:"max-width:36ch;font-size:12.5px"},rt.last?el("div",{text:`найдено ${rt.last.found??"—"}, новых ${rt.last.fresh??"—"}, обновлённых ${rt.last.updated??"не ведётся"}`}):el("div",{class:"muted",text:"сбор не запускался"}),errs.length?el("div",{class:"muted",text:"Ошибка/ограничение: "+errs[0].slice(0,160)}):null,el("div",{class:"muted",text:"Что нужно: "+(rs.next_action_text||"—")})))});
   box.replaceChildren(...(tr.length?tr:[el("tr",{},el("td",{colspan:"7",class:"empty",text:"Под фильтр ничего не подходит."}))]))}
