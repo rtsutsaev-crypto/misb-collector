@@ -130,10 +130,11 @@ def _servlet(host, plat, prefix):
         rows = []
         for x in j.get("list", []):
             ident = str(x.get("identifier") or "")
-            cust = (x.get("customer") or [{}])[0] if x.get("customer") else {}
-            org = x.get("organizer") or {}
+            cust = x.get("customer")
+            cust = (cust[0] if cust else {}) if isinstance(cust, list) else (cust if isinstance(cust, dict) else {})  # a list on РЭСТ, may be an object elsewhere
+            org = x.get("organizer") if isinstance(x.get("organizer"), dict) else {}
             eis = bool(re.fullmatch(r"3\d{10}", ident))
-            rows.append(lead(id=ident if eis else f"{prefix}-" + str(x.get("uuid")), title=(x.get("title") or "").strip(),
+            rows.append(lead(id=ident if eis else f"{prefix}-" + str(x.get("uuid") or x.get("id") or ident), title=(x.get("title") or "").strip(),
                              customer=cust.get("title") or org.get("title") or "", customerInn=cust.get("inn") or org.get("inn"),
                              deadline=dmy(x.get("gdEndDate")), price=num(re.sub("<[^>]+>", " ", x.get("price") or "")),
                              law="223-ФЗ" if eis else "Коммерческий", platform=plat, source=plat, url=x.get("lotLink") or f"https://{host}/",
