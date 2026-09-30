@@ -138,7 +138,13 @@ def _servlet(host, plat, prefix):
                              customer=cust.get("title") or org.get("title") or "", customerInn=cust.get("inn") or org.get("inn"),
                              deadline=dmy(x.get("gdEndDate")), price=num(re.sub("<[^>]+>", " ", x.get("price") or "")),
                              law="223-ФЗ" if eis else "Коммерческий", platform=plat, source=plat, url=x.get("lotLink") or f"https://{host}/",
-                             note=f"{plat} {ident}, {x.get('placementType') or x.get('type')}, {(x.get('state') or {}).get('title', '')}".strip(", ")))
+                             note=", ".join(v for v in (f"{plat} {ident}", x.get("placementType") or x.get("type"), (x.get("state") or {}).get("title")) if v)))
+            pub = dmy(x.get("placementDate"))
+            if not pub and eis:  # 223-ФЗ number 3YYNNNNNNNN: YY is the year of the notice
+                pub = f"20{ident[1:3]}-01-01"
+            rows[-1]["_pub"] = pub
+            if pub:
+                rows[-1]["note"] += f", размещено {pub[8:10]}.{pub[5:7]}.{pub[:4]}" if len(pub) == 10 and not pub.endswith("-01-01") else f", год размещения {pub[:4]}"
         return rows, -(-int(j.get("totalCount") or 0) // 50)
     return run
 
@@ -293,12 +299,13 @@ def main():
                     t = dic.hit(r["title"])
                     if not t or any(x in r["title"].lower() for x in exclude):
                         continue
-                    if r["deadline"] and r["deadline"] < a.since:
+                    ref = r["deadline"] or r.get("_pub")  # no deadline (e.g. a single-supplier purchase): the placement date decides
+                    if ref and ref < a.since:
                         continue
                     st["matched"] += 1
                     if r["id"] in seen or r["id"] in known:
                         continue
-                    seen.add(r["id"]); r["collectedAt"] = a.date
+                    seen.add(r["id"]); r["collectedAt"] = a.date; r.pop("_pub", None)
                     r["note"] += (f"; найден по слову «{w}», в названии «{t}»" if w else f"; полный обход списка, в названии «{t}»")
                     out.append(r); st["new"] += 1
                 if page + 1 >= pages:
