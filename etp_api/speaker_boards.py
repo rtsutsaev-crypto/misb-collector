@@ -235,7 +235,7 @@ def main():
                 + (f"; участники: {field(t, 'Участники')[:120]}" if field(t, "Участники") else "")
                 + ("; сумма — гонорар спикеру, не цена договора" if price else "")
                 + ("; срок — дата мероприятия" if event else "; срок не указан"))
-        leads.append({"collectedAt": a.date, "country": "RU", "currency": "RUB", "customer": "", "deadline": event or "", "flags": ["rfq"], "id": lid, "law": "Коммерческий",
+        leads.append({"collectedAt": a.date, "country": "RU", "currency": "RUB", "customer": "", "deadline": event or "", "validUntil": "" if event else (max(x["pub"] for x in its) + dt.timedelta(days=a.max_age_days)).isoformat(), "flags": ["rfq"], "id": lid, "law": "Коммерческий",
                       "note": note, "platform": "Запросы на спикеров", "price": price, "region": city(t), "source": "Запросы на спикеров · " + first["board"],
                       "title": title, "url": first["link"],
                       "verify": "Запрос с площадки спикеров: заказчик обычно не назван, контакты организатора открываются после регистрации или подписки на площадке, контакты не собираются."})
