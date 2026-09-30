@@ -185,8 +185,8 @@ CA1u2b01tfC37mqTkUwOzT49B4U/C+J6G40og6as3Jx3tfkeT8XjoLGX4OAsQG0mhCwi33+ycVreU1cA
 BSk64JEmZ3rvVmXpT/i2ItJMtlAA11RsziOrmlTsGsfR3NHA/k38HnZkyP9z7P8J7qaUMQgIAAA=
 PILOT_EOF
 if openssl x509 -in russian_root.pem -noout -fingerprint -sha256 | grep -qF 'D2:6D:2D:02:31:B7:C3:9F:92:CC:73:85:12:BA:54:10:35:19:E4:40:5D:68:B5:BD:70:3E:97:88:CA:8E:CF:31'; then
-  echo '=== СЭТ (поиск по словам) и магазин МО (полный обход 90 страниц), около 5 минут ==='
-  python3 etp_search.py --terms dictionary_terms.json --sources setonline,mosreg --cafile russian_root.pem --pause 1.5 --out ru_leads.json
+  echo '=== магазин МО (полный обход 90 страниц), около 3 минут ==='
+  python3 etp_search.py --terms dictionary_terms.json --sources mosreg --cafile russian_root.pem --pause 1.5 --out ru_leads.json
   python3 - <<'PY_EOF'
 import json
 j = json.load(open('ru_leads.json'))
