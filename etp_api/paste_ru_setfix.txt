@@ -1,0 +1,22 @@
+cd ~/pilot_new
+echo '=== 1/4: сертификат сайта и адрес промежуточного (AIA) ==='
+openssl s_client -connect etp.setonline.ru:443 -servername etp.setonline.ru </dev/null 2>/dev/null | openssl x509 > set_leaf.pem
+URL=$(openssl x509 -in set_leaf.pem -noout -text | grep -A1 "CA Issuers" | grep -o "http[^ ]*" | head -1)
+echo "AIA: $URL"
+echo '=== 2/4: скачать промежуточный сертификат ==='
+curl -sS -m 30 "$URL" -o set_inter.der
+openssl x509 -inform der -in set_inter.der -out set_inter.pem 2>/dev/null || cp set_inter.der set_inter.pem
+openssl x509 -in set_inter.pem -noout -subject -issuer -fingerprint -sha256
+echo '=== 3/4: проверка цепочки по системным корням (должно быть OK) ==='
+openssl verify -untrusted set_inter.pem set_leaf.pem
+cat russian_root.pem set_inter.pem > set_ca.pem
+echo '=== 4/4: поиск по СЭТ с этой цепочкой (TLS включён), около 3 минут ==='
+python3 etp_search.py --terms dictionary_terms.json --sources setonline --cafile set_ca.pem --pause 1.2 --out set_leads.json 2>&1 | tail -3
+python3 - <<'PY_EOF'
+import json
+j = json.load(open('set_leads.json'))
+print('ЛИДОВ', len(j['leads']))
+for l in j['leads']:
+    print(l['source'], '|', l['deadline'] or '-', '|', (l['customer'] or '')[:30], '|', l['title'][:90], '|', l['price'])
+PY_EOF
+echo '=== ГОТОВО ==='
