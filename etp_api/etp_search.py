@@ -14,6 +14,8 @@ Sources (key of the plan -> address):
   fedtorgi Торги Федерации      POST lk.fedtorgi.ru/api/v1/procedures/search?page=N&limit=10  (та же форма)
   rzdm     РЖД-Медицина         GET  zakupki.rzd-medicine.ru/api/purchase/orders/compressed/main?limit=15&page=N&search=<слово>
   lsr      ЭТП Группы ЛСР       POST zakupki.lsr.ru/ajax (форма action=get-tenders&subject=<слово>&offset=N&limit=10)
+  mosreg   Электронный магазин МО POST api.market.mosreg.ru/api/Trade/GetTradesForParticipantOrAnonymous, полный обход открытых закупок (90 страниц по 10);
+                                только российский адрес (из облака обрыв соединения)
   setonline СЭТ                 GET  etp.setonline.ru/searchServlet (та же платформа, что РЭСТ; из облака не открывается: цепочка Минцифры, нужен --cafile;
                                 проверено только по форме запроса из разведки 29.09.2026)
 
@@ -205,8 +207,34 @@ def lsr(word, page):
                          url="https://zakupki.lsr.ru/" + (m.group(1) if m else "tenders"), note=f"ЭТП Группы ЛСР № {strip(x.get('number'))}, {x.get('method')}, {x.get('status')}"))
     return rows, -(-int((j.get("Paging") or {}).get("Total") or 0) // 10)
 
+
+# ---------------------------------------------------------------- Электронный магазин Московской области (только российский адрес)
+MOSREG_BODY = {"page": 1, "itemsPerPage": 10, "tradeState": "15", "OnlyTradesWithMyApplications": False, "sortingParams": [], "filterPriceMin": "", "filterPriceMax": "",
+               "filterDateFrom": None, "filterDateTo": None, "filterFillingApplicationEndDateFrom": None, "FilterFillingApplicationEndDateTo": None,
+               "filterTradeEasuzNumber": "", "showOnlyOwnTrades": False, "showApprovementTrades": False, "IsImmediate": False, "UsedClassificatorType": 20,
+               "classificatorCodes": [], "CustomerFullNameOrInn": "", "CustomerAddress": "", "Koz2Value": "", "ParticipantHasApplicationsOnTrade": "",
+               "ProductPriceMin": "", "ProductPriceMax": ""}
+
+
+def mosreg(word, page):
+    """Full scan of the open trades (the site has no text filter, only categories): the word is ignored, every page is read once, the dictionary is applied here.
+    Body from the recon of 29.09.2026 (Russian server): POST api.market.mosreg.ru/api/Trade/GetTradesForParticipantOrAnonymous, 900 open trades = 90 pages of 10."""
+    j = http("https://api.market.mosreg.ru/api/Trade/GetTradesForParticipantOrAnonymous", dict(MOSREG_BODY, page=page + 1))
+    rows = []
+    for x in j.get("invdata", []):
+        pub = (x.get("PublicationDate") or "")[:10]
+        rows.append(lead(id="MOSREG-" + str(x["Id"]), title=(x.get("TradeName") or "").strip(), customer=(x.get("CustomerFullName") or "").strip(),
+                         region="Московская область", deadline=(x.get("FillingApplicationEndDate") or "")[:10] or None,
+                         price=num(x.get("InitialPrice")) if x.get("IsInitialPriceDefined", True) else None, law="Коммерческий",
+                         platform="Электронный магазин Московской области", source="Электронный магазин МО", url="https://market.mosreg.ru/",
+                         note=f"Электронный магазин МО, № {x['Id']}, {x.get('TradeStateName')}, опубликовано {pub}, заявок {x.get('ApplicationsCount')}",
+                         verify="Прямой адрес карточки не найден (одностраничный сайт); ссылка ведёт на главную, найти закупку по номеру."))
+    return rows, int(j.get("totalpages") or 1)
+
+
 SOURCES = {"mts": (mts, 3), "rest": (rest, 3), "rftorgi": (_fed("lk.rftorgi.ru", "Торги РФ", "rftorgi", "RFT"), 5),
-           "fedtorgi": (_fed("lk.fedtorgi.ru", "Торги Федерации", "fedtorgi", "FT"), 5), "rzdm": (rzdm, 4), "lsr": (lsr, 3), "setonline": (setonline, 3)}
+           "fedtorgi": (_fed("lk.fedtorgi.ru", "Торги Федерации", "fedtorgi", "FT"), 5), "rzdm": (rzdm, 4), "lsr": (lsr, 3), "setonline": (setonline, 3), "mosreg": (mosreg, 100)}
+FULLSCAN = {"mosreg"}  # sources without a text filter: one pass over all pages, the word list is not used
 
 
 def main():
@@ -244,9 +272,10 @@ def main():
     out, seen = [], set()
     for key in [s for s in a.sources.split(",") if s]:
         fn, maxpages = SOURCES[key]
+        src_words = [""] if key in FULLSCAN else words
         st = STAT[key] = {"words": 0, "requests": 0, "records": 0, "matched": 0, "new": 0, "errors": [], "stopped": ""}
         fails = 0
-        for w in words:
+        for w in src_words:
             st["words"] += 1
             for page in range(maxpages):
                 time.sleep(a.pause)
@@ -269,13 +298,13 @@ def main():
                     if r["id"] in seen or r["id"] in known:
                         continue
                     seen.add(r["id"]); r["collectedAt"] = a.date
-                    r["note"] += f"; найден по слову «{w}», в названии «{t}»"
+                    r["note"] += (f"; найден по слову «{w}», в названии «{t}»" if w else f"; полный обход списка, в названии «{t}»")
                     out.append(r); st["new"] += 1
                 if page + 1 >= pages:
                     break
             if fails >= 5:
                 st["stopped"] = "5 ошибок подряд, источник остановлен"; break
-        print(key, {k: v for k, v in st.items() if k != "errors"}, "errors:", len(st["errors"]), file=sys.stderr)
+        print(key, {k: v for k, v in st.items() if k != "errors"}, "errors:", len(st["errors"]), st["errors"][:2], file=sys.stderr)
     json.dump({"collectedAt": a.date, "leads": out, "stats": STAT, "source": "etp_search.py", "totalWords": total_words,
                "nextOffset": (a.offset + len(words)) % total_words if total_words else 0}, open(a.out, "w", encoding="utf-8"), ensure_ascii=False)
     print(len(out), "leads ->", a.out, file=sys.stderr)

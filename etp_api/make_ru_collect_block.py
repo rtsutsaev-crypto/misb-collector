@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Paste block for the Russian server: run etp_search.py for the sources that only a Russian address reaches (СЭТ now; магазин МО after its request body is known).
+"""Paste block for the Russian server: run etp_search.py for the sources that only a Russian address reaches (СЭТ and магазин МО).
 
 Installs nothing but python3. The Russian root certificate is checked by fingerprint and passed with --cafile (TLS verification stays on).
 Result: ~/pilot_new/ru_leads.json; the block prints the counters and every lead as one compact line, so the output can be pasted into the chat.
@@ -20,8 +20,8 @@ block = ("command -v python3 >/dev/null || (apt-get update && apt-get install -y
  "base64 -d <<'PILOT_EOF' | gunzip > dictionary_terms.json\n" + b64(terms) + "\nPILOT_EOF\n"
  "base64 -d <<'PILOT_EOF' | gunzip > russian_root.pem\n" + b64(pem) + "\nPILOT_EOF\n"
  "if openssl x509 -in russian_root.pem -noout -fingerprint -sha256 | grep -qF '" + FP + "'; then\n"
- "  echo '=== СЭТ: поиск по словам форм (около 3-4 минут) ==='\n"
- "  python3 etp_search.py --terms dictionary_terms.json --sources setonline --cafile russian_root.pem --pause 1.2 --out ru_leads.json\n"
+ "  echo '=== СЭТ (поиск по словам) и магазин МО (полный обход 90 страниц), около 5 минут ==='\n"
+ "  python3 etp_search.py --terms dictionary_terms.json --sources setonline,mosreg --cafile russian_root.pem --pause 1.5 --out ru_leads.json\n"
  "  python3 - <<'PY_EOF'\n"
  "import json\n"
  "j = json.load(open('ru_leads.json'))\n"
