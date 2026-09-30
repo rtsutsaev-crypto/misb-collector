@@ -198,6 +198,7 @@ Ie903NYDMDQlln0fG+TnkQlo9JIsQuyZSbs6ei9VwC4xQfeMMKs+p/qn8xt34qssfT+6E2/0dr9msYAm
 u7+7f7s/j78ff6VDbLrvxXSKZx979h9e/eZDjQIAAA==
 PILOT_EOF
 chmod +x run_mosreg.sh
+touch mosreg_seen.txt; for i in MOSREG-3758477 MOSREG-3758401 MOSREG-3758402 MOSREG-3758368 MOSREG-3758359 MOSREG-3758352 MOSREG-3758318 MOSREG-3758293 MOSREG-3758300 MOSREG-3758302 MOSREG-3758226 MOSREG-3758228 MOSREG-3758144 MOSREG-3758149 MOSREG-3758133 MOSREG-3758069 MOSREG-3758004 MOSREG-3757917 MOSREG-3757811 MOSREG-3757776 MOSREG-3757683 MOSREG-3757534 MOSREG-3756886 MOSREG-3756823 MOSREG-3750969 MOSREG-3750782; do grep -qx $i mosreg_seen.txt || echo $i >> mosreg_seen.txt; done
 (crontab -l 2>/dev/null | grep -v run_mosreg.sh; echo "0 7 * * * bash $HOME/pilot_new/run_mosreg.sh") | crontab -
 echo '=== первый запуск сейчас (около 3 минут) ==='
 bash run_mosreg.sh; tail -3 cron.log; wc -l mosreg_pending.jsonl
