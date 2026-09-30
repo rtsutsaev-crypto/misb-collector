@@ -9,7 +9,7 @@ openssl x509 -inform der -in set_inter.der -out set_inter.pem 2>/dev/null || cp 
 openssl x509 -in set_inter.pem -noout -subject -issuer -fingerprint -sha256
 echo '=== 3/4: проверка цепочки по системным корням (должно быть OK) ==='
 openssl verify -untrusted set_inter.pem set_leaf.pem
-cat russian_root.pem set_inter.pem > set_ca.pem
+(cat russian_root.pem; echo; cat set_inter.pem) > set_ca.pem
 echo '=== 4/4: поиск по СЭТ с этой цепочкой (TLS включён), около 3 минут ==='
 python3 etp_search.py --terms dictionary_terms.json --sources setonline --cafile set_ca.pem --pause 1.2 --out set_leads.json 2>&1 | tail -3
 python3 - <<'PY_EOF'
