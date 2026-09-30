@@ -1,0 +1,1 @@
+cd ~/pilot_new && wc -l mosreg_pending.jsonl && cat mosreg_pending.jsonl
