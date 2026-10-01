@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MISB source registry record v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "source_id",
+    "source_name",
+    "source_url",
+    "signal_types",
+    "verification_status",
+    "connector_state",
+    "do_not_drop",
+    "ingestion_policy",
+    "source_generation"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.0"
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^MISB-[0-9]{3,}$"
+    },
+    "source_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "signal_types": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "D",
+          "I",
+          "P",
+          "R"
+        ]
+      }
+    },
+    "verification_status": {
+      "enum": [
+        "content_read",
+        "search_index",
+        "candidate",
+        "link_confirmed"
+      ]
+    },
+    "connector_state": {
+      "enum": [
+        "not_checked_here",
+        "planned",
+        "testing",
+        "operational",
+        "degraded",
+        "blocked_access",
+        "blocked_cost",
+        "manual"
+      ]
+    },
+    "queue_state": {
+      "type": "string"
+    },
+    "do_not_drop": {
+      "const": true
+    },
+    "ingestion_policy": {
+      "const": "retain_raw_then_rank"
+    },
+    "source_generation": {
+      "enum": [
+        "baseline_v1",
+        "added_v2",
+        "discovered_later"
+      ]
+    },
+    "next_due_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_runtime_check_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "legacy_record": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}
