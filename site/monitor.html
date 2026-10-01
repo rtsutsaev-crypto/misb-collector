@@ -389,7 +389,7 @@ input[type=file]{max-width:100%}
     <div class="notice prose" id="regNote"></div>
     <div id="regSum" class="row" style="margin:8px 0"></div>
     <div class="filters">
-      <select id="rgPkg" aria-label="Пакет"><option value="misb-v2">Пакет 01.10.2026 (282)</option><option value="misb-research-20260929">Пакет 29.09.2026 (100)</option></select>
+      <select id="rgPkg" aria-label="Пакет"><option value="misb-v3">Пакет v3 01.10.2026 (507)</option><option value="misb-research-20260929">Пакет 29.09.2026 (100)</option></select>
       <input type="search" id="rgQ" placeholder="Название, адрес или MISB-номер…" aria-label="Поиск источника">
       <select id="rgCountry" aria-label="Страна"><option value="">Все страны</option><option value="RU">Россия</option><option value="BY">Беларусь</option><option value="KZ">Казахстан</option><option value="KG">Кыргызстан</option><option value="UZ">Узбекистан</option><option value="CIS">СНГ/ЕАЭС</option></select>
       <select id="rgType" aria-label="Вид"><option value="">Все виды</option><option value="platform">Площадки</option><option value="corporate">Корпоративные разделы</option><option value="aggregator">Агрегаторы</option></select>
@@ -400,6 +400,8 @@ input[type=file]{max-width:100%}
       <thead id="regHead"><tr><th>Источник</th><th>Страна · вид</th><th>Исследование (из пакета)</th><th>Доступ из облака (проверка 29.09)</th><th>Подключение к сайту</th><th>Последняя попытка · успех</th><th>Результат · ошибка · что нужно</th></tr></thead>
       <tbody id="regRows"></tbody>
     </table></div>
+    <h3 style="margin:22px 0 8px;font-size:15px">Новые домены из поиска</h3>
+    <div id="discBox"></div>
     <h3 style="margin:22px 0 8px;font-size:15px">Каталог площадок из справочника (кандидаты)</h3>
     <p class="muted" style="margin:0 0 8px">150 российских площадок из таблиц ДПО и малых закупок. Ни одна не включена в сбор автоматически: сначала проверяется открытая выдача и одна реальная карточка. «Уже в сборе» — тот же сайт и раздел, что у работающего источника; «тот же сайт» — другой раздел, склеивать нельзя.</p>
     <div class="filters"><select id="catF" aria-label="Фильтр каталога"><option value="">Все</option><option value="live">Действующие (все виды)</option><option value="direct">Включены в сбор напрямую</option><option value="queued">В проверке и проверенные</option><option value="new">Новые сайты</option><option value="overlap">Уже в сборе</option><option value="high">Высокая релевантность</option><option value="p0">Приоритет P0 по реестру</option><option value="wave">Следующая волна (P1)</option></select></div>
@@ -583,8 +585,8 @@ function runtimeOf(keys){keys=keys||[];if(!keys.length)return {state:"not_connec
   const st=docs.map(d=>{if(d.status!=="covered")return d.status;const lh=(d.history||[]).slice(-1)[0];return !lh?"none":lh.status==="ok"?"partial":lh.status==="failed"?"failed":"blocked"});let state=st.includes("ok")?"success":st.includes("partial")?"partial":st.includes("blocked")?"blocked":st.includes("needs_key")?"auth_required":st.includes("failed")?"error":"never_run";
   if(state==="success"&&okh&&daysSince(okh.date)>14)state="stale";return {state,docs,last,ok:okh}}
 function probeText(p){if(!p)return "не проверялся";if(p.robots==="disallowed")return "robots.txt запрещает чтение";if(p.gate)return "защита: "+(p.gate==="captcha"?"капча":p.gate);if(p.status===200)return p.procWords>=5&&p.dates>=3?"открывается, виден список закупок":"открывается, списка закупок не видно (оболочка или лендинг)";if(!p.status)return "нет ответа: "+String(p.title||"").replace(/^URLError: <urlopen error /,"").replace(/>$/,"").slice(0,70);return "HTTP "+p.status}
-const QUEUE_LABEL={rotation:"в ротации проверки",collecting:"собирается",collecting_indirect:"через другой источник",blocked_existing:"источник сбора выключен",adapter_needed:"нужен адаптер",access_task:"задача доступа",reconcile:"сверить с подключённым",candidate_verify:"кандидат: уточнить"};
-const QUEUE_ORDER=["collecting","collecting_indirect","rotation","blocked_existing","reconcile","adapter_needed","access_task","candidate_verify"];
+const QUEUE_LABEL={identity_check:"конфликт идентичности",rotation:"в ротации проверки",collecting:"собирается",collecting_indirect:"через другой источник",blocked_existing:"источник сбора выключен",adapter_needed:"нужен адаптер",access_task:"задача доступа",reconcile:"сверить с подключённым",candidate_verify:"кандидат: уточнить"};
+const QUEUE_ORDER=["collecting","collecting_indirect","rotation","blocked_existing","reconcile","adapter_needed","access_task","candidate_verify","identity_check"];
 const ACCESS_LABEL={list_visible:"виден список закупок",page_open:"открыта, списка не видно",empty_page:"почти пустая (скрипт)",forbidden:"403/401 из облака",captcha:"капча",login_required:"нужен вход",rate_limited:"429, повторить",robots_disallowed:"robots.txt запрещает",unreachable:"нет ответа",http_error:"ошибка HTTP",not_tested:"не проверялся"};
 const CHECK_LABEL={ok:"есть строки",empty_success:"проверен, новых нет",failed:"ошибка доступа",blocked:"закрыт",partial:"частично"};
 const REG_HEAD={v1:["Источник","Страна · вид","Исследование (из пакета)","Доступ из облака (проверка 29.09)","Подключение к сайту","Последняя попытка · успех","Результат · ошибка · что нужно"],v2:["Источник","Страна · категория","Подтверждение (из пакета)","Доступ из облака","Подключение к сбору","Проверка в сборе · следующая","Очередь · что нужно"]};
@@ -593,20 +595,22 @@ function renderRegV2(R,box,note){setRegHead("v2");const today=new Date().toISOSt
   const rows=R.map(r=>({r,rt:runtimeOf(r.match&&r.match.status==="matched"?r.match.siteKeys:[]),ck:C[r.sourceId]||null}));
   const overdue=rows.filter(x=>x.r.queue&&x.r.queue.nextDueAt&&x.r.queue.nextDueAt<today&&!(x.ck&&x.ck.at>=x.r.queue.nextDueAt));
   const never=rows.filter(x=>!x.ck&&x.rt.state!=="success"&&x.rt.state!=="partial");const oldest=never.length?Math.round((Date.now()-new Date(M.importedAt||today))/864e5):0;
-  if(note)note.replaceChildren(el("p",{text:`Пакет ${M.packageVersion||"2.0"} от ${fmtDate(M.importedAt)}: ${R.length} записей (${R.filter(r=>r.generation==="baseline_v1").length} исходных MISB-001…159 и ${R.filter(r=>r.generation==="added_v2").length} новых, кандидатов ${R.filter(r=>r.state==="candidate").length}). Реестр полноты: все записи сохраняются, включая дубли, зеркала и закрытые каналы. «Подтверждение» — как источник найден (чтение страницы, поисковая выдача, кандидат), а не работа сборщика. «Доступ из облака» — проверка адреса из среды Claude Code без входа; ошибка 403/429/капча — задача доступа, а не «заказов нет». «Подключение» — фактическое состояние источников сбора. «Проверка в сборе» — реальный результат чтения адреса в обычном запуске.`}));
+  if(note)note.replaceChildren(el("p",{text:`Пакет ${M.packageVersion||"2.0"} от ${fmtDate(M.importedAt)}: ${R.length} записей (исходных ${R.filter(r=>r.generation==="baseline_v1").length}, добавлено в v2 ${R.filter(r=>r.generation==="added_v2").length}${R.some(r=>r.generation==="added_v3")?", в v3 "+R.filter(r=>r.generation==="added_v3").length:""}; кандидатов ${R.filter(r=>r.state==="candidate").length}). Реестр полноты: все записи сохраняются, включая дубли, зеркала и закрытые каналы. «Подтверждение» — как источник найден (чтение страницы, поисковая выдача, кандидат), а не работа сборщика. «Доступ из облака» — проверка адреса из среды Claude Code без входа; ошибка 403/429/капча — задача доступа, а не «заказов нет». «Подключение» — фактическое состояние источников сбора. «Проверка в сборе» — реальный результат чтения адреса в обычном запуске.`}));
   const cntQ={};rows.forEach(x=>{const k=(x.r.queue||{}).state||"—";cntQ[k]=(cntQ[k]||0)+1});
   const qs=$("#rgQueue");if(qs&&qs.options.length===1)QUEUE_ORDER.forEach(k=>qs.append(el("option",{value:k,text:QUEUE_LABEL[k]})));
   const ty=$("#rgType");if(ty&&ty.dataset.pkg!=="v2"){ty.dataset.pkg="v2";ty.replaceChildren(el("option",{value:"",text:"Все категории"}),...[...new Set(R.map(r=>r.type).filter(Boolean))].sort().map(x=>el("option",{value:x,text:x})))}
   const ckN={};rows.forEach(x=>{if(x.ck)ckN[x.ck.status]=(ckN[x.ck.status]||0)+1});
   $("#regSum").replaceChildren(...QUEUE_ORDER.filter(k=>cntQ[k]).map(k=>el("span",{class:"chip",text:`${QUEUE_LABEL[k]}: ${cntQ[k]}`})),
     el("span",{class:"chip",text:`проверено в сборе: ${rows.filter(x=>x.ck).length}${Object.keys(ckN).length?" ("+Object.entries(ckN).map(([k,v])=>`${CHECK_LABEL[k]||k} ${v}`).join(", ")+")":""}`}),
-    el("span",{class:"chip",text:`просрочена проверка: ${overdue.length}`}),el("span",{class:"chip",text:`ни разу не проверены: ${never.length}${never.length?`, старейший ${oldest} дн.`:""}`}));
+    el("span",{class:"chip",text:`просрочена проверка: ${overdue.length}`}),
+    el("span",{class:"chip",text:`поисковых шаблонов выполнено: ${Object.keys(S.queryChecks||{}).length} из ${(S.regMeta||{}).searchQueries||"—"}`}),
+    el("span",{class:"chip",text:`новых доменов найдено: ${Object.keys(S.discoveries||{}).length}`}),el("span",{class:"chip",text:`ни разу не проверены: ${never.length}${never.length?`, старейший ${oldest} дн.`:""}`}));
   const q=($("#rgQ").value||"").toLowerCase().trim(),fc=$("#rgCountry").value,ft=$("#rgType").value,fs=$("#rgState").value,fq=$("#rgQueue").value;
   const list=rows.filter(x=>(!q||(x.r.name+" "+x.r.url+" "+x.r.sourceId).toLowerCase().includes(q))&&(!fc||x.r.countries.includes(fc))&&(!ft||x.r.type===ft)&&(!fs||x.rt.state===fs)&&(!fq||(x.r.queue||{}).state===fq))
     .sort((a,b)=>QUEUE_ORDER.indexOf((a.r.queue||{}).state)-QUEUE_ORDER.indexOf((b.r.queue||{}).state)||a.r.priority-b.r.priority||a.r.legacyRowId-b.r.legacyRowId);
   const tr=list.slice(0,400).map(({r,rt,ck})=>{const rs=r.research||{};const qq=r.queue||{};const ac=r.access||{};const lastA=ck?ck.at:(rt.last?rt.last.date:"");
     return el("tr",{},
-      el("td",{},r.url?el("a",{href:r.url,target:"_blank",rel:"noopener",text:r.name}):el("b",{text:r.name}),el("div",{class:"muted",style:"font-size:12px",text:`${r.sourceId} · волна ${r.priority} · ${r.cls||""}${(r.signals||[]).length?" · сигнал "+r.signals.join("/"):""}${r.generation==="added_v2"?" · новый в v2":""}${(r.match&&r.match.v1Docs||[]).length?" · есть в пакете 29.09":""}`})),
+      el("td",{},r.url?el("a",{href:r.url,target:"_blank",rel:"noopener",text:r.name}):el("b",{text:r.name}),el("div",{class:"muted",style:"font-size:12px",text:`${r.sourceId} · волна ${r.priority} · ${r.cls||""}${r.clsLabel?" "+r.clsLabel:""}${r.surface?" · "+r.surface:""}${(r.signals||[]).length?" · роль "+r.signals.join("/"):""}${r.generation==="added_v3"?" · новый в v3":r.generation==="added_v2"?" · новый в v2":""}${(r.match&&r.match.v1Docs||[]).length?" · есть в пакете 29.09":""}${r.identity==="identity_conflict"?" · конфликт идентичности":""}`})),
       el("td",{},el("div",{text:r.countries.join(", ")}),el("div",{class:"muted",style:"font-size:12px",text:r.type||""})),
       el("td",{style:"max-width:30ch"},el("span",{class:"chip",text:rs.page_status_text||"—"}),el("div",{style:"font-size:12.5px",text:(rs.page_result_text||"").slice(0,220)}),el("div",{class:"muted",style:"font-size:12px",text:`проверено ${fmtDate(rs.checked_on)}`})),
       el("td",{style:"max-width:28ch"},el("div",{style:"font-size:12.5px",text:ACCESS_LABEL[ac.state]||ac.state||"—"}),el("div",{class:"muted",style:"font-size:12px",text:(ac.note||"")+(r.probe&&r.probe.checkedOn?" · "+fmtDate(r.probe.checkedOn):"")})),
@@ -616,9 +620,9 @@ function renderRegV2(R,box,note){setRegHead("v2");const today=new Date().toISOSt
   if(list.length>400)tr.push(el("tr",{},el("td",{colspan:"7",class:"empty",text:`Показаны первые 400 из ${list.length}; уточните фильтр.`})));
   box.replaceChildren(...(tr.length?tr:[el("tr",{},el("td",{colspan:"7",class:"empty",text:"Под фильтр ничего не подходит."}))]))}
 function renderReg(){const box=$("#regRows");if(!box)return;const pkg=($("#rgPkg")||{}).value||"misb-v2";const all=S.reg||[];const note=$("#regNote");
-  if(pkg==="misb-v2"&&all.some(r=>r.datasetId==="misb-v2")){const qs=$("#rgQueue");if(qs)qs.hidden=false;return renderRegV2(all.filter(r=>r.datasetId==="misb-v2"),box,note)}
+  if(pkg!=="misb-research-20260929"&&all.some(r=>r.datasetId===pkg)){const qs=$("#rgQueue");if(qs)qs.hidden=false;return renderRegV2(all.filter(r=>r.datasetId===pkg),box,note)}
   {const qs=$("#rgQueue");if(qs)qs.hidden=true;const ty=$("#rgType");if(ty&&ty.dataset.pkg!=="v1"){ty.dataset.pkg="v1";ty.replaceChildren(el("option",{value:"",text:"Все виды"}),el("option",{value:"platform",text:"Площадки"}),el("option",{value:"corporate",text:"Корпоративные разделы"}),el("option",{value:"aggregator",text:"Агрегаторы"}))}}
-  setRegHead("v1");const R=all.filter(r=>r.datasetId!=="misb-v2");
+  setRegHead("v1");const R=all.filter(r=>r.datasetId==="misb-research-20260929"||!/^misb-v/.test(r.datasetId));
   if(!R.length){box.replaceChildren(el("tr",{},el("td",{colspan:"7",class:"empty",text:"Реестр источников ещё не импортирован."})));$("#regSum").replaceChildren();if(note)note.replaceChildren();return}
   const M={packageVersion:"2026-09-29.2"};if(note)note.replaceChildren(el("p",{text:`Пакет ${M.packageVersion||""}: ${R.length} записей — исследовательский реестр (кандидаты и точки входа), а не работающие интеграции. «Исследование» — данные пакета; «Доступ из облака» — проверка ${fmtDate(R.find(r=>r.probe)?.probe?.checkedOn)} из среды Claude Code без входа (ошибка чтения оттуда не доказывает недоступность с сервера сбора); «Подключение» — фактическое состояние источников сайта, статус пакета not_connected его не перезаписывает.`}));
   const rows=R.map(r=>({r,rt:runtimeOf(r.match&&r.match.status==="matched"?r.match.siteKeys:[])}));
@@ -987,7 +991,13 @@ let STALE=new Set();
 /* Реестр источников (около 2 МБ) грузится при первом открытии вкладки «Источники», а не при загрузке страницы. */
 let REG_ON=false;function loadReg(){if(REG_ON||!S.db)return;REG_ON=true;const db=S.db;
   db.collection("srcreg").onSnapshot(s=>{const ds=s.docs.filter(d=>d.exists);S.reg=ds.map(d=>d.data()).filter(x=>x&&x.datasetId&&x.sourceId);const m=ds.find(d=>d.id==="_meta");S.regMeta=m?m.data():null;renderReg()},()=>{});
-  db.doc("meta/registry-checks").onSnapshot(d=>{S.regChecks=d.exists?(d.data().items||{}):{};renderReg()},()=>{})}
+  db.doc("meta/registry-checks").onSnapshot(d=>{S.regChecks=d.exists?(d.data().items||{}):{};renderReg()},()=>{});
+  db.doc("meta/query-checks").onSnapshot(d=>{S.queryChecks=d.exists?(d.data().items||{}):{};renderReg();renderDisc()},()=>{});
+  db.doc("meta/discoveries").onSnapshot(d=>{S.discoveries=d.exists?(d.data().items||{}):{};renderReg();renderDisc()},()=>{})}
+function renderDisc(){const box=$("#discBox");if(!box)return;const D=Object.entries(S.discoveries||{}).sort((a,b)=>String(b[1].last||"").localeCompare(String(a[1].last||""))||(b[1].count||0)-(a[1].count||0));
+  if(!D.length){box.replaceChildren(el("p",{class:"muted",text:"Пока ничего: новые домены появятся после запусков поисковых шаблонов (источник reg3-search)."}));return}
+  box.replaceChildren(el("p",{class:"muted",text:`${D.length} доменов, которых нет в реестре: найдены поиском по шаблонам, зарегистрированы до оценки полезности. Это кандидаты в реестр, не подтверждённые источники заказов.`}),
+    el("div",{class:"tablebox"},el("table",{},el("thead",{},el("tr",{},...["Домен","Пример","Найден","Раз","Шаблоны"].map(x=>el("th",{text:x})))),el("tbody",{},...D.slice(0,200).map(([h,it])=>el("tr",{},el("td",{},el("b",{text:h})),el("td",{style:"max-width:40ch"},it.url?el("a",{href:it.url,target:"_blank",rel:"noopener",text:it.title||it.url}):el("span",{text:it.title||"—"})),el("td",{style:"font-size:12.5px",text:fmtDate(it.first)+(it.last&&it.last!==it.first?" … "+fmtDate(it.last):"")}),el("td",{text:String(it.count||1)}),el("td",{style:"font-size:12px",text:(it.queries||[]).join(", ")})))))))}
 function curTab(){return Object.keys(TAB_GROUP).find(x=>{const e=$("#tab-"+x);return e&&!e.hidden})||"leads"}
 function renderTab(t){STALE.delete(t);for(const f of TAB_RENDER()[t]||[])f()}const GROUP_FIRST={buy:"leads",src:"sources",hold:"corp"};
 function switchGroup(g){const t=(S.lastTab&&S.lastTab[g])||GROUP_FIRST[g];switchTab(t)}

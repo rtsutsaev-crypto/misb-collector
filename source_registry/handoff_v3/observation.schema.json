@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MISB raw observation and lead record",
+  "type": "object",
+  "required": [
+    "observation_id",
+    "source_id",
+    "item_url",
+    "discovered_at",
+    "raw_content_ref",
+    "qualification_status",
+    "evidence",
+    "missing_fields"
+  ],
+  "properties": {
+    "observation_id": {
+      "type": "string"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "item_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "published_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "discovered_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "raw_content_ref": {
+      "type": "string"
+    },
+    "content_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "external_item_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "company_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "legal_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deadline": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "budget_min": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "budget_max": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "currency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "service_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "qualification_status": {
+      "enum": [
+        "raw",
+        "request",
+        "hypothesis",
+        "partner",
+        "reference",
+        "review",
+        "low_fit",
+        "expired",
+        "confirmed_by_buyer"
+      ]
+    },
+    "possible_duplicate_observation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "missing_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_links": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "posting_types": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "buyer_request",
+          "supplier_ad",
+          "vacancy",
+          "completed_case",
+          "discussion",
+          "mixed",
+          "unknown"
+        ]
+      }
+    },
+    "attachment_versions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "coverage_scope": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

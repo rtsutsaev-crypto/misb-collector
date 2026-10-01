@@ -1,0 +1,118 @@
+{
+  "package_version": "3.0",
+  "created_at": "2026-10-01",
+  "counts": {
+    "sources": 507,
+    "preserved_v2": 282,
+    "added_v3": 225,
+    "normalized_url_groups": 507,
+    "candidate": 8,
+    "identity_conflicts": 2,
+    "source_classes": 19,
+    "discovery_recipes": 72,
+    "search_queries": 256,
+    "service_topics": 32,
+    "connector_tasks": 507,
+    "coverage_tasks": 152,
+    "acceptance_scenarios": 36
+  },
+  "artifact_checks": {
+    "all_282_v2_records_preserved": true,
+    "original_fields_unchanged": true,
+    "all_sources_have_tasks": true,
+    "connector_runtime_tests_executed": false,
+    "operator_workflow_verified": true
+  },
+  "files": [
+    {
+      "name": "sources.jsonl",
+      "bytes": 4446528,
+      "sha256": "190279c183cfba0c0b00f86d989120d894236130620072874a004fa542c9cb97"
+    },
+    {
+      "name": "baseline_v2.jsonl",
+      "bytes": 1636559,
+      "sha256": "48ea1af697be92a77bb3b4750ee666e5b099c061bdf6d92ba048d0047b1bbf8e"
+    },
+    {
+      "name": "connector_tasks.jsonl",
+      "bytes": 645403,
+      "sha256": "4141b3f2951be9196f1fc1bfbc4aef15974792b1528f7bb690201079449fbb2a"
+    },
+    {
+      "name": "source_relationships.jsonl",
+      "bytes": 53483,
+      "sha256": "09787413a7c0b664c40ee267f60661d9cfff2d51c66a7946996f6fdde26ad7f8"
+    },
+    {
+      "name": "discovery_recipes.jsonl",
+      "bytes": 43592,
+      "sha256": "e53b340e6bd0c7e7234882e001beb5cf53e50375b245ebe2c7cd8782492e45ec"
+    },
+    {
+      "name": "search_queries.jsonl",
+      "bytes": 194760,
+      "sha256": "dcf413d9da34c4ea84e6faee7519526ee4beb441d4d9f91b5d8b667ecfbacdfb"
+    },
+    {
+      "name": "coverage_tasks.jsonl",
+      "bytes": 102339,
+      "sha256": "73fa24db1896d9ecc5659b642635b2f28de64eeb08304674119322e33a1b2673"
+    },
+    {
+      "name": "commercial_playbooks.json",
+      "bytes": 14799,
+      "sha256": "cbff44f4836a6d67500ba9e1b1d8a2bda7b02600d80659da5766f76c66327ba2"
+    },
+    {
+      "name": "source.schema.json",
+      "bytes": 3017,
+      "sha256": "cc195f76ce157c8a0c7168f41f26c7830f9462b9d0f903435a508a05c84c7b31"
+    },
+    {
+      "name": "observation.schema.json",
+      "bytes": 2740,
+      "sha256": "d87b3334af93103b89450d40e57b6f475be303c29343ddea81a3a7ecc1e8ffd5"
+    },
+    {
+      "name": "taxonomy.json",
+      "bytes": 8164,
+      "sha256": "6986e98001315e268461ffaab74cd6051f1f93ee80b78b39afc57f817f5d9df0"
+    },
+    {
+      "name": "vocabulary.json",
+      "bytes": 27306,
+      "sha256": "10e46693b072cd7da90eea69a50eafd233398556df8503f7e5d49547550bc81b"
+    },
+    {
+      "name": "policy.json",
+      "bytes": 15771,
+      "sha256": "9e34d04a245c9d33cf3e3acc30da477eb7b0e16a88bdcf82ad622882d06323f0"
+    },
+    {
+      "name": "protocol.json",
+      "bytes": 144977,
+      "sha256": "7c46885055011885b64715862ae049ddcbce6996f8cc3cfd52aea399a2427698"
+    },
+    {
+      "name": "budget_policy.json",
+      "bytes": 2562,
+      "sha256": "12111607fb726fb604c6d9503cecb3edb5c1dff66431d43aaecaaa02960903d0"
+    },
+    {
+      "name": "README_CLAUDE.txt",
+      "bytes": 10564,
+      "sha256": "8916bc2279bd4227b804bbda3ab11822c08f1a0ae6f917d3417ed035986eac1d"
+    },
+    {
+      "name": "IMPLEMENTATION_BRIEF.txt",
+      "bytes": 3872,
+      "sha256": "a3d647d981060c17fc409f1a0080b683520080d40339d6b2dc265bf425e463ef"
+    },
+    {
+      "name": "sources.csv",
+      "bytes": 1438479,
+      "sha256": "a705a1d4a8a4f9b0ed8991460a45ca2b6fdd1fac7ba3eb9db737241292d17d5b"
+    }
+  ]
+}
