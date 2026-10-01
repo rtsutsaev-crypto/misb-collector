@@ -6145,6 +6145,532 @@
    "type": "skip"
   },
   {
+   "key": "fd-daily",
+   "name": "Свежий спрос · каналы первой волны (каждый запуск)",
+   "type": "pages",
+   "source": "fd-daily",
+   "urls": [
+    "https://hrtime.ru/ispolnitelu/",
+    "https://t.me/s/speakers_l",
+    "https://t.me/s/Project_Best_Speakers",
+    "https://t.me/s/freelancetaverna",
+    "https://t.me/s/zloihr",
+    "https://t.me/s/npsonline",
+    "https://t.me/s/recRussia24",
+    "https://t.me/s/HRbazaar",
+    "https://www.mirapolis.ru/for-partners/",
+    "https://uprav.ru/about/cooperation/",
+    "https://moscow-expert.ru/content/vakansii/index.html",
+    "https://atssm.kz/en/press-center/default/priglashaem-lektorov-i-ekspertov-k-sotrudnichestvu",
+    "https://www.kazenergy.com/operation/human-capital/",
+    "https://www.mk-conference.ru/obychenie1111",
+    "https://rabe.ru/"
+   ],
+   "batch": 15,
+   "pause": 3,
+   "planned": 15,
+   "registry": {
+    "https://hrtime.ru/ispolnitelu/": [
+     "FD-S001",
+     "MISB-013"
+    ],
+    "https://t.me/s/speakers_l": [
+     "FD-S007",
+     "MISB-015"
+    ],
+    "https://t.me/s/Project_Best_Speakers": [
+     "FD-S011",
+     "MISB-208"
+    ],
+    "https://t.me/s/freelancetaverna": [
+     "FD-S017",
+     "MISB-224"
+    ],
+    "https://t.me/s/zloihr": [
+     "FD-S027",
+     "MISB-068"
+    ],
+    "https://t.me/s/npsonline": [
+     "FD-S028",
+     "MISB-069"
+    ],
+    "https://t.me/s/recRussia24": [
+     "FD-S038",
+     "MISB-345"
+    ],
+    "https://t.me/s/HRbazaar": "FD-S045",
+    "https://www.mirapolis.ru/for-partners/": [
+     "FD-S047",
+     "MISB-373"
+    ],
+    "https://uprav.ru/about/cooperation/": [
+     "FD-S055",
+     "MISB-385"
+    ],
+    "https://moscow-expert.ru/content/vakansii/index.html": [
+     "FD-S056",
+     "MISB-387"
+    ],
+    "https://atssm.kz/en/press-center/default/priglashaem-lektorov-i-ekspertov-k-sotrudnichestvu": [
+     "FD-S094",
+     "MISB-406"
+    ],
+    "https://www.kazenergy.com/operation/human-capital/": [
+     "FD-S106",
+     "MISB-092"
+    ],
+    "https://www.mk-conference.ru/obychenie1111": [
+     "FD-S117",
+     "MISB-475"
+    ],
+    "https://rabe.ru/": [
+     "FD-S120",
+     "MISB-504"
+    ]
+   },
+   "method": "Порция batch адресов по кругу (meta/rotation). Каждый адрес независим: ошибка одной страницы не останавливает остальные. Результат каждой страницы — в meta/registry-checks (registry_checks.py).",
+   "note": "Каналы пакета «Свежие потребности» 01.10.2026 первой волны: биржа HRTime, Telegram спикеров, HR/T&D-сообщества, приглашения экспертов школ и ассоциаций. Читаются каждый запуск.",
+   "verify": "Свежая потребность из канала (запрос, поиск эксперта, приглашение провайдеру, субподряд): проверить дату публикации, актуальность, заказчика, оплату и маршрут отклика. Отклик — только человеком."
+  },
+  {
+   "key": "fd-pages",
+   "name": "Свежий спрос · каналы второй и третьей волны (по кругу)",
+   "type": "pages",
+   "source": "fd-pages",
+   "urls": [
+    "https://profi.ru/rabota/",
+    "https://kwork.ru/projects",
+    "https://t.me/s/edu_feed",
+    "https://t.me/s/dl_marketplace",
+    "https://t.me/s/BestSpeakersRu",
+    "https://t.me/s/ielearning",
+    "https://t.me/s/metod_krug",
+    "https://t.me/s/lab_vacancies",
+    "https://t.me/s/LessonDeliveryChat",
+    "https://t.me/s/JobDelivery",
+    "https://t.me/s/methodclub",
+    "https://t.me/s/ispring_master",
+    "https://t.me/s/methodgsom",
+    "https://t.me/s/v_ed_club",
+    "https://t.me/s/learningelements",
+    "https://t.me/s/HRtrain",
+    "https://t.me/s/hr_me_community",
+    "https://t.me/s/rff_chat",
+    "https://t.me/s/CnBChatRUnCIS",
+    "https://t.me/s/hrhubvacancy",
+    "https://www.unicraft.org/page/partners/",
+    "https://levellab.ru/",
+    "https://edtech.academyit.ru/",
+    "https://www.ec-mc.ru/collaboration",
+    "https://b2bevents.pro/ru/trainings/",
+    "https://netology.ru/experts",
+    "https://practicum.yandex.ru/job/",
+    "https://ra-kurs.spb.ru/company/about/vacancy/",
+    "https://unitoria.ru/o-nas/vakansii",
+    "https://club.klerk.ru/latest",
+    "https://forum.zakonia.ru/",
+    "https://www.tendery.ru/forum/",
+    "https://forumyuristov.ru/",
+    "https://forum.dwg.ru/",
+    "https://hr-portal.ru/forum",
+    "https://cpoclub.ru/",
+    "https://corptreasury.ru/all/news/",
+    "https://appminfo.ru/",
+    "https://assud.ru/",
+    "https://www.rcca.com.ru/news/action.shtml",
+    "https://www.iia-ru.ru/announce/",
+    "https://nokc.org.ru/sobytiya/",
+    "https://compandben.org/",
+    "https://t.me/s/tdh_channel",
+    "https://t.me/s/HRBreakfast_Live",
+    "https://t.me/s/HRBreakfast",
+    "https://t.me/s/hr_breakfast_emergency",
+    "https://medium-centr.by/",
+    "https://glabis.by/posidelki/",
+    "https://www.belab.by/education",
+    "https://s-expert.by/",
+    "https://hrf.kgforum.kz/hr-club",
+    "https://forum.assethr.kz/",
+    "https://hrbp.kz/",
+    "https://hr4people.kz/",
+    "https://edu.astanahub.com/",
+    "https://interforums.ru/faq",
+    "https://auditorium-cg.ru/elf23",
+    "https://events.vedomosti.ru/about",
+    "https://events.kommersant.ru/",
+    "https://events.rbc.ru/",
+    "https://event.pravo.ru/",
+    "https://game-learn.ru/",
+    "https://elearningelements.ru/for-speakers",
+    "https://exportedu.ru/tutors",
+    "https://mb-ugra.ru/keep-up/events",
+    "https://exportedu.ru/teams",
+    "https://www.hrforumasia.com/partners",
+    "https://www.weblancer.net/freelance/",
+    "https://t.me/s/talent_rocks",
+    "https://t.me/s/HR_kak_delat",
+    "https://t.me/s/kampus_team",
+    "https://t.me/s/td_department",
+    "https://t.me/s/hranalitycs",
+    "https://t.me/s/webinarforhr",
+    "https://t.me/s/hrafisha",
+    "https://t.me/s/jobs_vacancy_cv",
+    "https://www.ispring.ru/company/reseller-program",
+    "https://ecourse.studio/",
+    "https://cripsi.ru/",
+    "https://lifel.ru/elearn/vacancy",
+    "https://bi-school.ru/dlya-provedeniya-vebinarov-priglashaem-spikerov/",
+    "https://whiteconf.ru/become_speaker/",
+    "https://finplace.ru/",
+    "https://facilitators.ru/"
+   ],
+   "batch": 10,
+   "pause": 3,
+   "planned": 10,
+   "registry": {
+    "https://profi.ru/rabota/": [
+     "FD-S003",
+     "MISB-063"
+    ],
+    "https://kwork.ru/projects": [
+     "FD-S005",
+     "MISB-228"
+    ],
+    "https://t.me/s/edu_feed": [
+     "FD-S008",
+     "MISB-016"
+    ],
+    "https://t.me/s/dl_marketplace": [
+     "FD-S009",
+     "MISB-017"
+    ],
+    "https://t.me/s/BestSpeakersRu": [
+     "FD-S012",
+     "MISB-209"
+    ],
+    "https://t.me/s/ielearning": [
+     "FD-S013",
+     "MISB-214"
+    ],
+    "https://t.me/s/metod_krug": [
+     "FD-S014",
+     "MISB-217"
+    ],
+    "https://t.me/s/lab_vacancies": [
+     "FD-S016",
+     "MISB-223"
+    ],
+    "https://t.me/s/LessonDeliveryChat": [
+     "FD-S018",
+     "MISB-229"
+    ],
+    "https://t.me/s/JobDelivery": [
+     "FD-S019",
+     "MISB-230"
+    ],
+    "https://t.me/s/methodclub": [
+     "FD-S020",
+     "MISB-328"
+    ],
+    "https://t.me/s/ispring_master": [
+     "FD-S023",
+     "MISB-339"
+    ],
+    "https://t.me/s/methodgsom": [
+     "FD-S024",
+     "MISB-370"
+    ],
+    "https://t.me/s/v_ed_club": [
+     "FD-S025",
+     "MISB-371"
+    ],
+    "https://t.me/s/learningelements": [
+     "FD-S026",
+     "MISB-372"
+    ],
+    "https://t.me/s/HRtrain": [
+     "FD-S030",
+     "MISB-231"
+    ],
+    "https://t.me/s/hr_me_community": [
+     "FD-S033",
+     "MISB-237"
+    ],
+    "https://t.me/s/rff_chat": [
+     "FD-S036",
+     "MISB-343"
+    ],
+    "https://t.me/s/CnBChatRUnCIS": [
+     "FD-S039",
+     "MISB-351"
+    ],
+    "https://t.me/s/hrhubvacancy": [
+     "FD-S044",
+     "MISB-071"
+    ],
+    "https://www.unicraft.org/page/partners/": [
+     "FD-S049",
+     "MISB-376"
+    ],
+    "https://levellab.ru/": [
+     "FD-S052",
+     "MISB-381"
+    ],
+    "https://edtech.academyit.ru/": [
+     "FD-S054",
+     "MISB-384"
+    ],
+    "https://www.ec-mc.ru/collaboration": [
+     "FD-S057",
+     "MISB-388"
+    ],
+    "https://b2bevents.pro/ru/trainings/": [
+     "FD-S058",
+     "MISB-389"
+    ],
+    "https://netology.ru/experts": [
+     "FD-S060",
+     "MISB-392"
+    ],
+    "https://practicum.yandex.ru/job/": [
+     "FD-S061",
+     "MISB-393"
+    ],
+    "https://ra-kurs.spb.ru/company/about/vacancy/": [
+     "FD-S064",
+     "MISB-400"
+    ],
+    "https://unitoria.ru/o-nas/vakansii": [
+     "FD-S066",
+     "MISB-403"
+    ],
+    "https://club.klerk.ru/latest": [
+     "FD-S070",
+     "MISB-075"
+    ],
+    "https://forum.zakonia.ru/": [
+     "FD-S073",
+     "MISB-150"
+    ],
+    "https://www.tendery.ru/forum/": [
+     "FD-S075",
+     "MISB-152"
+    ],
+    "https://forumyuristov.ru/": [
+     "FD-S076",
+     "MISB-153"
+    ],
+    "https://forum.dwg.ru/": [
+     "FD-S077",
+     "MISB-154"
+    ],
+    "https://hr-portal.ru/forum": [
+     "FD-S078",
+     "MISB-155"
+    ],
+    "https://cpoclub.ru/": [
+     "FD-S079",
+     "MISB-018"
+    ],
+    "https://corptreasury.ru/all/news/": [
+     "FD-S080",
+     "MISB-019"
+    ],
+    "https://appminfo.ru/": [
+     "FD-S081",
+     "MISB-020"
+    ],
+    "https://assud.ru/": [
+     "FD-S082",
+     "MISB-021"
+    ],
+    "https://www.rcca.com.ru/news/action.shtml": [
+     "FD-S083",
+     "MISB-022"
+    ],
+    "https://www.iia-ru.ru/announce/": [
+     "FD-S084",
+     "MISB-081"
+    ],
+    "https://nokc.org.ru/sobytiya/": [
+     "FD-S085",
+     "MISB-084"
+    ],
+    "https://compandben.org/": [
+     "FD-S086",
+     "MISB-503"
+    ],
+    "https://t.me/s/tdh_channel": [
+     "FD-S087",
+     "MISB-342"
+    ],
+    "https://t.me/s/HRBreakfast_Live": [
+     "FD-S089",
+     "MISB-357"
+    ],
+    "https://t.me/s/HRBreakfast": [
+     "FD-S091",
+     "MISB-360"
+    ],
+    "https://t.me/s/hr_breakfast_emergency": [
+     "FD-S092",
+     "MISB-368"
+    ],
+    "https://medium-centr.by/": [
+     "FD-S095",
+     "MISB-414"
+    ],
+    "https://glabis.by/posidelki/": [
+     "FD-S096",
+     "MISB-417"
+    ],
+    "https://www.belab.by/education": [
+     "FD-S097",
+     "MISB-420"
+    ],
+    "https://s-expert.by/": [
+     "FD-S098",
+     "MISB-421"
+    ],
+    "https://hrf.kgforum.kz/hr-club": [
+     "FD-S101",
+     "MISB-432"
+    ],
+    "https://forum.assethr.kz/": [
+     "FD-S102",
+     "MISB-433"
+    ],
+    "https://hrbp.kz/": [
+     "FD-S103",
+     "MISB-434"
+    ],
+    "https://hr4people.kz/": [
+     "FD-S104",
+     "MISB-435"
+    ],
+    "https://edu.astanahub.com/": [
+     "FD-S105",
+     "MISB-443"
+    ],
+    "https://interforums.ru/faq": [
+     "FD-S107",
+     "MISB-463"
+    ],
+    "https://auditorium-cg.ru/elf23": [
+     "FD-S109",
+     "MISB-466"
+    ],
+    "https://events.vedomosti.ru/about": [
+     "FD-S110",
+     "MISB-467"
+    ],
+    "https://events.kommersant.ru/": [
+     "FD-S111",
+     "MISB-468"
+    ],
+    "https://events.rbc.ru/": [
+     "FD-S112",
+     "MISB-469"
+    ],
+    "https://event.pravo.ru/": [
+     "FD-S113",
+     "MISB-470"
+    ],
+    "https://game-learn.ru/": [
+     "FD-S114",
+     "MISB-472"
+    ],
+    "https://elearningelements.ru/for-speakers": [
+     "FD-S115",
+     "MISB-473"
+    ],
+    "https://exportedu.ru/tutors": [
+     "FD-S121",
+     "MISB-248"
+    ],
+    "https://mb-ugra.ru/keep-up/events": [
+     "FD-S124",
+     "MISB-244"
+    ],
+    "https://exportedu.ru/teams": [
+     "FD-S125",
+     "MISB-250"
+    ],
+    "https://www.hrforumasia.com/partners": [
+     "FD-S126",
+     "MISB-500"
+    ],
+    "https://www.weblancer.net/freelance/": "FD-S006",
+    "https://t.me/s/talent_rocks": [
+     "FD-S031",
+     "MISB-235"
+    ],
+    "https://t.me/s/HR_kak_delat": [
+     "FD-S032",
+     "MISB-236"
+    ],
+    "https://t.me/s/kampus_team": [
+     "FD-S034",
+     "MISB-239"
+    ],
+    "https://t.me/s/td_department": [
+     "FD-S035",
+     "MISB-341"
+    ],
+    "https://t.me/s/hranalitycs": [
+     "FD-S040",
+     "MISB-354"
+    ],
+    "https://t.me/s/webinarforhr": [
+     "FD-S041",
+     "MISB-352"
+    ],
+    "https://t.me/s/hrafisha": [
+     "FD-S042",
+     "MISB-353"
+    ],
+    "https://t.me/s/jobs_vacancy_cv": [
+     "FD-S043",
+     "MISB-148"
+    ],
+    "https://www.ispring.ru/company/reseller-program": [
+     "FD-S048",
+     "MISB-374"
+    ],
+    "https://ecourse.studio/": [
+     "FD-S050",
+     "MISB-379"
+    ],
+    "https://cripsi.ru/": [
+     "FD-S053",
+     "MISB-383"
+    ],
+    "https://lifel.ru/elearn/vacancy": [
+     "FD-S063",
+     "MISB-399"
+    ],
+    "https://bi-school.ru/dlya-provedeniya-vebinarov-priglashaem-spikerov/": [
+     "FD-S065",
+     "MISB-402"
+    ],
+    "https://whiteconf.ru/become_speaker/": [
+     "FD-S116",
+     "MISB-474"
+    ],
+    "https://finplace.ru/": [
+     "FD-S118",
+     "MISB-476"
+    ],
+    "https://facilitators.ru/": [
+     "FD-S119",
+     "MISB-488"
+    ]
+   },
+   "method": "Порция batch адресов по кругу (meta/rotation). Каждый адрес независим: ошибка одной страницы не останавливает остальные. Результат каждой страницы — в meta/registry-checks (registry_checks.py).",
+   "note": "Каналы пакета «Свежие потребности» 01.10.2026 второй и третьей волны: провайдеры и авторские сети, форумы, функциональные ассоциации, мероприятия, BY/KZ. Порция за запуск по кругу.",
+   "verify": "Свежая потребность или сигнал из канала: проверить дату публикации, актуальность, заказчика, оплату и маршрут отклика. Ранний сигнал (вопрос, вакансия) — не готовый заказ."
+  },
+  {
    "key": "reg2-lists",
    "name": "Реестр 01.10 · адреса со списком закупок",
    "type": "pages",
@@ -6157,7 +6683,6 @@
     "https://alrosa.ru/buy/procurement-information/",
     "https://www.ipbr.org/",
     "https://ecounion.ru/press-tsentr/",
-    "https://www.kazenergy.com/operation/human-capital/",
     "https://www.sibur.ru/ru/corporate-university/",
     "https://sovnet.ru/",
     "https://belapp.by/",
@@ -6173,7 +6698,6 @@
     "https://www.fesco.ru/ru/about/tenders/",
     "https://www.b2b-center.ru/companies/tendery-pao-mechel/",
     "https://www.mts.by/company/partner/purchases/",
-    "https://s-expert.by/",
     "https://mogilevcci.by/organization-of-visits-and-receptions/",
     "https://partad.ru/News"
    ],
@@ -6188,7 +6712,6 @@
     "https://alrosa.ru/buy/procurement-information/": "MISB-044",
     "https://www.ipbr.org/": "MISB-082",
     "https://ecounion.ru/press-tsentr/": "MISB-085",
-    "https://www.kazenergy.com/operation/human-capital/": "MISB-092",
     "https://www.sibur.ru/ru/corporate-university/": "MISB-118",
     "https://sovnet.ru/": "MISB-262",
     "https://belapp.by/": "MISB-273",
@@ -6204,7 +6727,6 @@
     "https://www.fesco.ru/ru/about/tenders/": "MISB-317",
     "https://www.b2b-center.ru/companies/tendery-pao-mechel/": "MISB-323",
     "https://www.mts.by/company/partner/purchases/": "MISB-327",
-    "https://s-expert.by/": "MISB-421",
     "https://mogilevcci.by/organization-of-visits-and-receptions/": "MISB-423",
     "https://partad.ru/News": "MISB-487"
    },
@@ -6221,12 +6743,6 @@
     "https://hedlayner.ru/",
     "https://hrtime.ru/",
     "https://www.ispringacademy.ru/ispring-experts",
-    "https://t.me/s/speakers_l",
-    "https://cpoclub.ru/",
-    "https://corptreasury.ru/all/news/",
-    "https://appminfo.ru/",
-    "https://assud.ru/",
-    "https://www.rcca.com.ru/news/action.shtml",
     "https://hh.ru/",
     "https://club.directum.ru/awards",
     "https://indparks.ru/",
@@ -6254,7 +6770,6 @@
     "https://digital-learning.ru/ekosistema-soobshhestva/",
     "https://hrvoice.ru/telegram-for-hr",
     "https://hr-telegram.ru/",
-    "https://exportedu.ru/tutors",
     "https://www.spkngk.ru/",
     "https://www.ruschemunion.ru/news/",
     "https://fondpotanin.ru/competitions/konkurs-professionalnogo-razvitiya/",
@@ -6277,16 +6792,11 @@
     "https://freelance.ru/task",
     "https://hubspeakers.ru/",
     "https://teachbase.ru/partnerskaya-programma-teachbase/",
-    "https://t.me/s/zloihr",
-    "https://t.me/s/hrhubvacancy",
-    "https://club.klerk.ru/latest",
     "https://www.audit-it.ru/forum/",
     "https://amr.ru/committees/",
     "https://xn--n1adei3c.xn--p1ai/information/calendar.php",
     "https://ashrm.ru/",
-    "https://www.iia-ru.ru/announce/",
     "https://nuiac.ru/",
-    "https://nokc.org.ru/sobytiya/",
     "https://xn--80aa3arm.xn--p1ai/",
     "https://eues.ru/",
     "https://naen.ru/",
@@ -6333,13 +6843,10 @@
     "https://project-speakers.ru/",
     "https://find-speaker.ru/",
     "https://vk.com/digitallearning",
-    "https://kwork.ru/projects",
     "https://vk.com/HRtrain",
-    "https://mb-ugra.ru/keep-up/events",
     "https://fpprt.ru/",
     "https://xn---24-9cdulgg0aog6b.xn--p1ai/",
     "https://exportedu.ru/highschool",
-    "https://exportedu.ru/teams",
     "https://export42.ru/obuchenie/shkola-eksporta/",
     "https://tmk2u.com/",
     "https://universitetrzd.ru/",
@@ -6361,20 +6868,11 @@
     "https://status-speaker.ru/",
     "https://t.me/s/edujobs",
     "https://t.me/s/corp_edu",
-    "https://forum.zakonia.ru/",
     "https://kadrovik-info.ru/",
-    "https://forumyuristov.ru/",
-    "https://forum.dwg.ru/",
-    "https://hr-portal.ru/forum",
     "https://pressfeed.ru/",
     "https://invest.gov.ru/",
     "https://kad.arbitr.ru/",
     "https://hrvoice.ru/projects",
-    "https://t.me/s/edu_feed",
-    "https://t.me/s/dl_marketplace",
-    "https://t.me/s/Project_Best_Speakers",
-    "https://t.me/s/lab_vacancies",
-    "https://t.me/s/freelancetaverna",
     "https://t.me/s/workk_onstream",
     "https://www.vtbreg.ru/company/purchases/",
     "https://rtkit.ru/procurement/internal_regulations",
@@ -6396,54 +6894,30 @@
     "https://t.me/+1S7eAADowxc1OGZi",
     "https://t.me/+Whw88Qu3_PoxYzcy",
     "https://t.me/+e5U4Q3snsNUxY2My",
-    "https://t.me/s/HRBreakfast",
     "https://t.me/s/corporeg",
-    "https://www.mirapolis.ru/for-partners/",
     "https://websoft.ru/partners",
-    "https://uprav.ru/about/cooperation/",
-    "https://moscow-expert.ru/content/vakansii/index.html",
-    "https://www.ec-mc.ru/collaboration",
-    "https://b2bevents.pro/ru/trainings/",
-    "https://netology.ru/experts",
     "https://corp.lerna.ru/partner-program",
-    "https://atssm.kz/en/press-center/default/priglashaem-lektorov-i-ekspertov-k-sotrudnichestvu",
-    "https://hrbp.kz/",
     "https://sba.kz/education?index=1",
     "https://www.gsb.nu.edu.kz/customprograms",
     "https://amfi.kg/",
     "https://rkdf.kg/category/tendery-i-zakupki/",
     "https://www.amcham.kg/en/events/",
-    "https://t.me/s/npsonline",
-    "https://t.me/s/BestSpeakersRu",
-    "https://t.me/s/ielearning",
     "https://t.me/s/DL_Siberia",
-    "https://t.me/s/metod_krug",
     "https://t.me/s/dl_tehcnology",
     "https://t.me/s/dl_events",
     "https://t.me/s/dl_vr_in_digitallearning",
     "https://t.me/s/educational_lab",
     "https://t.me/s/freelancce",
     "https://t.me/s/kadrof_work",
-    "https://t.me/s/LessonDeliveryChat",
-    "https://t.me/s/HRtrain",
-    "https://t.me/s/talent_rocks",
-    "https://t.me/s/hr_me_community",
     "https://t.me/s/WebsoftHR",
-    "https://t.me/s/kampus_team",
     "https://t.me/s/college_of_methodologist",
     "https://t.me/s/rueventjob",
     "https://university.nlmk.com/university/",
-    "https://t.me/s/methodclub",
     "https://t.me/s/newmethodologist",
     "https://t.me/s/courseditor",
-    "https://t.me/s/tdh_channel",
-    "https://t.me/s/rff_chat",
     "https://t.me/s/communityHR",
-    "https://t.me/s/recRussia24",
     "https://t.me/+bSW1JHigV75jODAy",
     "https://t.me/+kkbRYq1FVydlYjIy",
-    "https://t.me/s/CnBChatRUnCIS",
-    "https://t.me/s/HRBreakfast_Live",
     "https://t.me/s/hr_central_asia",
     "https://t.me/s/tenderkod",
     "https://t.me/+ymb9zxkK0jswNjAy",
@@ -6451,44 +6925,23 @@
     "https://t.me/s/getanalystchat",
     "https://t.me/s/itanalyst_ru_chat",
     "https://t.me/s/bpmn2group",
-    "https://t.me/s/hr_breakfast_emergency",
     "https://t.me/s/inter_comm",
-    "https://t.me/s/methodgsom",
-    "https://t.me/s/learningelements",
-    "https://www.ispring.ru/company/reseller-program",
-    "https://www.unicraft.org/page/partners/",
     "https://academika.ru/partnership/",
-    "https://ecourse.studio/",
-    "https://levellab.ru/",
-    "https://cripsi.ru/",
-    "https://edtech.academyit.ru/",
     "https://urait.ru/info/publish",
-    "https://practicum.yandex.ru/job/",
     "https://corp.lerna.kz/partner-program",
-    "https://lifel.ru/elearn/vacancy",
-    "https://ra-kurs.spb.ru/company/about/vacancy/",
     "https://tmh-university.ru/vacancies/razrabotchik-elektronnykh-kursov/",
-    "https://bi-school.ru/dlya-provedeniya-vebinarov-priglashaem-spikerov/",
-    "https://unitoria.ru/o-nas/vakansii",
     "https://crpvl.ru/index.php?information_id=24&route=information%2Finformation",
     "https://moodle.noironline.ru/loginuser/",
     "https://evola.ru/corporatetraining",
-    "https://medium-centr.by/",
-    "https://glabis.by/posidelki/",
     "https://rspp.by/o-rspp/",
-    "https://www.belab.by/education",
     "https://impuls.by/about",
     "https://digitaldaybelarus.com/",
     "https://amacon.by/",
     "https://belpromforum.by/",
     "https://t.me/s/minskcci?before=1915",
-    "https://hrf.kgforum.kz/hr-club",
-    "https://forum.assethr.kz/",
-    "https://hr4people.kz/",
     "https://accountant.kz/index.php?do=static&page=uc_list",
     "https://www.kmge.kz/en/latest_news_en/",
     "https://www.qaztradeacademy.com/",
-    "https://edu.astanahub.com/",
     "https://astanahub.com/l/welcometo",
     "https://kazservice.kz/",
     "https://kase.kz/ru/media-center/events/",
@@ -6500,19 +6953,8 @@
     "https://marketing.uz/partnership/",
     "https://ujc.uz/novostdetalno_2_86/",
     "https://www.it-park.uz/ru/itpark/news",
-    "https://interforums.ru/faq",
     "https://vk.quorumconference.ru/speakers2026",
-    "https://auditorium-cg.ru/elf23",
-    "https://events.vedomosti.ru/about",
-    "https://events.kommersant.ru/",
-    "https://events.rbc.ru/",
-    "https://event.pravo.ru/",
     "https://fcongress.forbes.ru/",
-    "https://game-learn.ru/",
-    "https://elearningelements.ru/for-speakers",
-    "https://whiteconf.ru/become_speaker/",
-    "https://www.mk-conference.ru/obychenie1111",
-    "https://finplace.ru/",
     "https://rusrisk.org/membership",
     "https://naufor.ru/tree.asp?n=13283",
     "https://akit.ru/events/",
@@ -6521,7 +6963,6 @@
     "https://akarussia.ru/about/education/",
     "https://raso.ru/events_raso",
     "https://corpmedia.ru/obrazovatel-nyy-proekt-akmr/",
-    "https://facilitators.ru/",
     "https://ast-academy.ru/events/facilitationweek2026/",
     "https://www.cnewsforum.ru/",
     "https://academy.globalcio.ru/",
@@ -6532,14 +6973,10 @@
     "https://techweek.moscow/",
     "https://oilgasforum.ru/news/temy-i-status-foruma/opublikovana-programma-tnf/",
     "https://logistics360.ru/event/logforum26-central-asia/",
-    "https://www.hrforumasia.com/partners",
     "https://newvision.academy/ru",
-    "https://compandben.org/",
-    "https://rabe.ru/",
     "https://www.digital-energy.ru/activity/materials/",
     "https://www.ec-mc.ru/corp",
     "https://okit2026.4cio.ru/",
-    "https://t.me/s/jobs_vacancy_cv",
     "https://t.me/s/csmethod",
     "https://t.me/s/prolearning",
     "https://t.me/s/lxnotes",
@@ -6549,10 +6986,6 @@
     "https://t.me/s/lxdhero",
     "https://t.me/s/elearningskills",
     "https://t.me/s/nabor_metodik",
-    "https://t.me/s/td_department",
-    "https://t.me/s/webinarforhr",
-    "https://t.me/s/hrafisha",
-    "https://t.me/s/v_ed_club",
     "https://openedu.ru/partners/apply/",
     "https://uprav.ru/about/advertisement/",
     "https://skillspace.ru/referral",
@@ -6569,12 +7002,6 @@
     "https://hedlayner.ru/": "MISB-012",
     "https://hrtime.ru/": "MISB-013",
     "https://www.ispringacademy.ru/ispring-experts": "MISB-014",
-    "https://t.me/s/speakers_l": "MISB-015",
-    "https://cpoclub.ru/": "MISB-018",
-    "https://corptreasury.ru/all/news/": "MISB-019",
-    "https://appminfo.ru/": "MISB-020",
-    "https://assud.ru/": "MISB-021",
-    "https://www.rcca.com.ru/news/action.shtml": "MISB-022",
     "https://hh.ru/": "MISB-026",
     "https://club.directum.ru/awards": "MISB-028",
     "https://indparks.ru/": "MISB-030",
@@ -6602,7 +7029,6 @@
     "https://digital-learning.ru/ekosistema-soobshhestva/": "MISB-213",
     "https://hrvoice.ru/telegram-for-hr": "MISB-234",
     "https://hr-telegram.ru/": "MISB-241",
-    "https://exportedu.ru/tutors": "MISB-248",
     "https://www.spkngk.ru/": "MISB-257",
     "https://www.ruschemunion.ru/news/": "MISB-260",
     "https://fondpotanin.ru/competitions/konkurs-professionalnogo-razvitiya/": "MISB-263",
@@ -6625,16 +7051,11 @@
     "https://freelance.ru/task": "MISB-065",
     "https://hubspeakers.ru/": "MISB-066",
     "https://teachbase.ru/partnerskaya-programma-teachbase/": "MISB-067",
-    "https://t.me/s/zloihr": "MISB-068",
-    "https://t.me/s/hrhubvacancy": "MISB-071",
-    "https://club.klerk.ru/latest": "MISB-075",
     "https://www.audit-it.ru/forum/": "MISB-076",
     "https://amr.ru/committees/": "MISB-078",
     "https://xn--n1adei3c.xn--p1ai/information/calendar.php": "MISB-079",
     "https://ashrm.ru/": "MISB-080",
-    "https://www.iia-ru.ru/announce/": "MISB-081",
     "https://nuiac.ru/": "MISB-083",
-    "https://nokc.org.ru/sobytiya/": "MISB-084",
     "https://xn--80aa3arm.xn--p1ai/": "MISB-086",
     "https://eues.ru/": "MISB-087",
     "https://naen.ru/": "MISB-088",
@@ -6681,13 +7102,10 @@
     "https://project-speakers.ru/": "MISB-206",
     "https://find-speaker.ru/": "MISB-207",
     "https://vk.com/digitallearning": "MISB-215",
-    "https://kwork.ru/projects": "MISB-228",
     "https://vk.com/HRtrain": "MISB-232",
-    "https://mb-ugra.ru/keep-up/events": "MISB-244",
     "https://fpprt.ru/": "MISB-245",
     "https://xn---24-9cdulgg0aog6b.xn--p1ai/": "MISB-246",
     "https://exportedu.ru/highschool": "MISB-249",
-    "https://exportedu.ru/teams": "MISB-250",
     "https://export42.ru/obuchenie/shkola-eksporta/": "MISB-251",
     "https://tmk2u.com/": "MISB-252",
     "https://universitetrzd.ru/": "MISB-253",
@@ -6709,20 +7127,11 @@
     "https://status-speaker.ru/": "MISB-145",
     "https://t.me/s/edujobs": "MISB-147",
     "https://t.me/s/corp_edu": "MISB-149",
-    "https://forum.zakonia.ru/": "MISB-150",
     "https://kadrovik-info.ru/": "MISB-151",
-    "https://forumyuristov.ru/": "MISB-153",
-    "https://forum.dwg.ru/": "MISB-154",
-    "https://hr-portal.ru/forum": "MISB-155",
     "https://pressfeed.ru/": "MISB-156",
     "https://invest.gov.ru/": "MISB-157",
     "https://kad.arbitr.ru/": "MISB-158",
     "https://hrvoice.ru/projects": "MISB-233",
-    "https://t.me/s/edu_feed": "MISB-016",
-    "https://t.me/s/dl_marketplace": "MISB-017",
-    "https://t.me/s/Project_Best_Speakers": "MISB-208",
-    "https://t.me/s/lab_vacancies": "MISB-223",
-    "https://t.me/s/freelancetaverna": "MISB-224",
     "https://t.me/s/workk_onstream": "MISB-225",
     "https://www.vtbreg.ru/company/purchases/": "MISB-286",
     "https://rtkit.ru/procurement/internal_regulations": "MISB-294",
@@ -6744,54 +7153,30 @@
     "https://t.me/+1S7eAADowxc1OGZi": "MISB-346",
     "https://t.me/+Whw88Qu3_PoxYzcy": "MISB-349",
     "https://t.me/+e5U4Q3snsNUxY2My": "MISB-350",
-    "https://t.me/s/HRBreakfast": "MISB-360",
     "https://t.me/s/corporeg": "MISB-362",
-    "https://www.mirapolis.ru/for-partners/": "MISB-373",
     "https://websoft.ru/partners": "MISB-375",
-    "https://uprav.ru/about/cooperation/": "MISB-385",
-    "https://moscow-expert.ru/content/vakansii/index.html": "MISB-387",
-    "https://www.ec-mc.ru/collaboration": "MISB-388",
-    "https://b2bevents.pro/ru/trainings/": "MISB-389",
-    "https://netology.ru/experts": "MISB-392",
     "https://corp.lerna.ru/partner-program": "MISB-396",
-    "https://atssm.kz/en/press-center/default/priglashaem-lektorov-i-ekspertov-k-sotrudnichestvu": "MISB-406",
-    "https://hrbp.kz/": "MISB-434",
     "https://sba.kz/education?index=1": "MISB-436",
     "https://www.gsb.nu.edu.kz/customprograms": "MISB-446",
     "https://amfi.kg/": "MISB-449",
     "https://rkdf.kg/category/tendery-i-zakupki/": "MISB-452",
     "https://www.amcham.kg/en/events/": "MISB-455",
-    "https://t.me/s/npsonline": "MISB-069",
-    "https://t.me/s/BestSpeakersRu": "MISB-209",
-    "https://t.me/s/ielearning": "MISB-214",
     "https://t.me/s/DL_Siberia": "MISB-216",
-    "https://t.me/s/metod_krug": "MISB-217",
     "https://t.me/s/dl_tehcnology": "MISB-218",
     "https://t.me/s/dl_events": "MISB-219",
     "https://t.me/s/dl_vr_in_digitallearning": "MISB-221",
     "https://t.me/s/educational_lab": "MISB-222",
     "https://t.me/s/freelancce": "MISB-226",
     "https://t.me/s/kadrof_work": "MISB-227",
-    "https://t.me/s/LessonDeliveryChat": "MISB-229",
-    "https://t.me/s/HRtrain": "MISB-231",
-    "https://t.me/s/talent_rocks": "MISB-235",
-    "https://t.me/s/hr_me_community": "MISB-237",
     "https://t.me/s/WebsoftHR": "MISB-238",
-    "https://t.me/s/kampus_team": "MISB-239",
     "https://t.me/s/college_of_methodologist": "MISB-240",
     "https://t.me/s/rueventjob": "MISB-242",
     "https://university.nlmk.com/university/": "MISB-325",
-    "https://t.me/s/methodclub": "MISB-328",
     "https://t.me/s/newmethodologist": "MISB-329",
     "https://t.me/s/courseditor": "MISB-330",
-    "https://t.me/s/tdh_channel": "MISB-342",
-    "https://t.me/s/rff_chat": "MISB-343",
     "https://t.me/s/communityHR": "MISB-344",
-    "https://t.me/s/recRussia24": "MISB-345",
     "https://t.me/+bSW1JHigV75jODAy": "MISB-347",
     "https://t.me/+kkbRYq1FVydlYjIy": "MISB-348",
-    "https://t.me/s/CnBChatRUnCIS": "MISB-351",
-    "https://t.me/s/HRBreakfast_Live": "MISB-357",
     "https://t.me/s/hr_central_asia": "MISB-358",
     "https://t.me/s/tenderkod": "MISB-359",
     "https://t.me/+ymb9zxkK0jswNjAy": "MISB-361",
@@ -6799,44 +7184,23 @@
     "https://t.me/s/getanalystchat": "MISB-365",
     "https://t.me/s/itanalyst_ru_chat": "MISB-366",
     "https://t.me/s/bpmn2group": "MISB-367",
-    "https://t.me/s/hr_breakfast_emergency": "MISB-368",
     "https://t.me/s/inter_comm": "MISB-369",
-    "https://t.me/s/methodgsom": "MISB-370",
-    "https://t.me/s/learningelements": "MISB-372",
-    "https://www.ispring.ru/company/reseller-program": "MISB-374",
-    "https://www.unicraft.org/page/partners/": "MISB-376",
     "https://academika.ru/partnership/": "MISB-377",
-    "https://ecourse.studio/": "MISB-379",
-    "https://levellab.ru/": "MISB-381",
-    "https://cripsi.ru/": "MISB-383",
-    "https://edtech.academyit.ru/": "MISB-384",
     "https://urait.ru/info/publish": "MISB-391",
-    "https://practicum.yandex.ru/job/": "MISB-393",
     "https://corp.lerna.kz/partner-program": "MISB-397",
-    "https://lifel.ru/elearn/vacancy": "MISB-399",
-    "https://ra-kurs.spb.ru/company/about/vacancy/": "MISB-400",
     "https://tmh-university.ru/vacancies/razrabotchik-elektronnykh-kursov/": "MISB-401",
-    "https://bi-school.ru/dlya-provedeniya-vebinarov-priglashaem-spikerov/": "MISB-402",
-    "https://unitoria.ru/o-nas/vakansii": "MISB-403",
     "https://crpvl.ru/index.php?information_id=24&route=information%2Finformation": "MISB-405",
     "https://moodle.noironline.ru/loginuser/": "MISB-410",
     "https://evola.ru/corporatetraining": "MISB-411",
-    "https://medium-centr.by/": "MISB-414",
-    "https://glabis.by/posidelki/": "MISB-417",
     "https://rspp.by/o-rspp/": "MISB-419",
-    "https://www.belab.by/education": "MISB-420",
     "https://impuls.by/about": "MISB-426",
     "https://digitaldaybelarus.com/": "MISB-428",
     "https://amacon.by/": "MISB-429",
     "https://belpromforum.by/": "MISB-430",
     "https://t.me/s/minskcci?before=1915": "MISB-431",
-    "https://hrf.kgforum.kz/hr-club": "MISB-432",
-    "https://forum.assethr.kz/": "MISB-433",
-    "https://hr4people.kz/": "MISB-435",
     "https://accountant.kz/index.php?do=static&page=uc_list": "MISB-438",
     "https://www.kmge.kz/en/latest_news_en/": "MISB-439",
     "https://www.qaztradeacademy.com/": "MISB-440",
-    "https://edu.astanahub.com/": "MISB-443",
     "https://astanahub.com/l/welcometo": "MISB-444",
     "https://kazservice.kz/": "MISB-445",
     "https://kase.kz/ru/media-center/events/": "MISB-447",
@@ -6848,19 +7212,8 @@
     "https://marketing.uz/partnership/": "MISB-459",
     "https://ujc.uz/novostdetalno_2_86/": "MISB-460",
     "https://www.it-park.uz/ru/itpark/news": "MISB-462",
-    "https://interforums.ru/faq": "MISB-463",
     "https://vk.quorumconference.ru/speakers2026": "MISB-464",
-    "https://auditorium-cg.ru/elf23": "MISB-466",
-    "https://events.vedomosti.ru/about": "MISB-467",
-    "https://events.kommersant.ru/": "MISB-468",
-    "https://events.rbc.ru/": "MISB-469",
-    "https://event.pravo.ru/": "MISB-470",
     "https://fcongress.forbes.ru/": "MISB-471",
-    "https://game-learn.ru/": "MISB-472",
-    "https://elearningelements.ru/for-speakers": "MISB-473",
-    "https://whiteconf.ru/become_speaker/": "MISB-474",
-    "https://www.mk-conference.ru/obychenie1111": "MISB-475",
-    "https://finplace.ru/": "MISB-476",
     "https://rusrisk.org/membership": "MISB-478",
     "https://naufor.ru/tree.asp?n=13283": "MISB-480",
     "https://akit.ru/events/": "MISB-481",
@@ -6869,7 +7222,6 @@
     "https://akarussia.ru/about/education/": "MISB-484",
     "https://raso.ru/events_raso": "MISB-485",
     "https://corpmedia.ru/obrazovatel-nyy-proekt-akmr/": "MISB-486",
-    "https://facilitators.ru/": "MISB-488",
     "https://ast-academy.ru/events/facilitationweek2026/": "MISB-489",
     "https://www.cnewsforum.ru/": "MISB-490",
     "https://academy.globalcio.ru/": "MISB-491",
@@ -6880,14 +7232,10 @@
     "https://techweek.moscow/": "MISB-497",
     "https://oilgasforum.ru/news/temy-i-status-foruma/opublikovana-programma-tnf/": "MISB-498",
     "https://logistics360.ru/event/logforum26-central-asia/": "MISB-499",
-    "https://www.hrforumasia.com/partners": "MISB-500",
     "https://newvision.academy/ru": "MISB-501",
-    "https://compandben.org/": "MISB-503",
-    "https://rabe.ru/": "MISB-504",
     "https://www.digital-energy.ru/activity/materials/": "MISB-505",
     "https://www.ec-mc.ru/corp": "MISB-506",
     "https://okit2026.4cio.ru/": "MISB-507",
-    "https://t.me/s/jobs_vacancy_cv": "MISB-148",
     "https://t.me/s/csmethod": "MISB-220",
     "https://t.me/s/prolearning": "MISB-331",
     "https://t.me/s/lxnotes": "MISB-332",
@@ -6897,10 +7245,6 @@
     "https://t.me/s/lxdhero": "MISB-336",
     "https://t.me/s/elearningskills": "MISB-337",
     "https://t.me/s/nabor_metodik": "MISB-338",
-    "https://t.me/s/td_department": "MISB-341",
-    "https://t.me/s/webinarforhr": "MISB-352",
-    "https://t.me/s/hrafisha": "MISB-353",
-    "https://t.me/s/v_ed_club": "MISB-371",
     "https://openedu.ru/partners/apply/": "MISB-378",
     "https://uprav.ru/about/advertisement/": "MISB-386",
     "https://skillspace.ru/referral": "MISB-395",
@@ -6975,7 +7319,6 @@
     "https://transmash.com/zakupki-potrebnosti.html",
     "https://www.tender.pro/api/company/37494/view?active_tab=purchases",
     "https://www.vtb.by/zakupki",
-    "https://t.me/s/ispring_master",
     "https://t.me/s/hrkaz",
     "https://kodeks.ru/cooperation",
     "https://seminar.mcfr.kz/sotrudnichesrvo",
@@ -6984,7 +7327,6 @@
     "https://www.uba.uz/ru/about/international-cooperation/",
     "https://xarid.uzex.uz/",
     "https://t.me/s/edmarketclubjob",
-    "https://t.me/s/HR_kak_delat",
     "https://trcont.com/the-company/procurement/archive",
     "https://sberuniversity.ru/",
     "https://t.me/s/ispring_ru",
@@ -6998,8 +7340,6 @@
     "https://ahconferences.com/about",
     "https://analystdays.ru/for_speakers",
     "https://n-a-compliance.timepad.ru/events/",
-    "https://t.me/s/JobDelivery",
-    "https://t.me/s/hranalitycs",
     "https://t.me/s/corp_law_chat"
    ],
    "batch": 4,
@@ -7062,7 +7402,6 @@
     "https://transmash.com/zakupki-potrebnosti.html": "MISB-314",
     "https://www.tender.pro/api/company/37494/view?active_tab=purchases": "MISB-315",
     "https://www.vtb.by/zakupki": "MISB-324",
-    "https://t.me/s/ispring_master": "MISB-339",
     "https://t.me/s/hrkaz": "MISB-356",
     "https://kodeks.ru/cooperation": "MISB-390",
     "https://seminar.mcfr.kz/sotrudnichesrvo": "MISB-404",
@@ -7071,7 +7410,6 @@
     "https://www.uba.uz/ru/about/international-cooperation/": "MISB-456",
     "https://xarid.uzex.uz/": "MISB-461",
     "https://t.me/s/edmarketclubjob": "MISB-070",
-    "https://t.me/s/HR_kak_delat": "MISB-236",
     "https://trcont.com/the-company/procurement/archive": "MISB-318",
     "https://sberuniversity.ru/": "MISB-326",
     "https://t.me/s/ispring_ru": "MISB-340",
@@ -7085,8 +7423,6 @@
     "https://ahconferences.com/about": "MISB-465",
     "https://analystdays.ru/for_speakers": "MISB-477",
     "https://n-a-compliance.timepad.ru/events/": "MISB-479",
-    "https://t.me/s/JobDelivery": "MISB-230",
-    "https://t.me/s/hranalitycs": "MISB-354",
     "https://t.me/s/corp_law_chat": "MISB-363"
    },
    "method": "Порция batch адресов по кругу (meta/rotation). Каждый адрес независим: ошибка одной страницы не останавливает остальные. Результат каждой страницы — в meta/registry-checks (registry_checks.py).",
@@ -8183,6 +8519,7 @@
     "seldon.info",
     "seminar.mcfr.kz",
     "seoi.tengizchevroil.com",
+    "setka.ru",
     "severstal.com",
     "sezlipetsk.ru",
     "sgu.ru",
@@ -8334,6 +8671,7 @@
     "vtbreg.ru",
     "vuc-energetik.ru",
     "web.minskenergo.by",
+    "weblancer.net",
     "websoft.ru",
     "webtorgi.samregion.ru",
     "whiteconf.ru",
@@ -11413,6 +11751,7 @@
     "seldon.info",
     "seminar.mcfr.kz",
     "seoi.tengizchevroil.com",
+    "setka.ru",
     "severstal.com",
     "sezlipetsk.ru",
     "sgu.ru",
@@ -11564,6 +11903,7 @@
     "vtbreg.ru",
     "vuc-energetik.ru",
     "web.minskenergo.by",
+    "weblancer.net",
     "websoft.ru",
     "webtorgi.samregion.ru",
     "whiteconf.ru",
