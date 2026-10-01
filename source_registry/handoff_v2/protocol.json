@@ -1,0 +1,2785 @@
+{
+  "protocol_version": "2.0.0",
+  "created_at": "2026-10-01",
+  "title": "МИСБ: протокол расширения источников для Claude Code",
+  "objective": "Максимально уменьшить риск пропуска источника. Реестр источников и результаты извлечения сохраняются широко; квалификация и сортировка лидов выполняются после получения и не управляют удалением источников.",
+  "baseline": {
+    "input_workbook": "MISB_sources_classifier.xlsx",
+    "sheet": "Источники",
+    "expected_rows": 159,
+    "legacy_id_pattern": "MISB-001 … MISB-159",
+    "rule": "Импортировать все исходные строки до добавления новых. Сохранить прежние ID как legacy_id и полный original_record. Не считать неподтвержденные методы сбора готовыми интеграциями."
+  },
+  "scope": {
+    "core": "Корпоративное обучение руководителей и специалистов, ДПО, семинары и вебинары, электронные курсы, разработка обучения, деловые конференции и форумы, стратегические сессии и смежные образовательные задачи МИСБ. Уточнять по актуальному www.mmbi.ru и принятому словарю, не расширять фактами без основания.",
+    "geography": "РФ, Беларусь, Казахстан, Кыргызстан; другие страны сохранять как кандидатов расширения с отдельной географией. Не удалять из реестра из-за географии.",
+    "lead_exclusions": "Поставки товаров, обучение рабочих и корпоративные праздники можно помечать как слабое соответствие после извлечения. Смешанные заказы разбирать по лотам/компонентам. Не блокировать источник и не применять единственное стоп-слово к целой закупке.",
+    "budget_rub_per_month": 10000,
+    "budget_interpretation": "Лимит эксплуатационных расходов: хостинг, данные, API, модели, хранение, комиссии и налоги сервисов. Собственный труд пользователя отдельно; платную разработку/ручного исследователя в этот лимит автоматически не считать и не заказывать. Если 10 000 ₽ должны включать труд, пересчитать доступные работы без увеличения лимита."
+  },
+  "rules": [
+    {
+      "rule_id": "R01",
+      "title": "Неизменяемое происхождение",
+      "requirement": "У каждого источника устойчивый ID; источник не удаляется из-за нуля лидов, дубликата, закрытого API, низкой релевантности, географии или ошибки.",
+      "implementation": "Пакетный source_id MISB-… неизменен; внутренний UUID при необходимости хранить отдельным полем. legacy_id сохраняется. Все изменения через event_log, текущее состояние — проекция событий."
+    },
+    {
+      "rule_id": "R02",
+      "title": "Источник, маршрут и запрос — разные сущности",
+      "requirement": "Семейство площадки, отдельная секция, канал автора и поисковый маршрут могут содержать разное покрытие. Все известные маршруты сохраняются.",
+      "implementation": "Создавать source_registry для наблюдаемого издателя/потока; source_route для URL/ленты/раздела; query_plan для варианта запроса. Отчеты показывают отдельно семейства, потоки, маршруты и задания."
+    },
+    {
+      "rule_id": "R03",
+      "title": "Дубликат — связь",
+      "requirement": "Повторное открытие источника не должно стирать альтернативный адрес, происхождение находки или запрос.",
+      "implementation": "Сохранять alias, discovery_event и same_as/syndicates/reposts edge. Можно объединить отображение или повторно использовать загрузку; нельзя терять свидетельства и отключать альтернативный поток по одному совпадению."
+    },
+    {
+      "rule_id": "R04",
+      "title": "Сначала наблюдение, потом отбор",
+      "requirement": "Сохранять полученные записи и объяснение решений до семантической фильтрации.",
+      "implementation": "Разделить discovery → registry → collection → raw → lead_candidate → qualification → review/CRM. Изменение словаря повторно обрабатывает сохраненные raw без обращения к источнику."
+    },
+    {
+      "rule_id": "R05",
+      "title": "Широкие сигналы",
+      "requirement": "Прямой заказ, ранний сигнал, партнерский канал и справочник не подменяют друг друга.",
+      "implementation": "signal_types=[direct_request,early_need,partner,directory,unknown] — массив на уровне источника и записи. Одному объекту допустимы несколько типов. Только подтвержденный запрос отмечать confirmed_opportunity."
+    },
+    {
+      "rule_id": "R06",
+      "title": "Необнаружение не доказывает отсутствие",
+      "requirement": "Пустая выдача и 403/429/5xx/таймаут не свидетельствуют об отсутствии спроса.",
+      "implementation": "run_status,parse_status,match_count и source_status раздельны. Пустой успешный run обновляет last_success, но не last_positive. Ошибка не обновляет last_success."
+    },
+    {
+      "rule_id": "R07",
+      "title": "Не выдумывать интерфейсы",
+      "requirement": "API, RSS, sitemap, Telegram bot API и экспорт считаются доступными только после проверки конкретного маршрута и прав.",
+      "implementation": "capability_status=unknown/proposed/documented/tested/failed; хранить evidence_url, дату и результат smoke test. URL-кандидат не становится рабочим endpoint автоматически."
+    },
+    {
+      "rule_id": "R08",
+      "title": "Никакой скрытой отсечки",
+      "requirement": "При лимите страниц, времени, запросов или бюджета сохранять продолжение.",
+      "implementation": "run_status=partial, continuation_cursor, unfinished_partition и next_action. Не помечать источник полностью проверенным."
+    },
+    {
+      "rule_id": "R09",
+      "title": "Дедупликация лидов обратима",
+      "requirement": "Группировка публикаций не удаляет raw, вложения, заказчика, срок и обновления.",
+      "implementation": "lead_cluster + raw_lead_link; уверенное совпадение по source_native_id/номеру закупки и лоту. Fuzzy-match создает possible_duplicate. Разные лоты/юрлица/сроки не склеиваются без доказательства."
+    },
+    {
+      "rule_id": "R10",
+      "title": "Нет вечного ожидания",
+      "requirement": "Низкий приоритет уменьшает частоту, но сохраняет план следующего действия.",
+      "implementation": "Для каждой активной/кандидатной записи next_action_due и queue_reason. Просроченные записи получают отдельную квоту; возраст увеличивает приоритет."
+    },
+    {
+      "rule_id": "R11",
+      "title": "Доступ учитывается честно",
+      "requirement": "Источник с авторизацией, приглашением или платной подпиской остается в реестре и backlog.",
+      "implementation": "Выбрать разрешенный публичный путь, штатную рассылку с имеющимся доступом, ручной импорт или задачу доступа. Не обходить CAPTCHA/аутентификацию/платные ограничения и не покупать доступ автоматически."
+    },
+    {
+      "rule_id": "R12",
+      "title": "Только обоснованные факты",
+      "requirement": "Связь холдинг—дочка, контакт и сигнал спроса должны иметь источник и дату.",
+      "implementation": "Для гипотез relation_confidence=unverified и evidence_quote/evidence_url пусты либо указывают косвенное основание. По названию нельзя выдумать ИНН, покупателя, бюджет или прямой контакт."
+    },
+    {
+      "rule_id": "R13",
+      "title": "Шум сохраняется контролируемо",
+      "requirement": "Нерелевантная публикация может содержать новый источник или покупателя.",
+      "implementation": "До relegation в low_fit извлекать ссылки, компании, организаторов и новые каналы; не рассылать автоматически. Использовать reviewed/low_fit для интерфейса, не delete."
+    },
+    {
+      "rule_id": "R14",
+      "title": "Словарь версионируется",
+      "requirement": "Включать предмет, формат, роль, проблему, закупочную лексику и обиходные просьбы.",
+      "implementation": "dictionary_version и matching_rules_version в каждом решении; многословные синонимы и морфология; комбинировать запросы сериями и не требовать слова «обучение»."
+    },
+    {
+      "rule_id": "R15",
+      "title": "Проверенная полнота конечного пакета",
+      "requirement": "Нельзя обещать процент полноты всего интернета.",
+      "implementation": "Считать покрытие зарегистрированного набора и тестового корпуса; найденные источники, число ожидающих проверки, просроченные маршруты и причины пробелов. Знаменатель всегда явно определен."
+    },
+    {
+      "rule_id": "R16",
+      "title": "Ширина не равна нагромождению URL",
+      "requirement": "Количество строк не является целью само по себе.",
+      "implementation": "Для каждого кандидата задать гипотезу полезности, семейство, метод проверки и следующий шаг. Повторные домены допустимы, когда это разные разделы/организаторы/страны/потоки."
+    },
+    {
+      "rule_id": "R17",
+      "title": "Секреты отдельно",
+      "requirement": "Ключи API, cookies, пароли и приватные сведения не помещать в классификатор, экспорт и журналы.",
+      "implementation": "В registry только credential_ref; значения — существующий secret store/.env вне git. Логи редактируют токены и персональные URL-параметры."
+    },
+    {
+      "rule_id": "R18",
+      "title": "Обратимые изменения автономно",
+      "requirement": "Claude вправе импортировать, исследовать открытые страницы, писать локальные адаптеры, тестировать и улучшать существующий проект.",
+      "implementation": "Не рассылать письма/сообщения, не совершать платные покупки, не публиковать приложение или данные и не менять права доступа без отдельного разрешения пользователя. Наличие лимита бюджета не является разрешением покупки."
+    },
+    {
+      "rule_id": "R19",
+      "title": "Не вмешиваться в незавершенное",
+      "requirement": "Существующие данные и пользовательские изменения сохраняются.",
+      "implementation": "Сначала inspect repository и инструкции, backup/migration, ветка либо согласованный рабочий каталог. Идемпотентная миграция, отчет изменений, возможность отката."
+    },
+    {
+      "rule_id": "R20",
+      "title": "Сбор отделен от контакта",
+      "requirement": "Канал поиска спроса не равен разрешению писать участникам.",
+      "implementation": "Сохранять публичные профессиональные контакты с происхождением по необходимости; любое person-directed действие требует отдельного задания пользователя."
+    }
+  ],
+  "states": [
+    {
+      "dimension": "registry_state",
+      "values": [
+        "candidate",
+        "verified",
+        "in_scope",
+        "adjacent_scope",
+        "inactive_observed",
+        "retired_by_owner"
+      ],
+      "transitions": [
+        {
+          "from": "candidate",
+          "to": "verified",
+          "guard": "Подтверждено существование конкретного канала; не требуется подтвердить наличие сегодняшнего заказа."
+        },
+        {
+          "from": "verified",
+          "to": "in_scope",
+          "guard": "Есть основание связывать поток с услугами МИСБ."
+        },
+        {
+          "from": "verified",
+          "to": "adjacent_scope",
+          "guard": "Полезность косвенная или гипотетическая; источник сохраняется и планируется редкая проверка."
+        },
+        {
+          "from": "in_scope|adjacent_scope",
+          "to": "inactive_observed",
+          "guard": "Есть датированное свидетельство закрытия/переноса или повторная ручная проверка. Один 404 не достаточен."
+        },
+        {
+          "from": "inactive_observed",
+          "to": "verified",
+          "guard": "Найден новый адрес/активность; связь с прежним источником сохранена."
+        },
+        {
+          "from": "*",
+          "to": "retired_by_owner",
+          "guard": "Только явное решение пользователя. Запись и история остаются; reason и actor обязательны."
+        }
+      ],
+      "notes": "Связь same_as не является registry_state. «Резерв» не означает бессрочную остановку."
+    },
+    {
+      "dimension": "discovery_state",
+      "values": [
+        "new",
+        "queued",
+        "investigating",
+        "expanded",
+        "needs_access",
+        "needs_evidence",
+        "deferred_budget",
+        "watch_changes"
+      ],
+      "transitions": [
+        {
+          "from": "new",
+          "to": "queued",
+          "guard": "Сохранены происхождение и next_action_due."
+        },
+        {
+          "from": "queued",
+          "to": "investigating",
+          "guard": "Взята задача с lease."
+        },
+        {
+          "from": "investigating",
+          "to": "expanded",
+          "guard": "Проверены выбранные исходящие связи и сохранены все новые кандидаты; есть evidence и coverage_scope."
+        },
+        {
+          "from": "investigating",
+          "to": "needs_access|needs_evidence|deferred_budget",
+          "guard": "Есть блокирующая причина, обходной разрешенный путь или next_action_due."
+        },
+        {
+          "from": "expanded",
+          "to": "watch_changes",
+          "guard": "Назначена периодическая проверка новых разделов/связей."
+        },
+        {
+          "from": "needs_access|needs_evidence|deferred_budget|watch_changes",
+          "to": "queued",
+          "guard": "Наступил срок или появились новые факты/доступ/бюджет."
+        }
+      ]
+    },
+    {
+      "dimension": "connector_state",
+      "values": [
+        "not_checked_here",
+        "not_implemented",
+        "capability_check",
+        "ready",
+        "running",
+        "degraded",
+        "rate_limited",
+        "blocked_access",
+        "broken_parser",
+        "paused_budget",
+        "manual_import"
+      ],
+      "transitions": [
+        {
+          "from": "not_checked_here",
+          "to": "capability_check",
+          "guard": "Сопоставить запись с существующим проектом. Наличие или отсутствие адаптера еще не установлено."
+        },
+        {
+          "from": "not_implemented",
+          "to": "capability_check",
+          "guard": "Проверяется существующий интерфейс, а не придуманный URL."
+        },
+        {
+          "from": "capability_check",
+          "to": "ready",
+          "guard": "Получен разрешенный ответ, извлечена запись/подтвержденная пустая выдача, проверены пагинация и дата."
+        },
+        {
+          "from": "capability_check",
+          "to": "manual_import|blocked_access",
+          "guard": "Автоматического разрешенного пути нет; источник остается."
+        },
+        {
+          "from": "ready",
+          "to": "running",
+          "guard": "Есть due job и бюджет."
+        },
+        {
+          "from": "running",
+          "to": "ready",
+          "guard": "Успех или подтвержденный нулевой результат; checkpoint сохранен."
+        },
+        {
+          "from": "running",
+          "to": "degraded|rate_limited|blocked_access|broken_parser",
+          "guard": "Классифицирована ошибка, сохранены диагностические данные и повторная попытка."
+        },
+        {
+          "from": "ready|degraded",
+          "to": "paused_budget",
+          "guard": "Прогноз лимита превышен. Очередь и checkpoint сохраняются."
+        },
+        {
+          "from": "degraded|rate_limited|blocked_access|broken_parser|paused_budget|manual_import",
+          "to": "capability_check",
+          "guard": "Наступил retry или изменились доступ/реализация/лимит."
+        }
+      ]
+    },
+    {
+      "dimension": "run_status",
+      "values": [
+        "queued",
+        "running",
+        "success",
+        "success_empty",
+        "partial",
+        "failed",
+        "deferred_budget",
+        "deferred_access",
+        "cancelled"
+      ],
+      "notes": "success означает завершенный объявленный scope, а не полноту сайта. partial всегда имеет continuation. cancelled требует reason."
+    },
+    {
+      "dimension": "lead_status",
+      "values": [
+        "raw_unprocessed",
+        "candidate",
+        "needs_context",
+        "confirmed_opportunity",
+        "early_signal",
+        "partner_opportunity",
+        "directory_entity",
+        "low_fit",
+        "expired",
+        "reviewed"
+      ],
+      "notes": "Это квалификация записи. low_fit/expired не выключают ее источник. Статус может измениться по новым доказательствам; история сохраняется."
+    }
+  ],
+  "schema": [
+    {
+      "table": "source_registry",
+      "purpose": "Устойчивые записи издателей и потоков",
+      "fields": [
+        {
+          "name": "source_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Не меняется при переименовании, смене домена и алиасе."
+        },
+        {
+          "name": "legacy_id",
+          "type": "string|null",
+          "required": false,
+          "description": "MISB-001…MISB-159 для исходного реестра; у новых пусто."
+        },
+        {
+          "name": "display_name",
+          "type": "string",
+          "required": true,
+          "description": "Название, раздел и при необходимости страна."
+        },
+        {
+          "name": "source_kind",
+          "type": "enum",
+          "required": true,
+          "description": "platform,corporate_site,section,community,channel,association,integrator,event_organizer,directory,publication,other"
+        },
+        {
+          "name": "canonical_url",
+          "type": "url|null",
+          "required": false,
+          "description": "Проверенный основной адрес; первоначальный сохраняется в alias."
+        },
+        {
+          "name": "family_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Группа общей площадки; не склеивает самостоятельные потоки."
+        },
+        {
+          "name": "parent_source_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Раздел или дочерний поток источника."
+        },
+        {
+          "name": "country_codes",
+          "type": "string[]",
+          "required": true,
+          "description": "ISO/регион; unknown допустим."
+        },
+        {
+          "name": "class_codes",
+          "type": "string[]",
+          "required": true,
+          "description": "Множественный классификатор, старый класс сохраняется."
+        },
+        {
+          "name": "signal_types",
+          "type": "enum[]",
+          "required": true,
+          "description": "direct_request,early_need,partner,directory,unknown"
+        },
+        {
+          "name": "fit_hypothesis",
+          "type": "string",
+          "required": true,
+          "description": "Почему канал потенциально полезен МИСБ."
+        },
+        {
+          "name": "service_tags",
+          "type": "string[]",
+          "required": true,
+          "description": "Связь с версионированным словарем."
+        },
+        {
+          "name": "registry_state",
+          "type": "enum",
+          "required": true,
+          "description": "См. registry_state."
+        },
+        {
+          "name": "discovery_state",
+          "type": "enum",
+          "required": true,
+          "description": "См. discovery_state."
+        },
+        {
+          "name": "priority_score",
+          "type": "number",
+          "required": true,
+          "description": "Планировочный балл, не разрешение удалять."
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "required": true,
+          "description": "UTC ISO8601."
+        },
+        {
+          "name": "last_verified_at",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Проверка существования/адреса."
+        },
+        {
+          "name": "last_success_at",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Полный успешный сбор объявленного scope."
+        },
+        {
+          "name": "last_positive_at",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Последняя публикация с подходящим сигналом."
+        },
+        {
+          "name": "next_action_due",
+          "type": "datetime",
+          "required": true,
+          "description": "Конкретный следующий срок даже для backlog."
+        },
+        {
+          "name": "next_action",
+          "type": "string",
+          "required": true,
+          "description": "Что делать далее."
+        },
+        {
+          "name": "block_reason",
+          "type": "string|null",
+          "required": false,
+          "description": "Препятствие, не приговор источнику."
+        },
+        {
+          "name": "evidence_ids",
+          "type": "uuid[]",
+          "required": true,
+          "description": "Доказательства существования и применимости."
+        },
+        {
+          "name": "original_record",
+          "type": "json|null",
+          "required": false,
+          "description": "Исходная строка целиком без потери колонок."
+        },
+        {
+          "name": "revision",
+          "type": "integer",
+          "required": true,
+          "description": "Оптимистическая блокировка текущей проекции."
+        }
+      ],
+      "indexes": [
+        "UNIQUE(source_id)",
+        "UNIQUE(legacy_id) WHERE legacy_id IS NOT NULL",
+        "INDEX(next_action_due,registry_state)",
+        "INDEX(family_id,parent_source_id)"
+      ],
+      "notes": [
+        "Не задавать UNIQUE(canonical_url): один URL может представлять разные потоки; нормализованный URL нужен как ключ поиска возможных дублей."
+      ]
+    },
+    {
+      "table": "source_alias",
+      "purpose": "Все адреса и варианты имен источника",
+      "fields": [
+        {
+          "name": "alias_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Уникальное обнаружение алиаса."
+        },
+        {
+          "name": "source_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Ссылка на источник."
+        },
+        {
+          "name": "alias_type",
+          "type": "enum",
+          "required": true,
+          "description": "url,domain,name,handle,legacy_id"
+        },
+        {
+          "name": "alias_value",
+          "type": "string",
+          "required": true,
+          "description": "Исходное значение."
+        },
+        {
+          "name": "normalized_value",
+          "type": "string",
+          "required": true,
+          "description": "Значение для поиска дублей; параметры поиска сохранять отдельно."
+        },
+        {
+          "name": "first_seen_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Дата наблюдения."
+        },
+        {
+          "name": "evidence_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Основание связи."
+        }
+      ],
+      "indexes": [
+        "INDEX(normalized_value)",
+        "UNIQUE(source_id,alias_type,alias_value)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "source_route",
+      "purpose": "Наблюдаемые разделы и способы доступа",
+      "fields": [
+        {
+          "name": "route_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Стабильный ID маршрута."
+        },
+        {
+          "name": "source_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Владелец потока."
+        },
+        {
+          "name": "url",
+          "type": "url",
+          "required": true,
+          "description": "Точный адрес без секретов."
+        },
+        {
+          "name": "route_kind",
+          "type": "enum",
+          "required": true,
+          "description": "listing,search,feed,api,archive,document,email_import,manual_import,sitemap"
+        },
+        {
+          "name": "coverage_scope",
+          "type": "json",
+          "required": true,
+          "description": "Секции, страны, типы записей, даты и ограничение видимости."
+        },
+        {
+          "name": "capability_status",
+          "type": "enum",
+          "required": true,
+          "description": "unknown,proposed,documented,tested,failed"
+        },
+        {
+          "name": "evidence_ids",
+          "type": "uuid[]",
+          "required": true,
+          "description": "Документация и датированный результат."
+        },
+        {
+          "name": "access_mode",
+          "type": "enum",
+          "required": true,
+          "description": "public,authenticated,paid,invitation,manual,unknown"
+        },
+        {
+          "name": "credential_ref",
+          "type": "string|null",
+          "required": false,
+          "description": "Только ссылка на секрет."
+        },
+        {
+          "name": "connector_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Коннектор."
+        },
+        {
+          "name": "preferred_interval_hours",
+          "type": "number|null",
+          "required": false,
+          "description": "Желаемая частота; scheduler может отложить с причиной."
+        },
+        {
+          "name": "max_coverage_age_hours",
+          "type": "number",
+          "required": true,
+          "description": "Порог просрочки, а не обещание SLA."
+        },
+        {
+          "name": "cursor",
+          "type": "json|null",
+          "required": false,
+          "description": "Последний подтвержденный checkpoint."
+        },
+        {
+          "name": "last_attempt_at",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Попытка не заменяет успешную проверку."
+        },
+        {
+          "name": "last_success_at",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Последнее завершение scope."
+        },
+        {
+          "name": "next_due_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Следующая попытка/проверка доступа."
+        }
+      ],
+      "indexes": [
+        "INDEX(source_id)",
+        "INDEX(next_due_at)",
+        "INDEX(capability_status,access_mode)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "discovery_edge",
+      "purpose": "Граф источников, организаций и сигналов",
+      "fields": [
+        {
+          "name": "edge_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Устойчивый ID связи."
+        },
+        {
+          "name": "from_entity_type",
+          "type": "enum",
+          "required": true,
+          "description": "source,organization,person_role,event,raw,lead"
+        },
+        {
+          "name": "from_entity_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Начальный объект."
+        },
+        {
+          "name": "relation",
+          "type": "enum",
+          "required": true,
+          "description": "parent_of,publishes_on,procures_via,operates,member_of,organizes,partners_with,integrates_for,mentions,links_to,reposts,same_as,possible_same_as"
+        },
+        {
+          "name": "to_entity_type",
+          "type": "enum",
+          "required": true,
+          "description": "source,organization,person_role,event,raw,lead"
+        },
+        {
+          "name": "to_entity_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Конечный объект."
+        },
+        {
+          "name": "confidence",
+          "type": "enum",
+          "required": true,
+          "description": "verified,probable,unverified"
+        },
+        {
+          "name": "evidence_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Основание; обязательное для verified."
+        },
+        {
+          "name": "discovered_by_recipe",
+          "type": "string|null",
+          "required": false,
+          "description": "DR01…"
+        },
+        {
+          "name": "first_seen_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Когда найдено."
+        },
+        {
+          "name": "last_seen_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Когда подтверждалось."
+        },
+        {
+          "name": "valid_from",
+          "type": "date|null",
+          "required": false,
+          "description": "Если дата связи известна."
+        },
+        {
+          "name": "valid_to",
+          "type": "date|null",
+          "required": false,
+          "description": "История связи сохраняется."
+        }
+      ],
+      "indexes": [
+        "INDEX(from_entity_id,relation)",
+        "INDEX(to_entity_id,relation)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "organization",
+      "purpose": "Покупатели, дочерние общества, партнеры и организаторы",
+      "fields": [
+        {
+          "name": "organization_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID без обязательного ИНН."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Название из основания."
+        },
+        {
+          "name": "country_code",
+          "type": "string|null",
+          "required": false,
+          "description": "Не угадывать по языку."
+        },
+        {
+          "name": "tax_id",
+          "type": "string|null",
+          "required": false,
+          "description": "ИНН/БИН/УНП с типом и страной."
+        },
+        {
+          "name": "tax_id_type",
+          "type": "string|null",
+          "required": false,
+          "description": "Тип идентификатора."
+        },
+        {
+          "name": "website",
+          "type": "url|null",
+          "required": false,
+          "description": "Проверенный сайт."
+        },
+        {
+          "name": "aliases",
+          "type": "string[]",
+          "required": true,
+          "description": "Варианты написания."
+        },
+        {
+          "name": "roles",
+          "type": "string[]",
+          "required": true,
+          "description": "buyer,holding,subsidiary,integrator,organizer,association,provider"
+        },
+        {
+          "name": "evidence_ids",
+          "type": "uuid[]",
+          "required": true,
+          "description": "Доказательства."
+        },
+        {
+          "name": "expansion_state",
+          "type": "enum",
+          "required": true,
+          "description": "new,queued,expanded,needs_evidence"
+        },
+        {
+          "name": "next_action_due",
+          "type": "datetime",
+          "required": true,
+          "description": "Следующая проверка каналов."
+        }
+      ],
+      "indexes": [
+        "INDEX(country_code,tax_id_type,tax_id)",
+        "INDEX(expansion_state,next_action_due)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "collection_run",
+      "purpose": "Каждая попытка сбора и ее честный результат",
+      "fields": [
+        {
+          "name": "run_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Не переиспользовать."
+        },
+        {
+          "name": "route_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Маршрут."
+        },
+        {
+          "name": "query_plan_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Если использовался поиск."
+        },
+        {
+          "name": "scope",
+          "type": "json",
+          "required": true,
+          "description": "Фильтры, страницы, интервалы времени и словарь."
+        },
+        {
+          "name": "started_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Начало."
+        },
+        {
+          "name": "finished_at",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Конец."
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "description": "См. run_status."
+        },
+        {
+          "name": "http_status",
+          "type": "integer|null",
+          "required": false,
+          "description": "Статус HTTP; без полного приватного ответа в логах."
+        },
+        {
+          "name": "error_code",
+          "type": "string|null",
+          "required": false,
+          "description": "auth,rate_limit,timeout,parse_changed,budget и т.п."
+        },
+        {
+          "name": "items_seen",
+          "type": "integer",
+          "required": true,
+          "description": "Наблюдения до фильтров."
+        },
+        {
+          "name": "items_saved",
+          "type": "integer",
+          "required": true,
+          "description": "Сохраненные уникальные версии."
+        },
+        {
+          "name": "continuation",
+          "type": "json|null",
+          "required": false,
+          "description": "Продолжение незавершенного scope."
+        },
+        {
+          "name": "retry_at",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Следующая попытка."
+        },
+        {
+          "name": "cost_rub",
+          "type": "number",
+          "required": true,
+          "description": "Фактическая или отдельно помеченная расчетная стоимость."
+        },
+        {
+          "name": "cost_estimated",
+          "type": "boolean",
+          "required": true,
+          "description": "Не выдавать оценку за списание."
+        },
+        {
+          "name": "connector_version",
+          "type": "string",
+          "required": true,
+          "description": "Для воспроизведения."
+        }
+      ],
+      "indexes": [
+        "INDEX(route_id,started_at)",
+        "INDEX(status,retry_at)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "raw_record",
+      "purpose": "Неизменяемая извлеченная версия публикации до квалификации",
+      "fields": [
+        {
+          "name": "raw_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID версии содержимого."
+        },
+        {
+          "name": "source_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Издатель/поток."
+        },
+        {
+          "name": "route_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Маршрут обнаружения."
+        },
+        {
+          "name": "source_native_id",
+          "type": "string|null",
+          "required": false,
+          "description": "ID публикации/номер закупки в источнике."
+        },
+        {
+          "name": "source_url",
+          "type": "url",
+          "required": true,
+          "description": "Точная ссылка."
+        },
+        {
+          "name": "fetched_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Когда получена."
+        },
+        {
+          "name": "published_at",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Не подставлять fetched_at при отсутствии."
+        },
+        {
+          "name": "updated_at_source",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Дата изменения на источнике."
+        },
+        {
+          "name": "title",
+          "type": "string|null",
+          "required": false,
+          "description": "Заголовок."
+        },
+        {
+          "name": "text_excerpt",
+          "type": "string|null",
+          "required": false,
+          "description": "Минимальный достаточный фрагмент для доказательства."
+        },
+        {
+          "name": "content_hash",
+          "type": "string",
+          "required": true,
+          "description": "SHA256 нормализованного содержимого."
+        },
+        {
+          "name": "blob_ref",
+          "type": "string|null",
+          "required": false,
+          "description": "Сжатый raw/файл если разрешено и укладывается в хранение."
+        },
+        {
+          "name": "attachment_refs",
+          "type": "json[]",
+          "required": true,
+          "description": "URL, hash, type, parse_status каждого вложения."
+        },
+        {
+          "name": "language",
+          "type": "string|null",
+          "required": false,
+          "description": "Язык."
+        },
+        {
+          "name": "parse_status",
+          "type": "enum",
+          "required": true,
+          "description": "parsed,partial,ocr_needed,unsupported,failed"
+        },
+        {
+          "name": "predecessor_raw_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Предыдущая версия той же публикации."
+        },
+        {
+          "name": "rights_access_note",
+          "type": "string|null",
+          "required": false,
+          "description": "Ограничения доступа/хранения при наличии."
+        }
+      ],
+      "indexes": [
+        "INDEX(source_id,source_native_id)",
+        "INDEX(content_hash)",
+        "INDEX(fetched_at)"
+      ],
+      "notes": [
+        "Повтор одинакового содержимого не требует нового blob; каждое наблюдение сохраняется в raw_observation. Измененный дедлайн/текст — новая версия."
+      ]
+    },
+    {
+      "table": "raw_observation",
+      "purpose": "Следы каждой повторной находки, включая дубли",
+      "fields": [
+        {
+          "name": "observation_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID наблюдения."
+        },
+        {
+          "name": "raw_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Версия."
+        },
+        {
+          "name": "run_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Попытка сбора."
+        },
+        {
+          "name": "observed_url",
+          "type": "url",
+          "required": true,
+          "description": "Какой адрес реально привел к записи."
+        },
+        {
+          "name": "query_plan_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Какой запрос нашел."
+        },
+        {
+          "name": "observed_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Дата."
+        }
+      ],
+      "indexes": [
+        "INDEX(raw_id,observed_at)",
+        "INDEX(run_id)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "lead_candidate",
+      "purpose": "Квалификация и текущая карточка возможности",
+      "fields": [
+        {
+          "name": "lead_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Стабильный ID карточки."
+        },
+        {
+          "name": "organization_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Не угадывать заказчика."
+        },
+        {
+          "name": "lead_cluster_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Обратимая группа дублей."
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "description": "См. lead_status."
+        },
+        {
+          "name": "signal_types",
+          "type": "enum[]",
+          "required": true,
+          "description": "Может быть несколько."
+        },
+        {
+          "name": "need_summary",
+          "type": "string",
+          "required": true,
+          "description": "Что известно и какая гипотеза."
+        },
+        {
+          "name": "service_tags",
+          "type": "string[]",
+          "required": true,
+          "description": "Подходящие услуги."
+        },
+        {
+          "name": "audience",
+          "type": "string|null",
+          "required": false,
+          "description": "Специалисты/руководители/иная аудитория."
+        },
+        {
+          "name": "budget_amount",
+          "type": "number|null",
+          "required": false,
+          "description": "Только опубликованная сумма."
+        },
+        {
+          "name": "currency",
+          "type": "string|null",
+          "required": false,
+          "description": "Валюта опубликованной суммы."
+        },
+        {
+          "name": "deadline_at",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Время и timezone при наличии; дата без времени хранится отдельно."
+        },
+        {
+          "name": "deadline_date",
+          "type": "date|null",
+          "required": false,
+          "description": "Когда известна только календарная дата."
+        },
+        {
+          "name": "fit_score",
+          "type": "number|null",
+          "required": false,
+          "description": "Сортировка; не влияет на сохранение источника."
+        },
+        {
+          "name": "evidence_level",
+          "type": "enum",
+          "required": true,
+          "description": "explicit_request,documented_need,inference,directory_only,unknown"
+        },
+        {
+          "name": "confidence_reason",
+          "type": "string",
+          "required": true,
+          "description": "Почему и какие неизвестные остались."
+        },
+        {
+          "name": "dictionary_version",
+          "type": "string",
+          "required": true,
+          "description": "Версия словаря."
+        },
+        {
+          "name": "rules_version",
+          "type": "string",
+          "required": true,
+          "description": "Версия квалификации."
+        },
+        {
+          "name": "review_state",
+          "type": "enum",
+          "required": true,
+          "description": "unreviewed,accepted,follow_up,rejected,archived"
+        },
+        {
+          "name": "next_action",
+          "type": "string|null",
+          "required": false,
+          "description": "Проверить срок, документы, покупателя и т.п."
+        },
+        {
+          "name": "first_seen_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Первое появление."
+        },
+        {
+          "name": "last_updated_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Последняя квалификация."
+        }
+      ],
+      "indexes": [
+        "INDEX(status,deadline_at)",
+        "INDEX(organization_id)",
+        "INDEX(review_state,fit_score)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "raw_lead_link",
+      "purpose": "Доказательства и происхождение карточки лида",
+      "fields": [
+        {
+          "name": "raw_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Raw версия."
+        },
+        {
+          "name": "lead_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Лид."
+        },
+        {
+          "name": "role",
+          "type": "enum",
+          "required": true,
+          "description": "primary,supporting,update,possible_duplicate"
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Дата связи."
+        }
+      ],
+      "indexes": [
+        "UNIQUE(raw_id,lead_id,role)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "evidence",
+      "purpose": "Наблюдаемые основания фактов",
+      "fields": [
+        {
+          "name": "evidence_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID."
+        },
+        {
+          "name": "url",
+          "type": "url|null",
+          "required": false,
+          "description": "URL либо ссылка на предоставленный файл."
+        },
+        {
+          "name": "observed_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Когда проверено."
+        },
+        {
+          "name": "evidence_kind",
+          "type": "enum",
+          "required": true,
+          "description": "page_read,search_result,official_doc,sample_response,user_provided,inference"
+        },
+        {
+          "name": "claim",
+          "type": "string",
+          "required": true,
+          "description": "Что подтверждается."
+        },
+        {
+          "name": "excerpt",
+          "type": "string|null",
+          "required": false,
+          "description": "Короткий проверяемый фрагмент."
+        },
+        {
+          "name": "snapshot_ref",
+          "type": "string|null",
+          "required": false,
+          "description": "При необходимости."
+        },
+        {
+          "name": "limits",
+          "type": "string|null",
+          "required": false,
+          "description": "Например поисковая выдача подтверждает существование, но не API."
+        }
+      ],
+      "indexes": [
+        "INDEX(observed_at,evidence_kind)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "event_log",
+      "purpose": "Неизменяемый журнал изменения проекций",
+      "fields": [
+        {
+          "name": "event_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID события."
+        },
+        {
+          "name": "entity_type",
+          "type": "string",
+          "required": true,
+          "description": "Тип сущности."
+        },
+        {
+          "name": "entity_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID."
+        },
+        {
+          "name": "event_type",
+          "type": "string",
+          "required": true,
+          "description": "created,field_updated,status_changed,alias_added,cluster_linked и др."
+        },
+        {
+          "name": "occurred_at",
+          "type": "datetime",
+          "required": true,
+          "description": "UTC."
+        },
+        {
+          "name": "actor",
+          "type": "string",
+          "required": true,
+          "description": "user,import,connector,claude,reviewer."
+        },
+        {
+          "name": "old_revision",
+          "type": "integer|null",
+          "required": false,
+          "description": "Проверка конкурирующих изменений."
+        },
+        {
+          "name": "payload",
+          "type": "json",
+          "required": true,
+          "description": "Минимальное изменение и reason; без секретов."
+        }
+      ],
+      "indexes": [
+        "INDEX(entity_type,entity_id,occurred_at)"
+      ],
+      "notes": [
+        "Append-only журнал; текущие таблицы можно обновлять как проекции. Обязательный tombstone вместо удаления реестра; удаление raw blob по политике хранения не удаляет provenance."
+      ]
+    },
+    {
+      "table": "job_queue",
+      "purpose": "Очередь продолжений, проверок и новых кандидатов",
+      "fields": [
+        {
+          "name": "job_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID задачи."
+        },
+        {
+          "name": "job_kind",
+          "type": "enum",
+          "required": true,
+          "description": "discover,capability_check,collect,retry,reparse,verify_access,expand_graph"
+        },
+        {
+          "name": "entity_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Целевая сущность."
+        },
+        {
+          "name": "queued_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Начало ожидания."
+        },
+        {
+          "name": "due_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Срок."
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "description": "queued,leased,done,failed,deferred"
+        },
+        {
+          "name": "priority_base",
+          "type": "number",
+          "required": true,
+          "description": "Базовая оценка."
+        },
+        {
+          "name": "estimated_cost_rub",
+          "type": "number",
+          "required": true,
+          "description": "Перед запуском."
+        },
+        {
+          "name": "estimated_runtime_seconds",
+          "type": "integer",
+          "required": true,
+          "description": "Оценка нагрузки."
+        },
+        {
+          "name": "attempt_count",
+          "type": "integer",
+          "required": true,
+          "description": "Число попыток."
+        },
+        {
+          "name": "continuation",
+          "type": "json|null",
+          "required": false,
+          "description": "Не терять хвост."
+        },
+        {
+          "name": "lease_until",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Зависшая задача возвращается в очередь."
+        },
+        {
+          "name": "deferral_reason",
+          "type": "string|null",
+          "required": false,
+          "description": "Почему перенесено."
+        }
+      ],
+      "indexes": [
+        "INDEX(status,due_at)",
+        "INDEX(lease_until)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "budget_ledger",
+      "purpose": "Расходы, обязательства и резервация операции",
+      "fields": [
+        {
+          "name": "entry_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID."
+        },
+        {
+          "name": "month",
+          "type": "string",
+          "required": true,
+          "description": "YYYY-MM по Europe/Moscow."
+        },
+        {
+          "name": "provider",
+          "type": "string",
+          "required": true,
+          "description": "Сервис."
+        },
+        {
+          "name": "entry_type",
+          "type": "enum",
+          "required": true,
+          "description": "actual,commitment,reservation,release,adjustment"
+        },
+        {
+          "name": "amount_rub",
+          "type": "number",
+          "required": true,
+          "description": "Рубли с известными налогами/комиссиями."
+        },
+        {
+          "name": "original_amount",
+          "type": "number|null",
+          "required": false,
+          "description": "Для валютной операции."
+        },
+        {
+          "name": "original_currency",
+          "type": "string|null",
+          "required": false,
+          "description": "Если не RUB."
+        },
+        {
+          "name": "conversion_rate",
+          "type": "number|null",
+          "required": false,
+          "description": "Использованный курс с запасом и датой."
+        },
+        {
+          "name": "related_job_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Связь с задачей."
+        },
+        {
+          "name": "recorded_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Когда учтено."
+        },
+        {
+          "name": "cost_basis",
+          "type": "enum",
+          "required": true,
+          "description": "provider_report,billing_config,conservative_estimate"
+        }
+      ],
+      "indexes": [
+        "INDEX(month,provider,entry_type)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "query_plan",
+      "purpose": "Версионируемый план поисковой выборки",
+      "fields": [
+        {
+          "name": "query_plan_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID."
+        },
+        {
+          "name": "route_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Где искать."
+        },
+        {
+          "name": "dictionary_version",
+          "type": "string",
+          "required": true,
+          "description": "Версия словаря."
+        },
+        {
+          "name": "query_text",
+          "type": "string",
+          "required": true,
+          "description": "Точное выражение."
+        },
+        {
+          "name": "query_family",
+          "type": "string",
+          "required": true,
+          "description": "Формат, проблема, роль, услуга, разговорный запрос, отрасль."
+        },
+        {
+          "name": "filters",
+          "type": "json",
+          "required": true,
+          "description": "Страны, даты и прочие явные фильтры; пустое сохраняется."
+        },
+        {
+          "name": "partition_key",
+          "type": "string|null",
+          "required": false,
+          "description": "Разбиение при лимитах выдачи."
+        },
+        {
+          "name": "last_completed_at",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Время полного обхода заданного scope."
+        },
+        {
+          "name": "next_due_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Следующая ротация."
+        }
+      ],
+      "indexes": [
+        "INDEX(route_id,query_family)",
+        "INDEX(next_due_at)"
+      ],
+      "notes": []
+    },
+    {
+      "table": "connector",
+      "purpose": "Версионированная реализация и фактически проверенные возможности сборщика",
+      "fields": [
+        {
+          "name": "connector_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID коннектора."
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "Название адаптера в существующем проекте."
+        },
+        {
+          "name": "version",
+          "type": "string",
+          "required": true,
+          "description": "Версия кода/конфигурации."
+        },
+        {
+          "name": "connector_state",
+          "type": "enum",
+          "required": true,
+          "description": "См. connector_state."
+        },
+        {
+          "name": "interface_kind",
+          "type": "enum",
+          "required": true,
+          "description": "html,json,xml,rss,document,email_import,manual_import,other"
+        },
+        {
+          "name": "supported_scope",
+          "type": "json",
+          "required": true,
+          "description": "Проверенные разделы, языки, пагинация и типы записей."
+        },
+        {
+          "name": "config_ref",
+          "type": "string",
+          "required": true,
+          "description": "Путь/ID конфигурации без секретов."
+        },
+        {
+          "name": "last_smoke_test_at",
+          "type": "datetime|null",
+          "required": false,
+          "description": "Дата реальной проверки."
+        },
+        {
+          "name": "smoke_test_evidence_ids",
+          "type": "uuid[]",
+          "required": true,
+          "description": "Примеры и границы проверенного."
+        },
+        {
+          "name": "rate_limit_config",
+          "type": "json",
+          "required": true,
+          "description": "Документированные или осторожные локальные ограничения."
+        },
+        {
+          "name": "error_streak",
+          "type": "integer",
+          "required": true,
+          "description": "Для backoff, не для удаления источника."
+        }
+      ],
+      "indexes": [
+        "INDEX(connector_state)",
+        "INDEX(last_smoke_test_at)"
+      ],
+      "notes": [
+        "Один коннектор может обслуживать много маршрутов, но успешный тест одного маршрута не автоматически подтверждает остальные."
+      ]
+    },
+    {
+      "table": "lead_cluster",
+      "purpose": "Обратимые группы возможных или подтвержденных дублей лидов",
+      "fields": [
+        {
+          "name": "lead_cluster_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID группы."
+        },
+        {
+          "name": "match_level",
+          "type": "enum",
+          "required": true,
+          "description": "exact,probable,manual_confirmed"
+        },
+        {
+          "name": "match_basis",
+          "type": "json",
+          "required": true,
+          "description": "Совпавшие номера, лоты, покупатель, даты и алгоритм."
+        },
+        {
+          "name": "canonical_lead_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Предпочтительная сводная карточка для интерфейса, без удаления остальных."
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Когда создана группа."
+        },
+        {
+          "name": "review_state",
+          "type": "enum",
+          "required": true,
+          "description": "unreviewed,confirmed,split"
+        },
+        {
+          "name": "supersedes_cluster_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "При перегруппировке сохранять предшественника."
+        }
+      ],
+      "indexes": [
+        "INDEX(match_level,review_state)"
+      ],
+      "notes": [
+        "Полный состав группы задается lead_candidate.lead_cluster_id; история изменения состава — event_log."
+      ]
+    },
+    {
+      "table": "discovery_event",
+      "purpose": "Все пути обнаружения источника, включая повторную находку",
+      "fields": [
+        {
+          "name": "discovery_event_id",
+          "type": "uuid",
+          "required": true,
+          "description": "ID наблюдения."
+        },
+        {
+          "name": "source_id",
+          "type": "uuid",
+          "required": true,
+          "description": "Найденный источник, в том числе уже существующий."
+        },
+        {
+          "name": "route_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Конкретный маршрут, если найден."
+        },
+        {
+          "name": "found_url",
+          "type": "url|null",
+          "required": false,
+          "description": "Наблюдаемый адрес."
+        },
+        {
+          "name": "found_via_entity_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Компания, публикация или источник, приведшие к находке."
+        },
+        {
+          "name": "recipe_id",
+          "type": "string|null",
+          "required": false,
+          "description": "DR01… или иной принятый код рецепта."
+        },
+        {
+          "name": "query_text",
+          "type": "string|null",
+          "required": false,
+          "description": "Поисковая формулировка."
+        },
+        {
+          "name": "evidence_id",
+          "type": "uuid|null",
+          "required": false,
+          "description": "Основание."
+        },
+        {
+          "name": "found_at",
+          "type": "datetime",
+          "required": true,
+          "description": "Дата обнаружения."
+        },
+        {
+          "name": "discovery_status",
+          "type": "enum",
+          "required": true,
+          "description": "new_source,new_route,known_source,possible_alias,needs_verification"
+        }
+      ],
+      "indexes": [
+        "INDEX(source_id,found_at)",
+        "INDEX(recipe_id)"
+      ],
+      "notes": [
+        "Повторная находка известного источника не теряется и не обязана создавать новую строку source_registry."
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "test_id": "AT01",
+      "name": "Исходные 159 не потеряны",
+      "given": "Исходный XLSX содержит 159 строк и legacy_id.",
+      "when": "Импортировать дважды.",
+      "acceptance": [
+        "После каждого импорта доступны все 159 legacy_id.",
+        "Повторный импорт не удваивает источники; новые observation/import_event допустимы.",
+        "У каждой исходной строки сохранены все исходные поля."
+      ]
+    },
+    {
+      "test_id": "AT02",
+      "name": "Два адреса одной площадки",
+      "given": "Основной домен и зеркало возвращают часть совпадающих публикаций.",
+      "when": "Признать same_as и настроить общий connector.",
+      "acceptance": [
+        "Оба адреса сохранены; ни один поток не исчез.",
+        "Уникальные публикации каждого адреса попадают в raw.",
+        "Отчет отдельно считает 1 семейство и 2 маршрута."
+      ]
+    },
+    {
+      "test_id": "AT03",
+      "name": "Источник без сегодняшних лидов",
+      "given": "Три успешных пустых ответа с корректным парсером.",
+      "when": "Выполнить три цикла сбора.",
+      "acceptance": [
+        "Источник остается в реестре.",
+        "last_success обновляется, last_positive не выдумывается.",
+        "next_due_at существует; connector_state не broken_parser без дополнительных оснований."
+      ]
+    },
+    {
+      "test_id": "AT04",
+      "name": "403 не равен нулю",
+      "given": "Страница с известными публикациями отвечает 403.",
+      "when": "Выполнить collect.",
+      "acceptance": [
+        "run=deferred_access/failed с reason.",
+        "last_success не сдвигается.",
+        "Сохраняются источник, задача доступа и разрешенный альтернативный маршрут/план проверки."
+      ]
+    },
+    {
+      "test_id": "AT05",
+      "name": "Ограничение запросов",
+      "given": "Сервис возвращает 429 и Retry-After.",
+      "when": "Запустить задания из той же семьи.",
+      "acceptance": [
+        "Учитывается Retry-After; очередь не запускает шторм запросов.",
+        "Частичный cursor сохранен; после доступного retry сбор продолжается."
+      ]
+    },
+    {
+      "test_id": "AT06",
+      "name": "Парсер перестал работать",
+      "given": "HTML успешно получен, но известные элементы/счетчик есть, а parser извлек 0.",
+      "when": "Выполнить collect.",
+      "acceptance": [
+        "Результат не объявлен success_empty без проверки.",
+        "broken_parser/degraded и диагностика; публикации не объявлены отсутствующими."
+      ]
+    },
+    {
+      "test_id": "AT07",
+      "name": "Лимит страниц",
+      "given": "Источник содержит 30 страниц, бюджет прохода 5.",
+      "when": "Завершить 5 страниц.",
+      "acceptance": [
+        "run=partial, сохранена страница 6/cursor.",
+        "Следующая задача продолжает с 6; источник не помечен полностью покрытым."
+      ]
+    },
+    {
+      "test_id": "AT08",
+      "name": "Просроченный низкий приоритет",
+      "given": "Высокоприоритетных задач постоянно больше дневного лимита; есть доступный low-priority route с возрастом 15 дней.",
+      "when": "Запустить планировщик на фиксированном тестовом времени.",
+      "acceptance": [
+        "Задача получает слот квоты aging/rotation при доступном бюджете.",
+        "Если бюджет исчерпан, остается overdue с явной причиной и первой очередью после возобновления.",
+        "Недопустимо молча обновить next_due_at и обнулить просрочку."
+      ]
+    },
+    {
+      "test_id": "AT09",
+      "name": "Точная граница расходов",
+      "given": "Факт+обязательства+страховой запас+новая операция превышают 10 000 ₽.",
+      "when": "Попытаться запустить платный запрос.",
+      "acceptance": [
+        "Вызов провайдера не происходит.",
+        "Задание deferred_budget; данные и continuation сохранены.",
+        "Бесплатные допустимые задачи продолжаются."
+      ]
+    },
+    {
+      "test_id": "AT10",
+      "name": "Дубликат лида не стирает доказательства",
+      "given": "Одна закупка найдена на ЕИС, агрегаторе и сайте заказчика.",
+      "when": "Сгруппировать публикации.",
+      "acceptance": [
+        "Одна сводная карточка имеет все три raw-ссылки.",
+        "Доступен разбор группы; все три источника остаются в мониторинге."
+      ]
+    },
+    {
+      "test_id": "AT11",
+      "name": "Смешанный лот",
+      "given": "Заказ содержит ноутбуки и обучение руководителей.",
+      "when": "Применить словарь и правила исключения товаров.",
+      "acceptance": [
+        "Сохраняется raw всего документа.",
+        "Образовательный компонент не исчезает из-за слова «ноутбук».",
+        "При невозможности разделить ставится needs_context."
+      ]
+    },
+    {
+      "test_id": "AT12",
+      "name": "Косвенный источник",
+      "given": "Новость о внедрении ERP без запроса подрядчика.",
+      "when": "Извлечь гипотезу потребности.",
+      "acceptance": [
+        "Лид early_signal/inference, не confirmed_opportunity.",
+        "Покупатель/внедренец и их каналы добавлены в граф только с основаниями."
+      ]
+    },
+    {
+      "test_id": "AT13",
+      "name": "Новый срок",
+      "given": "У одной публикации изменился дедлайн.",
+      "when": "Получить новую версию.",
+      "acceptance": [
+        "Сохраняются обе версии и predecessor_raw_id.",
+        "Текущая карточка отражает новую дату и основание; прошлое значение доступно."
+      ]
+    },
+    {
+      "test_id": "AT14",
+      "name": "Источник только в документе",
+      "given": "В PDF плана закупок названа отдельная ЭТП дочерней компании.",
+      "when": "Разобрать текст/OCR.",
+      "acceptance": [
+        "Ссылка и компания становятся кандидатами даже если сам план не соответствует услуге.",
+        "Есть provenance, next_action_due и edge procures_via."
+      ]
+    },
+    {
+      "test_id": "AT15",
+      "name": "Смена словаря",
+      "given": "Новый термин «фасилитация командной сессии» добавлен после сбора.",
+      "when": "Повторно обработать сохраненные raw.",
+      "acceptance": [
+        "Прежний raw найден без обязательного повторного скачивания.",
+        "Сохранена новая rules/dictionary version; старое решение не стирается."
+      ]
+    },
+    {
+      "test_id": "AT16",
+      "name": "Закрытое сообщество",
+      "given": "Выявлена релевантная закрытая группа.",
+      "when": "Проверить доступ без имеющегося разрешения.",
+      "acceptance": [
+        "Источник остается needs_access.",
+        "Не используются чужие cookies/обход доступа.",
+        "Есть разрешенный следующий шаг: запрос доступа пользователю либо открытые связанные каналы."
+      ]
+    },
+    {
+      "test_id": "AT17",
+      "name": "Перезапуск процесса",
+      "given": "Worker завершился после raw-save, до ack job.",
+      "when": "Перезапустить очередь после истечения lease.",
+      "acceptance": [
+        "Задание повторено идемпотентно.",
+        "Нет потери raw и нет неконтролируемого размножения одинаковых версий."
+      ]
+    },
+    {
+      "test_id": "AT18",
+      "name": "Глубина графа",
+      "given": "Покупатель → дочерняя компания → организатор → новая площадка.",
+      "when": "Выполнить две доступные порции расширения.",
+      "acceptance": [
+        "Все обнаруженные сущности зарегистрированы.",
+        "Дальнейший обход ограничивается бюджетом через backlog, а не отбрасыванием второго/третьего уровня."
+      ]
+    },
+    {
+      "test_id": "AT19",
+      "name": "Неизвестные атрибуты",
+      "given": "В запросе нет цены, ИНН или точной даты.",
+      "when": "Построить карточку.",
+      "acceptance": [
+        "Неизвестные поля null.",
+        "Нет выдуманного бюджета, контакта, дедлайна или налогового ID."
+      ]
+    },
+    {
+      "test_id": "AT20",
+      "name": "Проверяемое покрытие",
+      "given": "В реестре часть источников готова, часть заблокирована, часть не исследована.",
+      "when": "Сформировать недельный отчет.",
+      "acceptance": [
+        "Показаны все группы и знаменатели.",
+        "Нет обещания «охвачено 95% рынка» без наблюдаемого генерального множества.",
+        "Доступны список просроченных и причина каждого пробела."
+      ]
+    },
+    {
+      "test_id": "AT21",
+      "name": "Разные лоты одной закупки",
+      "given": "Один номер закупки содержит обучение бухгалтеров и поставку канцтоваров в отдельных лотах.",
+      "when": "Дедуплицировать.",
+      "acceptance": [
+        "Лоты не склеены в единственный неподходящий предмет.",
+        "Лид обучения связан с нужным лотом и источником."
+      ]
+    },
+    {
+      "test_id": "AT22",
+      "name": "Неподтвержденная RSS",
+      "given": "В исходной таблице указан предлагаемый RSS без точного проверенного feed URL.",
+      "when": "Импортировать и попытаться настроить connector.",
+      "acceptance": [
+        "capability_status=proposed/unknown.",
+        "API/RSS не обозначены рабочими до проверки.",
+        "Отсутствие RSS не удаляет источник и не запрещает разрешенный HTML/ручной импорт."
+      ]
+    },
+    {
+      "test_id": "AT23",
+      "name": "Права и публикация",
+      "given": "Claude получил классификатор и доступ к локальному проекту.",
+      "when": "Завершить этап интеграции.",
+      "acceptance": [
+        "Созданы локальные изменения и отчет.",
+        "Без отдельного поручения не куплены подписки, не отправлены сообщения, не расширены права и не опубликовано приложение."
+      ]
+    },
+    {
+      "test_id": "AT24",
+      "name": "Тип публикации не отсекает сырье",
+      "given": "Один пост сочетает рекламу курса, клиентский кейс и поиск субподрядчика.",
+      "when": "Назначить несколько posting_types и пересчитать рейтинг.",
+      "acceptance": [
+        "Сырое наблюдение и все ссылки сохранены.",
+        "Метки не отключают источник и не препятствуют открытию новых каналов."
+      ]
+    },
+    {
+      "test_id": "AT25",
+      "name": "Вложение изменилось при прежнем тексте",
+      "given": "Текст и URL объявления прежние, PDF по той же ссылке имеет новый срок.",
+      "when": "Повторить разрешенную проверку приложения.",
+      "acceptance": [
+        "Новая версия приложения сохраняет хеш и время проверки.",
+        "Срок лида обновляется с доказательством; старая версия и происхождение доступны."
+      ]
+    },
+    {
+      "test_id": "AT26",
+      "name": "Огромный поток и частичный охват",
+      "given": "Бюджет не позволяет загрузить все объявления универсальной площадки.",
+      "when": "Применить несколько широких перекрывающихся поисков и выборку вне них.",
+      "acceptance": [
+        "coverage_scope перечисляет реальные запросы, статусы и границы времени.",
+        "Результат помечен partial, непройденные маршруты остаются в очереди.",
+        "Нет утверждения о полном охвате площадки или рынка."
+      ]
+    }
+  ],
+  "discovery_recipes": [
+    {
+      "recipe_id": "DR01",
+      "name": "Холдинг → дочерние компании → закупочные потоки",
+      "seed": "Крупный известный заказчик",
+      "search_actions": [
+        "Из официальной структуры/отчета извлечь дочерние общества и совместные предприятия.",
+        "Проверить для каждого сайт, закупки, поставщикам, контакты учебного центра.",
+        "Из регламентов закупок извлечь названия ЭТП и организаторов."
+      ],
+      "retain_edges": [
+        "parent_of",
+        "procures_via",
+        "publishes_on"
+      ],
+      "possible_signal": "Прямые закупки и отдельные бюджеты обучения дочерних юрлиц.",
+      "completion_evidence": "Список дочерних компаний с evidence; каждый неизвестный канал в backlog. Не объявлять холдинг полностью охваченным по одной центральной ЭТП."
+    },
+    {
+      "recipe_id": "DR02",
+      "name": "Покупатель → все его площадки",
+      "seed": "Юрлицо/ИНН",
+      "search_actions": [
+        "Искать точное юрназвание, варианты бренда и ИНН в открытых закупках и поиске.",
+        "Фиксировать текущие, исторические и отраслевые площадки отдельно."
+      ],
+      "retain_edges": [
+        "procures_via",
+        "publishes_on"
+      ],
+      "possible_signal": "Процедуры вне основной площадки.",
+      "completion_evidence": "Для каждого найденного канала есть маршрут и дата последней публикации/проверки."
+    },
+    {
+      "recipe_id": "DR03",
+      "name": "Закупка → организатор → другие заказчики",
+      "seed": "Публикация/закупочная документация",
+      "search_actions": [
+        "Выделить организатора процедуры и контактное подразделение.",
+        "Найти открытые портфолио/перечни обслуживаемых покупателей.",
+        "Проверить самостоятельный сайт организатора и его объявления."
+      ],
+      "retain_edges": [
+        "organizes",
+        "procures_via",
+        "partners_with"
+      ],
+      "possible_signal": "Централизованный организатор обслуживает несколько компаний.",
+      "completion_evidence": "Новые покупатели и каналы зарегистрированы; не выводить наличие заказа из одного портфолио."
+    },
+    {
+      "recipe_id": "DR04",
+      "name": "Документ → скрытые в файле источники",
+      "seed": "PDF/DOCX/XLSX план, положение или ТЗ",
+      "search_actions": [
+        "Извлечь URL, названия площадок, юрлица и контактные функции.",
+        "OCR использовать только при необходимости.",
+        "Проверить приложения и примечания документа."
+      ],
+      "retain_edges": [
+        "links_to",
+        "mentions",
+        "procures_via"
+      ],
+      "possible_signal": "Канал находится только в положении/приложении, а не в меню сайта.",
+      "completion_evidence": "Каждая находка имеет номер документа/страницу/фрагмент."
+    },
+    {
+      "recipe_id": "DR05",
+      "name": "Договоры прошлого периода → повторная потребность",
+      "seed": "История закупок/победители",
+      "search_actions": [
+        "Найти предмет, сезон, покупателя и организатора прошлогоднего обучения.",
+        "Проверить планы и актуальные запросы этого покупателя."
+      ],
+      "retain_edges": [
+        "mentions",
+        "procures_via"
+      ],
+      "possible_signal": "Повторные семинары, ежегодная аттестация, модульная программа.",
+      "completion_evidence": "Повторная потребность обозначена гипотезой; старый контракт не становится текущим заказом."
+    },
+    {
+      "recipe_id": "DR06",
+      "name": "Учебный центр/корпоративный университет → внешние подрядчики",
+      "seed": "Корпоративный университет",
+      "search_actions": [
+        "Проверить вакансии преподавателей, партнерства, аккредитацию тренеров, конкурсы методических материалов.",
+        "Отделить внутреннюю страницу университета от закупочного юрлица."
+      ],
+      "retain_edges": [
+        "operates",
+        "partners_with",
+        "procures_via"
+      ],
+      "possible_signal": "Разработка курсов, внешние эксперты, методология, цифровое обучение.",
+      "completion_evidence": "Есть конкретный канал приема/публикации запросов или кандидат с next_action."
+    },
+    {
+      "recipe_id": "DR07",
+      "name": "Профсообщество → запросы участников",
+      "seed": "HR/L&D, юристы, бухгалтеры, закупщики, казначеи",
+      "search_actions": [
+        "Искать обсуждения: «посоветуйте тренера», «нужен спикер», «кого пригласить», «ищем обучение».",
+        "Перейти к связанным публичным каналам, чатам, дайджестам и клубам регионов."
+      ],
+      "retain_edges": [
+        "member_of",
+        "links_to",
+        "mentions"
+      ],
+      "possible_signal": "Прямой запрос вне закупки или ранний сигнал.",
+      "completion_evidence": "Канал и тип доступа сохранены; частные переписки не собираются без доступа."
+    },
+    {
+      "recipe_id": "DR08",
+      "name": "Ассоциация → члены → учебные комитеты",
+      "seed": "Отраслевое объединение",
+      "search_actions": [
+        "Проверить комитеты по кадрам/обучению/цифровизации, календарь, членский каталог.",
+        "Просмотреть региональные отделения и рабочие группы."
+      ],
+      "retain_edges": [
+        "member_of",
+        "organizes",
+        "partners_with"
+      ],
+      "possible_signal": "Коллективные программы для участников и заказ на отраслевого эксперта.",
+      "completion_evidence": "Ассоциация, подразделения и покупатели связаны, а членство не выдается за спрос."
+    },
+    {
+      "recipe_id": "DR09",
+      "name": "Индустриальный парк → резиденты",
+      "seed": "Парк/ОЭЗ/кластер",
+      "search_actions": [
+        "Проверить управляющую компанию, новости и сервисы резидентам.",
+        "Найти общие кадровые программы, бизнес-клуб и список резидентов."
+      ],
+      "retain_edges": [
+        "operates",
+        "member_of",
+        "organizes"
+      ],
+      "possible_signal": "Совместное обучение управленцев и специалистов нескольких предприятий.",
+      "completion_evidence": "Управляющая компания и открытые каналы резидентов зарегистрированы отдельно."
+    },
+    {
+      "recipe_id": "DR10",
+      "name": "Конференция → организатор → следующий сезон",
+      "seed": "Деловая конференция/форум",
+      "search_actions": [
+        "Проверить call for speakers, подрядчиков, деловую программу и организатора.",
+        "Найти остальные мероприятия организатора, партнерские конференции и региональные выпуски."
+      ],
+      "retain_edges": [
+        "organizes",
+        "partners_with",
+        "links_to"
+      ],
+      "possible_signal": "Заказ модератора, обучающего трека, программы или эксперта.",
+      "completion_evidence": "Участие как платный спонсор не приравнивается к оплаченному заказу."
+    },
+    {
+      "recipe_id": "DR11",
+      "name": "Интегратор → внедрение → обучение заказчика",
+      "seed": "ERP/CRM/ЭДО/LMS/BI-интегратор",
+      "search_actions": [
+        "Проверить открытые проекты и партнерские программы.",
+        "Выделить компании с внедрением, тиражированием и организационными изменениями.",
+        "Проверить запросы на учебные материалы и внешних преподавателей."
+      ],
+      "retain_edges": [
+        "integrates_for",
+        "partners_with",
+        "mentions"
+      ],
+      "possible_signal": "Подготовка пользователей, внутренних тренеров, электронных курсов.",
+      "completion_evidence": "Кейс внедрения — гипотеза; запрос подрядчика — отдельное evidence."
+    },
+    {
+      "recipe_id": "DR12",
+      "name": "Работодатель → массовый набор → адаптация",
+      "seed": "Вакансии/карьерный сайт",
+      "search_actions": [
+        "Найти запуск подразделений, региональную экспансию, поиск L&D/методолога.",
+        "Проверить новости и внешние запросы работодателя."
+      ],
+      "retain_edges": [
+        "mentions",
+        "links_to"
+      ],
+      "possible_signal": "Адаптация сотрудников, управленческий кадровый резерв, база знаний.",
+      "completion_evidence": "Вакансия не создает confirmed_opportunity; компания и каналы остаются кандидатами."
+    },
+    {
+      "recipe_id": "DR13",
+      "name": "Оргсобытие → функция покупателя",
+      "seed": "Реорганизация/слияние/смена системы управления",
+      "search_actions": [
+        "Выделить конкретную компанию и изменение.",
+        "Найти профильные подразделения: HR, юристы, финансы, снабжение, проектный офис.",
+        "Проверить корпоративные закупки и публичные запросы по соответствующей теме."
+      ],
+      "retain_edges": [
+        "mentions",
+        "links_to"
+      ],
+      "possible_signal": "Обучение новым процессам, управлению изменениями, договорной работе.",
+      "completion_evidence": "Сохранена цепочка фактов и явное обозначение inference."
+    },
+    {
+      "recipe_id": "DR14",
+      "name": "Кадровая награда → HR-команда → каналы",
+      "seed": "Премии HR, корпоративные университеты, обучение",
+      "search_actions": [
+        "Проверить участников, кейсы, организаторов и сообщества выпускников.",
+        "Перейти к компаниям и их учебным/закупочным каналам."
+      ],
+      "retain_edges": [
+        "member_of",
+        "organizes",
+        "mentions"
+      ],
+      "possible_signal": "Компании с активными программами и вероятным привлечением подрядчиков.",
+      "completion_evidence": "Лауреатство — способ найти покупателя, не доказательство заказа."
+    },
+    {
+      "recipe_id": "DR15",
+      "name": "Эксперт → сообщества заказчиков",
+      "seed": "Публичная страница преподавателя/тренера",
+      "search_actions": [
+        "Из открытых кейсов извлечь корпоративных покупателей и партнеров.",
+        "Найти публичные запросы на замену/дополнительного эксперта или совместный проект."
+      ],
+      "retain_edges": [
+        "partners_with",
+        "mentions"
+      ],
+      "possible_signal": "Субподряд и цепочки привлечения экспертов.",
+      "completion_evidence": "Не копировать закрытые клиентские базы; контакт или сообщение не отправляются автоматически."
+    },
+    {
+      "recipe_id": "DR16",
+      "name": "Учебный провайдер → субподряд",
+      "seed": "Образовательная организация/организатор семинаров",
+      "search_actions": [
+        "Проверить набор внештатных преподавателей, методистов, разработчиков курсов.",
+        "Найти региональных партнеров и программу совместных продуктов."
+      ],
+      "retain_edges": [
+        "partners_with",
+        "organizes"
+      ],
+      "possible_signal": "Заказ отдельного модуля, эксперта, разработки или проведения.",
+      "completion_evidence": "Разделить конкурента как потенциального партнера и реальный запрос."
+    },
+    {
+      "recipe_id": "DR17",
+      "name": "Муниципальные/региональные программы → операторы",
+      "seed": "Региональные порталы развития и занятости",
+      "search_actions": [
+        "Найти операторов бизнес-обучения, центры компетенций и институты развития.",
+        "Проверить отборы подрядчиков, календари и региональные филиалы."
+      ],
+      "retain_edges": [
+        "operates",
+        "procures_via",
+        "organizes"
+      ],
+      "possible_signal": "Обучение управленческих команд и специалистов организаций.",
+      "completion_evidence": "Социальные программы без релевантной аудитории помечаются, но источник не удаляется."
+    },
+    {
+      "recipe_id": "DR18",
+      "name": "Регуляторное изменение → отрасли → группы покупателей",
+      "seed": "Новое требование/стандарт, подтвержденный первоисточником",
+      "search_actions": [
+        "Связать изменение со служебными ролями и отраслями.",
+        "Проверить профессиональные сообщества и компании на конкретные вопросы/планы обучения."
+      ],
+      "retain_edges": [
+        "mentions",
+        "member_of"
+      ],
+      "possible_signal": "Вопросы к практическому применению требований.",
+      "completion_evidence": "Новость о законе сама по себе не заказ; юридические выводы не выдумываются."
+    },
+    {
+      "recipe_id": "DR19",
+      "name": "Русский термин → синонимы стран",
+      "seed": "Словарь услуги и страна",
+      "search_actions": [
+        "Проверить местные формулировки, сокращения, написание кириллицей/латиницей.",
+        "Использовать названия должностей и разговорные просьбы, а не только «образовательные услуги»."
+      ],
+      "retain_edges": [
+        "links_to",
+        "mentions"
+      ],
+      "possible_signal": "Запросы, пропущенные русскоязычным закупочным словарем.",
+      "completion_evidence": "Сохраняются точные запросы, языковые варианты и источники найденных терминов."
+    },
+    {
+      "recipe_id": "DR20",
+      "name": "Публикация → репосты → первоисточник",
+      "seed": "Найденный публичный пост/объявление",
+      "search_actions": [
+        "Проверить исходную ссылку, авторство и связанные каналы.",
+        "Сохранить репостера и первоисточник; проверить, есть ли у репостера свои запросы."
+      ],
+      "retain_edges": [
+        "reposts",
+        "publishes_on",
+        "links_to"
+      ],
+      "possible_signal": "Нишевые дайджесты и первичные каналы спроса.",
+      "completion_evidence": "Все пути находки сохранены; контент можно группировать обратимо."
+    },
+    {
+      "recipe_id": "DR21",
+      "name": "Каталог → региональные и нишевые подкаталоги",
+      "seed": "Каталог организаций/сообществ",
+      "search_actions": [
+        "Пройти категории по отрасли, функции и региону.",
+        "Сохранять не только первые результаты, но и cursor для длинного хвоста."
+      ],
+      "retain_edges": [
+        "links_to",
+        "member_of"
+      ],
+      "possible_signal": "Малозаметные организации и каналы с низкой конкуренцией.",
+      "completion_evidence": "Проверенный диапазон каталога указан; лимит выдачи оставляет задачу продолжения."
+    },
+    {
+      "recipe_id": "DR22",
+      "name": "Поиск без учебной лексики",
+      "seed": "Бизнес-проблема/аудитория",
+      "search_actions": [
+        "Искать «разобрать кейсы для главбухов», «провести сессию руководителям», «научить команду», «разработать базу знаний».",
+        "Добавлять «нужен», «ищем», «порекомендуйте», «кто проводит», «запрос предложений»."
+      ],
+      "retain_edges": [
+        "mentions",
+        "links_to"
+      ],
+      "possible_signal": "Разговорные формулировки внешнего заказа.",
+      "completion_evidence": "Запросы версионированы; отсутствие слова «обучение» не блокирует результат."
+    },
+    {
+      "recipe_id": "DR23",
+      "name": "Комитет/рабочая группа → участники → совместный заказ",
+      "seed": "Тематический комитет/совет",
+      "search_actions": [
+        "Проверить протоколы, открытые повестки и решения по компетенциям.",
+        "Найти организаторов семинаров и компании участников."
+      ],
+      "retain_edges": [
+        "member_of",
+        "organizes",
+        "mentions"
+      ],
+      "possible_signal": "Потребность нескольких компаний в одинаковой теме.",
+      "completion_evidence": "Участники подтверждены документом; факт совместной закупки требует отдельного основания."
+    },
+    {
+      "recipe_id": "DR24",
+      "name": "Исторический адрес → новый поток",
+      "seed": "404/переезд/ребрендинг источника",
+      "search_actions": [
+        "Проверить официальный новый домен, редирект, публикацию о смене адреса.",
+        "Искать название потока и связанные официальные каналы."
+      ],
+      "retain_edges": [
+        "same_as",
+        "links_to"
+      ],
+      "possible_signal": "Восстановление потерянного источника без потери истории.",
+      "completion_evidence": "Старый alias сохранен, новый адрес подтвержден; единичная ошибка не является закрытием."
+    },
+    {
+      "recipe_id": "DR25",
+      "name": "Неудачный запрос → соседний канал",
+      "seed": "Закрытый/платный источник",
+      "search_actions": [
+        "Найти публичные анонсы, автора/организатора, официальную рассылку, зеркальные публикации с законным доступом.",
+        "Сохранить закрытый источник как needs_access и все разрешенные альтернативы."
+      ],
+      "retain_edges": [
+        "reposts",
+        "links_to",
+        "publishes_on"
+      ],
+      "possible_signal": "Частичное покрытие до появления доступа.",
+      "completion_evidence": "Нельзя утверждать эквивалентность покрытия без сравнения примеров; ограничения указаны."
+    },
+    {
+      "recipe_id": "DR26",
+      "name": "Календарь → цепочка исполнителей",
+      "seed": "Мероприятие/серия вебинаров",
+      "search_actions": [
+        "Проверить организатора, технического партнера, обучающего партнера и приглашенных экспертов.",
+        "Найти открытый прием предложений и потребность в новых темах."
+      ],
+      "retain_edges": [
+        "organizes",
+        "partners_with"
+      ],
+      "possible_signal": "Модули, практикумы, модерация и образовательный контент.",
+      "completion_evidence": "Разделить возможность сотрудничества и подтвержденный оплачиваемый запрос."
+    }
+  ],
+  "budget_controls": [
+    {
+      "control_id": "BC01",
+      "name": "Жесткий месячный лимит",
+      "spec": "До платной операции проверять actual_spend + outstanding_commitments + current_reservations + mandatory_forecast_to_month_end + proposed_max_cost + safety_margin <= 10000. Не учитывать commitment дважды, если он уже включен в actual. Все суммы в RUB.",
+      "implementation": "Транзакционно резервировать максимальную стоимость до API-вызова; после ответа заменить резервацию фактом/консервативной оценкой. При неизвестной цене платный вызов не запускать."
+    },
+    {
+      "control_id": "BC02",
+      "name": "План распределения, не цены провайдеров",
+      "spec": "Единый план пакета: сервер 1500 ₽; хранение 400 ₽; LLM/OCR 2500 ₽; опциональный доступ к данным 3000 ₽; резерв 2600 ₽. Итого 10000 ₽. Авторитетный файл budget_policy.json.",
+      "implementation": "Это внутреннее распределение, не тарифы и не команда покупать. Заполнить фактические уже оплаченные сервисы и обязательства; перераспределять в пределах лимита. При отсутствии оплаченного канала сбор начинается с разрешенных бесплатных путей."
+    },
+    {
+      "control_id": "BC03",
+      "name": "Пороговые действия",
+      "spec": "На 70% прогноза — отчет и сокращение дорогих необязательных операций; на 85% — только явно полезные платные действия с запасом; на 95% — стоп новых платных действий, кроме уже учтенных обязательств. Лимит 10 000 ₽ не превышать.",
+      "implementation": "Снижать расходы через cache, offline reparse, дешевые парсеры, пакетирование и продолжения. Не очищать реестр и не удалять очередь ради бюджета."
+    },
+    {
+      "control_id": "BC04",
+      "name": "Фиксированная доля расширения",
+      "spec": "Распределять доступные рабочие слоты/время примерно: 50% текущий сбор, 20% открытие новых источников, 20% просроченные и редко проверяемые источники, 10% восстановление ошибок/проверка доступа.",
+      "implementation": "Это квоты задач, а не четыре непроницаемых кошелька. Неиспользованная квота переходит другим; новые источники и стареющий хвост не получают ноль при постоянном притоке приоритетных задач."
+    },
+    {
+      "control_id": "BC05",
+      "name": "Планировщик без голодания",
+      "spec": "Сначала исполнять критичные дедлайны доступных подтвержденных запросов; остальные задачи выбирать взвешенным круговым обходом классов, стран, семейств и возраста. В aging-квоте использовать oldest_due_first.",
+      "implementation": "Базовый балл влияет внутри квоты; age_bonus=min(100,24*overdue_hours/max_coverage_age_hours). queued_at/due_at не сбрасывать при переносе. Для старых задач указать первой очередью на возобновление."
+    },
+    {
+      "control_id": "BC06",
+      "name": "Целевые интервалы",
+      "spec": "Прямые быстро закрывающиеся запросы: 6–24 ч при допустимых лимитах источника; остальные активные потоки: 2–7 дней; доступные нишевые/косвенные: 7–14 дней; первичная проверка нового кандидата: до 7 дней; заблокированный доступ/предположительно неактивный: пересмотр до 30 дней.",
+      "implementation": "Это первоначальные цели, не обещания абсолютной полноты. Частоты адаптировать по доступу, скорости публикаций, срокам и бюджету. Если цель не выполнена — overdue с причиной, не ложный success."
+    },
+    {
+      "control_id": "BC07",
+      "name": "Повторные попытки",
+      "spec": "Transient network/5xx: backoff 15 мин, 1 ч, 6 ч, затем 24 ч с jitter и ограничением попыток за сутки. 429: Retry-After и лимит семейства. 401/403: не повторять часто; проверить права/разрешенную альтернативу. Parse error: диагностическая задача.",
+      "implementation": "Retry сохраняется как задача. После лимита попыток перейти в degraded/blocked_access с next_action_due, а не убрать источник. Параллельность на домен по умолчанию 1."
+    },
+    {
+      "control_id": "BC08",
+      "name": "Запросы и фильтры",
+      "spec": "Не делать полное декартово произведение каждого источника на каждое слово. При возможности получать свежий список и сопоставлять словарь локально; для поисковых источников вращать семейства запросов и сохранять partitions.",
+      "implementation": "Вести matrix источники/маршруты × query_family × time_window со статусом completed/partial/not_started. Для hard result cap дробить окно по времени/категории и хранить продолжения."
+    },
+    {
+      "control_id": "BC09",
+      "name": "Модель — после дешевого извлечения",
+      "spec": "Сначала HTML/XML/JSON/document parsing, нормализация и словарь; LLM применить к неоднозначным текстам, новым шаблонам и нужным полям.",
+      "implementation": "Кешировать по content_hash + dictionary/rules/model version; модель получает достаточный фрагмент, а не каждый раз весь сайт. Raw сохранять независимо от того, прошла ли запись к LLM."
+    },
+    {
+      "control_id": "BC10",
+      "name": "Расходы на граф ограничивают скорость, не память",
+      "spec": "Один discovery job расширяет ограниченную порцию ссылок/компаний и сохраняет все обнаруженные кандидаты перед остановкой.",
+      "implementation": "fanout и depth управляют задачами, а не жестким удалением узлов. frontier/cursor на каждой организации и источнике; отдельная квота на 2–3 уровни дочерних/партнерских связей."
+    },
+    {
+      "control_id": "BC11",
+      "name": "Хранение",
+      "spec": "Метаданные источников, алиасы, ключевые доказательства и события — долговременно. Большие raw-файлы — сжатие, content-addressed blob, отдельная политика срока/объема по бюджету и условиям доступа.",
+      "implementation": "Удаление избыточного blob по задокументированной политике не удаляет source/raw metadata, hash, URL, минимальный evidence и факт наблюдения. Полное повторное извлечение возможно не всегда — это показать как ограничение."
+    },
+    {
+      "control_id": "BC12",
+      "name": "Измеримость",
+      "spec": "Ежедневно считать: всего исходных и новых источников; verified/candidate; работающие/ручные/заблокированные маршруты; overdue по классам/странам; возраст последнего успеха p50/p90/max; частичные проходы; расход и обязательства; новые прямые запросы/ранние сигналы отдельно.",
+      "implementation": "Показатель реестрового покрытия = источники с актуально завершенным declared scope / все источники выбранного неизменного среза. Заблокированные и неподключенные остаются в знаменателе общего среза; отдельно можно показать технически доступный срез."
+    },
+    {
+      "control_id": "BC13",
+      "name": "Неделя без новых лидов — не отключение",
+      "spec": "Слабая отдача уменьшает платные/частые обращения и меняет гипотезу/запросы, но не удаляет источник.",
+      "implementation": "Раз в неделю просмотреть нулевые и старые источники: верен ли адрес, полнота разделов, парсер, язык, документы, ограничение дат. Понижение частоты всегда с датой следующей проверки."
+    }
+  ],
+  "claude_steps": [
+    {
+      "step": 1,
+      "title": "Прочитать проект и входные данные",
+      "action": "Найти текущий репозиторий приложения, инструкции AGENTS/README, БД, существующие коннекторы и словарь. Сделать резервную копию данных/схемы. Не заменять приложение шаблоном. Прочитать все листы нового XLSX и машинно-читаемый экспорт; старые 159 считать обязательной базой.",
+      "deliverable": "Короткий inventory с известным стеком, способами доступа и миграционными рисками.",
+      "done_when": "Понятен путь безопасной интеграции и не потеряно ни одного исходного source ID."
+    },
+    {
+      "step": 2,
+      "title": "Загрузить полный реестр идемпотентно",
+      "action": "Импортировать 159 исходных и все новые строки. Устойчивые IDs, original_record, aliases, evidence и family grouping. Если заголовки отличаются — добавить явную карту полей, не пропускать колонку молча.",
+      "deliverable": "Миграция/импортер + отчет: получено, добавлено, обновлено, возможные дубли, ошибки.",
+      "done_when": "AT01, AT02 проходят; ошибки импорта сохраняются в quarantine с исходной строкой и следующим действием."
+    },
+    {
+      "step": 3,
+      "title": "Разделить состояния и доказательства",
+      "action": "Ввести независимые registry/discovery/connector/run/lead states. Не переносить прежнюю отметку «поиск» в «коннектор работает». Уточнить source routes без удаления исходных адресов.",
+      "deliverable": "Реестр с next_action_due для каждой строки и явными неизвестными возможностями.",
+      "done_when": "Нет записей без следующего шага, нет invented API/RSS."
+    },
+    {
+      "step": 4,
+      "title": "Настроить бюджет по факту",
+      "action": "Прочитать только разрешенную конфигурацию текущих сервисов и лимитов. Установить месячный cap 10 000 ₽, резервации и консервативный учет переменных расходов; новую платную подписку не покупать.",
+      "deliverable": "budget_config и отчет обязательных расходов/свободного остатка.",
+      "done_when": "AT09 проходит; платная операция с неизвестной ценой блокируется до настройки."
+    },
+    {
+      "step": 5,
+      "title": "Собрать минимальный вертикальный проход",
+      "action": "Выбрать по одному доступному источнику разных типов: прямая закупка, сообщество/запрос, корпоративный сайт, ассоциация, документ. Проверить доступ; сохранить raw, происхождение, кандидат и объяснение.",
+      "deliverable": "Пять сквозных примеров либо меньше с честным access blocker; фикстуры и адаптеры существующего стека.",
+      "done_when": "Данные проходят всю цепочку без ложных текущих заказов и без потери сырья."
+    },
+    {
+      "step": 6,
+      "title": "Расширять подключение по портфелю",
+      "action": "Подключать классы/страны/семейства в ротации. Переносить общий парсер между родственными источниками только после проверки конкретного маршрута. Все недоступные оставить с причиной и разрешенным альтернативным путем.",
+      "deliverable": "Рабочие коннекторы, доступные примеры и backlog оставшихся.",
+      "done_when": "Статус каждой строки соответствует реальному smoke test, а не предположению."
+    },
+    {
+      "step": 7,
+      "title": "Включить широкую словарную выборку",
+      "action": "Загрузить весь словарь, объединить форматы/темы/роли/проблемы/разговорные формулировки, оставить смешанные заказы. Повторно разобрать уже собранные raw.",
+      "deliverable": "Версия словаря, query matrix, тестовый корпус пограничных примеров.",
+      "done_when": "AT11, AT15, AT19, AT21 проходят; нет одного blacklist слова, удаляющего источник или лот."
+    },
+    {
+      "step": 8,
+      "title": "Расширить граф всеми рецептами",
+      "action": "Запустить DR01–DR26 порциями в пределах бюджета. Начать с проверенных покупателей и новых находок; каждый следующий уровень оставить во frontier.",
+      "deliverable": "Новые организации/источники/маршруты с evidence, recipe_id, parent edge и next_action_due.",
+      "done_when": "AT14 и AT18 проходят; есть отчет о реально пройденных и непроверенных ветках."
+    },
+    {
+      "step": 9,
+      "title": "Настроить планировщик и восстановление",
+      "action": "Добавить квоты discovery/aging/recovery, backoff, checkpoint, lease и бюджетные паузы. Частичный сбор не завершает coverage_scope.",
+      "deliverable": "Работающий локальный/существующий scheduler в рамках текущего проекта; запуск постоянного сервиса только в уже разрешенной среде.",
+      "done_when": "AT03–AT08, AT17 проходят на фикстурах и доступных smoke tests."
+    },
+    {
+      "step": 10,
+      "title": "Показать управляемый поток",
+      "action": "В интерфейсе/экспорте различать прямые запросы, гипотезы, партнерства, справочники; показывать источник, основания, дату, неизвестные поля и причины оценки. Дубли группировать обратимо.",
+      "deliverable": "Карточки лидов и экран покрытия источников/просрочек/расходов.",
+      "done_when": "Можно открыть каждый первоисточник, развернуть дубль и увидеть все записи слабого соответствия."
+    },
+    {
+      "step": 11,
+      "title": "Проверить конкретные сценарии",
+      "action": "Выполнить AT01–AT23. Сетевые интеграции подтверждать отдельным датированным результатом. Не писать бессмысленные тесты, повторяющие реализацию; использовать фикстуры ошибок, смешанных лотов, редиректов и изменения документов.",
+      "deliverable": "Отчет passed/failed/blocked, примеры и фактические ограничения.",
+      "done_when": "Критичные нарушения сохранности, бюджета и доступа устранены; blocked не выдаются за passed."
+    },
+    {
+      "step": 12,
+      "title": "Передать готовый результат и продолжение",
+      "action": "Сохранить изменения, инструкции запуска, конфигурацию без секретов, snapshot реестра, backlog и короткий changelog. Продолжать обратимые незаблокированные задачи автоматически до выполнения согласованного объема, не спрашивая подтверждения каждого этапа.",
+      "deliverable": "Конкретный пакет/коммит для проверки и отчет: было/стало, работает/ожидает, новые кандидаты, стоимость, следующие задания.",
+      "done_when": "Нет обещаний автономной работы после завершения сессии без реально настроенного расписания. Публикация, покупки, рассылки и расширение доступа остаются отдельным разрешением."
+    }
+  ],
+  "minimum_runtime": {
+    "principle": "Использовать существующий стек. Для небольшого одиночного collector достаточно SQLite (WAL), файлового object store и существующего cron/worker; при нескольких writers/пользователях использовать уже имеющуюся серверную БД. Не внедрять Kafka, отдельную графовую БД или новый облачный сервис только ради этого протокола.",
+    "graph_storage": "discovery_edge в обычной реляционной БД; обход по frontier/job_queue.",
+    "time": "Даты хранения UTC ISO8601, месячный бюджет и пользовательские даты — Europe/Moscow; source timezone сохраняется.",
+    "invariant": "Наблюдение, оценка, источник и маршрут — разные сущности. Ни один из них не заменяется текстовым LLM-выводом без ссылки на основания."
+  },
+  "required_exports": [
+    "source_registry.jsonl: все исходные и новые записи с оригинальными полями и provenance",
+    "source_routes.csv: полный список маршрутов, возможность сбора, access/status/next_due",
+    "discovery_edges.jsonl: связи покупателей, дочерних, организаторов и площадок",
+    "coverage_report.csv: каждый source_id, scope, last_success, age, status, blocker, next_action",
+    "backlog.jsonl: все невыполненные исследования/подключения/продолжения",
+    "README_Claude.txt: задача, порядок действий, ограничения, команды проекта и критерии приемки без секретов"
+  ],
+  "quality_metrics": [
+    {
+      "metric": "baseline_retention",
+      "definition": "Число уникальных legacy_id исходного набора, доступных после импорта / 159.",
+      "expected": "159/159; отдельно проверяется сохранение original_record."
+    },
+    {
+      "metric": "registered_scope_coverage",
+      "definition": "Источники с завершенным объявленным scope не старше собственного max_coverage_age / все источники фиксированного среза.",
+      "expected": "Значение с датой среза, явным знаменателем и отдельной разбивкой blockers; целевое значение устанавливается после пилота."
+    },
+    {
+      "metric": "route_coverage",
+      "definition": "Полностью пройденные маршруты/временные окна/семейства запросов / зарегистрированные планы выбранного среза.",
+      "expected": "partial в числитель не входит; нельзя считать одну свежую главную страницу полным обходом источника."
+    },
+    {
+      "metric": "fixture_capture",
+      "definition": "Сколько заранее размеченных положительных примеров из явно описанного тестового корпуса найдено.",
+      "expected": "Показать N/M и перечень пропусков; это характеристика тестового корпуса, не recall интернета."
+    },
+    {
+      "metric": "unique_increment",
+      "definition": "Новые семейства, новые потоки известных семейств, новые маршруты и новые покупатели — отдельно.",
+      "expected": "Не суммировать их в ложное число независимых источников."
+    },
+    {
+      "metric": "aging_debt",
+      "definition": "Число и максимальный возраст просроченных next_due/first-check задач по классу, стране и семейству.",
+      "expected": "Все просрочки объяснены; низкоприоритетные доступны в квоте aging."
+    },
+    {
+      "metric": "new_opportunities",
+      "definition": "Подтвержденные запросы, ранние сигналы, партнерские возможности и справочники по отдельности.",
+      "expected": "Объем шума и дубли допустимы; нельзя выдавать каталог организаций за подтвержденные заказы."
+    }
+  ],
+  "schema_implementation_notes": {
+    "logical_not_physical": "Описаны логические сущности и необходимые поля, а не требование создавать 18 новых физических таблиц. Сначала сопоставить существующей схеме; добавлять только отсутствующие возможности.",
+    "minimal_mapping": [
+      {
+        "physical_area": "sources/routes",
+        "logical_entities": [
+          "source_registry",
+          "source_route",
+          "source_alias",
+          "connector",
+          "evidence"
+        ],
+        "guidance": "Aliases, capability evidence и небольшую connector configuration можно хранить JSON-полями существующих таблиц. Отдельные таблицы нужны при большом объеме/сложных запросах."
+      },
+      {
+        "physical_area": "organizations/edges",
+        "logical_entities": [
+          "organization",
+          "discovery_edge"
+        ],
+        "guidance": "Обычные реляционные таблицы, отдельная графовая БД не нужна."
+      },
+      {
+        "physical_area": "raw/runs",
+        "logical_entities": [
+          "raw_record",
+          "raw_observation",
+          "collection_run"
+        ],
+        "guidance": "Наблюдения можно хранить append-only журналом с raw_id/run_id; blobs сжаты и разделены по hash."
+      },
+      {
+        "physical_area": "leads",
+        "logical_entities": [
+          "lead_candidate",
+          "lead_cluster",
+          "raw_lead_link"
+        ],
+        "guidance": "Использовать имеющуюся карточку лида, массив evidence/raw links и обратимую cluster связь; не мигрировать CRM без причины."
+      },
+      {
+        "physical_area": "queue/events/budget",
+        "logical_entities": [
+          "job_queue",
+          "query_plan",
+          "event_log",
+          "discovery_event",
+          "budget_ledger"
+        ],
+        "guidance": "Query plan в payload job, discovery event в общем append-only журнале; бюджет отдельный ledger либо существующий механизм учета."
+      }
+    ],
+    "tradeoff": "Сокращение физических таблиц допустимо; потеря устойчивых ID, исходных данных, истории, происхождения, продолжений и бюджетных резервов — нет."
+  },
+  "package_alignment": {
+    "canonical_source_contract": "source.schema.json",
+    "canonical_observation_contract": "observation.schema.json",
+    "budget_authority": "budget_policy.json",
+    "policy_authority": "policy.json",
+    "note": "protocol.json — подробный проект реализации. Названия таблиц/полей адаптировать к существующему проекту; 18 логических сущностей не требуют 18 новых таблиц. Ключ source_id соответствует legacy_id в примерах. Правила протокола обозначать PROTO:Rxx, правила policy.json — POLICY:Rxx.",
+    "import_mapping": {
+      "source_state_cataloged": "registry_state verified — существование канала, не наличие заказа",
+      "source_state_candidate": "registry_state candidate",
+      "connector_state_not_checked_here": "not_checked_here — сначала сопоставить с текущим проектом, не объявлять not_implemented",
+      "next_due_at_null": "При импорте назначить ближайший слот проверки; null в пакете не разрешает бессрочную паузу."
+    }
+  }
+}

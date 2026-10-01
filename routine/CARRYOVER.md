@@ -134,3 +134,9 @@
     Склеивать документы `leadsets` смысла нет: дублей 20 КБ из 7 МБ.
 22. **01.10.2026: Беларусь.** icetrade.by и goszakupki.by не присылают промежуточный сертификат GlobalSign; лечится на
     релее, см. `BELARUS-RELAY.md` и `by-chain.pem`.
+23. **01.10.2026, версия 6.0: реестр источников v2 (282 записи).** Пакет MISB_Claude_handoff_v2 импортирован в `srcreg`
+    (`source_registry/import_v2.py`, копия пакета — `source_registry/handoff_v2/`, отчёт —
+    `source_registry/REPORT-v2-2026-10-01.md`). Новые источники сбора `reg2-lists`, `reg2-pages`, `reg2-retry` (type pages
+    с batch): каждый запуск читает порцию адресов реестра; адреса независимы; результат каждого адреса — в
+    `meta/registry-checks` (`collector/registry_checks.py`): ok, empty_success или failed (ошибка доступа ≠ «заказов нет»).
+    `kz-mpkz` получил второй адрес — категорию «обучение» MP.kz. Сайт: реестр грузится при открытии вкладки «Источники».

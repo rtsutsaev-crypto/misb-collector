@@ -1,0 +1,96 @@
+{
+  "package_version": "2.0",
+  "created_at": "2026-10-01",
+  "purpose": "recall-first source expansion for MISB",
+  "counts": {
+    "sources": 282,
+    "baseline": 159,
+    "added": 123,
+    "candidate": 3,
+    "content_read": 81,
+    "search_index": 198,
+    "relationships": 136,
+    "discovery_recipes": 40,
+    "connector_tasks": 282
+  },
+  "artifact_checks": {
+    "original_159_ids_preserved": true,
+    "original_names_and_urls_preserved": true,
+    "every_source_has_connector_task": true,
+    "source_id_unique": true,
+    "source_deletions": 0,
+    "connector_runtime_tests_executed": false
+  },
+  "files": [
+    {
+      "name": "taxonomy.json",
+      "bytes": 7726,
+      "sha256": "24d41e1c06540b2f72be67f65a8ae03bbedcb9d063c347a34b97756eb99ca143"
+    },
+    {
+      "name": "sources.jsonl",
+      "bytes": 1636559,
+      "sha256": "48ea1af697be92a77bb3b4750ee666e5b099c061bdf6d92ba048d0047b1bbf8e"
+    },
+    {
+      "name": "source_relationships.jsonl",
+      "bytes": 32621,
+      "sha256": "c917905899d6a485e8c09b9cf4f4df276f7acc48fb13f0badec4875c6fb6f2ec"
+    },
+    {
+      "name": "connector_tasks.jsonl",
+      "bytes": 464520,
+      "sha256": "e625ab4fa6192f71b0ca4a92d660eb1214a7e8292df6c65d6e5c4b261b210fbc"
+    },
+    {
+      "name": "discovery_recipes.jsonl",
+      "bytes": 19320,
+      "sha256": "af271f7a67ca9560b0bf4371085e99f53201306c13f824ff84b5839495946546"
+    },
+    {
+      "name": "source.schema.json",
+      "bytes": 1802,
+      "sha256": "b8ec21e7ec1ae382eef34295a6e6e226f34d95bbaf0f0c2eb2c962a14815f8ce"
+    },
+    {
+      "name": "observation.schema.json",
+      "bytes": 2740,
+      "sha256": "d87b3334af93103b89450d40e57b6f475be303c29343ddea81a3a7ecc1e8ffd5"
+    },
+    {
+      "name": "protocol.json",
+      "bytes": 139543,
+      "sha256": "825fea4ccab75afe169920f91aebacf363d372ae740e6a89d1a2bcce92f6adef"
+    },
+    {
+      "name": "policy.json",
+      "bytes": 11640,
+      "sha256": "df8d601e979220a20022c5cc1187af026f5398bfb041d8088baaa47cb501afb0"
+    },
+    {
+      "name": "vocabulary.json",
+      "bytes": 21877,
+      "sha256": "64abfc817d820378191d6f1aec77deef5ba24925b0888a4aad65fbb271afd9fe"
+    },
+    {
+      "name": "budget_policy.json",
+      "bytes": 2301,
+      "sha256": "0fce72fa689d5229dcbeb08389c6f061412ca1f098b329039a25ffa60ce82a3c"
+    },
+    {
+      "name": "README_CLAUDE.txt",
+      "bytes": 8427,
+      "sha256": "b3e485997ded7f74d3762294e824efc07736b5641dabda6a473ea5ace3a32d61"
+    },
+    {
+      "name": "IMPLEMENTATION_BRIEF.txt",
+      "bytes": 5235,
+      "sha256": "1c3813abe05317e27efd4b57af1391bd1b3ab1884d835c57f4e770d332f9e7b6"
+    },
+    {
+      "name": "sources.csv",
+      "bytes": 627558,
+      "sha256": "c37dafdb9b1e2d0449231277b9e4a11f9a2e1d222fa6756773c4c20adc162589"
+    }
+  ]
+}
