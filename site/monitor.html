@@ -36,7 +36,7 @@ header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:spac
 .brand .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 h1{font-size:26px;line-height:1.15;margin:0;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
 .brand p{margin:0;color:var(--muted);max-width:70ch}
-.meta-note{font-family:var(--mono);font-size:12px;color:var(--muted)}.big{font-size:20px;font-weight:700;color:var(--ink);font-family:inherit}
+.meta-note{font-family:var(--mono);font-size:12px;color:var(--muted)}.new-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.btn.see-new{font-size:13px;font-weight:600;padding:4px 12px}.btn.see-new.on{background:#fff3b0;border-color:#e0b400;color:#5c4a00}.big{font-size:20px;font-weight:700;color:var(--ink);font-family:inherit}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-block:16px}
 .kpi{background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:2px}
 .kpi b{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
@@ -642,7 +642,7 @@ const DEFAULT_FILTERS={open:"open",country:"all",mand:false,exc:true};
 function syncFilterInputs(){const f=S.filters;const set=(id,v)=>{const e=$(id);if(e)e.value=v||""};set("#q",f.q);set("#fCat",f.cat);set("#fDir",f.dir);set("#fForm",f.form);set("#fOpen",f.open);set("#fFit",f.fit);set("#fLaw",f.law);set("#fHold",f.hold);set("#fStatus",f.status);set("#fFlag",f.flag);set("#fCls",f.cls);if($("#fExc"))$("#fExc").checked=f.exc!==false;set("#fSeg",f.seg);set("#fCountry",f.country||"all");if($("#fCust"))$("#fCust").checked=!!f.cust;if($("#fMand"))$("#fMand").checked=f.mand===true}
 function normF(o){const r={};for(const [k,v] of Object.entries(o||{})){if(v===""||v===undefined||v===null)continue;if(v===false&&k!=="mand")continue;if(k==="sample")continue;r[k]=v}if(r.mand===undefined)r.mand=false;return JSON.stringify(Object.keys(r).sort().map(k=>[k,r[k]]))}
 function fval(o,k){const v=o[k];if(k==="mand")return v===true;if(k==="exc")return v!==false;return v===undefined||v===null||v===false?"":v}
-function samePreset(p){return Object.keys(p).every(k=>String(fval(S.filters,k))===String(fval(p,k)))}
+function samePreset(p){if(S.filters.run)return false;return Object.keys(p).every(k=>String(fval(S.filters,k))===String(fval(p,k)))}
 function applyPreset(p){const keepOpen=S.filters.open;const keepC=S.filters.country;S.filters=samePreset(p)?{...DEFAULT_FILTERS}:{...p};if(!("open" in p))S.filters.open=keepOpen||"";S.filters.country=keepC||"all";syncFilterInputs();S.page=0;switchTab("leads");renderAll()}
 function toggleOpen(){S.filters.open=S.filters.open==="open"?"":"open";syncFilterInputs();S.page=0;switchTab("leads");renderAll()}
 function renderKPIs(){const LB=LEADS.filter(countryOk);const open=LB.filter(l=>l.dl!=null&&l.dl>=0).length;const hi=LB.filter(l=>l.fit>=65).length;const mid=LB.filter(l=>l.fit>=40).length;const named=LB.filter(l=>l.customer).length;const inH=LB.filter(l=>l.holding).length;const srcOk=S.sources.filter(s=>s.status==="ok").length;const srcCov=S.sources.filter(s=>s.status==="covered").length;
@@ -659,11 +659,15 @@ function renderKPIs(){const LB=LEADS.filter(countryOk);const open=LB.filter(l=>l
     srcT,
     fresh?tile(fresh,"новых с вашего прошлого визита",{fit:"",fresh:true,hot:false,mand:false,hold:""}):null,
     hot?tile(hot,"горят сроки: до 3 дней по лидам в работе",{fit:"",hot:true,fresh:false,mand:false,hold:""}):null].filter(Boolean));
-  const last=S.sets.map(s=>s.data.collectedAt||s.data.importedAt||"").sort().pop();const R=(S.runs||[])[0];const P=S.progress&&S.progress.status==="done"?S.progress:null;const fin=(P&&P.updatedAt)||(R&&R.finishedAt)||"";const newN=P&&P.result?P.result.new:(R?R.new:null);
+  const last=S.sets.map(s=>s.data.collectedAt||s.data.importedAt||"").sort().pop();const R=(S.runs||[])[0];const P=S.progress&&S.progress.status==="done"?S.progress:null;const fin=(P&&P.updatedAt)||(R&&R.finishedAt)||"";const newN=P&&P.result?P.result.new:(R?R.new:null);const runId=P?P.runId:(R?R.runId:"");
   const fmtDT=iso=>{const d=new Date(iso);return isNaN(d)?String(iso).slice(0,10):d.toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})};
-  if(fin)$("#metaNote").replaceChildren(el("div",{text:`Последнее обновление: ${fmtDT(fin)}`}),el("div",{class:"big",text:`Новых лидов за последнее обновление: ${newN??"—"}`}));
+  if(fin){const on=!!runId&&S.filters.run===runId;const see=runId&&newN?el("button",{class:`btn see-new${on?" on":""}`,type:"button",title:on?"Убрать отбор и вернуть фильтры по умолчанию":"Открыть «Закупки» только с лидами, добавленными этим обновлением",onclick:()=>on?clearRunFilter():showRunLeads(runId,fin)},on?"убрать ✕":"смотреть"):null;
+    $("#metaNote").replaceChildren(el("div",{text:`Последнее обновление: ${fmtDT(fin)}`}),el("div",{class:"big new-line"},el("span",{text:`Новых лидов за последнее обновление: ${newN??"—"}`}),see))}
   else{const lastDay=last?String(last).slice(0,10):"";const added=lastDay?S.sets.filter(x=>String(x.data.collectedAt||x.data.importedAt||"").slice(0,10)===lastDay).reduce((a,x)=>a+((x.data.leads||[]).length),0):0;$("#metaNote").replaceChildren(...(last?[el("div",{text:`Последнее пополнение: ${fmtDate(lastDay)}`}),el("div",{class:"big",text:`Новых лидов добавлено: ${added}`})]:[el("div",{text:"База пуста"})]))}}
 
+function runLabel(f){const d=new Date(f.runAt||"");return isNaN(d)?"":" "+d.toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}
+function showRunLeads(id,at){S.filters={country:"all",mand:false,exc:false,open:"",run:id,runAt:at};syncFilterInputs();S.page=0;switchTab("leads");renderAll()}
+function clearRunFilter(){S.filters={...DEFAULT_FILTERS};syncFilterInputs();S.page=0;renderAll()}
 function filtered(){const f=S.filters;const q=(f.q||"").trim().toLowerCase();return LEADS.filter(l=>{
   if(q&&!((l.title+" "+(l.topic||"")+" "+(l.customer||"")+" "+(l.region||"")+" "+l.holding+" "+l.company+" "+(l.etp||"")).toLowerCase().includes(q)))return false;
   if(f.cat&&l.cat!==f.cat)return false;
@@ -680,6 +684,7 @@ function filtered(){const f=S.filters;const q=(f.q||"").trim().toLowerCase();ret
   if(f.status&&l.status!==f.status)return false;
   if(f.cust&&!l.customer)return false;
   if(f.fresh&&!(String(l.collectedAt||"")>String(LAST_VISIT||"")))return false;
+  if(f.run&&!(l.set===f.run||String(l.set||"").startsWith(f.run+"-")))return false;
   if(f.sample&&!f.sample.has(l.key))return false;
   if(f.claimG&&!(l.claim&&l.claim.g===f.claimG))return false;
   if(f.flag&&!l.flags.includes(f.flag))return false;
@@ -688,7 +693,7 @@ function sorted(arr){const{key,dir}=S.sort;const v=l=>key==="deadline"?(l.deadli
   return [...arr].sort((a,b)=>{const x=v(a),y=v(b);return (x<y?-1:x>y?1:0)*dir||(b.fit-a.fit)})}
 
 function renderLeads(){const list=sorted(filtered());const pages=Math.max(1,Math.ceil(list.length/S.per));if(S.page>=pages)S.page=pages-1;const slice=list.slice(S.page*S.per,(S.page+1)*S.per);
-  $("#countLine").textContent=`Показано ${list.length} из ${LEADS.filter(countryOk).length}`;$("#countLine").classList.add("big");
+  const cl=$("#countLine");const base=`Показано ${list.length} из ${LEADS.filter(countryOk).length}`;cl.classList.add("big");if(S.filters.run)cl.replaceChildren(el("span",{text:`${base} · новые лиды обновления${runLabel(S.filters)} `}),el("button",{class:"linkbtn",type:"button",onclick:clearRunFilter},"убрать отбор"));else cl.textContent=base;
   document.querySelectorAll("th.sort").forEach(th=>{th.querySelector(".arr").textContent=th.dataset.sort===S.sort.key?(S.sort.dir>0?"↑":"↓"):"";th.setAttribute("aria-sort",th.dataset.sort===S.sort.key?(S.sort.dir>0?"ascending":"descending"):"none")});
   const rows=slice.map(l=>{const dl=l.dl;const dlc=dl==null?"":dl<0?"closed":dl<=3?"soon":"open";
     return el("tr",{tabindex:"0",onclick:()=>openLead(l.key),onkeydown:e=>{if(e.key==="Enter")openLead(l.key)}},
