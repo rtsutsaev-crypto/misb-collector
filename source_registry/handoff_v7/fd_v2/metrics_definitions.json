@@ -1,0 +1,9 @@
+{
+  "measurement_unit": "need_id, not publication",
+  "baseline": "Первая полная неделя после запуска с ручным подтверждением покупателей; пока не измерена.",
+  "qualified": "buyer_confirmed=true + confirmed_at + evidence + установленная организация и учебная потребность",
+  "growth": "qualified_current_comparable_week / qualified_baseline_week; при baseline=0 или null множитель не рассчитывается",
+  "source_yield": "Число новых подтверждённых need_id, атрибутированных primary_source_id, делённое на успешные содержательные проверки",
+  "cost_per_qualified": "Фактические расходы той же недели / подтверждённые новые need_id; при неизвестных расходах или нуле лидов null",
+  "coverage": "Отдельно число источников, endpoints, реально прочитанных источников, окон истории и недоступных маршрутов."
+}

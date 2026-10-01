@@ -1,0 +1,26 @@
+{
+  "delta": {
+    "reviewed_targets": 97,
+    "discovery_reviewed": 54,
+    "sources_rechecked": 43,
+    "new_sources": 10,
+    "new_observations": 65,
+    "updated_observations": 9,
+    "new_discovery": 63,
+    "recovered_demand_assessment": 16
+  },
+  "sources": 136,
+  "normalized_source_urls": 136,
+  "observations": 196,
+  "concrete_14": 41,
+  "concrete_15_30": 24,
+  "all_14": 52,
+  "all_15_30": 32,
+  "queue_now": 37,
+  "undated": 99,
+  "standing": 41,
+  "not_assessable": 27,
+  "content_read": 113,
+  "discovery": 117,
+  "relations": 93
+}

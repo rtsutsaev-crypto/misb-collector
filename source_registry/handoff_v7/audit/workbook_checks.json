@@ -1,0 +1,21 @@
+{
+  "sheets": 12,
+  "rendered_sheets": [
+    "Обзор",
+    "Новые 417",
+    "Проверки 100",
+    "Приглашения и запросы",
+    "Маршруты",
+    "Направления",
+    "Пилот 20",
+    "Эффективность",
+    "Поиск 360",
+    "Журнал чтения",
+    "Бюджет",
+    "Claude"
+  ],
+  "summary_formulas_passed": true,
+  "budget_unknown_zero_overrun_passed": true,
+  "unit_cost_zero_and_denominator_passed": true,
+  "formula_error_inspection": "{\"kind\":\"notice\",\"message\":\"Cell search matched 0 entries.\"}"
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "local_id": "edtech-O06",
+    "field": "misb_fit",
+    "old_value": "core",
+    "value": "adjacent",
+    "reason": "Тематика выступления еще не задана; бизнес-форум сам по себе не доказывает соответствие программе МИСБ."
+  },
+  {
+    "file": "output_edtech.json",
+    "entity": "source",
+    "local_id": "edtech-09",
+    "field": "review_outcome",
+    "value": "not_assessable",
+    "severity": "medium",
+    "confidence": "high",
+    "reason": "Доступ помечен profile_only/search_index; текущая лента не прочитана. По протоколу результат такого доступа нельзя сводить к отсутствию релевантных записей. Сведения об архивных поисковых фрагментах сохранить в actual_scope.",
+    "evidence_url": "https://t.me/educational_lab",
+    "original_value": "no_relevant_in_viewed_sample",
+    "old_value": "no_relevant_in_viewed_sample"
+  },
+  {
+    "file": "output_edtech.json",
+    "entity": "source",
+    "local_id": "edtech-10",
+    "field": "review_outcome",
+    "value": "only_early_signals",
+    "severity": "low",
+    "confidence": "high",
+    "reason": "Единственное сохранённое наблюдение этого источника edtech-O11 корректно classified early_signal — проектная вакансия. only_early_signals согласует итог источника с наблюдением и не создаёт впечатления найденного подрядного заказа.",
+    "evidence_url": "https://t.me/s/lab_vacancies?before=649",
+    "original_value": "undated_relevant_found",
+    "old_value": "undated_relevant_found"
+  },
+  {
+    "file": "output_edtech.json",
+    "entity": "observation",
+    "local_id": "edtech-O01",
+    "field": "signal_type",
+    "value": "expert_call",
+    "severity": "medium",
+    "confidence": "moderate",
+    "reason": "Первичный открытый Telegram-бриф и ProjectExperts подтверждают поиск оплачиваемого бизнес-тренера для управленцев. Не названы ни конечный заказчик, ни провайдер-посредник, ни субподрядное отношение. expert_call точнее фиксирует доказанное; subcontract можно вернуть после уточнения роли заказчика. Оплату, профиль и свежесть не менять.",
+    "evidence_url": "https://t.me/Project_Best_Speakers/2859",
+    "web_refs": [
+      "turn675view2",
+      "turn788view0"
+    ],
+    "original_value": "subcontract",
+    "old_value": "subcontract"
+  },
+  {
+    "file": "output_edtech.json",
+    "entity": "observation",
+    "local_id": "edtech-O11",
+    "field": "fit_reason",
+    "value": "Разработка образовательной программы — смежная методическая компетенция. Тематика литературного мастерства вне основного профиля МИСБ; это проектная вакансия, возможность внешнего договора не подтверждена.",
+    "severity": "low",
+    "confidence": "high",
+    "reason": "Текущий универсальный fit_reason утверждает предполагаемое соответствие бизнес-обучению и развитию руководителей, хотя конкретное наблюдение посвящено литературному мастерству. adjacent и early_signal уже корректны.",
+    "evidence_url": "https://t.me/s/lab_vacancies?before=649",
+    "original_value": "Предполагаемое соответствие бизнес-обучению и развитию руководителей; содержание и требования необходимо сопоставить с экспертами МИСБ.",
+    "old_value": "Предполагаемое соответствие бизнес-обучению и развитию руководителей; содержание и требования необходимо сопоставить с экспертами МИСБ."
+  }
+]

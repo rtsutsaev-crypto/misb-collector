@@ -3,7 +3,7 @@
 
 Usage: python3 registry_plan_v2.py OUT_DIR(srcreg-v3 of import_v2.py build) PLAN(collector/sources-plan.json)
          [--queries search_queries.jsonl] [--cu OUT_CU(srcreg-cu of import_cu.py build) --cu-queries search_queries.jsonl]
-         [--fd OUT_FD(srcreg-fd of import_fd.py build)] [--write]
+         [--fd OUT_FD(srcreg-fd of import_fd.py build)] [--v7 OUT_V7(srcreg-v7 of import_v7.py build) --v7-queries queries.jsonl] [--write]
 
 Plan sources (type pages with batch: the collector reads `batch` addresses per run in a circle, the cursor is
 kept in meta/rotation), each with `registry` = {url: source_id} so that every page result is written to
@@ -14,6 +14,8 @@ meta/registry-checks (collector/registry_checks.py; the cu-* family writes meta/
   reg2-retry / cu-retry  — no answer, 401/403, HTTP errors, nearly empty page: a re-check (policy R07), small batch.
   fd-daily / fd-pages    — fresh demand package: channels of the first wave are read every run, the others in a short
                            circle; they leave the reg2-* rotation (the result is written to the FD-S… and MISB-… records).
+  v7-priority / v7-pages / v7-legacy / v7-retry — master package v7: reviewed sources and routes found from them,
+                           search candidates, earlier-file addresses the site did not read; results in meta/v7-checks.
 Search templates: reg3-search (v3 package) and cu-search (corporate universities package), type search with batch.
 Not included: records already served by a collector source (queue collecting/collecting_indirect/blocked_existing),
 addresses read by another plan source (a cu-* channel already in a reg2-* rotation is read there), robots.txt
@@ -57,6 +59,23 @@ FD_GROUPS = {
                  "name": "Свежий спрос · каналы второй и третьей волны (по кругу)",
                  "note": "Каналы пакета «Свежие потребности» 01.10.2026 второй и третьей волны: провайдеры и авторские сети, форумы, функциональные ассоциации, мероприятия, BY/KZ. Порция за запуск по кругу.",
                  "verify": "Свежая потребность или сигнал из канала: проверить дату публикации, актуальность, заказчика, оплату и маршрут отклика. Ранний сигнал (вопрос, вакансия) — не готовый заказ."},
+}
+V7_GROUPS = {
+    "v7-priority": {"access": {"list_visible", "page_open", "not_tested"}, "gen": {"v7_reviewed", "v7_route"}, "batch": 12, "pause": 3,
+                    "name": "Расширение v7 · прочитанные источники и найденные с них адреса",
+                    "note": "100 источников, прочитанных при ревизии v7 (02.10.2026): HR-сообщества, ассоциации, бизнес-клубы, организаторы, провайдеры с приглашениями экспертов и партнёров, — и адреса, найденные с их страниц.",
+                    "verify": "Приглашение или запрос из источника расширения v7: проверить актуальность приёма, оплату, тему, договор с институтом и ответственного. Отклик — только человеком."},
+    "v7-pages": {"access": {"list_visible", "page_open", "not_tested"}, "gen": {"v7_candidate"}, "batch": 12, "pause": 3,
+                 "name": "Расширение v7 · кандидаты из поиска (по кругу)",
+                 "note": "Ключи источников, найденные 120 поисками v7 (02.10.2026) и ещё не прочитанные: HR-сообщества, руководители функций, ассоциации, провайдеры, LMS, КУ, мероприятия, палаты, клубы, проектные площадки. Строки — сигналы, не извещения.",
+                 "verify": "Сигнал с сайта-кандидата из поиска v7: проверить, что это запрос, приглашение или потребность, дату публикации, заказчика и маршрут отклика."},
+    "v7-legacy": {"access": {"list_visible", "page_open", "not_tested"}, "gen": {"v5_route"}, "batch": 8, "pause": 3,
+                  "name": "Прежние файлы · адреса, которых не было в сборе (по кругу)",
+                  "note": "Адреса из 21 прежнего файла (консолидация v5), которых не было ни в плане сбора, ни в реестре, ни в справочнике организаций: каналы, сайты организаций, сообщества, разделы закупок.",
+                  "verify": "Сигнал с адреса из прежних файлов: проверить, что это запрос, приглашение или закупка обучения, дату и заказчика."},
+    "v7-retry": {"access": {"unreachable", "forbidden", "http_error", "empty_page", "rate_limited"}, "batch": 3, "pause": 3,
+                 "name": "Расширение v7 · повторная проверка недоступных",
+                 "note": "Адреса v7 и прежних файлов, которые из облака не ответили или вернули ошибку. Повторная проверка по кругу; ошибка — задача доступа, не «потребности нет»."},
 }
 # Order of channel kinds inside cu-pages: where a need is most likely to be stated comes first.
 CU_KIND = ["procurement", "expert_application", "partners", "news", "programs", "careers", "university_site", "contacts", "social"]
@@ -108,6 +127,14 @@ def search_source(path, docs, plan, key="reg3-search"):
     # one text can stand for several templates (institutions of one group): it is searched once, the result goes to each
     want = {t: ids[0] if len(ids) == 1 else ids for t, ids in want.items()}
     queries = [q for q in old if q in want] + [q for q in want if q not in old]
+    if key == "v7-search":
+        return {"key": key, "name": "Расширение v7 · поиск на языке заказчика (по кругу)", "type": "search", "source": key,
+                "queries": queries, "registry": {q: want[q] for q in queries}, "batch": 10, "planned": 10,
+                "knownHosts": [], "checksDoc": "meta/v7-query-checks",
+                "method": "Шаблоны веб-поиска на языке заказчика (v7: 360 по странам и ролям, v6: 144, v4: 324 фразы): 10 за запуск по кругу. Ищи публикации за последние 30 дней; "
+                          "любые домены выдачи, карточки открывай не больше 3 на шаблон. Новые домены — в meta/discoveries, результат шаблона — в meta/v7-query-checks.",
+                "verify": "Найдено веб-поиском по фразе заказчика: проверить дату публикации поста, кто ищет, что запрос открыт, и маршрут отклика.",
+                "note": "Фраза — разговорная форма запроса («посоветуйте тренера…», «ищем провайдера…»); ищи её смысл, а не точное совпадение. Результат поиска — гипотеза, не подтверждённый спрос."}
     if key == "cu-search":
         return {"key": key, "name": "Корп. университеты · поисковые шаблоны (по кругу)", "type": "search", "source": key,
                 "queries": queries, "registry": {q: want[q] for q in queries}, "batch": 8, "planned": 8,
@@ -136,10 +163,12 @@ def rotation(docs, plan, groups, prefix):
     for key, g in groups.items():
         sel = [d for d in docs if d["access"]["state"] in g["access"] and not served_elsewhere(d, prefix) and d.get("identity") != "identity_conflict"
                and d.get("url") and d["url"] not in taken and (d.get("readUrl") or d["url"]) not in taken
-               and ("prio" not in g or d.get("priority") in g["prio"])]
+               and ("prio" not in g or d.get("priority") in g["prio"]) and ("gen" not in g or d.get("generation") in g["gen"])]
         if prefix == "cu-":
             kind = lambda d: CU_KIND.index(d.get("cls")) if d.get("cls") in CU_KIND else len(CU_KIND)  # noqa: E731
             sel.sort(key=lambda d: (d.get("priority") or 9, kind(d), d["legacyRowId"]))
+        elif prefix == "v7-":  # a visible list of requests or purchases first
+            sel.sort(key=lambda d: (d["access"]["state"] != "list_visible", d.get("priority") or 9, d["legacyRowId"]))
         else:
             sel.sort(key=lambda d: (d.get("priority") or 9, d["legacyRowId"]))
         # Stable order: addresses already in the rotation keep their places (the cursor in meta/rotation is a position
@@ -156,10 +185,12 @@ def rotation(docs, plan, groups, prefix):
         src = {"key": key, "name": g["name"], "type": "pages", "source": key, "urls": urls, "batch": min(g["batch"], len(urls)),
                "pause": g["pause"], "planned": min(g["batch"], len(urls)), "registry": reg,
                "method": "Порция batch адресов по кругу (meta/rotation). Каждый адрес независим: ошибка одной страницы не останавливает остальные. "
-                         "Результат каждой страницы — в " + ("meta/cu-checks" if prefix == "cu-" else "meta/registry-checks") + " (registry_checks.py).",
+                         "Результат каждой страницы — в " + {"cu-": "meta/cu-checks", "v7-": "meta/v7-checks"}.get(prefix, "meta/registry-checks") + " (registry_checks.py).",
                "note": g["note"]}
         if prefix == "cu-":
             src["checksDoc"] = "meta/cu-checks"
+        if prefix == "v7-":
+            src["checksDoc"] = "meta/v7-checks"
         if g.get("verify"):
             src["verify"] = g["verify"]
         out[key] = src
@@ -177,6 +208,7 @@ def main():
     docs = load_docs(a[0], "misb-v*--*.json")
     cu = load_docs(a[a.index("--cu") + 1], "misb-cu--*.json") if "--cu" in a else []
     fd = load_docs(a[a.index("--fd") + 1], "misb-fd--*.json") if "--fd" in a else []
+    v7 = load_docs(a[a.index("--v7") + 1], "misb-v7--*.json") if "--v7" in a else []
     plan = json.load(open(a[1], encoding="utf-8"))
     out = {}
     if fd:
@@ -195,13 +227,20 @@ def main():
         if "--cu-queries" in a:
             out["cu-search"] = search_source(a[a.index("--cu-queries") + 1], cu, plan, "cu-search")
             out["cu-search"]["knownHosts"] = known_hosts(docs + cu + fd, plan)
+    if v7:
+        # last: v7 addresses never take an address another rotation already reads
+        tmp = {**plan, "sources": [out.get(s["key"], s) for s in plan["sources"]] + [v for k, v in out.items() if k not in {s["key"] for s in plan["sources"]}]}
+        out.update(rotation(v7, tmp, V7_GROUPS, "v7-"))
+        if "--v7-queries" in a:
+            out["v7-search"] = search_source(a[a.index("--v7-queries") + 1], v7, plan, "v7-search")
+            out["v7-search"]["knownHosts"] = known_hosts(docs + cu + fd + v7, plan)
     print({k: len(v.get("urls") or v.get("queries") or []) for k, v in out.items()})
     if "--write" in a:
         keys = set(out)
         rest = [s for s in plan["sources"] if s["key"] not in keys]
         # place the registry rotations right before eis-docs (it must stay the last source step)
         i = next((n for n, s in enumerate(rest) if s["key"] == "eis-docs"), len(rest))
-        order = list(FD_GROUPS) + list(GROUPS) + ["reg3-search"] + list(CU_GROUPS) + ["cu-search"]
+        order = list(FD_GROUPS) + list(GROUPS) + ["reg3-search"] + list(CU_GROUPS) + ["cu-search"] + list(V7_GROUPS) + ["v7-search"]
         plan["sources"] = rest[:i] + [out[k] for k in order if k in out] + rest[i:]
         json.dump(plan, open(a[1], "w", encoding="utf-8"), ensure_ascii=False, indent=1)
         open(a[1], "a", encoding="utf-8").write("\n")

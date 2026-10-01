@@ -1,0 +1,55 @@
+{
+  "as_of": "2026-10-02",
+  "search_batches": 64,
+  "executed_queries": 120,
+  "search_hits": 1536,
+  "source_keys_discovered": 1026,
+  "new_expansion_candidates": 417,
+  "new_candidate_by_track": {
+    "industry": 46,
+    "projects": 38,
+    "business": 47,
+    "functional": 59,
+    "development": 40,
+    "regional_hr": 58,
+    "providers": 32,
+    "cu": 24,
+    "events": 52,
+    "lms": 21
+  },
+  "new_candidate_by_country_hint": {
+    "BY": 36,
+    "RU": 219,
+    "KZ": 58,
+    "unknown": 104
+  },
+  "new_candidate_by_platform": {
+    "Сайт": 392,
+    "Telegram": 11,
+    "LinkedIn": 7,
+    "VK": 2,
+    "Сетка": 5
+  },
+  "priority_sources_checked": 100,
+  "page_attempts": 135,
+  "followed_routes": 20,
+  "review_access_states": {
+    "content_read_partial": 89,
+    "preview_only": 2,
+    "fetch_failed": 6,
+    "empty_extraction": 3
+  },
+  "commercial_examples": 21,
+  "confirmed_open_buyers": 0,
+  "full_14_day_source_coverage": 0,
+  "collector_config_rows": 439,
+  "surface_tasks": 2634,
+  "new_query_templates": 360,
+  "legacy_routes_retained": 4156,
+  "pilot_running": false,
+  "legacy_files_preserved": 340,
+  "legacy_files_changed": 0,
+  "workbook_sheets": 12,
+  "source_relationships": 4,
+  "offline_tests_passed": 5
+}

@@ -13,7 +13,7 @@ signals the collector finds. Nothing is dropped (do_not_drop): closed, undated a
 
 Commands (PKG = unpacked package dir, W = work dir as for import_v2.py):
   dry-run PKG W [--probe probe.json]
-  build   PKG W --date ГГГГ-ММ-ДД [--probe probe.json]   write W/out/srcreg-fd/*.json, _meta-fd.json, W/out/demand/*.json
+  build   PKG W --date ГГГГ-ММ-ДД [--probe probe.json] [--needs opportunities.jsonl]   write W/out/srcreg-fd/*.json, _meta-fd.json, W/out/demand/*.json
 Idempotent: ids come from the package (FD-S…, FD-O…), never from order or name.
 """
 from __future__ import annotations
@@ -46,6 +46,14 @@ OBS_KEEP = ("observation_id", "source_id", "source_name", "title", "summary", "u
             "requester_role", "country", "audience", "misb_fit", "fit_label", "fit_reason", "paid_status", "paid_label",
             "budget_original", "commercial_status", "status_label", "status_basis", "contact_route", "priority",
             "next_action", "limitations", "freshness_bucket", "freshness_label", "qualification_status", "checked_at")
+
+
+# v6 opportunity layer (v6/data/opportunities.jsonl of the master package): need id, status after the v6 recheck,
+# buying intent, refined fit, queue, budget and the review note; stored as `need` next to the observation.
+NEED_KEEP = {"id": "opportunity_id", "status": "status", "intent": "buying_intent", "fit": "misb_fit", "queue": "queue",
+             "evidence": "evidence", "reach": "reachability", "timing": "timing", "budgetRub": "budget_rub", "budgetKind": "budget_kind",
+             "offers": "offer_ids", "next": "next_action", "review": "review_note", "lastDate": "effective_last_date",
+             "questions": "qualification_questions", "proposal": "proposed_offer"}
 
 
 def rd(pkg, name):
@@ -85,7 +93,7 @@ def summary(rows, obs) -> dict:
             "obsQueue": c(obs, lambda o: o.get("queue")), "linkedToV3": sum(1 for x in rows if x[1]["v3Docs"])}
 
 
-def build(pkg: str, W: str, today: str, probe: dict) -> dict:
+def build(pkg: str, W: str, today: str, probe: dict, needs: str | None = None) -> dict:
     rows = reconcile(pkg, W, probe, today)
     obs = rd(pkg, "observations.jsonl")
     man = json.load(open(os.path.join(pkg, "manifest.json"), encoding="utf-8"))
@@ -111,9 +119,18 @@ def build(pkg: str, W: str, today: str, probe: dict) -> dict:
             "packageVersion": man.get("version"), "importedAt": today,
         }
         json.dump(doc, open(os.path.join(out, re.sub(r"[^A-Za-z0-9_.-]", "-", f"{DATASET}--{sid}") + ".json"), "w", encoding="utf-8"), ensure_ascii=False)
+    need_of = {}
+    for n in (rd(os.path.dirname(needs), os.path.basename(needs)) if needs else []):
+        for oid in n.get("observation_ids") or []:
+            need_of.setdefault(oid, n)
     for o in obs:
         d = {k: o.get(k) for k in OBS_KEEP}
         d.update({"origin": ORIGIN, "asOf": man.get("as_of"), "importedAt": today})
+        if o.get("record_added_in_version"):
+            d["addedIn"] = o["record_added_in_version"]
+        n = need_of.get(o["observation_id"])
+        if n:
+            d["need"] = {k: n.get(src) for k, src in NEED_KEEP.items() if n.get(src) not in (None, [], "")}
         json.dump(d, open(os.path.join(dem, o["observation_id"] + ".json"), "w", encoding="utf-8"), ensure_ascii=False)
     s = summary(rows, obs)
     meta = {"datasetId": DATASET, "packageVersion": man.get("version"), "asOf": man.get("as_of"), "sourceCount": len(rows),
@@ -134,4 +151,4 @@ if __name__ == "__main__":
     if a[0] == "dry-run":
         print(json.dumps(summary(reconcile(a[1], a[2], pr or {}, day), rd(a[1], "observations.jsonl")), ensure_ascii=False, indent=1))
     else:
-        print(json.dumps(build(a[1], a[2], day, pr or {}), ensure_ascii=False, indent=1))
+        print(json.dumps(build(a[1], a[2], day, pr or {}, a[a.index("--needs") + 1] if "--needs" in a else None), ensure_ascii=False, indent=1))

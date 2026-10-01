@@ -1,0 +1,19 @@
+{
+  "version": "3.0",
+  "as_of": "2026-10-01",
+  "timezone": "Europe/Moscow",
+  "mode": "prioritization_not_conversion_probability",
+  "weights": {
+    "fit": 30,
+    "evidence": 25,
+    "freshness": 15,
+    "contact": 20,
+    "timing": 10
+  },
+  "no_auto_deletion": true,
+  "unknown_is_not_negative_evidence": true,
+  "qualified_definition": "Покупатель подтвердил потребность; установлены организация, аудитория, образовательный предмет и способ продолжить переговоры. Факт подтверждения вводит человек с датой и доказательством.",
+  "public_research_ready_definition": "Есть конкретный запрос по профилю, установлен заказчик и доступный деловой маршрут; открытость ещё проверяется. Не равнозначно подтверждению покупателя.",
+  "growth_target": "10x относительно фактической базовой недели, измеренной после запуска; текущая база публикаций не является базовой неделей подтверждённых лидов.",
+  "default_baseline_qualified_per_week": null
+}

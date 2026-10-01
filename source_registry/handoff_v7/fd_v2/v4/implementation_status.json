@@ -1,0 +1,7 @@
+{
+  "A": "Registry design audit completed for 136 sources / 239 endpoints; not a claim of a fresh HTTP scan of all addresses.",
+  "B": "17 source bindings + 4 HTML parser families implemented. 14 source snapshots replayed through real reader retrieval. Native HTTP HTML extraction not validated against target sites due to runtime network limits.",
+  "C": "259 candidate groups + 47 secondary groups retained; 324 added search constructions. Candidates are not verified fresh-demand sources or independent legal entities.",
+  "D": "Telegram reply import, local PDF/DOCX/XLSX extraction, English OCR and unmatched audit implemented and fixture tested. Public comment traversal and attachment downloading still need per-site integration.",
+  "E": "Pilot protocol prepared; no schedule or 14-day pilot started."
+}

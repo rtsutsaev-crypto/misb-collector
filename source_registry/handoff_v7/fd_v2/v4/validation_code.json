@@ -1,0 +1,33 @@
+{
+  "unit_tests": 26,
+  "passed": 26,
+  "fixture_scope": [
+    "HTML semantic extraction",
+    "Telegram post segmentation",
+    "export reply relationships",
+    "publication/date safeguards",
+    "revision/idempotence",
+    "manager note preservation",
+    "pagination cap",
+    "access error handling",
+    "URL restrictions",
+    "DOCX/XLSX/PDF text extraction",
+    "English image OCR",
+    "unmatched audit sampling"
+  ],
+  "real_page_scope": "14 retrieved public page snapshots; feed/list snapshots not counted as individual needs",
+  "not_validated": [
+    "Native HTTP HTML/DOM against live targets",
+    "Russian OCR model unavailable",
+    "Full 14-day history coverage",
+    "Automated public comment pagination",
+    "App integration",
+    "New buyer confirmations"
+  ],
+  "ocr_note": "English fixture retained REQUEST and MANAGERS but misspelled TRAINING. OCR output always needs review; no exact transcription guarantee.",
+  "real_snapshot_repeat_ingest": {
+    "documents": 14,
+    "revisions": 14,
+    "second_pass_new_documents": 0
+  }
+}

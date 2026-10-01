@@ -1,0 +1,13 @@
+{
+  "cap_monthly_rub": 10000,
+  "scope": "All MISB modules together",
+  "existing_spend_rub": null,
+  "known_this_research_purchases_rub": 0,
+  "pause_paid_calls_until_existing_spend_loaded": true,
+  "reserve_before_call": true,
+  "cache_unchanged_content": true,
+  "stop_paid_processing_at_cap": true,
+  "keep_discovery_queue": true,
+  "staff_time_included": false,
+  "unit_prices_verified": false
+}

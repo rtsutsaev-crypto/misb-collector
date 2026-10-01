@@ -1,0 +1,14 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {clusterObservations,matchIntents} from './lead_core.mjs';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const rows=async n=>(await fs.readFile(path.join(here,n),'utf8')).trim().split('\n').filter(Boolean).map(JSON.parse);
+const [observations,relations,lexicon,qualifications]=await Promise.all(['observations.jsonl','relationships.jsonl','intent_lexicon.jsonl','qualification.jsonl'].map(rows));
+const clusters=clusterObservations(observations,relations).map(({items,...r})=>r);
+const scored=qualifications.map(q=>({observation_id:q.observation_id,need_id:q.need_id,score:q.score,queue:q.queue,service:q.service,questions:q.questions,next:q.next}));
+const matches=observations.map(o=>({observation_id:o.observation_id,...matchIntents(o.title+' '+o.summary,lexicon)}));
+const out=path.resolve(process.argv[2]||path.join(here,'local_output'));
+await fs.mkdir(out,{recursive:true});
+for(const [name,records] of Object.entries({need_clusters:clusters,reviewed_priority:scored,intent_matches:matches}))await fs.writeFile(path.join(out,name+'.jsonl'),records.map(r=>JSON.stringify(r)).join('\n')+'\n');
+console.log(JSON.stringify({observations:observations.length,need_clusters:clusters.length,reviewed_priority:scored.length,network_requests:0,outreach:0,output:out}));
