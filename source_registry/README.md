@@ -1,5 +1,15 @@
 # Реестр источников МИСБ
 
+## Свежие потребности (01.10.2026, MISB_fresh_demand): 126 каналов, 131 наблюдение
+
+Пакет — в `handoff_fd/`, отчёт — `REPORT-fd-2026-10-01.md`. Каналы — документы `misb-fd--FD-S…` и `_meta-fd`
+(коллекция srcreg), наблюдения — коллекция `demand` (вкладка сайта «Запросы и сигналы»):
+
+    python3 probe_v3.py <sources с source_url> probe.json
+    python3 import_fd.py build handoff_fd W --date … --probe probe.json      # W/out/srcreg-fd, W/out/demand
+    python3 registry_plan_v2.py … --fd W/out/srcreg-fd --write              # fd-daily, fd-pages (уходят из reg2-*)
+    # план скопировать в W/db/config/ и пересобрать v3, cu, fd: очередь покажет fd-* у записей v3
+
 ## Корпоративные университеты (01.10.2026, MISB_corporate_universities): 247 организаций, 474 канала
 
 Пакет — в `handoff_cu/`, отчёт — `REPORT-cu-2026-10-01.md`. Документы `misb-cu--<source_id>` (один на канал,

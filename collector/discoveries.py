@@ -1,4 +1,5 @@
 """Новые каналы, найденные в запуске (документ meta/discoveries): регистрируются до оценки полезности (политика R19).
+На платформах с множеством каналов (t.me, vk.com и т. п.) запись ведётся по каналу (t.me/<канал>), а не по домену.
 
 Запуск: python3 discoveries.py [--doc старый.json] --plan sources-plan.json --key <key источника> --found found.json
   --now ISO --out disc.json
@@ -18,6 +19,19 @@ def host(u):
     return h[4:] if h.startswith("www.") else h
 
 
+# Platforms with thousands of unrelated channels: a channel there is the host plus the first path segment.
+SHARED = {"t.me", "vk.com", "ok.ru", "youtube.com", "dzen.ru", "rutube.ru", "setka.ru"}
+
+
+def chan(u):
+    """Key of a discovery: the host, or host/channel on a shared platform (t.me/s/name -> t.me/name)."""
+    h = host(u)
+    if h not in SHARED:
+        return h
+    parts = [x for x in urlparse(u or "").path.split("/") if x and x != "s"]
+    return h + "/" + parts[0].lower() if parts else h
+
+
 def main():
     a = argparse.ArgumentParser()
     a.add_argument("--doc")
@@ -30,6 +44,8 @@ def main():
     plan = json.load(open(x.plan, encoding="utf-8"))
     src = next((s for s in plan.get("sources", []) if s.get("key") == x.key), {})
     known = {h.lower().removeprefix("www.") for h in src.get("knownHosts", [])}
+    # channels on shared platforms are known only by address: every plan source and registry address counts
+    known_ch = {chan(u) for s2 in plan.get("sources", []) for u in (s2.get("urls") or []) + list(s2.get("registry") or {}) if host(u) in SHARED}
     items = {}
     if x.doc and os.path.exists(x.doc):
         d = json.load(open(x.doc, encoding="utf-8"))
@@ -40,7 +56,12 @@ def main():
         h = host(f.get("url"))
         if not h or not re.search(r"\.[a-zа-я]{2,}$", h):
             continue
-        if h in known or any(h.endswith("." + k) for k in known):
+        if h in SHARED:
+            h = chan(f.get("url"))
+            if h in known_ch or h in SHARED:
+                skipped += 1
+                continue
+        elif h in known or any(h.endswith("." + k) for k in known):
             skipped += 1
             continue
         it = items.get(h)

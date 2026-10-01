@@ -1,0 +1,3530 @@
+{
+ "FD-S001": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://hrtime.ru/ispolnitelu/",
+   "status": 200,
+   "final": "https://hrtime.ru/ispolnitelu/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 272108,
+   "title": "Подбор персонала фриланс",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 20
+  },
+  "evidence": {
+   "url": "https://hrtime.ru/ispolnitelu/",
+   "status": 200,
+   "final": "https://hrtime.ru/ispolnitelu/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 272108,
+   "title": "Подбор персонала фриланс",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 20
+  }
+ },
+ "FD-S002": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.fl.ru/projects/",
+   "status": 0,
+   "final": "",
+   "robots": "allowed",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://www.fl.ru/projects/",
+   "status": 0,
+   "final": "",
+   "robots": "allowed",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S003": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://profi.ru/rabota/",
+   "status": 200,
+   "final": "https://profi.ru/rabota/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 136874,
+   "title": "Подработка на том, что умеете в Профи.ру - вакансии в Москве ✔️",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://profi.ru/rabota/",
+   "status": 200,
+   "final": "https://profi.ru/rabota/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 136874,
+   "title": "Подработка на том, что умеете в Профи.ру - вакансии в Москве ✔️",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S004": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://youdo.com/tasks",
+   "status": 403,
+   "final": "https://youdo.com/tasks",
+   "robots": "unknown",
+   "gate": "captcha",
+   "size": 2385,
+   "title": "Доступ ограничен",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://youdo.com/tasks",
+   "status": 403,
+   "final": "https://youdo.com/tasks",
+   "robots": "unknown",
+   "gate": "captcha",
+   "size": 2385,
+   "title": "Доступ ограничен",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S005": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://kwork.ru/projects",
+   "status": 200,
+   "final": "https://kwork.ru/projects",
+   "robots": "allowed",
+   "gate": "",
+   "size": 301743,
+   "title": "Биржа проектов - Kwork",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://kwork.ru/projects",
+   "status": 200,
+   "final": "https://kwork.ru/projects",
+   "robots": "allowed",
+   "gate": "",
+   "size": 301743,
+   "title": "Биржа проектов - Kwork",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S006": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.weblancer.net/freelance/",
+   "status": 200,
+   "final": "https://www.weblancer.net/freelance/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 402373,
+   "title": "Фриланс — свежие заказы и поиск фрилансеров | Weblancer",
+   "procWords": 0,
+   "dates": 20,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://www.weblancer.net/freelance/",
+   "status": 200,
+   "final": "https://www.weblancer.net/freelance/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 402373,
+   "title": "Фриланс — свежие заказы и поиск фрилансеров | Weblancer",
+   "procWords": 0,
+   "dates": 20,
+   "trainWords": 0
+  }
+ },
+ "FD-S007": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/speakers_l",
+   "status": 200,
+   "final": "https://t.me/s/speakers_l",
+   "robots": "unknown",
+   "gate": "",
+   "size": 154427,
+   "title": "СПИКЕРСКАЯ – Telegram",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 29
+  },
+  "evidence": {
+   "url": "https://t.me/s/speakers_l?after=4992",
+   "status": 200,
+   "final": "https://t.me/s/speakers_l?after=4992",
+   "robots": "unknown",
+   "gate": "",
+   "size": 157155,
+   "title": "СПИКЕРСКАЯ – Telegram",
+   "procWords": 0,
+   "dates": 1,
+   "trainWords": 13
+  }
+ },
+ "FD-S008": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/edu_feed",
+   "status": 200,
+   "final": "https://t.me/s/edu_feed",
+   "robots": "unknown",
+   "gate": "",
+   "size": 111226,
+   "title": "Тренер тренеру (поиск экспертов) – Telegram",
+   "procWords": 5,
+   "dates": 0,
+   "trainWords": 13
+  },
+  "evidence": {
+   "url": "https://t.me/s/edu_feed?before=41&q=%23%D1%82%D1%80%D0%B5%D0%BD%D0%B5%D1%80",
+   "status": 200,
+   "final": "https://t.me/s/edu_feed?before=41&q=%23%D1%82%D1%80%D0%B5%D0%BD%D0%B5%D1%80",
+   "robots": "unknown",
+   "gate": "",
+   "size": 111457,
+   "title": "Тренер тренеру (поиск экспертов) – Telegram",
+   "procWords": 5,
+   "dates": 0,
+   "trainWords": 13
+  }
+ },
+ "FD-S009": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/dl_marketplace",
+   "status": 200,
+   "final": "https://t.me/dl_marketplace",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11722,
+   "title": "Telegram: View @dl_marketplace",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/s/dl_marketplace",
+   "status": 200,
+   "final": "https://t.me/dl_marketplace",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11722,
+   "title": "Telegram: View @dl_marketplace",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S010": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/edujobs",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/s/edujobs",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S011": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/Project_Best_Speakers",
+   "status": 200,
+   "final": "https://t.me/s/Project_Best_Speakers",
+   "robots": "unknown",
+   "gate": "",
+   "size": 138452,
+   "title": "Проект ЛУЧШИЕ СПИКЕРЫ – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 13
+  },
+  "evidence": {
+   "url": "https://t.me/s/Project_Best_Speakers",
+   "status": 200,
+   "final": "https://t.me/s/Project_Best_Speakers",
+   "robots": "unknown",
+   "gate": "",
+   "size": 138452,
+   "title": "Проект ЛУЧШИЕ СПИКЕРЫ – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 13
+  }
+ },
+ "FD-S012": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/BestSpeakersRu",
+   "status": 200,
+   "final": "https://t.me/BestSpeakersRu",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12130,
+   "title": "Telegram: View @BestSpeakersRu",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/BestSpeakersRu",
+   "status": 200,
+   "final": "https://t.me/BestSpeakersRu",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12129,
+   "title": "Telegram: View @BestSpeakersRu",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S013": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/ielearning",
+   "status": 200,
+   "final": "https://t.me/s/ielearning",
+   "robots": "unknown",
+   "gate": "",
+   "size": 165303,
+   "title": "Digital Learning (канал) – Telegram",
+   "procWords": 0,
+   "dates": 2,
+   "trainWords": 35
+  },
+  "evidence": {
+   "url": "https://t.me/s/ielearning",
+   "status": 200,
+   "final": "https://t.me/s/ielearning",
+   "robots": "unknown",
+   "gate": "",
+   "size": 165303,
+   "title": "Digital Learning (канал) – Telegram",
+   "procWords": 0,
+   "dates": 2,
+   "trainWords": 35
+  }
+ },
+ "FD-S028": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "evidence": {
+   "url": "https://t.me/s/ielearning",
+   "status": 200,
+   "final": "https://t.me/s/ielearning",
+   "robots": "unknown",
+   "gate": "",
+   "size": 165303,
+   "title": "Digital Learning (канал) – Telegram",
+   "procWords": 0,
+   "dates": 2,
+   "trainWords": 35
+  },
+  "url": {
+   "url": "https://t.me/s/npsonline",
+   "status": 200,
+   "final": "https://t.me/npsonline",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12083,
+   "title": "Telegram: View @npsonline",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  }
+ },
+ "FD-S014": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/metod_krug",
+   "status": 200,
+   "final": "https://t.me/metod_krug",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12098,
+   "title": "Telegram: View @metod_krug",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  },
+  "evidence": {
+   "url": "https://t.me/metod_krug",
+   "status": 200,
+   "final": "https://t.me/metod_krug",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12098,
+   "title": "Telegram: View @metod_krug",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  }
+ },
+ "FD-S015": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/educational_lab",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/educational_lab",
+   "status": 200,
+   "final": "https://t.me/educational_lab",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12378,
+   "title": "Telegram: View @educational_lab",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 3
+  }
+ },
+ "FD-S016": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/lab_vacancies",
+   "status": 200,
+   "final": "https://t.me/s/lab_vacancies",
+   "robots": "unknown",
+   "gate": "",
+   "size": 148022,
+   "title": "Лаборатория вакансий в образовании – Telegram",
+   "procWords": 1,
+   "dates": 2,
+   "trainWords": 47
+  },
+  "evidence": {
+   "url": "https://t.me/s/lab_vacancies?before=649",
+   "status": 200,
+   "final": "https://t.me/s/lab_vacancies?before=649",
+   "robots": "unknown",
+   "gate": "",
+   "size": 150593,
+   "title": "Лаборатория вакансий в образовании – Telegram",
+   "procWords": 0,
+   "dates": 8,
+   "trainWords": 23
+  }
+ },
+ "FD-S017": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/freelancetaverna",
+   "status": 200,
+   "final": "https://t.me/s/freelancetaverna",
+   "robots": "unknown",
+   "gate": "",
+   "size": 178637,
+   "title": "Фриланс Таверна Official | Вакансии Удаленная работа – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 4
+  },
+  "evidence": {
+   "url": "https://t.me/s/freelancetaverna",
+   "status": 200,
+   "final": "https://t.me/s/freelancetaverna",
+   "robots": "unknown",
+   "gate": "",
+   "size": 178637,
+   "title": "Фриланс Таверна Official | Вакансии Удаленная работа – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 4
+  }
+ },
+ "FD-S018": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/LessonDeliveryChat",
+   "status": 200,
+   "final": "https://t.me/LessonDeliveryChat",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12342,
+   "title": "Telegram: View @LessonDeliveryChat",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  },
+  "evidence": {
+   "url": "https://t.me/lessondeliverychat",
+   "status": 200,
+   "final": "https://t.me/lessondeliverychat",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12344,
+   "title": "Telegram: View @lessondeliverychat",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  }
+ },
+ "FD-S019": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/JobDelivery",
+   "status": 200,
+   "final": "https://t.me/JobDelivery",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12402,
+   "title": "Telegram: View @JobDelivery",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/jobdelivery",
+   "status": 200,
+   "final": "https://t.me/jobdelivery",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12401,
+   "title": "Telegram: View @jobdelivery",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S020": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/methodclub",
+   "status": 200,
+   "final": "https://t.me/methodclub",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11911,
+   "title": "Telegram: View @methodclub",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  },
+  "evidence": {
+   "url": "https://t.me/methodclub",
+   "status": 200,
+   "final": "https://t.me/methodclub",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11911,
+   "title": "Telegram: View @methodclub",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  }
+ },
+ "FD-S021": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/newmethodologist",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/newmethodologist",
+   "status": 200,
+   "final": "https://t.me/newmethodologist",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12076,
+   "title": "Telegram: View @newmethodologist",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  }
+ },
+ "FD-S022": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/prolearning",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/s/prolearning",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S023": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/ispring_master",
+   "status": 200,
+   "final": "https://t.me/ispring_master",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12019,
+   "title": "Telegram: View @ispring_master",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  },
+  "evidence": {
+   "url": "https://t.me/ispring_master",
+   "status": 200,
+   "final": "https://t.me/ispring_master",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12019,
+   "title": "Telegram: View @ispring_master",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  }
+ },
+ "FD-S024": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/methodgsom",
+   "status": 200,
+   "final": "https://t.me/s/methodgsom",
+   "robots": "unknown",
+   "gate": "",
+   "size": 109711,
+   "title": "Метод | Method — как преподавать в цифровой среде – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 34
+  },
+  "evidence": {
+   "url": "https://telegram.me/s/methodgsom",
+   "status": 200,
+   "final": "https://telegram.me/s/methodgsom",
+   "robots": "unknown",
+   "gate": "",
+   "size": 109711,
+   "title": "Метод | Method — как преподавать в цифровой среде – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 34
+  }
+ },
+ "FD-S025": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/v_ed_club",
+   "status": 200,
+   "final": "https://t.me/s/v_ed_club",
+   "robots": "unknown",
+   "gate": "",
+   "size": 85029,
+   "title": "Место силы онлайн образования – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 7
+  },
+  "evidence": {
+   "url": "https://t.me/v_ed_club",
+   "status": 200,
+   "final": "https://t.me/v_ed_club",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11803,
+   "title": "Telegram: View @v_ed_club",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S026": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/learningelements",
+   "status": 200,
+   "final": "https://t.me/s/learningelements",
+   "robots": "unknown",
+   "gate": "",
+   "size": 117981,
+   "title": "Learning Elements – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 25
+  },
+  "evidence": {
+   "url": "https://t.me/s/learningelements",
+   "status": 200,
+   "final": "https://t.me/s/learningelements",
+   "robots": "unknown",
+   "gate": "",
+   "size": 117981,
+   "title": "Learning Elements – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 25
+  }
+ },
+ "FD-S027": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/zloihr",
+   "status": 200,
+   "final": "https://t.me/s/zloihr",
+   "robots": "unknown",
+   "gate": "",
+   "size": 114407,
+   "title": "Злой HR – Telegram",
+   "procWords": 1,
+   "dates": 1,
+   "trainWords": 2
+  },
+  "evidence": {
+   "url": "https://t.me/s/zloihr/3419",
+   "status": 200,
+   "final": "https://t.me/s/zloihr/3419",
+   "robots": "unknown",
+   "gate": "",
+   "size": 111206,
+   "title": "Злой HR – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 8
+  }
+ },
+ "FD-S029": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/corp_edu",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/s/corp_edu",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S030": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/HRtrain",
+   "status": 200,
+   "final": "https://t.me/HRtrain",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11848,
+   "title": "Telegram: View @HRtrain",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 2
+  },
+  "evidence": {
+   "url": "https://t.me/HRtrain",
+   "status": 200,
+   "final": "https://t.me/HRtrain",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11847,
+   "title": "Telegram: View @HRtrain",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 2
+  }
+ },
+ "FD-S031": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/talent_rocks",
+   "status": 200,
+   "final": "https://t.me/s/talent_rocks",
+   "robots": "unknown",
+   "gate": "",
+   "size": 99104,
+   "title": "HR-tech, адаптация, обучение и AI – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 29
+  },
+  "evidence": {
+   "url": "https://t.me/talent_rocks",
+   "status": 200,
+   "final": "https://t.me/talent_rocks",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11807,
+   "title": "Telegram: View @talent_rocks",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 2
+  }
+ },
+ "FD-S032": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/HR_kak_delat",
+   "status": 200,
+   "final": "https://t.me/s/HR_kak_delat",
+   "robots": "unknown",
+   "gate": "",
+   "size": 197016,
+   "title": "«Как делать» - сообщество по управлению персоналом – Telegram",
+   "procWords": 2,
+   "dates": 0,
+   "trainWords": 21
+  },
+  "evidence": {
+   "url": "https://t.me/s/HR_kak_delat?before=1212",
+   "status": 200,
+   "final": "https://t.me/s/HR_kak_delat?before=1212",
+   "robots": "unknown",
+   "gate": "",
+   "size": 228319,
+   "title": "«Как делать» - сообщество по управлению персоналом – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 35
+  }
+ },
+ "FD-S033": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/hr_me_community",
+   "status": 200,
+   "final": "https://t.me/s/hr_me_community",
+   "robots": "unknown",
+   "gate": "",
+   "size": 190446,
+   "title": "Про людей | HRme с Валентиной и Аллой – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 9
+  },
+  "evidence": {
+   "url": "https://tg.me/hr_me_community",
+   "status": 200,
+   "final": "https://tg.me/hr_me_community",
+   "robots": "allowed",
+   "gate": "",
+   "size": 639599,
+   "title": "Про людей | HRme с Валентиной и Аллой (@hr_me_community) — Telegram — TG.ME",
+   "procWords": 0,
+   "dates": 1,
+   "trainWords": 9
+  }
+ },
+ "FD-S034": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/kampus_team",
+   "status": 200,
+   "final": "https://t.me/s/kampus_team",
+   "robots": "unknown",
+   "gate": "",
+   "size": 187438,
+   "title": "Kampus LXP – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 79
+  },
+  "evidence": {
+   "url": "https://t.me/s/kampus_team",
+   "status": 200,
+   "final": "https://t.me/s/kampus_team",
+   "robots": "unknown",
+   "gate": "",
+   "size": 187438,
+   "title": "Kampus LXP – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 79
+  }
+ },
+ "FD-S035": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/td_department",
+   "status": 200,
+   "final": "https://t.me/s/td_department",
+   "robots": "unknown",
+   "gate": "",
+   "size": 138528,
+   "title": "Отдел обучения – Telegram",
+   "procWords": 2,
+   "dates": 0,
+   "trainWords": 54
+  },
+  "evidence": {
+   "url": "https://t.me/td_department",
+   "status": 200,
+   "final": "https://t.me/td_department",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11927,
+   "title": "Telegram: View @td_department",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 3
+  }
+ },
+ "FD-S036": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/rff_chat",
+   "status": 200,
+   "final": "https://t.me/rff_chat",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11949,
+   "title": "Telegram: View @rff_chat",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/rff_chat",
+   "status": 200,
+   "final": "https://t.me/rff_chat",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11949,
+   "title": "Telegram: View @rff_chat",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S037": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/communityHR",
+   "status": 200,
+   "final": "https://t.me/s/communityHR",
+   "robots": "unknown",
+   "gate": "",
+   "size": 33477,
+   "title": "Рекрутер Бывший hr – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/communityHR",
+   "status": 200,
+   "final": "https://t.me/communityHR",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12467,
+   "title": "Telegram: View @communityHR",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S038": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/recRussia24",
+   "status": 200,
+   "final": "https://t.me/recRussia24",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12016,
+   "title": "Telegram: View @recRussia24",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/recRussia24",
+   "status": 200,
+   "final": "https://t.me/recRussia24",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12017,
+   "title": "Telegram: View @recRussia24",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S039": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/CnBChatRUnCIS",
+   "status": 200,
+   "final": "https://t.me/CnBChatRUnCIS",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11899,
+   "title": "Telegram: View @CnBChatRUnCIS",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/CnBChatRUnCIS",
+   "status": 200,
+   "final": "https://t.me/CnBChatRUnCIS",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11899,
+   "title": "Telegram: View @CnBChatRUnCIS",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S040": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/hranalitycs",
+   "status": 200,
+   "final": "https://t.me/s/hranalitycs",
+   "robots": "unknown",
+   "gate": "",
+   "size": 173228,
+   "title": "HR-аналитика – Telegram",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 19
+  },
+  "evidence": {
+   "url": "https://t.me/s/hranalitycs",
+   "status": 200,
+   "final": "https://t.me/s/hranalitycs",
+   "robots": "unknown",
+   "gate": "",
+   "size": 173228,
+   "title": "HR-аналитика – Telegram",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 19
+  }
+ },
+ "FD-S041": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/webinarforhr",
+   "status": 200,
+   "final": "https://t.me/s/webinarforhr",
+   "robots": "unknown",
+   "gate": "",
+   "size": 130957,
+   "title": "HR-вебинары и технологии – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 4
+  },
+  "evidence": {
+   "url": "https://t.me/webinarforhr",
+   "status": 200,
+   "final": "https://t.me/webinarforhr",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11386,
+   "title": "Telegram: View @webinarforhr",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S042": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/hrafisha",
+   "status": 200,
+   "final": "https://t.me/s/hrafisha",
+   "robots": "unknown",
+   "gate": "",
+   "size": 138713,
+   "title": "HRафиша – Telegram",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 7
+  },
+  "evidence": {
+   "url": "https://t.me/s/hrafisha",
+   "status": 200,
+   "final": "https://t.me/s/hrafisha",
+   "robots": "unknown",
+   "gate": "",
+   "size": 138713,
+   "title": "HRафиша – Telegram",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 7
+  }
+ },
+ "FD-S043": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/jobs_vacancy_cv",
+   "status": 200,
+   "final": "https://t.me/s/jobs_vacancy_cv",
+   "robots": "unknown",
+   "gate": "",
+   "size": 156414,
+   "title": "Вакансии и резюме HR-специалистов – Telegram",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 17
+  },
+  "evidence": {
+   "url": "https://t.me/s/jobs_vacancy_cv?before=253",
+   "status": 200,
+   "final": "https://t.me/s/jobs_vacancy_cv?before=253",
+   "robots": "unknown",
+   "gate": "",
+   "size": 127478,
+   "title": "Вакансии и резюме HR-специалистов – Telegram",
+   "procWords": 1,
+   "dates": 1,
+   "trainWords": 6
+  }
+ },
+ "FD-S044": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/hrhubvacancy",
+   "status": 200,
+   "final": "https://t.me/s/hrhubvacancy",
+   "robots": "unknown",
+   "gate": "",
+   "size": 158065,
+   "title": "HR[хаб]вакансии – Telegram",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 13
+  },
+  "evidence": {
+   "url": "https://t.me/s/hrhubvacancy",
+   "status": 200,
+   "final": "https://t.me/s/hrhubvacancy",
+   "robots": "unknown",
+   "gate": "",
+   "size": 158065,
+   "title": "HR[хаб]вакансии – Telegram",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 13
+  }
+ },
+ "FD-S045": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/HRbazaar",
+   "status": 200,
+   "final": "https://t.me/HRbazaar",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12237,
+   "title": "Telegram: View @HRbazaar",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  },
+  "evidence": {
+   "url": "https://t.me/HRbazaar",
+   "status": 200,
+   "final": "https://t.me/HRbazaar",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12238,
+   "title": "Telegram: View @HRbazaar",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  }
+ },
+ "FD-S046": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://setka.ru/communities/0191a790-9e20-448d-8324-dfe80910c077",
+   "status": 200,
+   "final": "https://setka.ru/communities/0191a790-9e20-448d-8324-dfe80910c077",
+   "robots": "allowed",
+   "gate": "captcha",
+   "size": 119868,
+   "title": "T&D и HR запросы на обучение и развитие сотрудников | Пересечёмся в Сетке",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 5
+  },
+  "evidence": {
+   "url": "https://setka.ru/communities/0191a790-9e20-448d-8324-dfe80910c077",
+   "status": 200,
+   "final": "https://setka.ru/communities/0191a790-9e20-448d-8324-dfe80910c077",
+   "robots": "allowed",
+   "gate": "captcha",
+   "size": 119868,
+   "title": "T&D и HR запросы на обучение и развитие сотрудников | Пересечёмся в Сетке",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 5
+  }
+ },
+ "FD-S047": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.mirapolis.ru/for-partners/",
+   "status": 200,
+   "final": "https://www.mirapolis.ru/for-partners/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 78309,
+   "title": "Партнеры",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 6
+  },
+  "evidence": {
+   "url": "https://www.mirapolis.ru/for-partners/",
+   "status": 200,
+   "final": "https://www.mirapolis.ru/for-partners/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 78309,
+   "title": "Партнеры",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 6
+  }
+ },
+ "FD-S048": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.ispring.ru/company/reseller-program",
+   "status": 200,
+   "final": "https://www.ispring.ru/company/reseller-program",
+   "robots": "allowed",
+   "gate": "",
+   "size": 157200,
+   "title": "Для партнеров iSpring",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 47
+  },
+  "evidence": {
+   "url": "https://www.ispring.ru/company/reseller-program",
+   "status": 200,
+   "final": "https://www.ispring.ru/company/reseller-program",
+   "robots": "allowed",
+   "gate": "",
+   "size": 157200,
+   "title": "Для партнеров iSpring",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 47
+  }
+ },
+ "FD-S049": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.unicraft.org/page/partners/",
+   "status": 200,
+   "final": "https://www.unicraft.org/page/partners/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 156143,
+   "title": "Партнёрская программа Unicraft",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 4
+  },
+  "evidence": {
+   "url": "https://www.unicraft.org/page/partners/",
+   "status": 200,
+   "final": "https://www.unicraft.org/page/partners/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 156143,
+   "title": "Партнёрская программа Unicraft",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 4
+  }
+ },
+ "FD-S050": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://ecourse.studio/",
+   "status": 200,
+   "final": "https://ecourse.studio/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 325876,
+   "title": "Ecourse — разработка электронных курсов",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 16
+  },
+  "evidence": {
+   "url": "https://ecourse.studio/",
+   "status": 200,
+   "final": "https://ecourse.studio/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 325876,
+   "title": "Ecourse — разработка электронных курсов",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 16
+  }
+ },
+ "FD-S051": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://dl-nova.com/",
+   "status": 0,
+   "final": "",
+   "robots": "disallowed",
+   "gate": "",
+   "size": 0,
+   "title": "",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://dl-nova.com/",
+   "status": 0,
+   "final": "",
+   "robots": "disallowed",
+   "gate": "",
+   "size": 0,
+   "title": "",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S052": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://levellab.ru/",
+   "status": 200,
+   "final": "https://levellab.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 473116,
+   "title": "Разработка электронных курсов и бизнес-симуляций | LEVEL",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 11
+  },
+  "evidence": {
+   "url": "https://levellab.ru/",
+   "status": 200,
+   "final": "https://levellab.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 473116,
+   "title": "Разработка электронных курсов и бизнес-симуляций | LEVEL",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 11
+  }
+ },
+ "FD-S053": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://cripsi.ru/",
+   "status": 200,
+   "final": "https://cripsi.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 780788,
+   "title": "Разработка онлайн-курсов и образовательных программ под ключ, организация и проведение образовательных мероприятий | АНО",
+   "procWords": 3,
+   "dates": 0,
+   "trainWords": 30
+  },
+  "evidence": {
+   "url": "https://cripsi.ru/",
+   "status": 200,
+   "final": "https://cripsi.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 780788,
+   "title": "Разработка онлайн-курсов и образовательных программ под ключ, организация и проведение образовательных мероприятий | АНО",
+   "procWords": 3,
+   "dates": 0,
+   "trainWords": 30
+  }
+ },
+ "FD-S054": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://edtech.academyit.ru/",
+   "status": 200,
+   "final": "https://edtech.academyit.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 65414,
+   "title": "Разработка курсов | Электронное обучение",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 11
+  },
+  "evidence": {
+   "url": "https://edtech.academyit.ru/",
+   "status": 200,
+   "final": "https://edtech.academyit.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 65414,
+   "title": "Разработка курсов | Электронное обучение",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 11
+  }
+ },
+ "FD-S055": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://uprav.ru/about/cooperation/",
+   "status": 200,
+   "final": "https://uprav.ru/about/cooperation/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 399535,
+   "title": "Сотрудничество",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 60
+  },
+  "evidence": {
+   "url": "https://uprav.ru/about/cooperation/",
+   "status": 200,
+   "final": "https://uprav.ru/about/cooperation/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 399535,
+   "title": "Сотрудничество",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 60
+  }
+ },
+ "FD-S056": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://moscow-expert.ru/content/vakansii/index.html",
+   "status": 200,
+   "final": "https://moscow-expert.ru/content/vakansii/index.html",
+   "robots": "allowed",
+   "gate": "",
+   "size": 14741,
+   "title": "Сотрудничество. Приглашаем преподавателей, бизнес-тренеров, авторов семинаров и тренингов",
+   "procWords": 2,
+   "dates": 0,
+   "trainWords": 11
+  },
+  "evidence": {
+   "url": "https://moscow-expert.ru/content/vakansii/index.html",
+   "status": 200,
+   "final": "https://moscow-expert.ru/content/vakansii/index.html",
+   "robots": "allowed",
+   "gate": "",
+   "size": 14741,
+   "title": "Сотрудничество. Приглашаем преподавателей, бизнес-тренеров, авторов семинаров и тренингов",
+   "procWords": 2,
+   "dates": 0,
+   "trainWords": 11
+  }
+ },
+ "FD-S057": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.ec-mc.ru/collaboration",
+   "status": 200,
+   "final": "https://www.ec-mc.ru/collaboration",
+   "robots": "allowed",
+   "gate": "",
+   "size": 18171,
+   "title": "Сотрудничество - Учебный центр",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 9
+  },
+  "evidence": {
+   "url": "https://www.ec-mc.ru/collaboration",
+   "status": 200,
+   "final": "https://www.ec-mc.ru/collaboration",
+   "robots": "allowed",
+   "gate": "",
+   "size": 18171,
+   "title": "Сотрудничество - Учебный центр",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 9
+  }
+ },
+ "FD-S058": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://b2bevents.pro/ru/trainings/",
+   "status": 200,
+   "final": "https://b2bevents.pro/ru/trainings/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 110013,
+   "title": "Тренинги - B2B Events",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 29
+  },
+  "evidence": {
+   "url": "https://b2bevents.pro/ru/trainings/",
+   "status": 200,
+   "final": "https://b2bevents.pro/ru/trainings/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 110013,
+   "title": "Тренинги - B2B Events",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 29
+  }
+ },
+ "FD-S059": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://kodeks.ru/cooperation",
+   "status": 307,
+   "final": "https://kodeks.ru/cooperation",
+   "robots": "unknown",
+   "gate": "",
+   "size": 358,
+   "title": "Redirecting to http://kodeks.ru/cooperation",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://kodeks.ru/cooperation",
+   "status": 307,
+   "final": "https://kodeks.ru/cooperation",
+   "robots": "unknown",
+   "gate": "",
+   "size": 358,
+   "title": "Redirecting to http://kodeks.ru/cooperation",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S060": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://netology.ru/experts",
+   "status": 200,
+   "final": "https://netology.ru/experts",
+   "robots": "allowed",
+   "gate": "",
+   "size": 501858,
+   "title": "Карьера в Нетологии – станьте экспертом и присоединитесь к команде",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 4
+  },
+  "evidence": {
+   "url": "https://netology.ru/experts",
+   "status": 200,
+   "final": "https://netology.ru/experts",
+   "robots": "allowed",
+   "gate": "",
+   "size": 501858,
+   "title": "Карьера в Нетологии – станьте экспертом и присоединитесь к команде",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 4
+  }
+ },
+ "FD-S061": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://practicum.yandex.ru/job/",
+   "status": 200,
+   "final": "https://practicum.yandex.ru/job/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 1500000,
+   "title": "Станьте частью команды экспертов Яндекс Практикума",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 2
+  },
+  "evidence": {
+   "url": "https://practicum.yandex.ru/job/",
+   "status": 200,
+   "final": "https://practicum.yandex.ru/job/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 1500000,
+   "title": "Станьте частью команды экспертов Яндекс Практикума",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 2
+  }
+ },
+ "FD-S062": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://expert.skillbox.ru/",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error Tunnel connection failed: 502 Bad Gateway>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://expert.skillbox.ru/",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error Tunnel connection failed: 502 Bad Gateway>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S063": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://lifel.ru/elearn/vacancy",
+   "status": 200,
+   "final": "https://lifel.ru/elearn/vacancy",
+   "robots": "allowed",
+   "gate": "",
+   "size": 278925,
+   "title": "Вакансии разработчиков электронных курсов и администраторов LMS",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 10
+  },
+  "evidence": {
+   "url": "https://lifel.ru/elearn/vacancy",
+   "status": 200,
+   "final": "https://lifel.ru/elearn/vacancy",
+   "robots": "allowed",
+   "gate": "",
+   "size": 278925,
+   "title": "Вакансии разработчиков электронных курсов и администраторов LMS",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 10
+  }
+ },
+ "FD-S064": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://ra-kurs.spb.ru/company/about/vacancy/",
+   "status": 200,
+   "final": "https://ra-kurs.spb.ru/company/about/vacancy/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 31157,
+   "title": "Вакансии компании Ракурс",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 19
+  },
+  "evidence": {
+   "url": "https://ra-kurs.spb.ru/company/about/vacancy/",
+   "status": 200,
+   "final": "https://ra-kurs.spb.ru/company/about/vacancy/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 31157,
+   "title": "Вакансии компании Ракурс",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 19
+  }
+ },
+ "FD-S065": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://bi-school.ru/dlya-provedeniya-vebinarov-priglashaem-spikerov/",
+   "status": 200,
+   "final": "https://bi-school.ru/dlya-provedeniya-vebinarov-priglashaem-spikerov/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 312166,
+   "title": "БИЗНЕС ИНСАЙТ | Для проведения вебинаров приглашаем спикеров: бизнес-тренеров, менеджеров, маркетологов, коучей, психоло",
+   "procWords": 0,
+   "dates": 9,
+   "trainWords": 17
+  },
+  "evidence": {
+   "url": "https://bi-school.ru/dlya-provedeniya-vebinarov-priglashaem-spikerov/",
+   "status": 200,
+   "final": "https://bi-school.ru/dlya-provedeniya-vebinarov-priglashaem-spikerov/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 312166,
+   "title": "БИЗНЕС ИНСАЙТ | Для проведения вебинаров приглашаем спикеров: бизнес-тренеров, менеджеров, маркетологов, коучей, психоло",
+   "procWords": 0,
+   "dates": 9,
+   "trainWords": 17
+  }
+ },
+ "FD-S066": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://unitoria.ru/o-nas/vakansii",
+   "status": 200,
+   "final": "https://unitoria.ru/o-nas/vakansii",
+   "robots": "allowed",
+   "gate": "",
+   "size": 53164,
+   "title": "Вакансии",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 11
+  },
+  "evidence": {
+   "url": "https://unitoria.ru/o-nas/vakansii",
+   "status": 200,
+   "final": "https://unitoria.ru/o-nas/vakansii",
+   "robots": "allowed",
+   "gate": "",
+   "size": 53164,
+   "title": "Вакансии",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 11
+  }
+ },
+ "FD-S067": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.buhonline.ru/forum/",
+   "status": 403,
+   "final": "https://www.buhonline.ru/forum/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 13869,
+   "title": "Контур | Доступ запрещен",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://www.buhonline.ru/forum/",
+   "status": 403,
+   "final": "https://www.buhonline.ru/forum/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 13869,
+   "title": "Контур | Доступ запрещен",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S068": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://forum.integral.ru/",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "RemoteDisconnected: Remote end closed connection without response",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://forum.integral.ru/",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "RemoteDisconnected: Remote end closed connection without response",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S069": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.kadrovik-praktik.ru/communication/forum/",
+   "status": 503,
+   "final": "https://www.kadrovik-praktik.ru/communication/forum/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 27,
+   "title": "",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://www.kadrovik-praktik.ru/communication/forum/",
+   "status": 503,
+   "final": "https://www.kadrovik-praktik.ru/communication/forum/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 27,
+   "title": "",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S070": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://club.klerk.ru/latest",
+   "status": 200,
+   "final": "https://club.klerk.ru/latest",
+   "robots": "allowed",
+   "gate": "",
+   "size": 89583,
+   "title": "Клерк.Сообщество - Форум про налоги и бухгалтерский учет",
+   "procWords": 0,
+   "dates": 30,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://club.klerk.ru/latest",
+   "status": 200,
+   "final": "https://club.klerk.ru/latest",
+   "robots": "allowed",
+   "gate": "",
+   "size": 89583,
+   "title": "Клерк.Сообщество - Форум про налоги и бухгалтерский учет",
+   "procWords": 0,
+   "dates": 30,
+   "trainWords": 0
+  }
+ },
+ "FD-S071": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.audit-it.ru/forum/",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://www.audit-it.ru/forum/",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S072": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.e-xecutive.ru/community",
+   "status": 0,
+   "final": "",
+   "robots": "disallowed",
+   "gate": "",
+   "size": 0,
+   "title": "",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://www.e-xecutive.ru/community",
+   "status": 0,
+   "final": "",
+   "robots": "disallowed",
+   "gate": "",
+   "size": 0,
+   "title": "",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S073": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://forum.zakonia.ru/",
+   "status": 200,
+   "final": "https://forum.zakonia.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 102440,
+   "title": "Юридический форум Юристов Адвокатов и Нотариусов - ЗАКОНИЯ - Юридический форум России",
+   "procWords": 0,
+   "dates": 26,
+   "trainWords": 2
+  },
+  "evidence": {
+   "url": "https://forum.zakonia.ru/",
+   "status": 200,
+   "final": "https://forum.zakonia.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 102440,
+   "title": "Юридический форум Юристов Адвокатов и Нотариусов - ЗАКОНИЯ - Юридический форум России",
+   "procWords": 0,
+   "dates": 26,
+   "trainWords": 2
+  }
+ },
+ "FD-S074": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://kadrovik-info.ru/",
+   "status": 200,
+   "final": "https://www.profiz.ru/kr/?referer=kadrovik",
+   "robots": "unknown",
+   "gate": "",
+   "size": 156742,
+   "title": "Кадровые решения — профессиональный журнал для кадровиков и специалистов по human resources :: Profiz.ru",
+   "procWords": 0,
+   "dates": 2,
+   "trainWords": 4
+  },
+  "evidence": {
+   "url": "https://www.profiz.ru/kr/?referer=kadrovik",
+   "status": 200,
+   "final": "https://www.profiz.ru/kr/?referer=kadrovik",
+   "robots": "allowed",
+   "gate": "",
+   "size": 156742,
+   "title": "Кадровые решения — профессиональный журнал для кадровиков и специалистов по human resources :: Profiz.ru",
+   "procWords": 0,
+   "dates": 2,
+   "trainWords": 4
+  }
+ },
+ "FD-S075": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.tendery.ru/forum/",
+   "status": 200,
+   "final": "https://www.tendery.ru/forum/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 93951,
+   "title": "Тендеры.ру •Главная страница",
+   "procWords": 42,
+   "dates": 5,
+   "trainWords": 2
+  },
+  "evidence": {
+   "url": "https://www.tendery.ru/forum/",
+   "status": 200,
+   "final": "https://www.tendery.ru/forum/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 93951,
+   "title": "Тендеры.ру •Главная страница",
+   "procWords": 42,
+   "dates": 5,
+   "trainWords": 2
+  }
+ },
+ "FD-S076": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://forumyuristov.ru/",
+   "status": 200,
+   "final": "https://forumyuristov.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 130698,
+   "title": "ФорумЮристов.ру – бесплатный юридический форум",
+   "procWords": 4,
+   "dates": 0,
+   "trainWords": 8
+  },
+  "evidence": {
+   "url": "https://forumyuristov.ru/",
+   "status": 200,
+   "final": "https://forumyuristov.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 130698,
+   "title": "ФорумЮристов.ру – бесплатный юридический форум",
+   "procWords": 4,
+   "dates": 0,
+   "trainWords": 8
+  }
+ },
+ "FD-S077": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://forum.dwg.ru/",
+   "status": 200,
+   "final": "https://forum.dwg.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 53400,
+   "title": "Форум проектировщиков, инженеров, конструкторов, строителей",
+   "procWords": 0,
+   "dates": 16,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://forum.dwg.ru/",
+   "status": 200,
+   "final": "https://forum.dwg.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 53400,
+   "title": "Форум проектировщиков, инженеров, конструкторов, строителей",
+   "procWords": 0,
+   "dates": 16,
+   "trainWords": 0
+  }
+ },
+ "FD-S078": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://hr-portal.ru/forum",
+   "status": 200,
+   "final": "https://hr-portal.ru/forum",
+   "robots": "allowed",
+   "gate": "",
+   "size": 34474,
+   "title": "Форум | HR-Portal",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://hr-portal.ru/forum",
+   "status": 200,
+   "final": "https://hr-portal.ru/forum",
+   "robots": "allowed",
+   "gate": "",
+   "size": 34474,
+   "title": "Форум | HR-Portal",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S079": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://cpoclub.ru/",
+   "status": 200,
+   "final": "https://cpoclub.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 24214,
+   "title": "Клуб закупщиков Профессиональное сообщество для директоров по закупкам",
+   "procWords": 7,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://cpoclub.ru/",
+   "status": 200,
+   "final": "https://cpoclub.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 24214,
+   "title": "Клуб закупщиков Профессиональное сообщество для директоров по закупкам",
+   "procWords": 7,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S080": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://corptreasury.ru/all/news/",
+   "status": 200,
+   "final": "https://corptreasury.ru/all/news/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 153473,
+   "title": "Новости Archives - АКК",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 24
+  },
+  "evidence": {
+   "url": "https://corptreasury.ru/all/news/",
+   "status": 200,
+   "final": "https://corptreasury.ru/all/news/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 153473,
+   "title": "Новости Archives - АКК",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 24
+  }
+ },
+ "FD-S081": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://appminfo.ru/",
+   "status": 200,
+   "final": "https://appminfo.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 596103,
+   "title": "APPM",
+   "procWords": 37,
+   "dates": 2,
+   "trainWords": 12
+  },
+  "evidence": {
+   "url": "https://appminfo.ru/",
+   "status": 200,
+   "final": "https://appminfo.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 596103,
+   "title": "APPM",
+   "procWords": 37,
+   "dates": 2,
+   "trainWords": 12
+  }
+ },
+ "FD-S082": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://assud.ru/",
+   "status": 200,
+   "final": "https://assud.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 111888,
+   "title": "АСУД — Ассоциация специалистов в сфере управления документами",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  },
+  "evidence": {
+   "url": "https://assud.ru/",
+   "status": 200,
+   "final": "https://assud.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 111888,
+   "title": "АСУД — Ассоциация специалистов в сфере управления документами",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  }
+ },
+ "FD-S083": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.rcca.com.ru/news/action.shtml",
+   "status": 200,
+   "final": "https://www.rcca.com.ru/news/action.shtml",
+   "robots": "allowed",
+   "gate": "",
+   "size": 120486,
+   "title": "Пресс-релизы - Пресс-центр -",
+   "procWords": 1,
+   "dates": 1,
+   "trainWords": 74
+  },
+  "evidence": {
+   "url": "https://www.rcca.com.ru/news/action.shtml",
+   "status": 200,
+   "final": "https://www.rcca.com.ru/news/action.shtml",
+   "robots": "allowed",
+   "gate": "",
+   "size": 120486,
+   "title": "Пресс-релизы - Пресс-центр -",
+   "procWords": 1,
+   "dates": 1,
+   "trainWords": 74
+  }
+ },
+ "FD-S084": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.iia-ru.ru/announce/",
+   "status": 200,
+   "final": "https://www.iia-ru.ru/announce/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 80430,
+   "title": "Анонсы",
+   "procWords": 3,
+   "dates": 0,
+   "trainWords": 9
+  },
+  "evidence": {
+   "url": "https://www.iia-ru.ru/announce/",
+   "status": 200,
+   "final": "https://www.iia-ru.ru/announce/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 80430,
+   "title": "Анонсы",
+   "procWords": 3,
+   "dates": 0,
+   "trainWords": 9
+  }
+ },
+ "FD-S085": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://nokc.org.ru/sobytiya/",
+   "status": 200,
+   "final": "https://nokc.org.ru/sobytiya/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 476968,
+   "title": "Ассоциация «Национальное объединение корпоративных секретарей» | События",
+   "procWords": 0,
+   "dates": 10,
+   "trainWords": 6
+  },
+  "evidence": {
+   "url": "https://nokc.org.ru/sobytiya/",
+   "status": 200,
+   "final": "https://nokc.org.ru/sobytiya/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 476968,
+   "title": "Ассоциация «Национальное объединение корпоративных секретарей» | События",
+   "procWords": 0,
+   "dates": 10,
+   "trainWords": 6
+  }
+ },
+ "FD-S086": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://compandben.org/",
+   "status": 200,
+   "final": "https://compandben.org/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 248814,
+   "title": "Ассоциация ПСМПО - Октябрь 2026",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 25
+  },
+  "evidence": {
+   "url": "https://compandben.org/",
+   "status": 200,
+   "final": "https://compandben.org/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 248814,
+   "title": "Ассоциация ПСМПО - Октябрь 2026",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 25
+  }
+ },
+ "FD-S087": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/tdh_channel",
+   "status": 200,
+   "final": "https://t.me/s/tdh_channel",
+   "robots": "unknown",
+   "gate": "",
+   "size": 168862,
+   "title": "Training@Development Hub – Telegram",
+   "procWords": 0,
+   "dates": 1,
+   "trainWords": 25
+  },
+  "evidence": {
+   "url": "https://t.me/tdh_channel",
+   "status": 200,
+   "final": "https://t.me/tdh_channel",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11568,
+   "title": "Telegram: View @tdh_channel",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  }
+ },
+ "FD-S088": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/hrkaz",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/hrkaz",
+   "status": 200,
+   "final": "https://t.me/hrkaz",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11054,
+   "title": "Telegram: View @hrkaz",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S089": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/HRBreakfast_Live",
+   "status": 200,
+   "final": "https://t.me/s/HRBreakfast_Live",
+   "robots": "unknown",
+   "gate": "",
+   "size": 110494,
+   "title": "HR Breakfast Live – Telegram",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 3
+  },
+  "evidence": {
+   "url": "https://t.me/HRBreakfast_Live",
+   "status": 200,
+   "final": "https://t.me/HRBreakfast_Live",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11513,
+   "title": "Telegram: View @HRBreakfast_Live",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S090": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/hr_central_asia",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/s/hr_central_asia",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S091": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/HRBreakfast",
+   "status": 200,
+   "final": "https://t.me/HRBreakfast",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11923,
+   "title": "Telegram: View @HRBreakfast",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/HRBreakfast",
+   "status": 200,
+   "final": "https://t.me/HRBreakfast",
+   "robots": "unknown",
+   "gate": "",
+   "size": 11921,
+   "title": "Telegram: View @HRBreakfast",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S092": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://t.me/s/hr_breakfast_emergency",
+   "status": 200,
+   "final": "https://t.me/hr_breakfast_emergency",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12327,
+   "title": "Telegram: View @hr_breakfast_emergency",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://t.me/hr_breakfast_emergency",
+   "status": 200,
+   "final": "https://t.me/hr_breakfast_emergency",
+   "robots": "unknown",
+   "gate": "",
+   "size": 12326,
+   "title": "Telegram: View @hr_breakfast_emergency",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S093": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://seminar.mcfr.kz/sotrudnichesrvo",
+   "status": 302,
+   "final": "https://seminar.mcfr.kz/sotrudnichesrvo",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://seminar.mcfr.kz/sotrudnichesrvo",
+   "status": 302,
+   "final": "https://seminar.mcfr.kz/sotrudnichesrvo",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S094": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://atssm.kz/en/press-center/default/priglashaem-lektorov-i-ekspertov-k-sotrudnichestvu",
+   "status": 200,
+   "final": "https://atssm.kz/en/press-center/default/priglashaem-lektorov-i-ekspertov-k-sotrudnichestvu",
+   "robots": "allowed",
+   "gate": "",
+   "size": 30550,
+   "title": "🎓 Приглашаем лекторов и экспертов к сотрудничеству!",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 7
+  },
+  "evidence": {
+   "url": "https://atssm.kz/en/press-center/default/priglashaem-lektorov-i-ekspertov-k-sotrudnichestvu",
+   "status": 200,
+   "final": "https://atssm.kz/en/press-center/default/priglashaem-lektorov-i-ekspertov-k-sotrudnichestvu",
+   "robots": "allowed",
+   "gate": "",
+   "size": 30550,
+   "title": "🎓 Приглашаем лекторов и экспертов к сотрудничеству!",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 7
+  }
+ },
+ "FD-S095": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://medium-centr.by/",
+   "status": 200,
+   "final": "https://www.medium-centr.by/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 184267,
+   "title": "Автоматизация HR процессов в Беларуси - Медиум-Центр",
+   "procWords": 1,
+   "dates": 3,
+   "trainWords": 8
+  },
+  "evidence": {
+   "url": "https://www.medium-centr.by/",
+   "status": 200,
+   "final": "https://www.medium-centr.by/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 184267,
+   "title": "Автоматизация HR процессов в Беларуси - Медиум-Центр",
+   "procWords": 1,
+   "dates": 3,
+   "trainWords": 8
+  }
+ },
+ "FD-S096": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://glabis.by/posidelki/",
+   "status": 200,
+   "final": "https://glabis.by/posidelki/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 261067,
+   "title": "Дружеские посиделки - Glabis",
+   "procWords": 0,
+   "dates": 3,
+   "trainWords": 23
+  },
+  "evidence": {
+   "url": "https://glabis.by/posidelki/",
+   "status": 200,
+   "final": "https://glabis.by/posidelki/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 261067,
+   "title": "Дружеские посиделки - Glabis",
+   "procWords": 0,
+   "dates": 3,
+   "trainWords": 23
+  }
+ },
+ "FD-S097": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.belab.by/education",
+   "status": 200,
+   "final": "https://www.belab.by/education",
+   "robots": "allowed",
+   "gate": "",
+   "size": 146854,
+   "title": "Обучение",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 18
+  },
+  "evidence": {
+   "url": "https://www.belab.by/education",
+   "status": 200,
+   "final": "https://www.belab.by/education",
+   "robots": "allowed",
+   "gate": "",
+   "size": 146854,
+   "title": "Обучение",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 18
+  }
+ },
+ "FD-S098": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://s-expert.by/",
+   "status": 200,
+   "final": "https://s-expert.by/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 215032,
+   "title": "СОЮЗ-эксперт — Семинары и вебинары для бизнеса",
+   "procWords": 12,
+   "dates": 18,
+   "trainWords": 22
+  },
+  "evidence": {
+   "url": "https://s-expert.by/",
+   "status": 200,
+   "final": "https://s-expert.by/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 215032,
+   "title": "СОЮЗ-эксперт — Семинары и вебинары для бизнеса",
+   "procWords": 12,
+   "dates": 18,
+   "trainWords": 22
+  }
+ },
+ "FD-S099": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://mogilevcci.by/organization-of-visits-and-receptions/",
+   "status": 200,
+   "final": "https://mogilev.cci.by/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 151502,
+   "title": "Могилёвское отделение белорусской торгово-промышленной палаты",
+   "procWords": 14,
+   "dates": 8,
+   "trainWords": 1
+  },
+  "evidence": {
+   "url": "https://mogilev.cci.by/",
+   "status": 200,
+   "final": "https://mogilev.cci.by/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 151502,
+   "title": "Могилёвское отделение белорусской торгово-промышленной палаты",
+   "procWords": 14,
+   "dates": 8,
+   "trainWords": 1
+  }
+ },
+ "FD-S100": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://club.rrb.by/news",
+   "status": 403,
+   "final": "https://club.rrb.by/news",
+   "robots": "unknown",
+   "gate": "",
+   "size": 5439,
+   "title": "Just a moment...",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://club.rrb.by/news",
+   "status": 403,
+   "final": "https://club.rrb.by/news",
+   "robots": "unknown",
+   "gate": "",
+   "size": 5439,
+   "title": "Just a moment...",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S101": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://hrf.kgforum.kz/hr-club",
+   "status": 200,
+   "final": "https://hrf.kgforum.kz/hr-club",
+   "robots": "unknown",
+   "gate": "",
+   "size": 2464,
+   "title": "Kazakhstan HR-Forum объединяет HRD Центральной Азии",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://hrf.kgforum.kz/hr-club",
+   "status": 200,
+   "final": "https://hrf.kgforum.kz/hr-club",
+   "robots": "unknown",
+   "gate": "",
+   "size": 2464,
+   "title": "Kazakhstan HR-Forum объединяет HRD Центральной Азии",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S102": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://forum.assethr.kz/",
+   "status": 200,
+   "final": "https://forum.assethr.kz/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 184442,
+   "title": "HR-Forum Central Asia 2025",
+   "procWords": 2,
+   "dates": 0,
+   "trainWords": 15
+  },
+  "evidence": {
+   "url": "https://forum.assethr.kz/",
+   "status": 200,
+   "final": "https://forum.assethr.kz/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 184442,
+   "title": "HR-Forum Central Asia 2025",
+   "procWords": 2,
+   "dates": 0,
+   "trainWords": 15
+  }
+ },
+ "FD-S103": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://hrbp.kz/",
+   "status": 200,
+   "final": "https://hrbp.kz/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 738763,
+   "title": "Ассоциация HR-менеджеров",
+   "procWords": 7,
+   "dates": 0,
+   "trainWords": 19
+  },
+  "evidence": {
+   "url": "https://hrbp.kz/",
+   "status": 200,
+   "final": "https://hrbp.kz/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 738763,
+   "title": "Ассоциация HR-менеджеров",
+   "procWords": 7,
+   "dates": 0,
+   "trainWords": 19
+  }
+ },
+ "FD-S104": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://hr4people.kz/",
+   "status": 200,
+   "final": "https://hr4people.kz/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 643236,
+   "title": "HR4People.kz",
+   "procWords": 2,
+   "dates": 3,
+   "trainWords": 11
+  },
+  "evidence": {
+   "url": "https://hr4people.kz/",
+   "status": 200,
+   "final": "https://hr4people.kz/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 643236,
+   "title": "HR4People.kz",
+   "procWords": 2,
+   "dates": 3,
+   "trainWords": 11
+  }
+ },
+ "FD-S105": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://edu.astanahub.com/",
+   "status": 200,
+   "final": "https://edu.astanahub.com/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 348240,
+   "title": "Powered by HackAlem",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://edu.astanahub.com/",
+   "status": 200,
+   "final": "https://edu.astanahub.com/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 348240,
+   "title": "Powered by HackAlem",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S106": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.kazenergy.com/operation/human-capital/",
+   "status": 200,
+   "final": "https://www.kazenergy.com/operation/human-capital/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 1500000,
+   "title": "Развитие человеческого капитала — KAZENERGY",
+   "procWords": 711,
+   "dates": 346,
+   "trainWords": 245
+  },
+  "evidence": {
+   "url": "https://www.kazenergy.com/press-center/news/3987/",
+   "status": 200,
+   "final": "https://www.kazenergy.com/press-center/news/3987/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 1500000,
+   "title": "KAZENERGY и Bureau Veritas обсудили экологическую повестку энергетического сектора — KAZENERGY",
+   "procWords": 711,
+   "dates": 346,
+   "trainWords": 244
+  }
+ },
+ "FD-S107": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://interforums.ru/faq",
+   "status": 200,
+   "final": "https://interforums.ru/faq",
+   "robots": "allowed",
+   "gate": "",
+   "size": 207564,
+   "title": "Ответы на часто задаваемые вопросы | InterForum",
+   "procWords": 4,
+   "dates": 15,
+   "trainWords": 109
+  },
+  "evidence": {
+   "url": "https://interforums.ru/faq",
+   "status": 200,
+   "final": "https://interforums.ru/faq",
+   "robots": "allowed",
+   "gate": "",
+   "size": 207564,
+   "title": "Ответы на часто задаваемые вопросы | InterForum",
+   "procWords": 4,
+   "dates": 15,
+   "trainWords": 109
+  }
+ },
+ "FD-S108": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://ahconferences.com/about",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [SSL: TLSV1_UNRECOGNIZED_NAME] tlsv1 unrecognized name (_ssl.c:1016)>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://ahconferences.com/list_news",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [SSL: TLSV1_UNRECOGNIZED_NAME] tlsv1 unrecognized name (_ssl.c:1016)>",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S109": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://auditorium-cg.ru/elf23",
+   "status": 200,
+   "final": "https://auditorium-cg.ru/elf23",
+   "robots": "unknown",
+   "gate": "",
+   "size": 143661,
+   "title": "E-Learning Force 2023",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 156
+  },
+  "evidence": {
+   "url": "https://auditorium-cg.ru/elf23",
+   "status": 200,
+   "final": "https://auditorium-cg.ru/elf23",
+   "robots": "unknown",
+   "gate": "",
+   "size": 143661,
+   "title": "E-Learning Force 2023",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 156
+  }
+ },
+ "FD-S110": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://events.vedomosti.ru/about",
+   "status": 200,
+   "final": "https://events.vedomosti.ru/about",
+   "robots": "allowed",
+   "gate": "",
+   "size": 101450,
+   "title": "Ведомости – О нас",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 6
+  },
+  "evidence": {
+   "url": "https://events.vedomosti.ru/speakers/kolesnikov-andrei-38683",
+   "status": 200,
+   "final": "https://events.vedomosti.ru/speakers/kolesnikov-andrei-38683",
+   "robots": "allowed",
+   "gate": "",
+   "size": 46161,
+   "title": "Андрей Колесников Эксперт Эксперт",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 1
+  }
+ },
+ "FD-S111": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://events.kommersant.ru/",
+   "status": 200,
+   "final": "https://events.kommersant.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 268792,
+   "title": "Конференции ИД «Коммерсантъ» - цифровая площадка для дискуссий на самые актуальные темы",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 2
+  },
+  "evidence": {
+   "url": "https://events.kommersant.ru/",
+   "status": 200,
+   "final": "https://events.kommersant.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 268792,
+   "title": "Конференции ИД «Коммерсантъ» - цифровая площадка для дискуссий на самые актуальные темы",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 2
+  }
+ },
+ "FD-S112": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://events.rbc.ru/",
+   "status": 200,
+   "final": "https://events.rbc.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 1499781,
+   "title": "Центр Событий",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 8
+  },
+  "evidence": {
+   "url": "https://events.rbc.ru/",
+   "status": 200,
+   "final": "https://events.rbc.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 1499781,
+   "title": "Центр Событий",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 8
+  }
+ },
+ "FD-S113": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://event.pravo.ru/",
+   "status": 200,
+   "final": "https://event.pravo.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 334244,
+   "title": "Конференции Право.ru",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 9
+  },
+  "evidence": {
+   "url": "https://event.pravo.ru/",
+   "status": 200,
+   "final": "https://event.pravo.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 334244,
+   "title": "Конференции Право.ru",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 9
+  }
+ },
+ "FD-S114": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://game-learn.ru/",
+   "status": 200,
+   "final": "https://game-learn.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 1013127,
+   "title": "GAME & LEARN | HR-конференция 20 октября 2026 Москва",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 54
+  },
+  "evidence": {
+   "url": "https://game-learn.ru/",
+   "status": 200,
+   "final": "https://game-learn.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 1013127,
+   "title": "GAME & LEARN | HR-конференция 20 октября 2026 Москва",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 54
+  }
+ },
+ "FD-S115": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://elearningelements.ru/for-speakers",
+   "status": 200,
+   "final": "https://elearningelements.ru/for-speakers",
+   "robots": "allowed",
+   "gate": "",
+   "size": 629809,
+   "title": "Хотите стать спикером?",
+   "procWords": 1,
+   "dates": 1,
+   "trainWords": 44
+  },
+  "evidence": {
+   "url": "https://elearningelements.ru/for-speakers",
+   "status": 200,
+   "final": "https://elearningelements.ru/for-speakers",
+   "robots": "allowed",
+   "gate": "",
+   "size": 629809,
+   "title": "Хотите стать спикером?",
+   "procWords": 1,
+   "dates": 1,
+   "trainWords": 44
+  }
+ },
+ "FD-S116": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://whiteconf.ru/become_speaker/",
+   "status": 200,
+   "final": "https://whiteconf.ru/become_speaker/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 168958,
+   "title": "WhiteConf: станьте спикером",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 38
+  },
+  "evidence": {
+   "url": "https://whiteconf.ru/become_speaker/",
+   "status": 200,
+   "final": "https://whiteconf.ru/become_speaker/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 168958,
+   "title": "WhiteConf: станьте спикером",
+   "procWords": 1,
+   "dates": 0,
+   "trainWords": 38
+  }
+ },
+ "FD-S117": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.mk-conference.ru/obychenie1111",
+   "status": 200,
+   "final": "https://www.mk-conference.ru/obychenie1111",
+   "robots": "allowed",
+   "gate": "",
+   "size": 571470,
+   "title": "Стратегия обучения персонала. Москва, 17-18 февраля 2027 г.",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 58
+  },
+  "evidence": {
+   "url": "https://www.mk-conference.ru/obychenie1111",
+   "status": 200,
+   "final": "https://www.mk-conference.ru/obychenie1111",
+   "robots": "allowed",
+   "gate": "",
+   "size": 571470,
+   "title": "Стратегия обучения персонала. Москва, 17-18 февраля 2027 г.",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 58
+  }
+ },
+ "FD-S118": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://finplace.ru/",
+   "status": 200,
+   "final": "https://finplace.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 41686,
+   "title": "FiNPLACE - Главная страница",
+   "procWords": 0,
+   "dates": 1,
+   "trainWords": 7
+  },
+  "evidence": {
+   "url": "https://finplace.ru/",
+   "status": 200,
+   "final": "https://finplace.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 41686,
+   "title": "FiNPLACE - Главная страница",
+   "procWords": 0,
+   "dates": 1,
+   "trainWords": 7
+  }
+ },
+ "FD-S119": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://facilitators.ru/",
+   "status": 200,
+   "final": "https://facilitators.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 263869,
+   "title": "Семнадцатая конференция фасилитаторов",
+   "procWords": 7,
+   "dates": 0,
+   "trainWords": 44
+  },
+  "evidence": {
+   "url": "https://facilitators.ru/",
+   "status": 200,
+   "final": "https://facilitators.ru/",
+   "robots": "allowed",
+   "gate": "",
+   "size": 263869,
+   "title": "Семнадцатая конференция фасилитаторов",
+   "procWords": 7,
+   "dates": 0,
+   "trainWords": 44
+  }
+ },
+ "FD-S120": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://rabe.ru/",
+   "status": 200,
+   "final": "https://rabe.ru/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 54744,
+   "title": "РАБО. Российская ассоциация бизнес-образования",
+   "procWords": 2,
+   "dates": 24,
+   "trainWords": 7
+  },
+  "evidence": {
+   "url": "https://rabe.ru/news/sbor-predlozheniy-v-plan-meropriyatiy-rabo-na-2027-god.htm",
+   "status": 200,
+   "final": "https://rabe.ru/news/sbor-predlozheniy-v-plan-meropriyatiy-rabo-na-2027-god.htm",
+   "robots": "unknown",
+   "gate": "",
+   "size": 32252,
+   "title": "СБОР ПРЕДЛОЖЕНИЙ В ПЛАН МЕРОПРИЯТИЙ РАБО НА 2027 ГОД",
+   "procWords": 0,
+   "dates": 4,
+   "trainWords": 0
+  }
+ },
+ "FD-S121": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://exportedu.ru/tutors",
+   "status": 200,
+   "final": "https://exportedu.ru/tutors",
+   "robots": "allowed",
+   "gate": "",
+   "size": 8986,
+   "title": "Школа экспорта РЭЦ",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://exportedu.ru/tutors",
+   "status": 200,
+   "final": "https://exportedu.ru/tutors",
+   "robots": "allowed",
+   "gate": "",
+   "size": 8986,
+   "title": "Школа экспорта РЭЦ",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S122": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://pptrf.ru/",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid f",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://pptrf.ru/",
+   "status": 0,
+   "final": "",
+   "robots": "unknown",
+   "gate": "",
+   "size": 0,
+   "title": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid f",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S123": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://mbm.mos.ru/",
+   "status": 403,
+   "final": "https://mbm.mos.ru/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 1606,
+   "title": "DDoS-Guard",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://mbm.mos.ru/",
+   "status": 403,
+   "final": "https://mbm.mos.ru/",
+   "robots": "unknown",
+   "gate": "",
+   "size": 1606,
+   "title": "DDoS-Guard",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S124": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://mb-ugra.ru/keep-up/events",
+   "status": 200,
+   "final": "https://mb-ugra.ru/keep-up/events",
+   "robots": "allowed",
+   "gate": "",
+   "size": 798673,
+   "title": "Мероприятия - БизнесЮгры.рф – портал малого и среднего предпринимательства Югры",
+   "procWords": 4,
+   "dates": 9,
+   "trainWords": 6
+  },
+  "evidence": {
+   "url": "https://mb-ugra.ru/keep-up/events",
+   "status": 200,
+   "final": "https://mb-ugra.ru/keep-up/events",
+   "robots": "allowed",
+   "gate": "",
+   "size": 798673,
+   "title": "Мероприятия - БизнесЮгры.рф – портал малого и среднего предпринимательства Югры",
+   "procWords": 4,
+   "dates": 9,
+   "trainWords": 6
+  }
+ },
+ "FD-S125": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://exportedu.ru/teams",
+   "status": 200,
+   "final": "https://exportedu.ru/teams",
+   "robots": "allowed",
+   "gate": "",
+   "size": 8986,
+   "title": "Школа экспорта РЭЦ",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  },
+  "evidence": {
+   "url": "https://exportedu.ru/teams",
+   "status": 200,
+   "final": "https://exportedu.ru/teams",
+   "robots": "allowed",
+   "gate": "",
+   "size": 8986,
+   "title": "Школа экспорта РЭЦ",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 0
+  }
+ },
+ "FD-S126": {
+  "checkedOn": "2026-10-01",
+  "from": "облако сеанса Claude Code, без входа, robots.txt соблюдён",
+  "url": {
+   "url": "https://www.hrforumasia.com/partners",
+   "status": 200,
+   "final": "https://www.hrforumasia.com/partners",
+   "robots": "allowed",
+   "gate": "",
+   "size": 603721,
+   "title": "МЕЖДУНАРОДНЫЙ HR-ФОРУМ 2026",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 2
+  },
+  "evidence": {
+   "url": "https://www.hrforumasia.com/partners",
+   "status": 200,
+   "final": "https://www.hrforumasia.com/partners",
+   "robots": "allowed",
+   "gate": "",
+   "size": 603721,
+   "title": "МЕЖДУНАРОДНЫЙ HR-ФОРУМ 2026",
+   "procWords": 0,
+   "dates": 0,
+   "trainWords": 2
+  }
+ }
+}

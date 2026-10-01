@@ -1,0 +1,117 @@
+{
+  "version": "1.0",
+  "as_of": "2026-10-01",
+  "counts": {
+    "sources": 126,
+    "normalized_source_urls": 126,
+    "observations": 131,
+    "concrete_14": 24,
+    "concrete_15_30": 10,
+    "all_14": 33,
+    "all_15_30": 13,
+    "queue_now": 23,
+    "undated": 77,
+    "standing": 33,
+    "not_assessable": 43,
+    "content_read": 98,
+    "discovery": 54,
+    "relations": 4
+  },
+  "validation": {
+    "source_ids_unique": true,
+    "observation_source_links_valid": true,
+    "dates_not_after_asof": true,
+    "source_observation_counts_reconciled": true,
+    "overview_formulas_reconciled": true,
+    "budget_sum_rub": 10000,
+    "live_collectors_deployed": false,
+    "outreach_performed": false
+  },
+  "files": [
+    {
+      "name": "sources.jsonl",
+      "bytes": 280726,
+      "sha256": "009b20a738ddc7ef49447737ba21f31547e9452b48d4e531ba127c7337c5ec8f"
+    },
+    {
+      "name": "observations.jsonl",
+      "bytes": 393612,
+      "sha256": "e5f3831c1045c9e127adf58ae1101f1047ecc6459cbb753bc981a7f6623b5ad7"
+    },
+    {
+      "name": "discovery.jsonl",
+      "bytes": 39135,
+      "sha256": "e0a1256e31eb1fb3e2f852a46c56d192cb51a309a87f13f6a4e56c520e964595"
+    },
+    {
+      "name": "relationships.jsonl",
+      "bytes": 336,
+      "sha256": "729f312ee6d74ed22e68a2758c846d54022f66bc6e726f7ac15c39b545ee96d0"
+    },
+    {
+      "name": "raw_research.json",
+      "bytes": 685480,
+      "sha256": "d7714bf44663c62ed11e1a32d63bc25dffee09ae3f53076a7eb1499dc4fd6c83"
+    },
+    {
+      "name": "editorial_adjustments.json",
+      "bytes": 4457,
+      "sha256": "a47e702f1686aab91d0944c5d43bc6486f090b80861f01f81b74c78167559515"
+    },
+    {
+      "name": "counts.json",
+      "bytes": 293,
+      "sha256": "4bf15cb061dccf1f2bdeb58e5a15386ff740ecb5b27111eace257602ce422676"
+    },
+    {
+      "name": "policy.json",
+      "bytes": 4554,
+      "sha256": "2842ae1b49167762fa977b606092a8e541d9561bfb68d9539e3f9a25625ee9fd"
+    },
+    {
+      "name": "collection_plan.json",
+      "bytes": 3930,
+      "sha256": "c064429c5ad82ff1a075f312d983385f4d7f635fc4da31e5cc366e47a892a1cd"
+    },
+    {
+      "name": "budget_policy.json",
+      "bytes": 1421,
+      "sha256": "2abbc7897504a56cd0b31783a2f017a7d4cf13049f4553c50ecdb5ffa56efcc5"
+    },
+    {
+      "name": "README_CLAUDE.txt",
+      "bytes": 9117,
+      "sha256": "3ef5b873060d708bee356632f70e9c241ee1f487027323d0ffbe88152dbdda7f"
+    },
+    {
+      "name": "review_notes.json",
+      "bytes": 11073,
+      "sha256": "ea492bb7bc6a77e43ae029e59a7f089fb6a74783dba53c23d5059b8c425e440b"
+    },
+    {
+      "name": "misb_profile.json",
+      "bytes": 1139,
+      "sha256": "42216bcd0d57520804a1fbe5cc55d884aea2ada62c4f3aa9a1bbaeb2afb8ebd3"
+    },
+    {
+      "name": "vocabulary.json",
+      "bytes": 27306,
+      "sha256": "10e46693b072cd7da90eea69a50eafd233398556df8503f7e5d49547550bc81b"
+    },
+    {
+      "name": "sources.csv",
+      "bytes": 231633,
+      "sha256": "417b5819b02aabea64781e1d86d6deb6c0d46260f9d58ed610e8604ff5d97dea"
+    },
+    {
+      "name": "observations.csv",
+      "bytes": 303609,
+      "sha256": "b0ee88f1e5041aea5002b48a5bb129ebac7f0eaa1b2792fc52b878916060dcc7"
+    },
+    {
+      "name": "discovery.csv",
+      "bytes": 31602,
+      "sha256": "a95a2a917db5927a579101e54fce0a4d80450baef11d502a827c0c374de30995"
+    }
+  ]
+}

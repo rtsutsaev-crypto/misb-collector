@@ -35,8 +35,8 @@ DATASET = "misb-v2"
 # Platforms where one domain hosts thousands of unrelated channels: a shared host says nothing about the channel.
 SHARED_HOSTS = {"t.me", "vk.com", "ok.ru", "youtube.com", "dzen.ru", "zen.yandex.ru", "rutube.ru"}
 # Plan sources that check registry addresses in turn (registry_plan_v2.py): reg2-* for the v2/v3 registry, cu-* for
-# the corporate universities package.
-ROTATION = ("reg2-", "cu-")
+# the corporate universities package, fd-* for the fresh demand package.
+ROTATION = ("reg2-", "cu-", "fd-")
 
 
 def out_tag() -> str:
@@ -168,7 +168,7 @@ def queue_of(r: dict, m: dict, plan: dict, access: str, today: str, docs: dict |
     if live and all(k.startswith(ROTATION) for k in live):
         s = srcs[live[0]]
         return {"state": "rotation", "nextDueAt": due,
-                "reason": f"проверяется по кругу источником {live[0]}: {s.get('batch')} адресов за запуск из {len(s.get('urls', []))}",
+                "reason": f"проверяется по кругу источником {live[0]}: {s.get('batch')} адресов за запуск",
                 "nextStep": "Дождаться проверки в сборе; результат — в «Проверка в сборе». Строк нет — empty_success, ошибка — задача доступа."}
     if live:
         return {"state": "collecting", "nextDueAt": due, "reason": "обслуживается источниками сбора: " + ", ".join(live),

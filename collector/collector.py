@@ -13,7 +13,7 @@
 """
 import argparse, json, re, sys, os, glob, datetime as dt
 
-VERSION = "1.4"
+VERSION = "1.5"
 
 # ---------- морфология ----------
 W = r"[а-яёa-z0-9ʻ'’]"          # символ слова
@@ -276,7 +276,7 @@ def build_lead(row, m, source, today, country="RU", currency="RUB"):
          "deadline": row.get("deadline") or "", "law": row["law"] if "law" in row else law_of(row["id"]), "url": row.get("url") or "",
          "source": source, "collectedAt": today, "flags": [], "country": row.get("country") or country,
          "currency": row.get("currency") or currency}
-    for k in ("customerInn", "contacts", "verify", "platform", "note", "eisNumber", "okpd2", "stage"):
+    for k in ("customerInn", "contacts", "verify", "platform", "note", "eisNumber", "okpd2", "stage", "topic"):
         if row.get(k): l[k] = row[k]
     l["flags"] = sorted(set(row.get("flags") or []) | set(m.flag_list(title, l["customer"])))
     return l
@@ -295,7 +295,9 @@ def process_rows(rows, m, known, source, today, max_age_days=30, **kw):
             if dl and dl != known.ids.get(k, "") and k not in updates:
                 updates[k] = {"id": k, "deadline": dl, "prevDeadline": known.ids.get(k, ""), "url": r.get("url") or ""}
             continue
-        rel, _, _ = m.classify(r["title"], r.get("okpd2") or ())
+        # topic: kind and subject of a post in a demand channel («запрос на обучение», «поиск спикера на мероприятие»),
+        # given by the source rule when the title alone does not name the training (fd-* channels)
+        rel, _, _ = m.classify(r["title"] + (" " + r["topic"] if r.get("topic") else ""), r.get("okpd2") or ())
         if not rel: continue
         st["matched"] += 1
         if dl and dl < min_dl: st["old"] += 1; continue
