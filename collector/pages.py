@@ -1,13 +1,14 @@
-"""pages.py — чтение списков РосТендера, Комтендера, goszakup.kz и подборок B2B-Center (один движок) без WebFetch: все строки страницы, дословно.
+"""pages.py — чтение списков РосТендера, Комтендера, goszakup.kz, MITWORK (eep.mitwork.kz) и подборок B2B-Center (один движок) без WebFetch: все строки страницы, дословно.
 
-Запуск: python3 pages.py --site rostender|komtender|goszakup|b2b --urls URL [URL …] --pause 3 --out rows.json [--relay URL --relay-token TOKEN]
+Запуск: python3 pages.py --site rostender|komtender|goszakup|mitwork|b2b --urls URL [URL …] --pause 3 --out rows.json [--relay URL --relay-token TOKEN]
 rows.json: {"rows": [{id, title, customer, region, price, deadline, url, law}], "pages": [{url, status, rows, note}]}
 Дальше строки идут в collector.py rows. Проверки «подождите»/капчи не обходятся: такая страница — status "blocked".
 """
 import argparse, html, json, re, subprocess, time
 
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36"
-HOST = {"rostender": "https://rostender.info", "komtender": "https://www.komtender.ru", "goszakup": "https://old.goszakup.gov.kz", "b2b": "https://www.b2b-center.ru"}
+HOST = {"rostender": "https://rostender.info", "komtender": "https://www.komtender.ru", "goszakup": "https://old.goszakup.gov.kz", "b2b": "https://www.b2b-center.ru",
+        "mitwork": "https://eep.mitwork.kz"}
 RELAY = {"url": "", "token": ""}   # --relay/--relay-token: чтение через российский сервер (см. config/collector); токен только из текста запуска
 
 
@@ -93,8 +94,30 @@ def parse_b2b(page):
     return rows
 
 
+def parse_mitwork(page, today):
+    """Объявления Евразийского электронного портала (eep.mitwork.kz, закупки квазигосударственного сектора РК): таблица grid-view —
+    номер, наименование, сумма в тенге без НДС, способ, начало и окончание приёма заявок, организатор, статус. Берём объявления,
+    у которых окончание приёма сегодня или позже (проверено 01.10.2026: поиск «обучение» — 1 000 объявлений, «тренинг» — 245)."""
+    rows = []
+    for r in re.findall(r'<tr class="item" data-key="(\d+)">(.*?)</tr>', page, re.S):
+        num, body = r
+        cells = [clean(c) for c in re.findall(r"<td[^>]*>(.*?)</td>", body, re.S)]
+        if len(cells) < 8: continue
+        a = re.search(r'href="(https://eep\.mitwork\.kz/ru/publics/buy/\d+)"', body)
+        org = re.search(r'publics/subject/\d+"[^>]*title="([^"]+)"', body)
+        cust = clean(org.group(1)) if org else cells[6]
+        end = re.match(r"(\d{4}-\d\d-\d\d)", cells[5])
+        deadline = end.group(1) if end else ""
+        if deadline and deadline < today: continue
+        rows.append({"id": "mitwork-" + num, "title": cells[1], "customer": cust, "region": "Казахстан",
+                     "price": price(cells[2]), "deadline": deadline, "url": a.group(1) if a else f"{HOST['mitwork']}/ru/publics/buy/{num}",
+                     "law": "", "country": "KZ", "currency": "KZT", "note": f"MITWORK ЕЭП, объявление {num}; {cells[3]}; {cells[7]}"})
+    return rows
+
+
 def parse(site, page):
     if site == "goszakup": return parse_goszakup(page)
+    if site == "mitwork": return parse_mitwork(page, time.strftime("%Y-%m-%d"))
     if site == "b2b": return parse_b2b(page)
     rows = []
     for part in page.split('class="tender-row row"')[1:]:
@@ -124,7 +147,7 @@ def main():
     a = argparse.ArgumentParser()
     a.add_argument("--site", required=True, choices=list(HOST)); a.add_argument("--urls", nargs="*", default=[])
     a.add_argument("--pause", type=float, default=3); a.add_argument("--out", default="rows.json")
-    a.add_argument("--words", nargs="*", default=[], help="goszakup: слова поиска (каждое — отдельный запрос по наименованию лота)")
+    a.add_argument("--words", nargs="*", default=[], help="goszakup, mitwork: слова поиска (каждое — отдельный запрос по наименованию лота)")
     a.add_argument("--relay", default="", help="адрес релея (российский сервер), например https://host/; без него — напрямую")
     a.add_argument("--relay-token", default="")
     x = a.parse_args()
@@ -133,6 +156,9 @@ def main():
     if x.site == "goszakup":
         import urllib.parse
         x.urls = [f"{HOST['goszakup']}/ru/search/lots?" + urllib.parse.urlencode({"filter[name]": w, "count_record": 100}) for w in x.words] or x.urls
+    if x.site == "mitwork":
+        import urllib.parse
+        x.urls = [f"{HOST['mitwork']}/ru/publics/buys?" + urllib.parse.urlencode({"filter[search]": w}) for w in x.words] or x.urls
     for i, u in enumerate(x.urls):
         code, body = fetch(u)
         if code != "200":
@@ -144,7 +170,9 @@ def main():
             new = [r for r in rows if r["id"] not in seen]
             for r in new: seen.add(r["id"])
             out += new
-            pages.append({"url": u, "status": "ok" if rows else "empty", "rows": len(rows), "note": "" if rows else "строк не найдено: изменилась вёрстка?"})
+            table = bool(rows) or (x.site == "mitwork" and 'class="grid-view"' in body)   # у mitwork все строки могут быть с закрытым приёмом
+            pages.append({"url": u, "status": "ok" if table else "empty", "rows": len(rows),
+                          "note": "" if rows else ("открытых объявлений нет" if table else "строк не найдено: изменилась вёрстка?")})
         if i < len(x.urls) - 1: time.sleep(x.pause)
     json.dump({"rows": out, "pages": pages}, open(x.out, "w", encoding="utf-8"), ensure_ascii=False)
     print(json.dumps({"rows": len(out), "pages": [(p["status"], p["rows"]) for p in pages]}, ensure_ascii=False))

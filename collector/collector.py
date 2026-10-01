@@ -420,7 +420,10 @@ def main():
         if x.known:
             kj = json.load(open(x.known, encoding="utf-8"))
             known.ids = kj.get("ids", {}); known.keys = set(kj.get("keys", []))
-        leads, upd, st = process_rows(json.load(open(x.inp, encoding="utf-8")), m, known, x.source, x.date,
+        rows = json.load(open(x.inp, encoding="utf-8"))
+        if isinstance(rows, dict):                     # вывод pages.py: {"rows": [...], "pages": [...]}
+            rows = rows.get("rows", [])
+        leads, upd, st = process_rows(rows, m, known, x.source, x.date,
                                       country=x.country, currency=x.currency)
         json.dump({"leads": leads, "updates": upd, "stats": st, "version": VERSION}, open(x.out, "w", encoding="utf-8"), ensure_ascii=False)
         print(json.dumps(st, ensure_ascii=False)); return
