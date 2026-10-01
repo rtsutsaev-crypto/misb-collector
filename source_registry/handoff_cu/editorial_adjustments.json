@@ -1,0 +1,106 @@
+[
+  {
+    "research_file": "cu_ru_services.json",
+    "name": "ВТБ Образование",
+    "reason": "Подтверждено образовательное направление / платформа банка; самостоятельная учебная единица пока не установлена. Полезный источник сохранён в резерве.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  },
+  {
+    "research_file": "cu_kazakhstan.json",
+    "name": "Kolesa Академия",
+    "reason": "Краткая оплачиваемая IT-стажировка, а не доказанная самостоятельная учебная структура. Каналы сохраняются для расширения.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  },
+  {
+    "research_file": "cu_kazakhstan.json",
+    "name": "Отдел обучения / корпоративная учебная база Borusan Cat Казахстан",
+    "reason": "Доказан отдел обучения и внешние учебные партнеры, но именованный учебный центр не установлен. Каналы сохраняются для расширения.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  },
+  {
+    "research_file": "cu_kazakhstan.json",
+    "name": "Home Credit University Kazakhstan",
+    "reason": "Сертификат / программа HCU IT Hub не доказывает самостоятельный действующий КУ Казахстана. Каналы сохраняются для расширения.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  },
+  {
+    "research_file": "cu_kazakhstan.json",
+    "name": "Академия дистрибуции Allur",
+    "reason": "Доказана образовательная платформа; организационная самостоятельность академии требует уточнения. Каналы сохраняются для расширения.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  },
+  {
+    "research_file": "cu_kazakhstan.json",
+    "name": "bcc academy",
+    "reason": "Подтвержден внутренний бренд развития сотрудников; отдельная учебная единица требует уточнения. Каналы сохраняются для расширения.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  },
+  {
+    "research_file": "cu_kazakhstan.json",
+    "name": "KASE Academy",
+    "reason": "Подтверждена постоянная образовательная инициатива биржи; организационный статус академии требует уточнения. Каналы сохраняются для расширения.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  },
+  {
+    "research_file": "cu_belarus.json",
+    "name": "Учебный центр РУП «Могилевэнерго»",
+    "reason": "Учебный центр указан отраслевым партнером; требуется актуальное прямое подтверждение структуры.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  },
+  {
+    "research_file": "cu_belarus.json",
+    "name": "Учебный центр Itransition",
+    "reason": "Собственный training center подтвержден, но действующая белорусская география пока не установлена.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  },
+  {
+    "research_file": "cu_ru_industry.json",
+    "name": "LADA Академия",
+    "reason": "LADA Академия и КУ Группы АВТОВАЗ требуют проверки организационной границы. До уточнения дополнительную структуру не считать; оба набора каналов сохранить.",
+    "exclude_main": true
+  },
+  {
+    "research_file": "cu_extra.json",
+    "name": "Медицинская академия МЕДСИ",
+    "reason": "Повторное исследование той же Медицинской академии МЕДСИ; сохранены дополнительные доказательства и каналы.",
+    "exclude_main": true,
+    "alias_of_name": "Медицинская академия МЕДСИ"
+  },
+  {
+    "research_file": "cu_extra.json",
+    "name": "Высшая медицинская школа (учебный центр ИНВИТРО)",
+    "reason": "Повторное исследование Высшей медицинской школы / ИНВИТРО; актуальная принадлежность требует проверки.",
+    "exclude_main": true,
+    "alias_of_name": "Высшая медицинская школа — учебный центр ИНВИТРО"
+  },
+  {
+    "research_file": "cu_extra.json",
+    "name": "Учебный центр Гемотест",
+    "reason": "Доказана именованная учебная платформа. Организационная учебная единица пока не установлена; сохранить для поиска программ и заказчика.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  },
+  {
+    "research_file": "cu_extra.json",
+    "name": "«Мать и дитя» — Учебный центр",
+    "reason": "Доказана именованная учебная платформа. Организационная учебная единица пока не установлена; сохранить для поиска программ и заказчика.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  },
+  {
+    "research_file": "cu_belarus.json",
+    "name": "Центр по работе с персоналом ОАО «Белагропромбанк»",
+    "reason": "Официально подтвержден HR-центр с бизнес-тренерами и внешними провайдерами, но отдельная учебная структура не установлена. Источник заказов сохраняется в резерве.",
+    "exclude_main": true,
+    "institution_type": "candidate"
+  }
+]

@@ -1,0 +1,60 @@
+{
+  "type": "object",
+  "required": [
+    "source_id",
+    "institution_id",
+    "source_url",
+    "channel_type",
+    "verification",
+    "connector_state"
+  ],
+  "properties": {
+    "source_id": {
+      "type": "string",
+      "pattern": "^CU-SRC-[0-9]{4,}$"
+    },
+    "institution_id": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "channel_type": {
+      "enum": [
+        "university_site",
+        "news",
+        "programs",
+        "procurement",
+        "expert_application",
+        "partners",
+        "careers",
+        "social",
+        "contacts"
+      ]
+    },
+    "verification": {
+      "enum": [
+        "content_read",
+        "search_index",
+        "candidate"
+      ]
+    },
+    "connector_state": {
+      "const": "not_checked_here"
+    },
+    "endpoint_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "actual_monthly_cost_rub": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

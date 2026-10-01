@@ -1,5 +1,23 @@
 # Реестр источников МИСБ
 
+## Корпоративные университеты (01.10.2026, MISB_corporate_universities): 247 организаций, 474 канала
+
+Пакет — в `handoff_cu/`, отчёт — `REPORT-cu-2026-10-01.md`. Документы `misb-cu--<source_id>` (один на канал,
+организация — в поле `inst`), `_meta-cu`:
+
+    python3 probe_v3.py handoff_cu/sources.jsonl probe.json
+    RELAY_URL=… RELAY_TOKEN=… python3 relay_probe_v2.py W/out/srcreg-cu relay.json
+    python3 import_cu.py build handoff_cu W --date … --probe probe.json --relay-probe relay.json
+    python3 registry_plan_v2.py W/out/srcreg-v3 ../collector/sources-plan.json --queries handoff_v3/search_queries.jsonl \
+        --cu W/out/srcreg-cu --cu-queries handoff_cu/search_queries.jsonl --write
+    python3 cu_holdings.py handoff_cu/institutions.jsonl ../collector/sources-plan.json --write
+    # план скопировать в W/db/config/ и повторить import_cu.py build: очередь покажет ротацию
+
+Ротации `cu-lists`, `cu-pages`, `cu-retry` и шаблоны `cu-search` пишут результаты в `meta/cu-checks` и
+`meta/cu-query-checks` (поле `checksDoc` источника). Канал, адрес которого уже читает ротация v3 (`reg2-*`), второй раз не
+читается: сайт показывает результат записи v3. `cu_holdings.py` добавляет российские группы пакета в поиск закупок
+TenderGuru по холдингам (`terms`, в конец списка; круг остаётся 31 запуск).
+
 ## Пакет v3 (01.10.2026, MISB_Claude_handoff_v3): 507 записей — действующий
 
 Пакет — в `handoff_v3/`, отчёт — `REPORT-v3-2026-10-01.md`. Импорт тем же скриптом с `--dataset misb-v3`

@@ -1,0 +1,32 @@
+{
+  "main_institutions": 200,
+  "all_research_records": 247,
+  "eligible_named_structures": 217,
+  "reserve": 47,
+  "reserve_confirmed_extra": 17,
+  "reserve_needs_review": 30,
+  "sources": 474,
+  "main_sources": 407,
+  "normalized_url_groups": 444,
+  "queries": 800,
+  "discovery_recipes": 28,
+  "relationships": 56,
+  "playbooks": 20,
+  "acceptance_tests": 24,
+  "countries": {
+    "RU": 147,
+    "BY": 20,
+    "KZ": 33
+  },
+  "types": {
+    "corporate_university": 79,
+    "corporate_academy": 29,
+    "company_training_center": 86,
+    "industry_training_center": 6
+  },
+  "main_evidence": {
+    "content_read": 74,
+    "search_index": 126,
+    "candidate": 0
+  }
+}
