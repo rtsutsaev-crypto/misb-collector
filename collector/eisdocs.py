@@ -80,12 +80,14 @@ def fetch(num):
     try: return num,parse(num,json.loads(b)),200
     except Exception as e: return num,None,'parse:'+str(e)[:60]
 if __name__=='__main__':
-    # usage: GOSPLAN_KEY=... python3 eisdocs.py ids.json out.json  (ids.json — список номеров ЕИС)
+    # usage: GOSPLAN_KEY=... python3 eisdocs.py ids.json out.json [errors.json]  (ids.json — список номеров ЕИС;
+    # errors.json — {номер: код ошибки} для eis_misses.py)
     ids=json.load(open(sys.argv[1])); res={}; errs={}
     with cf.ThreadPoolExecutor(5) as ex:
         for n,r,c in ex.map(fetch,ids):
             if r: res[n]=r
             else: errs[n]=c
     json.dump(res,open(sys.argv[2],'w'),ensure_ascii=False)
+    if len(sys.argv)>3: json.dump({n:str(c) for n,c in errs.items()},open(sys.argv[3],'w'),ensure_ascii=False)
     print(len(ids),'ok',len(res),'err',len(errs),list(errs.items())[:5])
     print('platform',sum(1 for r in res.values() if r.get('platform')),'tz',sum(1 for r in res.values() if r.get('tz')),'docs',sum(1 for r in res.values() if r.get('docs')))
