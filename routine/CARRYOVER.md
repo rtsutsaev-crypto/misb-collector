@@ -140,3 +140,8 @@
     с batch): каждый запуск читает порцию адресов реестра; адреса независимы; результат каждого адреса — в
     `meta/registry-checks` (`collector/registry_checks.py`): ok, empty_success или failed (ошибка доступа ≠ «заказов нет»).
     `kz-mpkz` получил второй адрес — категорию «обучение» MP.kz. Сайт: реестр грузится при открытии вкладки «Источники».
+24. **01.10.2026, версия 6.1: реестр v3 (507 записей) и поисковые шаблоны.** Пакет MISB_Claude_handoff_v3 импортирован
+    (`import_v2.py --dataset misb-v3`; документы `misb-v3--…` заменили `misb-v2--…` с теми же номерами). Ротация
+    расширена: reg2-lists 26 адресов, reg2-pages 343, reg2-retry 82; новый источник `reg3-search` — 256 шаблонов
+    веб-поиска по 8 за запуск, результат шаблона в `meta/query-checks`, новые домены в `meta/discoveries`
+    (`collector/discoveries.py`). Telegram читается через t.me/s/<канал>. Отчёт — `source_registry/REPORT-v3-2026-10-01.md`.

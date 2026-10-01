@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MISB source record v2/v3",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "source_id",
+    "source_name",
+    "source_url",
+    "signal_types",
+    "verification_status",
+    "connector_state",
+    "do_not_drop",
+    "ingestion_policy",
+    "source_generation"
+  ],
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "2.0",
+        "3.0"
+      ]
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^MISB-[0-9]{3,}$"
+    },
+    "source_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "signal_types": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "D",
+          "I",
+          "P",
+          "R"
+        ]
+      }
+    },
+    "verification_status": {
+      "enum": [
+        "content_read",
+        "search_index",
+        "candidate",
+        "link_confirmed"
+      ]
+    },
+    "connector_state": {
+      "enum": [
+        "not_checked_here",
+        "planned",
+        "testing",
+        "operational",
+        "degraded",
+        "blocked_access",
+        "blocked_cost",
+        "manual"
+      ]
+    },
+    "queue_state": {
+      "type": "string"
+    },
+    "do_not_drop": {
+      "const": true
+    },
+    "ingestion_policy": {
+      "const": "retain_raw_then_rank"
+    },
+    "source_generation": {
+      "enum": [
+        "baseline_v1",
+        "added_v2",
+        "discovered_later",
+        "added_v3"
+      ]
+    },
+    "next_due_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_runtime_check_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "legacy_record": {
+      "type": "object"
+    },
+    "country_codes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "RU",
+          "BY",
+          "KZ",
+          "KG",
+          "UZ",
+          "AM",
+          "AZ",
+          "GE",
+          "ZZ"
+        ]
+      }
+    },
+    "source_class": {
+      "type": "string",
+      "description": "Сохраненный исходный класс; для текущей классификации использовать source_class_v3."
+    },
+    "source_class_v3": {
+      "type": "string",
+      "enum": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "C11",
+        "C12",
+        "C13",
+        "C14",
+        "C15",
+        "C16",
+        "C17",
+        "C18",
+        "C19"
+      ]
+    },
+    "source_identity_status": {
+      "enum": [
+        "identity_conflict",
+        "not_separately_checked",
+        "confirmed_current"
+      ]
+    },
+    "endpoint_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "actual_monthly_cost_rub": {
+      "type": [
+        "number",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,5 +1,19 @@
 # Реестр источников МИСБ
 
+## Пакет v3 (01.10.2026, MISB_Claude_handoff_v3): 507 записей — действующий
+
+Пакет — в `handoff_v3/`, отчёт — `REPORT-v3-2026-10-01.md`. Импорт тем же скриптом с `--dataset misb-v3`
+(документы `misb-v3--<source_id>`; заменили документы v2 с теми же номерами):
+
+    python3 probe_v3.py handoff_v3/sources.jsonl probe.json [--skip старый_probe.json]   # Telegram читается как t.me/s/<канал>
+    python3 import_v2.py build handoff_v3 W --dataset misb-v3 --date … --probe probe.json --relay-probe relay.json
+    python3 registry_plan_v2.py W/out/srcreg-v3 ../collector/sources-plan.json --queries handoff_v3/search_queries.jsonl --write
+
+`registry_plan_v2.py` сохраняет порядок адресов в ротации (курсор — позиция в списке), новые добавляет в конец,
+адреса с конфликтом идентичности не подключает; `--queries` добавляет источник `reg3-search` (256 шаблонов, 8 за
+запуск) со списком известных доменов `knownHosts` — новые домены из выдачи пишутся в `meta/discoveries`.
+Совпадение только домена t.me, vk.com, ok.ru и подобных не считается связью с подключённым источником.
+
 ## Пакет v2 (01.10.2026, MISB_Claude_handoff_v2): 282 записи
 
 Пакет целиком — в `handoff_v2/` (копия как есть, контрольные суммы manifest.json сходятся); это и есть хранилище

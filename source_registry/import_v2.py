@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Registry v2 (package MISB_Claude_handoff_v2, 01.10.2026: 282 records MISB-001…MISB-282) -> the site database.
+"""Registry v2/v3 (packages MISB_Claude_handoff_v2: 282 records, and _v3: 507 records MISB-001…MISB-507) -> the site database.
+
+The dataset is chosen with --dataset (misb-v2 by default; misb-v3 for the v3 package, which keeps every v2 field
+unchanged and adds country_codes, source_class_v3, source_roles, entry_surface, source_identity_status and others).
 
 The package is recall-first: every record is kept, duplicates and candidates included (policy R01–R06). A record
 is research, not a working integration: its runtime state comes from the site's own sources (collection `sources`)
@@ -8,7 +11,7 @@ database; a v2 record that has the same address points to them in `match.v1Docs`
 
 Commands (PKG = unpacked package dir, W = work dir: W/db/{sources,orgdir,srcreg}/*.json dumps and
 W/db/config/sources-plan.json = collector/sources-plan.json of the repository):
-  dry-run PKG W [--probe probe.json]                print the reconciliation summary, write nothing
+  dry-run PKG W [--dataset misb-v3] [--probe probe.json]   print the reconciliation summary, write nothing
   build   PKG W --date ГГГГ-ММ-ДД [--probe probe.json] [--relay-probe relay.json]  write W/out/srcreg-v2/<doc>.json, _map-v2.json, _meta.json
 
 Idempotent: document id = "misb-v2--" + source_id; a second build with the same package and date gives the same
@@ -29,6 +32,18 @@ sys.path.insert(0, HERE)
 from import_registry import catalog_keys, host_of, load, norm_url, site_index  # noqa: E402
 
 DATASET = "misb-v2"
+# Platforms where one domain hosts thousands of unrelated channels: a shared host says nothing about the channel.
+SHARED_HOSTS = {"t.me", "vk.com", "ok.ru", "youtube.com", "dzen.ru", "zen.yandex.ru", "rutube.ru"}
+
+
+def out_tag() -> str:
+    return DATASET.replace("misb-", "")
+
+
+def read_url(u):
+    """Address read without login: a public Telegram channel t.me/<name> -> its web preview t.me/s/<name>."""
+    m = re.match(r"^https?://t\.me/(?!s/|joinchat|\+)([A-Za-z0-9_]{4,})/?$", u or "")
+    return f"https://t.me/s/{m.group(1)}" if m else u
 
 # Hand-checked links of v2 records to the site's sources, beyond address equality (same notation as MANUAL in
 # import_registry.py: direct — the same site; via_api — data reaches the site through an API or aggregator that is
@@ -50,13 +65,15 @@ COUNTRY = [("Казахстан", "KZ"), ("Беларусь", "BY"), ("Бело�
 # other field stays in the repository copy of the package (source_registry/handoff_v2/), which is the provenance.
 PKG_KEEP = ("next_action", "collection_proposal", "access_note", "cost_note", "risk_note", "evidence_url",
             "parent_hint", "relation_hint", "automation_hint", "metadata_poll_target_hours", "checked_at")
-TASK_KEEP = ("task_id", "status", "stage", "missing_access")
+TASK_KEEP = ("task_id", "status", "stage", "missing_access", "task_kind")
 
 VERIFY_LABEL = {"content_read": "содержание страницы прочитано", "search_index": "подтверждено поисковой выдачей",
                 "candidate": "кандидат: адрес и применимость уточнить"}
 
 
-def countries(geo: str | None) -> list:
+def countries(geo: str | None, codes=None) -> list:
+    if codes:
+        return list(codes)
     g = geo or ""
     out = []
     for k, c in COUNTRY:
@@ -81,7 +98,7 @@ def v1_index(W: str) -> dict:
 
 
 def match(r: dict, plan_keys: set, by_url, by_host, v1) -> dict:
-    urls = [r.get("source_url"), (r.get("legacy_record") or {}).get("url")]
+    urls = [r.get("source_url"), (r.get("legacy_record") or {}).get("url"), read_url(r.get("source_url"))]
     v1docs, v1m = [], None
     for u in urls:
         for did, m in v1.get(norm_url(u), []) if u else []:
@@ -101,7 +118,8 @@ def match(r: dict, plan_keys: set, by_url, by_host, v1) -> dict:
         exact |= by_url.get(norm_url(u), set()) if u else set()
     if exact:
         return {**base, "status": "matched", "how": "canonical-url", "relation": "direct", "siteKeys": sorted(exact), "note": ""}
-    cand = by_host.get(host_of(r.get("source_url")), set())
+    h = host_of(r.get("source_url"))
+    cand = set() if h in SHARED_HOSTS else by_host.get(h, set())
     if cand:
         return {**base, "status": "candidate", "how": "same-host", "relation": None, "siteKeys": sorted(cand),
                 "note": "Совпал домен, но не адрес раздела: возможно, другой раздел или канал; не склеено."}
@@ -138,6 +156,9 @@ def access_of(p: dict | None) -> tuple[str, str]:
 def queue_of(r: dict, m: dict, plan: dict, access: str, today: str, docs: dict | None = None) -> dict:
     hours = r.get("metadata_poll_target_hours") or (24 if r.get("priority_wave") == 1 else 168)
     due = (dt.date.fromisoformat(today) + dt.timedelta(hours=hours)).isoformat()
+    if r.get("source_identity_status") == "identity_conflict":
+        return {"state": "identity_check", "nextDueAt": due, "reason": "конфликт идентичности: адрес, вероятно, принадлежит другому владельцу; не подключается",
+                "nextStep": r.get("next_action")}
     srcs = {s["key"]: s for s in plan.get("sources", [])}
     keys = [k for k in m.get("siteKeys", []) if k in srcs] if m["status"] == "matched" else []
     live = [k for k in keys if srcs[k].get("type") != "skip"]
@@ -225,7 +246,7 @@ def summary(rows) -> dict:
 def build(pkg: str, W: str, today: str, probe: dict, relay: dict | None = None) -> dict:
     rows = reconcile(pkg, W, probe, today, relay)
     man = json.load(open(os.path.join(pkg, "manifest.json"), encoding="utf-8"))
-    out = os.path.join(W, "out", "srcreg-v2")
+    out = os.path.join(W, "out", "srcreg-" + out_tag())
     os.makedirs(out, exist_ok=True)
     mp = {}
     for r, task, rels, m, p, acc, acc_note, q in rows:
@@ -234,33 +255,44 @@ def build(pkg: str, W: str, today: str, probe: dict, relay: dict | None = None) 
         mp[sid] = {"doc": did, "siteKeys": m["siteKeys"] if m["status"] == "matched" else [], "v1Docs": m["v1Docs"]}
         doc = {
             "key": f"{DATASET}:{sid}", "datasetId": DATASET, "sourceId": sid, "legacyRowId": int(re.sub(r"\D", "", sid) or 0),
-            "name": r.get("source_name"), "url": r.get("source_url"), "countries": countries(r.get("geography")),
-            "type": r.get("source_category"), "cls": r.get("source_class"), "signals": r.get("signal_types") or [],
+            "name": r.get("source_name"), "url": r.get("source_url"), "countries": countries(r.get("geography"), r.get("country_codes")),
+            "readUrl": read_url(r.get("source_url")),
+            "type": r.get("source_category"), "cls": r.get("source_class_v3") or r.get("source_class"), "clsLabel": r.get("source_class_label"),
+            "signals": r.get("source_roles") or r.get("signal_types") or [], "surface": r.get("entry_surface"),
+            "identity": r.get("source_identity_status"), "route": r.get("commercial_route_label"),
             "priority": r.get("priority_wave"), "generation": r.get("source_generation"), "state": r.get("source_state"),
             "verification": r.get("verification_status"), "evidenceScope": r.get("evidence_scope"),
             # columns shared with the 29.09 registry view
             "research": {"page_status_text": VERIFY_LABEL.get(r.get("verification_status"), r.get("verification_status")),
                          "page_result_text": r.get("evidence_summary"), "checked_on": r.get("checked_at"),
                          "next_action_text": q["nextStep"] or r.get("next_action")},
-            "match": m, "access": {"state": acc, "note": acc_note}, "probe": p, "queue": q,
+            "match": m, "access": {"state": acc, "note": acc_note},
+            "probe": {"checkedOn": p.get("checkedOn"), "url": {k: (p.get("url") or {}).get(k) for k in ("url", "status", "gate", "robots", "size", "procWords", "dates")}} if p else None,
+            "queue": q,
             "task": {k: (task or {}).get(k) for k in TASK_KEEP}, "relations": [{k: x.get(k) for k in ("relationship_id", "from_source_id", "to_source_id", "relation", "confidence", "note", "action")} for x in rels],
             "pkg": {k: r.get(k) for k in PKG_KEEP},  # full record: source_registry/handoff_v2/sources.jsonl
             "packageVersion": man.get("package_version"), "importedAt": today,
         }
         json.dump(doc, open(os.path.join(out, did + ".json"), "w", encoding="utf-8"), ensure_ascii=False)
-    json.dump({"map": mp, "note": "source_id пакета v2 -> документ реестра, ключи источников сбора и документы реестра 29.09 с тем же адресом."},
-              open(os.path.join(out, "_map-v2.json"), "w", encoding="utf-8"), ensure_ascii=False)
+    json.dump({"map": mp, "note": f"source_id пакета {out_tag()} -> документ реестра, ключи источников сбора и документы реестра 29.09 с тем же адресом."},
+              open(os.path.join(out, "_map-" + out_tag() + ".json"), "w", encoding="utf-8"), ensure_ascii=False)
     s = summary(rows)
     meta = {"datasetId": DATASET, "packageVersion": man.get("package_version"), "sourceCount": len(rows), "importedAt": today,
             "counts": s, "previous": {"datasetId": "misb-research-20260929", "note": "100 записей пакета 29.09 остаются в базе; совпадающие адреса связаны через match.v1Docs."},
             "note": "Реестр полноты: все записи сохраняются (кандидаты, дубли, закрытые). Статусы пакета (content_read, search_index, candidate) — "
                     "подтверждение источника, не работа сборщика; состояние подключения берётся из источников сайта."}
+    for name, key in (("search_queries.jsonl", "searchQueries"), ("coverage_tasks.jsonl", "coverageTasks"), ("discovery_recipes.jsonl", "discoveryRecipes")):
+        f = os.path.join(pkg, name)
+        if os.path.exists(f):
+            meta[key] = sum(1 for x in open(f, encoding="utf-8") if x.strip())
     json.dump(meta, open(os.path.join(out, "_meta.json"), "w", encoding="utf-8"), ensure_ascii=False)
     return s
 
 
 if __name__ == "__main__":
     a = sys.argv[1:]
+    if "--dataset" in a:
+        DATASET = a[a.index("--dataset") + 1]
     if len(a) < 3 or a[0] not in ("dry-run", "build"):
         sys.exit(__doc__)
     day = a[a.index("--date") + 1] if "--date" in a else dt.date.today().isoformat()
