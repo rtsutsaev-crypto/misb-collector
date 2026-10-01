@@ -40,8 +40,11 @@ def get(path, params, stats):
     return None
 
 
-def walk(law, field, since, until, stats, limit_req):
-    """Все записи с field_after > since (keyset по возрастанию, по 100)."""
+def walk(law, field, since, until, stats, limit_req, today):
+    """Все записи с field_after > since (keyset по возрастанию, по 100), день за днём до сегодняшнего.
+    ГосПлан отдаёт по *_after только записи того же календарного дня (проверено 01.10.2026: после
+    2026-09-30T23:59:36 — одна запись этой секунды, ни одной за 1 октября), поэтому, исчерпав день,
+    курсор переходит на 00:00:00 следующего дня. Ошибка запроса — стоп без перехода, чтобы не потерять день."""
     sort = ("published_at_asc" if field == "published" else "updated_at_asc")
     key = "published_at" if field == "published" else "updated_at"
     cur, seen, out = since, set(), []
@@ -49,12 +52,18 @@ def walk(law, field, since, until, stats, limit_req):
         p = {f"{field}_after": cur, "limit": 100, "sort": sort}
         if until: p[f"{field}_before"] = until
         j = get(f"/{law}/purchases", p, stats)
-        if not isinstance(j, list) or not j: break
+        if not isinstance(j, list): break
         fresh = [x for x in j if x.get("purchase_number") not in seen]
         for x in fresh: seen.add(x["purchase_number"]); out.append(x)
-        last = j[-1].get(key) or cur
-        if not fresh or last == cur or len(j) < 100: cur = last; break
-        cur = last
+        last = (j[-1].get(key) if j else None) or cur
+        if fresh and last != cur and len(j) >= 100:
+            cur = last
+            time.sleep(0.12)
+            continue
+        cur = max(cur, last)
+        nxt = (dt.date.fromisoformat(cur[:10]) + dt.timedelta(days=1)).isoformat()
+        if nxt > today or (until and nxt > until[:10]): break
+        cur = nxt + "T00:00:00"
         time.sleep(0.12)
     return out, cur
 
@@ -92,7 +101,7 @@ def main():
     for law in ("fz44", "fz223"):
         src = "gosplan:" + law
         since = (st.get("published") or {}).get(law) or start
-        recs, cur = walk(law, "published", since, until, stats, x.max_requests)
+        recs, cur = walk(law, "published", since, until, stats, x.max_requests, today)
         new_state["published"][law] = cur
         rows = [to_row(r, law) for r in recs]
         L, U, s = C.process_rows(rows, m, K, src, today)
@@ -117,7 +126,7 @@ def main():
         leads += L + extra; updates += U
         # обновления известных закупок: новый срок, отмена
         usince = (st.get("updated") or {}).get(law) or start
-        urecs, ucur = walk(law, "updated", usince, until, stats, x.max_requests)
+        urecs, ucur = walk(law, "updated", usince, until, stats, x.max_requests, today)
         new_state["updated"][law] = ucur
         uu = 0
         for r in (to_row(q, law) for q in urecs):
