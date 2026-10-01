@@ -23,6 +23,8 @@
 | `speaker_boards.py` | `config/speakerboards.code` | speaker-boards |
 | `dadata.py` | `config/dadatalib.code` | enrich-dadata |
 | `eisdocs.py` | `config/eisdocs.code` | eis-docs |
+| `save_leads.py` | — | запись лидов источника в leadsets по ходу сбора (до 300 лидов и 250 КБ на документ) |
+| `progress.py` | — | файл прогресса для `progress/current`: init, source, stage, finish, error |
 
 Правка инструкции, плана, словаря или скрипта: коммит сюда, затем новый SHA коммита в тексте задания
 Routine (шаг 0). Без обновления SHA запуск продолжит брать прежнюю версию.
