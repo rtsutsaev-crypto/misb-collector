@@ -1,0 +1,24 @@
+{
+  "legacy_files_preserved": 316,
+  "legacy_records": 48628,
+  "legacy_source_assertions": 21007,
+  "legacy_url_endpoints": 4156,
+  "opportunities_retained": 191,
+  "buyers_retained": 174,
+  "shortlist_rechecked": 37,
+  "shortlist_read_states": {
+    "public_teaser_restricted": 18,
+    "request_body_read": 7,
+    "reader_error": 11,
+    "generic_page": 1
+  },
+  "shortlist_attempts": 48,
+  "source_probes": 12,
+  "pilot_sources": 33,
+  "pilot_surface_tasks": 198,
+  "source_scorecards": 136,
+  "offer_families": 19,
+  "new_query_templates": 144,
+  "coverage_objectives": 864,
+  "new_buyer_confirmations": 0
+}

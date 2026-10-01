@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "baseline_package_files_preserved": 47,
+  "baseline_sheets_preserved": 15,
+  "total_sheets": 21,
+  "new_candidate_groups": 259,
+  "secondary_groups": 47,
+  "query_constructions": 324,
+  "foreign_keys_valid": true,
+  "xlsx_error_cells": 0,
+  "new_sheet_id_parity": true,
+  "temporary_review_inputs_removed": true,
+  "visual_review": "12 representative ranges, including all six new sheets and changed overview/Claude views",
+  "live_collection_status": "not_deployed; direct target HTTP not validated"
+}

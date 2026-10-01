@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "baseline_datasets_byte_identical": true,
+  "baseline_nonempty_cells_and_formulas_preserved_except_documented_labels": true,
+  "new_foreign_keys_and_ids_valid": true,
+  "observations_covered_once": 196,
+  "need_records": 191,
+  "buyer_confirmed_leads": 0,
+  "sheets": 15,
+  "xlsx_error_cells": 0,
+  "live_collectors_tested": 0,
+  "visual_review": "14 representative workbook ranges inspected; no clipping observed in inspected cells",
+  "limitations": [
+    "Collectors are specifications; no live collector integration test.",
+    "Tenfold growth not measured.",
+    "Public organization contacts are not verified request owners."
+  ]
+}

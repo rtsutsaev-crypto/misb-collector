@@ -1,0 +1,7 @@
+{"task_id": "V4-I01", "task": "Import v4 candidates as discovery records; preserve old source and manager IDs", "acceptance": "Two imports produce no extra records; manual notes remain unchanged"}
+{"task_id": "V4-I02", "task": "Run native HTTP source bindings in target environment and tune selectors against actual HTML", "acceptance": "Each binding has saved retrieval metadata, expected item IDs, known date evidence, and explicit pagination limits"}
+{"task_id": "V4-I03", "task": "Add site-specific comment and attachment traversal", "acceptance": "Comment/attachment parent IDs preserved; blocked files remain queued; dates never inherited as publication without evidence"}
+{"task_id": "V4-I04", "task": "Connect existing Claude classification with strict evidence schema", "acceptance": "Unknown stays null; buyer confirmation only manual; unmatched is retained and sampled; actual token cost recorded"}
+{"task_id": "V4-I05", "task": "Connect reviewer form and missed-demand audit", "acceptance": "Whole-feed snapshots manually split before post-level recall; weighted/global recall not claimed"}
+{"task_id": "V4-I06", "task": "Install Russian OCR language pack in deployment environment if image extraction is needed", "acceptance": "Russian brief fixture is reviewed manually for names, dates and budget fields"}
+{"task_id": "V4-I07", "task": "Reconcile shared monthly budget and launch proposed pilot after deployment approval", "acceptance": "All modules remain within 10,000 RUB/month; no paid connector enabled with unknown remaining budget"}

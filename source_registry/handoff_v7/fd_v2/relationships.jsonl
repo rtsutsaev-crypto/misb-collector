@@ -1,0 +1,93 @@
+{"from_id":"FD-O077","to_id":"FD-O078","type":"same_item_url","action":"keep_both"}
+{"from_id":"FD-O085","to_id":"FD-O086","type":"same_item_url","action":"keep_both"}
+{"from_id":"FD-O087","to_id":"FD-O088","type":"same_item_url","action":"keep_both"}
+{"from_id":"FD-O117","to_id":"FD-O118","type":"same_item_url","action":"keep_both"}
+{"from_id":"FD-X001","to_id":"FD-S011","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X002","to_id":"FD-S028","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X004","to_id":"FD-S011","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X005","to_id":"FD-S026","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X006","to_id":"FD-S024","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-S018","to_id":"FD-S127","type":"discovered_via_related_source","action":"keep_both","review_id":"digital-R07"}
+{"from_id":"FD-X007","to_id":"FD-S127","type":"promoted_to_source","action":"keep_both"}
+{"from_id":"FD-X010","to_id":"FD-S013","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X011","to_id":"FD-S128","type":"promoted_to_source","action":"keep_both"}
+{"from_id":"FD-X012","to_id":"FD-S030","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X013","to_id":"FD-S129","type":"promoted_to_source","action":"keep_both"}
+{"from_id":"FD-X014","to_id":"FD-S130","type":"promoted_to_source","action":"keep_both"}
+{"from_id":"FD-X015","to_id":"FD-S049","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X016","to_id":"FD-S052","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X017","to_id":"FD-S055","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-S048","to_id":"FD-S131","type":"discovered_via_related_source","action":"keep_both","review_id":"digital-R18"}
+{"from_id":"FD-X018","to_id":"FD-S131","type":"promoted_to_source","action":"keep_both"}
+{"from_id":"FD-S061","to_id":"FD-S132","type":"discovered_via_related_source","action":"keep_both","review_id":"digital-R19"}
+{"from_id":"FD-X019","to_id":"FD-S132","type":"promoted_to_source","action":"keep_both"}
+{"from_id":"FD-S062","to_id":"FD-S133","type":"discovered_via_related_source","action":"keep_both","review_id":"digital-R20"}
+{"from_id":"FD-X020","to_id":"FD-S133","type":"promoted_to_source","action":"keep_both"}
+{"from_id":"FD-X021","to_id":"FD-S065","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X022","to_id":"FD-S069","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X023","to_id":"FD-S072","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-S074","to_id":"FD-S134","type":"discovered_via_related_source","action":"keep_both","review_id":"discovery-functional-R03"}
+{"from_id":"FD-X024","to_id":"FD-S134","type":"promoted_to_source","action":"keep_both"}
+{"from_id":"FD-X025","to_id":"FD-S075","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X026","to_id":"FD-S079","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X027","to_id":"FD-S080","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X028","to_id":"FD-S081","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X029","to_id":"FD-S082","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X030","to_id":"FD-S082","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X031","to_id":"FD-S085","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X032","to_id":"FD-S070","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X033","to_id":"FD-S070","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X034","to_id":"FD-S087","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-S090","to_id":"FD-S135","type":"discovered_via_related_source","action":"keep_both","review_id":"discovery-functional-R14"}
+{"from_id":"FD-X035","to_id":"FD-S135","type":"promoted_to_source","action":"keep_both"}
+{"from_id":"FD-X036","to_id":"FD-S099","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X037","to_id":"FD-S099","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X038","to_id":"FD-S104","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X039","to_id":"FD-S108","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-S109","to_id":"FD-S136","type":"discovered_via_related_source","action":"keep_both","review_id":"devents-R02"}
+{"from_id":"FD-X040","to_id":"FD-S136","type":"promoted_to_source","action":"keep_both"}
+{"from_id":"FD-X041","to_id":"FD-S109","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X042","to_id":"FD-S109","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X043","to_id":"FD-S114","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X044","to_id":"FD-S115","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X045","to_id":"FD-S115","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X046","to_id":"FD-S115","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X047","to_id":"FD-S026","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X048","to_id":"FD-S117","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X049","to_id":"FD-S117","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X050","to_id":"FD-S117","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X051","to_id":"FD-S118","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X052","to_id":"FD-S120","type":"single_item_under_source","action":"keep_both"}
+{"from_id":"FD-X053","to_id":"FD-S121","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-X054","to_id":"FD-S122","type":"linked_existing_source","action":"keep_both"}
+{"from_id":"FD-O034","to_id":"FD-O137","type":"possible_same_demand_unconfirmed","reason":"Похожая регулярная серия инвестиционных воркшопов; в публичном анонсе нет контакта для надёжного сопоставления. Номер отдельный, уникальность заказа не доказана.","action":"keep_both_review_identity"}
+{"from_id":"FD-O038","to_id":"FD-O137","type":"possible_same_demand_unconfirmed","reason":"Похожая регулярная серия инвестиционных воркшопов; в публичном анонсе нет контакта для надёжного сопоставления. Номер отдельный, уникальность заказа не доказана.","action":"keep_both_review_identity"}
+{"from_id":"FD-O059","to_id":"FD-O166","type":"same_demand_different_publication","reason":"Отдельная публикация в ProjectExperts с совпадающими параметрами ранее сохранённого брифа СПИКЕРСКОЙ. Сохранить обе публикации; не считать доказанным новым уникальным заказом.","action":"keep_both_with_independent_publication_dates"}
+{"from_id":"FD-O057","to_id":"FD-O167","type":"same_demand_different_publication","reason":"Отдельная публикация в ProjectExperts с совпадающими параметрами ранее сохранённого брифа СПИКЕРСКОЙ. Сохранить обе публикации; не считать доказанным новым уникальным заказом.","action":"keep_both_with_independent_publication_dates"}
+{"from_id":"FD-O056","to_id":"FD-O168","type":"same_demand_different_publication","reason":"Отдельная публикация в ProjectExperts с совпадающими параметрами ранее сохранённого брифа СПИКЕРСКОЙ. Сохранить обе публикации; не считать доказанным новым уникальным заказом.","action":"keep_both_with_independent_publication_dates"}
+{"from_id":"FD-O060","to_id":"FD-O169","type":"same_demand_different_publication","reason":"Отдельная публикация в ProjectExperts с совпадающими параметрами ранее сохранённого брифа СПИКЕРСКОЙ. Сохранить обе публикации; не считать доказанным новым уникальным заказом.","action":"keep_both_with_independent_publication_dates"}
+{"from_id":"FD-O058","to_id":"FD-O170","type":"same_demand_different_publication","reason":"Отдельная публикация в ProjectExperts с совпадающими параметрами ранее сохранённого брифа СПИКЕРСКОЙ. Сохранить обе публикации; не считать доказанным новым уникальным заказом.","action":"keep_both_with_independent_publication_dates"}
+{"from_id":"FD-O055","to_id":"FD-O171","type":"possible_same_demand_unconfirmed","reason":"Совпадают город, союз предпринимателей, размер аудитории и произвольная бизнес-тема. В публичном кратком брифе нет уникального контакта/даты для окончательного объединения.","action":"keep_both_review_identity"}
+{"from_id":"FD-O026","to_id":"FD-O173","type":"possible_same_demand_unconfirmed","reason":"Оба брифа крупного банка о ноябрьской конференции, но даты/темы и бюджет различаются; объединять без подтверждения нельзя.","action":"keep_both_review_identity"}
+{"from_id":"FD-O032","to_id":"FD-S115","type":"also_observed_via_source","action":"keep_provenance"}
+{"from_id":"FD-O184","to_id":"FD-O185","type":"same_page_different_item_or_unresolved_duplicate","action":"keep_both_review_identity"}
+{"from_id":"FD-O187","to_id":"FD-O188","type":"same_page_different_item_or_unresolved_duplicate","action":"keep_both_review_identity"}
+{"from_id":"FD-O187","to_id":"FD-O189","type":"same_page_different_item_or_unresolved_duplicate","action":"keep_both_review_identity"}
+{"from_id":"FD-O188","to_id":"FD-O189","type":"same_page_different_item_or_unresolved_duplicate","action":"keep_both_review_identity"}
+{"from_id":"FD-O187","to_id":"FD-O190","type":"same_page_different_item_or_unresolved_duplicate","action":"keep_both_review_identity"}
+{"from_id":"FD-O188","to_id":"FD-O190","type":"same_page_different_item_or_unresolved_duplicate","action":"keep_both_review_identity"}
+{"from_id":"FD-O189","to_id":"FD-O190","type":"same_page_different_item_or_unresolved_duplicate","action":"keep_both_review_identity"}
+{"from_id":"FD-O187","to_id":"FD-O191","type":"same_page_different_item_or_unresolved_duplicate","action":"keep_both_review_identity"}
+{"from_id":"FD-O188","to_id":"FD-O191","type":"same_page_different_item_or_unresolved_duplicate","action":"keep_both_review_identity"}
+{"from_id":"FD-O189","to_id":"FD-O191","type":"same_page_different_item_or_unresolved_duplicate","action":"keep_both_review_identity"}
+{"from_id":"FD-O190","to_id":"FD-O191","type":"same_page_different_item_or_unresolved_duplicate","action":"keep_both_review_identity"}
+{"from_id":"FD-O124","to_id":"FD-S125","type":"also_observed_via_source","action":"keep_provenance"}
+{"from_id":"FD-O077","to_id":"FD-O078","type":"shared_url_identity_unconfirmed","action":"keep_both_review_item_identity"}
+{"from_id":"FD-O085","to_id":"FD-O086","type":"shared_url_identity_unconfirmed","action":"keep_both_review_item_identity"}
+{"from_id":"FD-O087","to_id":"FD-O088","type":"shared_url_identity_unconfirmed","action":"keep_both_review_item_identity"}
+{"from_id":"FD-O117","to_id":"FD-O118","type":"shared_url_identity_unconfirmed","action":"keep_both_review_item_identity"}
+{"from_id":"FD-O184","to_id":"FD-O185","type":"shared_url_identity_unconfirmed","action":"keep_both_review_item_identity"}
+{"from_id":"FD-O187","to_id":"FD-O188","type":"shared_url_identity_unconfirmed","action":"keep_both_review_item_identity"}
+{"from_id":"FD-O187","to_id":"FD-O189","type":"shared_url_identity_unconfirmed","action":"keep_both_review_item_identity"}
+{"from_id":"FD-O187","to_id":"FD-O190","type":"shared_url_identity_unconfirmed","action":"keep_both_review_item_identity"}
+{"from_id":"FD-O187","to_id":"FD-O191","type":"shared_url_identity_unconfirmed","action":"keep_both_review_item_identity"}

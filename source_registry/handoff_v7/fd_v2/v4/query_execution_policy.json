@@ -1,0 +1,24 @@
+{
+  "sources": [
+    "public web search",
+    "optional TGStat Search",
+    "native notifications",
+    "authorised exports"
+  ],
+  "tgstat": {
+    "docs_url": "https://api.tgstat.ru/docs/ru/posts/search.html",
+    "startDate_required": true,
+    "endDate_required": true,
+    "limit": 50,
+    "max_offset": 1000,
+    "split_windows_on_truncation": true,
+    "hideForwards": 0,
+    "country_filter_default": null,
+    "category_filter_default": null,
+    "paid_execution_enabled": false
+  },
+  "generation": "324 added query constructions; combine conversational intent with service, buyer role and optional region. Rotate queries; do not execute full Cartesian product each run.",
+  "default_negative_terms": [],
+  "unmatched": "retain and sample",
+  "site_access": "No CAPTCHA bypass; error remains unresolved."
+}

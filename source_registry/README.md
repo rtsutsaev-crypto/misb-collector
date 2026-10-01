@@ -1,5 +1,17 @@
 # Реестр источников МИСБ
 
+## Мастер-пакет v7 (02.10.2026, MISB_Sources_v7_Complete): расширение поиском + архив v6/v5
+
+Пакет — в `handoff_v7/` (v7 целиком; v6 без вложенного архива v5; из v5 — сводка, книга и `endpoints.jsonl`;
+`fd_v2/` — пакет growth v4 со свежим спросом v2), отчёт — `REPORT-v7-2026-10-02.md`. Полный архив с оригиналами v5
+(197 МБ) в репозиторий не копировался: SHA-256 архива — в отчёте.
+
+    python3 import_fd.py build handoff_v7/fd_v2 W --date … --probe handoff_v7/fd_v2/probe-2026-10-01.json \
+        --needs handoff_v7/v6/data/opportunities.jsonl                 # 136 каналов, 196 наблюдений + слой v6
+    python3 import_v7.py build <распакованный v7> W --date … --probe probe.json   # misb-v7--…, demand V7-X…
+    python3 import_v7.py queries <распакованный v7> handoff_v7/search_queries_v7.jsonl
+    python3 registry_plan_v2.py … --fd W/out/srcreg-fd --v7 W/out/srcreg-v7 --v7-queries handoff_v7/search_queries_v7.jsonl --write
+
 ## Свежие потребности (01.10.2026, MISB_fresh_demand): 126 каналов, 131 наблюдение
 
 Пакет — в `handoff_fd/`, отчёт — `REPORT-fd-2026-10-01.md`. Каналы — документы `misb-fd--FD-S…` и `_meta-fd`

@@ -1,0 +1,8 @@
+{
+  "shared_monthly_cap_rub": 10000,
+  "existing_monthly_spend_rub": null,
+  "paid_calls_made": 0,
+  "paid_connectors_enabled": false,
+  "automatic_schedule_enabled": false,
+  "rule": "No new paid spend until actual shared remaining budget is known. This package makes no LLM calls."
+}

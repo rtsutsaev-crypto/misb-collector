@@ -1,0 +1,152 @@
+{
+  "version": "2.0",
+  "as_of": "2026-10-01",
+  "counts": {
+    "delta": {
+      "reviewed_targets": 97,
+      "discovery_reviewed": 54,
+      "sources_rechecked": 43,
+      "new_sources": 10,
+      "new_observations": 65,
+      "updated_observations": 9,
+      "new_discovery": 63,
+      "recovered_demand_assessment": 16
+    },
+    "sources": 136,
+    "normalized_source_urls": 136,
+    "observations": 196,
+    "concrete_14": 41,
+    "concrete_15_30": 24,
+    "all_14": 52,
+    "all_15_30": 32,
+    "queue_now": 37,
+    "undated": 99,
+    "standing": 41,
+    "not_assessable": 27,
+    "content_read": 113,
+    "discovery": 117,
+    "relations": 93
+  },
+  "validation": {
+    "source_ids_unique": true,
+    "observation_source_links_valid": true,
+    "dates_not_after_asof": true,
+    "source_observation_counts_reconciled": true,
+    "overview_formulas_reconciled": true,
+    "budget_sum_rub": 10000,
+    "live_collectors_deployed": false,
+    "outreach_performed": false
+  },
+  "files": [
+    {
+      "name": "sources.jsonl",
+      "bytes": 417444,
+      "sha256": "235485e07934dc8541aba708a0724aa7b6137634f695a45ec8575addd18b5280"
+    },
+    {
+      "name": "observations.jsonl",
+      "bytes": 647505,
+      "sha256": "64c6bb19b1b0285dcde36689d03a4fe556989f04ec6ba3d6c9ebea4f1ccbc1b9"
+    },
+    {
+      "name": "discovery.jsonl",
+      "bytes": 123717,
+      "sha256": "e840366849909bb3501976a13a965424716b62c24afdd4e2a08d06c419c64ac7"
+    },
+    {
+      "name": "relationships.jsonl",
+      "bytes": 12761,
+      "sha256": "ffbb53cab4105999c74d08c9e1b32b5430735b928317515c75a987103f8cc5ac"
+    },
+    {
+      "name": "raw_research.json",
+      "bytes": 1200789,
+      "sha256": "c60d5d0351556f651f4bb1ffdbc50badd3497f86b90fd48113446f17989d8710"
+    },
+    {
+      "name": "editorial_adjustments.json",
+      "bytes": 4457,
+      "sha256": "a47e702f1686aab91d0944c5d43bc6486f090b80861f01f81b74c78167559515"
+    },
+    {
+      "name": "counts.json",
+      "bytes": 546,
+      "sha256": "769ca25b5dbe47874d68c12f8b09100d6d95de98e6093e6ad05d053b98d64c09"
+    },
+    {
+      "name": "review_log.jsonl",
+      "bytes": 226329,
+      "sha256": "d74dee67c757049d1d4323114b9de367a05a88168e7a8df87f496c046e240984"
+    },
+    {
+      "name": "change_log.jsonl",
+      "bytes": 38944,
+      "sha256": "87c81134547917fe03315504028ee43895d37bb57ae719350d86779caac20f54"
+    },
+    {
+      "name": "delta_counts.json",
+      "bytes": 219,
+      "sha256": "b64e48d181bc83756e02525218b6429e82854df2a75c6065e5e4b53169c7254c"
+    },
+    {
+      "name": "policy.json",
+      "bytes": 4622,
+      "sha256": "c8dd4760a84ff2fd6ad554129dac1c39238ec989cb7710172c23fac731fa3020"
+    },
+    {
+      "name": "collection_plan.json",
+      "bytes": 3930,
+      "sha256": "c064429c5ad82ff1a075f312d983385f4d7f635fc4da31e5cc366e47a892a1cd"
+    },
+    {
+      "name": "budget_policy.json",
+      "bytes": 1421,
+      "sha256": "2abbc7897504a56cd0b31783a2f017a7d4cf13049f4553c50ecdb5ffa56efcc5"
+    },
+    {
+      "name": "README_CLAUDE.txt",
+      "bytes": 9968,
+      "sha256": "0e7a42b56fc03ef07295c5054473c138906833c133cd8725cb4705dc8e80181a"
+    },
+    {
+      "name": "review_notes.json",
+      "bytes": 11073,
+      "sha256": "ea492bb7bc6a77e43ae029e59a7f089fb6a74783dba53c23d5059b8c425e440b"
+    },
+    {
+      "name": "qa_structure_final.json",
+      "bytes": 53641,
+      "sha256": "6cf369c8e5fab338af73374bc4b4dee4f887dd9d68f6d5af414b5b72a3e143b0"
+    },
+    {
+      "name": "qa_semantic_final.json",
+      "bytes": 24095,
+      "sha256": "aaffb639beb7875813a75f70977005716ed5f62ab9396d65f0f71a448910fd37"
+    },
+    {
+      "name": "misb_profile.json",
+      "bytes": 1139,
+      "sha256": "42216bcd0d57520804a1fbe5cc55d884aea2ada62c4f3aa9a1bbaeb2afb8ebd3"
+    },
+    {
+      "name": "vocabulary.json",
+      "bytes": 27306,
+      "sha256": "10e46693b072cd7da90eea69a50eafd233398556df8503f7e5d49547550bc81b"
+    },
+    {
+      "name": "sources.csv",
+      "bytes": 365218,
+      "sha256": "2a9491de348f8a507e997b91af926f7dd431e56268b47939a87baad6f6ab7051"
+    },
+    {
+      "name": "observations.csv",
+      "bytes": 508657,
+      "sha256": "8b19ad9df14098b1d2d55fd062b3b58488f4bade7c295e0216b1a15f6b152016"
+    },
+    {
+      "name": "discovery.csv",
+      "bytes": 100355,
+      "sha256": "e5eff32c4337f3e0c049376a334dc0486514790c6224e17a5c7d32c92bc0dccf"
+    }
+  ]
+}

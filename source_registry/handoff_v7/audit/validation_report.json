@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "checked_on": "2026-10-02",
+  "registry_validation": {
+    "passed": true,
+    "errors": [],
+    "registry": 1026,
+    "expansion": 417,
+    "reviews": 100,
+    "attempts": 135,
+    "configs": 439
+  },
+  "v6_files_checked": 340,
+  "v6_files_identical": 340,
+  "v6_changed_files": [],
+  "v6_zip_sha256": "afe71c76cfd6444995be2f8e1805a4015ad9f9afd8c1f134c07236e04d0494cc",
+  "workbook_sheets": 12,
+  "formula_errors": [],
+  "cached_summary_values_verified": true,
+  "visual_review": "All 12 sheets rendered and inspected; primary columns and formula range checked.",
+  "offline_tests_passed": 5,
+  "live_http_configs_tested": 0,
+  "full_14_day_source_coverage": 0,
+  "buyer_confirmed_new": 0,
+  "paid_calls_launched": false,
+  "scheduler_running": false,
+  "copyright_scope": "Authored summaries, metadata and response hashes; raw web page captures excluded."
+}

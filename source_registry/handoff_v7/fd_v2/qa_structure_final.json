@@ -1,0 +1,2116 @@
+{
+  "as_of": "2026-10-01",
+  "complete_mode": true,
+  "research_dir": "/workspace/scratch/954a05902e22/fresh-v2/research",
+  "baseline_dir": "/workspace/scratch/954a05902e22/outputs/misb-fresh-demand-20261001/claude_package",
+  "status": "passed",
+  "counts": {
+    "expected_files": 5,
+    "inspected_files": 5,
+    "assigned_targets": 97,
+    "reviewed_unique_targets": 97,
+    "reviews": 97,
+    "observations": 74,
+    "new_observations": 65,
+    "baseline_observation_updates": 9,
+    "discovery": 59,
+    "proposed_channel_candidates": 11,
+    "exact_duplicate_url_groups": 105,
+    "errors": 0,
+    "warnings": 0
+  },
+  "files": [
+    {
+      "file": "discovery_digital.json",
+      "expected": true,
+      "reviews": 21,
+      "observations": 43,
+      "discovery": 10,
+      "missing_target_ids": []
+    },
+    {
+      "file": "discovery_events.json",
+      "expected": true,
+      "reviews": 16,
+      "observations": 9,
+      "discovery": 14,
+      "missing_target_ids": []
+    },
+    {
+      "file": "discovery_functional.json",
+      "expected": true,
+      "reviews": 17,
+      "observations": 8,
+      "discovery": 8,
+      "missing_target_ids": []
+    },
+    {
+      "file": "retry_hr.json",
+      "expected": true,
+      "reviews": 25,
+      "observations": 9,
+      "discovery": 14,
+      "missing_target_ids": []
+    },
+    {
+      "file": "retry_other.json",
+      "expected": true,
+      "reviews": 18,
+      "observations": 5,
+      "discovery": 13,
+      "missing_target_ids": []
+    }
+  ],
+  "missing_files": [],
+  "missing_target_ids": [],
+  "promotion_candidate_target_ids": [
+    "FD-X007",
+    "FD-X011",
+    "FD-X013",
+    "FD-X014",
+    "FD-X018",
+    "FD-X019",
+    "FD-X020",
+    "FD-X040",
+    "FD-X047",
+    "FD-X024",
+    "FD-X035"
+  ],
+  "promotion_count_note": "Provisional candidates only. Single items, mirrors, unknown kinds and baseline source reviews are excluded; no actual channels were created or counted as confirmed.",
+  "issues": [],
+  "duplicate_exact_urls": [
+    {
+      "url": "https://profi.ru/rabota/",
+      "occurrences": [
+        {
+          "url": "https://profi.ru/rabota/",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S003"
+        },
+        {
+          "url": "https://profi.ru/rabota/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R01"
+        }
+      ]
+    },
+    {
+      "url": "https://youdo.com/tasks",
+      "occurrences": [
+        {
+          "url": "https://youdo.com/tasks",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S004"
+        },
+        {
+          "url": "https://youdo.com/tasks",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R02"
+        }
+      ]
+    },
+    {
+      "url": "https://kwork.ru/projects",
+      "occurrences": [
+        {
+          "url": "https://kwork.ru/projects",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S005"
+        },
+        {
+          "url": "https://kwork.ru/projects",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R03"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/dl_marketplace",
+      "occurrences": [
+        {
+          "url": "https://t.me/dl_marketplace",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S009"
+        },
+        {
+          "url": "https://t.me/dl_marketplace",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R04"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/BestSpeakersRu",
+      "occurrences": [
+        {
+          "url": "https://t.me/BestSpeakersRu",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S012"
+        },
+        {
+          "url": "https://t.me/BestSpeakersRu",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R05"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/metod_krug",
+      "occurrences": [
+        {
+          "url": "https://t.me/metod_krug",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S014"
+        },
+        {
+          "url": "https://t.me/metod_krug",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R06"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/educational_lab",
+      "occurrences": [
+        {
+          "url": "https://t.me/educational_lab",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S015"
+        },
+        {
+          "url": "https://t.me/educational_lab",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R07"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/LessonDeliveryChat",
+      "occurrences": [
+        {
+          "url": "https://t.me/LessonDeliveryChat",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S018"
+        },
+        {
+          "url": "https://t.me/LessonDeliveryChat",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R08"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/JobDelivery",
+      "occurrences": [
+        {
+          "url": "https://t.me/JobDelivery",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S019"
+        },
+        {
+          "url": "https://t.me/JobDelivery",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R09"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/methodclub",
+      "occurrences": [
+        {
+          "url": "https://t.me/methodclub",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S020"
+        },
+        {
+          "url": "https://t.me/methodclub",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R10"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/newmethodologist",
+      "occurrences": [
+        {
+          "url": "https://t.me/newmethodologist",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S021"
+        },
+        {
+          "url": "https://t.me/newmethodologist",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R11"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/ispring_master",
+      "occurrences": [
+        {
+          "url": "https://t.me/ispring_master",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S023"
+        },
+        {
+          "url": "https://t.me/ispring_master",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R12"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/v_ed_club",
+      "occurrences": [
+        {
+          "url": "https://t.me/v_ed_club",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S025"
+        },
+        {
+          "url": "https://t.me/v_ed_club",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R13"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/learningelements",
+      "occurrences": [
+        {
+          "url": "https://t.me/learningelements",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S026"
+        },
+        {
+          "url": "https://t.me/learningelements",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X047"
+        },
+        {
+          "url": "https://t.me/learningelements",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R09"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/npsonline",
+      "occurrences": [
+        {
+          "url": "https://t.me/npsonline",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S028"
+        },
+        {
+          "url": "https://t.me/npsonline",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X002"
+        },
+        {
+          "url": "https://t.me/npsonline",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R02"
+        },
+        {
+          "url": "https://t.me/npsonline",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R14"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/HRtrain",
+      "occurrences": [
+        {
+          "url": "https://t.me/HRtrain",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S030"
+        },
+        {
+          "url": "https://t.me/HRtrain",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R15"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/talent_rocks",
+      "occurrences": [
+        {
+          "url": "https://t.me/talent_rocks",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S031"
+        },
+        {
+          "url": "https://t.me/talent_rocks",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R16"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/hr_me_community",
+      "occurrences": [
+        {
+          "url": "https://t.me/hr_me_community",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S033"
+        },
+        {
+          "url": "https://t.me/hr_me_community",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R17"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/td_department",
+      "occurrences": [
+        {
+          "url": "https://t.me/td_department",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S035"
+        },
+        {
+          "url": "https://t.me/td_department",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R18"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/rff_chat",
+      "occurrences": [
+        {
+          "url": "https://t.me/rff_chat",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S036"
+        },
+        {
+          "url": "https://t.me/rff_chat",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R19"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/communityHR",
+      "occurrences": [
+        {
+          "url": "https://t.me/communityHR",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S037"
+        },
+        {
+          "url": "https://t.me/communityHR",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R20"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/recRussia24",
+      "occurrences": [
+        {
+          "url": "https://t.me/recRussia24",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S038"
+        },
+        {
+          "url": "https://t.me/recRussia24",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R21"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/CnBChatRUnCIS",
+      "occurrences": [
+        {
+          "url": "https://t.me/CnBChatRUnCIS",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S039"
+        },
+        {
+          "url": "https://t.me/CnBChatRUnCIS",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R22"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/webinarforhr",
+      "occurrences": [
+        {
+          "url": "https://t.me/webinarforhr",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S041"
+        },
+        {
+          "url": "https://t.me/webinarforhr",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R23"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/hrafisha",
+      "occurrences": [
+        {
+          "url": "https://t.me/hrafisha",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S042"
+        },
+        {
+          "url": "https://t.me/hrafisha",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "discovery_events.json:discovery:7"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/HRbazaar",
+      "occurrences": [
+        {
+          "url": "https://t.me/HRbazaar",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S045"
+        },
+        {
+          "url": "https://t.me/HRbazaar",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R24"
+        }
+      ]
+    },
+    {
+      "url": "https://setka.ru/communities/0191a790-9e20-448d-8324-dfe80910c077",
+      "occurrences": [
+        {
+          "url": "https://setka.ru/communities/0191a790-9e20-448d-8324-dfe80910c077",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S046"
+        },
+        {
+          "url": "https://setka.ru/communities/0191a790-9e20-448d-8324-dfe80910c077",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_hr-R25"
+        }
+      ]
+    },
+    {
+      "url": "https://expert.skillbox.ru/",
+      "occurrences": [
+        {
+          "url": "https://expert.skillbox.ru/",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S062"
+        },
+        {
+          "url": "https://expert.skillbox.ru/",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "discovery_digital.json:discovery:10"
+        },
+        {
+          "url": "https://expert.skillbox.ru/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R01"
+        },
+        {
+          "url": "https://expert.skillbox.ru/",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "retry_other-O01"
+        }
+      ]
+    },
+    {
+      "url": "https://lifel.ru/elearn/vacancy",
+      "occurrences": [
+        {
+          "url": "https://lifel.ru/elearn/vacancy",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S063"
+        },
+        {
+          "url": "https://lifel.ru/elearn/vacancy",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R02"
+        }
+      ]
+    },
+    {
+      "url": "https://www.buhonline.ru/forum/",
+      "occurrences": [
+        {
+          "url": "https://www.buhonline.ru/forum/",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S067"
+        },
+        {
+          "url": "https://www.buhonline.ru/forum/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R03"
+        }
+      ]
+    },
+    {
+      "url": "https://forum.integral.ru/",
+      "occurrences": [
+        {
+          "url": "https://forum.integral.ru/",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S068"
+        },
+        {
+          "url": "https://forum.integral.ru/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R04"
+        }
+      ]
+    },
+    {
+      "url": "https://www.audit-it.ru/forum/",
+      "occurrences": [
+        {
+          "url": "https://www.audit-it.ru/forum/",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S071"
+        },
+        {
+          "url": "https://www.audit-it.ru/forum/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R05"
+        }
+      ]
+    },
+    {
+      "url": "https://cpoclub.ru/",
+      "occurrences": [
+        {
+          "url": "https://cpoclub.ru/",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S079"
+        },
+        {
+          "url": "https://cpoclub.ru/",
+          "stage": "baseline",
+          "kind": "observations",
+          "id": "FD-O094"
+        },
+        {
+          "url": "https://cpoclub.ru/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X026"
+        },
+        {
+          "url": "https://cpoclub.ru/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R05"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/tdh_channel",
+      "occurrences": [
+        {
+          "url": "https://t.me/tdh_channel",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S087"
+        },
+        {
+          "url": "https://t.me/tdh_channel",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R06"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/hrkaz",
+      "occurrences": [
+        {
+          "url": "https://t.me/hrkaz",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S088"
+        },
+        {
+          "url": "https://t.me/hrkaz",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R07"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/HRBreakfast_Live",
+      "occurrences": [
+        {
+          "url": "https://t.me/HRBreakfast_Live",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S089"
+        },
+        {
+          "url": "https://t.me/HRBreakfast_Live",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R08"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/HRBreakfast",
+      "occurrences": [
+        {
+          "url": "https://t.me/HRBreakfast",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S091"
+        },
+        {
+          "url": "https://t.me/HRBreakfast",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R09"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/hr_breakfast_emergency",
+      "occurrences": [
+        {
+          "url": "https://t.me/hr_breakfast_emergency",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S092"
+        },
+        {
+          "url": "https://t.me/hr_breakfast_emergency",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R10"
+        }
+      ]
+    },
+    {
+      "url": "https://medium-centr.by/",
+      "occurrences": [
+        {
+          "url": "https://medium-centr.by/",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S095"
+        },
+        {
+          "url": "https://medium-centr.by/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R11"
+        }
+      ]
+    },
+    {
+      "url": "https://hrf.kgforum.kz/hr-club",
+      "occurrences": [
+        {
+          "url": "https://hrf.kgforum.kz/hr-club",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S101"
+        },
+        {
+          "url": "https://hrf.kgforum.kz/hr-club",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R12"
+        }
+      ]
+    },
+    {
+      "url": "https://edu.astanahub.com/",
+      "occurrences": [
+        {
+          "url": "https://edu.astanahub.com/",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S105"
+        },
+        {
+          "url": "https://edu.astanahub.com/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R13"
+        }
+      ]
+    },
+    {
+      "url": "https://ahconferences.com/about",
+      "occurrences": [
+        {
+          "url": "https://ahconferences.com/about",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S108"
+        },
+        {
+          "url": "https://ahconferences.com/about",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R14"
+        }
+      ]
+    },
+    {
+      "url": "https://event.pravo.ru/",
+      "occurrences": [
+        {
+          "url": "https://event.pravo.ru/",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S113"
+        },
+        {
+          "url": "https://event.pravo.ru/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R15"
+        }
+      ]
+    },
+    {
+      "url": "https://exportedu.ru/tutors",
+      "occurrences": [
+        {
+          "url": "https://exportedu.ru/tutors",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S121"
+        },
+        {
+          "url": "https://exportedu.ru/tutors",
+          "stage": "baseline",
+          "kind": "observations",
+          "id": "FD-O124"
+        },
+        {
+          "url": "https://exportedu.ru/tutors",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "retry_other-O04"
+        },
+        {
+          "url": "https://exportedu.ru/tutors",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "retry_other.json:discovery:13"
+        }
+      ]
+    },
+    {
+      "url": "https://pptrf.ru/",
+      "occurrences": [
+        {
+          "url": "https://pptrf.ru/",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S122"
+        },
+        {
+          "url": "https://pptrf.ru/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R16"
+        }
+      ]
+    },
+    {
+      "url": "https://mbm.mos.ru/",
+      "occurrences": [
+        {
+          "url": "https://mbm.mos.ru/",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S123"
+        },
+        {
+          "url": "https://mbm.mos.ru/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R17"
+        }
+      ]
+    },
+    {
+      "url": "https://exportedu.ru/teams",
+      "occurrences": [
+        {
+          "url": "https://exportedu.ru/teams",
+          "stage": "baseline",
+          "kind": "sources",
+          "id": "FD-S125"
+        },
+        {
+          "url": "https://exportedu.ru/teams",
+          "stage": "delta",
+          "kind": "review",
+          "id": "retry_other-R18"
+        }
+      ]
+    },
+    {
+      "url": "https://elearningelements.ru/eespeakers",
+      "occurrences": [
+        {
+          "url": "https://elearningelements.ru/eespeakers",
+          "stage": "baseline",
+          "kind": "observations",
+          "id": "FD-O032"
+        },
+        {
+          "url": "https://elearningelements.ru/eespeakers",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X005"
+        },
+        {
+          "url": "https://elearningelements.ru/eespeakers",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R05"
+        },
+        {
+          "url": "https://elearningelements.ru/eespeakers",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "devents-O05"
+        },
+        {
+          "url": "https://elearningelements.ru/eespeakers",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "discovery_events.json:discovery:1"
+        }
+      ]
+    },
+    {
+      "url": "https://www.unicraft.org/blog/avtor-bloga/",
+      "occurrences": [
+        {
+          "url": "https://www.unicraft.org/blog/avtor-bloga/",
+          "stage": "baseline",
+          "kind": "observations",
+          "id": "FD-O071"
+        },
+        {
+          "url": "https://www.unicraft.org/blog/avtor-bloga/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X015"
+        },
+        {
+          "url": "https://www.unicraft.org/blog/avtor-bloga/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R15"
+        }
+      ]
+    },
+    {
+      "url": "https://uprav.ru/teachers/",
+      "occurrences": [
+        {
+          "url": "https://uprav.ru/teachers/",
+          "stage": "baseline",
+          "kind": "observations",
+          "id": "FD-O075"
+        },
+        {
+          "url": "https://uprav.ru/teachers/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X017"
+        },
+        {
+          "url": "https://uprav.ru/teachers/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R17"
+        }
+      ]
+    },
+    {
+      "url": "https://www.e-xecutive.ru/pages/guide",
+      "occurrences": [
+        {
+          "url": "https://www.e-xecutive.ru/pages/guide",
+          "stage": "baseline",
+          "kind": "observations",
+          "id": "FD-O096"
+        },
+        {
+          "url": "https://www.e-xecutive.ru/pages/guide",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X023"
+        },
+        {
+          "url": "https://www.e-xecutive.ru/pages/guide",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R02"
+        },
+        {
+          "url": "https://www.e-xecutive.ru/pages/guide",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "discovery-functional-O01"
+        }
+      ]
+    },
+    {
+      "url": "https://www.profiz.ru/kr/authors/",
+      "occurrences": [
+        {
+          "url": "https://www.profiz.ru/kr/authors/",
+          "stage": "baseline",
+          "kind": "observations",
+          "id": "FD-O097"
+        },
+        {
+          "url": "https://www.profiz.ru/kr/authors/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X024"
+        },
+        {
+          "url": "https://www.profiz.ru/kr/authors/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R03"
+        },
+        {
+          "url": "https://www.profiz.ru/kr/authors/",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "discovery-functional-O02"
+        }
+      ]
+    },
+    {
+      "url": "https://www.mk-conference.ru/emplaw",
+      "occurrences": [
+        {
+          "url": "https://www.mk-conference.ru/emplaw",
+          "stage": "baseline",
+          "kind": "observations",
+          "id": "FD-O121"
+        },
+        {
+          "url": "https://www.mk-conference.ru/emplaw",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X049"
+        },
+        {
+          "url": "https://www.mk-conference.ru/emplaw",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R11"
+        },
+        {
+          "url": "https://www.mk-conference.ru/emplaw",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "devents-O07"
+        }
+      ]
+    },
+    {
+      "url": "https://finplace.ru/contacts/",
+      "occurrences": [
+        {
+          "url": "https://finplace.ru/contacts/",
+          "stage": "baseline",
+          "kind": "observations",
+          "id": "FD-O122"
+        },
+        {
+          "url": "https://finplace.ru/contacts/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X051"
+        },
+        {
+          "url": "https://finplace.ru/contacts/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R13"
+        }
+      ]
+    },
+    {
+      "url": "https://rabe.ru/news/sbor-predlozheniy-v-plan-meropriyatiy-rabo-na-2027-god.htm",
+      "occurrences": [
+        {
+          "url": "https://rabe.ru/news/sbor-predlozheniy-v-plan-meropriyatiy-rabo-na-2027-god.htm",
+          "stage": "baseline",
+          "kind": "observations",
+          "id": "FD-O123"
+        },
+        {
+          "url": "https://rabe.ru/news/sbor-predlozheniy-v-plan-meropriyatiy-rabo-na-2027-god.htm",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X052"
+        },
+        {
+          "url": "https://rabe.ru/news/sbor-predlozheniy-v-plan-meropriyatiy-rabo-na-2027-god.htm",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R14"
+        },
+        {
+          "url": "https://rabe.ru/news/sbor-predlozheniy-v-plan-meropriyatiy-rabo-na-2027-god.htm",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "devents-O09"
+        }
+      ]
+    },
+    {
+      "url": "https://projectexperts.ru/user/bestspeakers/",
+      "occurrences": [
+        {
+          "url": "https://projectexperts.ru/user/bestspeakers/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X001"
+        },
+        {
+          "url": "https://projectexperts.ru/user/bestspeakers/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R01"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/osipov_education_lab",
+      "occurrences": [
+        {
+          "url": "https://t.me/osipov_education_lab",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X003"
+        },
+        {
+          "url": "https://t.me/osipov_education_lab",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R03"
+        },
+        {
+          "url": "https://t.me/osipov_education_lab",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "retry_hr.json:discovery:6"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/ZaprosiNaSpikerov",
+      "occurrences": [
+        {
+          "url": "https://t.me/ZaprosiNaSpikerov",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X004"
+        },
+        {
+          "url": "https://t.me/ZaprosiNaSpikerov",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R04"
+        }
+      ]
+    },
+    {
+      "url": "https://method.gsom.spbu.ru",
+      "occurrences": [
+        {
+          "url": "https://method.gsom.spbu.ru",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X006"
+        },
+        {
+          "url": "https://method.gsom.spbu.ru",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R06"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/LessonDelivery",
+      "occurrences": [
+        {
+          "url": "https://t.me/LessonDelivery",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X007"
+        },
+        {
+          "url": "https://t.me/LessonDelivery",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R07"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/strategy_speakers",
+      "occurrences": [
+        {
+          "url": "https://t.me/strategy_speakers",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X008"
+        },
+        {
+          "url": "https://t.me/strategy_speakers",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R08"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/gonorar2days",
+      "occurrences": [
+        {
+          "url": "https://t.me/gonorar2days",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X009"
+        },
+        {
+          "url": "https://t.me/gonorar2days",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R09"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/s/ielearning",
+      "occurrences": [
+        {
+          "url": "https://t.me/s/ielearning",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X010"
+        },
+        {
+          "url": "https://t.me/s/ielearning",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R10"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/rff_channel",
+      "occurrences": [
+        {
+          "url": "https://t.me/rff_channel",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X011"
+        },
+        {
+          "url": "https://t.me/rff_channel",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R11"
+        },
+        {
+          "url": "https://t.me/rff_channel",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "retry_hr.json:discovery:10"
+        }
+      ]
+    },
+    {
+      "url": "https://vk.com/HRtrain",
+      "occurrences": [
+        {
+          "url": "https://vk.com/HRtrain",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X012"
+        },
+        {
+          "url": "https://vk.com/HRtrain",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R12"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/hrhubvacancy300",
+      "occurrences": [
+        {
+          "url": "https://t.me/hrhubvacancy300",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X013"
+        },
+        {
+          "url": "https://t.me/hrhubvacancy300",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R13"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/hrhubjunior",
+      "occurrences": [
+        {
+          "url": "https://t.me/hrhubjunior",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X014"
+        },
+        {
+          "url": "https://t.me/hrhubjunior",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R14"
+        }
+      ]
+    },
+    {
+      "url": "https://levellab.ru/job",
+      "occurrences": [
+        {
+          "url": "https://levellab.ru/job",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X016"
+        },
+        {
+          "url": "https://levellab.ru/job",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R16"
+        }
+      ]
+    },
+    {
+      "url": "https://www.ispring.ru/company/jobs/vacancies",
+      "occurrences": [
+        {
+          "url": "https://www.ispring.ru/company/jobs/vacancies",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X018"
+        },
+        {
+          "url": "https://www.ispring.ru/company/jobs/vacancies",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R18"
+        }
+      ]
+    },
+    {
+      "url": "https://t.me/practicum_experts",
+      "occurrences": [
+        {
+          "url": "https://t.me/practicum_experts",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X019"
+        },
+        {
+          "url": "https://t.me/practicum_experts",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R19"
+        }
+      ]
+    },
+    {
+      "url": "https://skillbox.ru/jobs/",
+      "occurrences": [
+        {
+          "url": "https://skillbox.ru/jobs/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X020"
+        },
+        {
+          "url": "https://skillbox.ru/jobs/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R20"
+        }
+      ]
+    },
+    {
+      "url": "https://bi-school.ru/priglashaem-v-zakrytyj-klub-spikerov/",
+      "occurrences": [
+        {
+          "url": "https://bi-school.ru/priglashaem-v-zakrytyj-klub-spikerov/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X021"
+        },
+        {
+          "url": "https://bi-school.ru/priglashaem-v-zakrytyj-klub-spikerov/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "digital-R21"
+        },
+        {
+          "url": "https://bi-school.ru/priglashaem-v-zakrytyj-klub-spikerov/",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "digital-O22"
+        }
+      ]
+    },
+    {
+      "url": "https://www.kadrovik-praktik.ru/Sotrudnichestvo/",
+      "occurrences": [
+        {
+          "url": "https://www.kadrovik-praktik.ru/Sotrudnichestvo/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X022"
+        },
+        {
+          "url": "https://www.kadrovik-praktik.ru/Sotrudnichestvo/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R01"
+        }
+      ]
+    },
+    {
+      "url": "https://www.tendery.ru/forum/viewforum.php?f=29",
+      "occurrences": [
+        {
+          "url": "https://www.tendery.ru/forum/viewforum.php?f=29",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X025"
+        },
+        {
+          "url": "https://www.tendery.ru/forum/viewforum.php?f=29",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R04"
+        }
+      ]
+    },
+    {
+      "url": "https://corptreasury.ru/about/%D1%81ommittees/",
+      "occurrences": [
+        {
+          "url": "https://corptreasury.ru/about/%D1%81ommittees/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X027"
+        },
+        {
+          "url": "https://corptreasury.ru/about/%D1%81ommittees/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R06"
+        }
+      ]
+    },
+    {
+      "url": "https://appminfo.ru/news",
+      "occurrences": [
+        {
+          "url": "https://appminfo.ru/news",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X028"
+        },
+        {
+          "url": "https://appminfo.ru/news",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R07"
+        }
+      ]
+    },
+    {
+      "url": "https://assud.ru/predlozhit-temu-doklada/",
+      "occurrences": [
+        {
+          "url": "https://assud.ru/predlozhit-temu-doklada/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X029"
+        },
+        {
+          "url": "https://assud.ru/predlozhit-temu-doklada/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R08"
+        }
+      ]
+    },
+    {
+      "url": "https://assud.ru/zayavka-na-partnerstvo/",
+      "occurrences": [
+        {
+          "url": "https://assud.ru/zayavka-na-partnerstvo/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X030"
+        },
+        {
+          "url": "https://assud.ru/zayavka-na-partnerstvo/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R09"
+        }
+      ]
+    },
+    {
+      "url": "https://nokc.org.ru/programmy-professionalnogo-razvitiya/",
+      "occurrences": [
+        {
+          "url": "https://nokc.org.ru/programmy-professionalnogo-razvitiya/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X031"
+        },
+        {
+          "url": "https://nokc.org.ru/programmy-professionalnogo-razvitiya/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R10"
+        }
+      ]
+    },
+    {
+      "url": "https://club.klerk.ru/t/ishhu-onlajn-prepodavatelya-buhuchyota/8201",
+      "occurrences": [
+        {
+          "url": "https://club.klerk.ru/t/ishhu-onlajn-prepodavatelya-buhuchyota/8201",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X032"
+        },
+        {
+          "url": "https://club.klerk.ru/t/ishhu-onlajn-prepodavatelya-buhuchyota/8201",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R11"
+        },
+        {
+          "url": "https://club.klerk.ru/t/ishhu-onlajn-prepodavatelya-buhuchyota/8201",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "discovery-functional-O04"
+        }
+      ]
+    },
+    {
+      "url": "https://club.klerk.ru/t/obuchenie-speczialista-ved/1094756",
+      "occurrences": [
+        {
+          "url": "https://club.klerk.ru/t/obuchenie-speczialista-ved/1094756",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X033"
+        },
+        {
+          "url": "https://club.klerk.ru/t/obuchenie-speczialista-ved/1094756",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R12"
+        },
+        {
+          "url": "https://club.klerk.ru/t/obuchenie-speczialista-ved/1094756",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "discovery-functional-O05"
+        }
+      ]
+    },
+    {
+      "url": "http://trainfest.kz",
+      "occurrences": [
+        {
+          "url": "http://trainfest.kz",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X034"
+        },
+        {
+          "url": "http://trainfest.kz",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R13"
+        }
+      ]
+    },
+    {
+      "url": "https://hrarea.space",
+      "occurrences": [
+        {
+          "url": "https://hrarea.space",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X035"
+        },
+        {
+          "url": "https://hrarea.space",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R14"
+        }
+      ]
+    },
+    {
+      "url": "https://edu.cci.by/",
+      "occurrences": [
+        {
+          "url": "https://edu.cci.by/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X036"
+        },
+        {
+          "url": "https://edu.cci.by/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R15"
+        },
+        {
+          "url": "https://edu.cci.by/",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "discovery-functional-O07"
+        }
+      ]
+    },
+    {
+      "url": "https://eduexport.by/",
+      "occurrences": [
+        {
+          "url": "https://eduexport.by/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X037"
+        },
+        {
+          "url": "https://eduexport.by/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R16"
+        }
+      ]
+    },
+    {
+      "url": "https://hr4people.kz/hr4peopleastana2026",
+      "occurrences": [
+        {
+          "url": "https://hr4people.kz/hr4peopleastana2026",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X038"
+        },
+        {
+          "url": "https://hr4people.kz/hr4peopleastana2026",
+          "stage": "delta",
+          "kind": "review",
+          "id": "discovery-functional-R17"
+        },
+        {
+          "url": "https://hr4people.kz/hr4peopleastana2026",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "discovery-functional-O08"
+        }
+      ]
+    },
+    {
+      "url": "https://ahconferences.com/list_news",
+      "occurrences": [
+        {
+          "url": "https://ahconferences.com/list_news",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X039"
+        },
+        {
+          "url": "https://ahconferences.com/list_news",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R01"
+        }
+      ]
+    },
+    {
+      "url": "https://auditorium-cg.ru/",
+      "occurrences": [
+        {
+          "url": "https://auditorium-cg.ru/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X040"
+        },
+        {
+          "url": "https://auditorium-cg.ru/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R02"
+        }
+      ]
+    },
+    {
+      "url": "https://auditorium-cg.ru/elf2026",
+      "occurrences": [
+        {
+          "url": "https://auditorium-cg.ru/elf2026",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X041"
+        },
+        {
+          "url": "https://auditorium-cg.ru/elf2026",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R03"
+        },
+        {
+          "url": "https://auditorium-cg.ru/elf2026",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "devents-O01"
+        }
+      ]
+    },
+    {
+      "url": "https://auditorium-cg.ru/ilf2026",
+      "occurrences": [
+        {
+          "url": "https://auditorium-cg.ru/ilf2026",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X042"
+        },
+        {
+          "url": "https://auditorium-cg.ru/ilf2026",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R04"
+        },
+        {
+          "url": "https://auditorium-cg.ru/ilf2026",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "devents-O02"
+        }
+      ]
+    },
+    {
+      "url": "https://game-learn.ru/business-games",
+      "occurrences": [
+        {
+          "url": "https://game-learn.ru/business-games",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X043"
+        },
+        {
+          "url": "https://game-learn.ru/business-games",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R05"
+        },
+        {
+          "url": "https://game-learn.ru/business-games",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "devents-O04"
+        }
+      ]
+    },
+    {
+      "url": "https://elearningelements.ru/",
+      "occurrences": [
+        {
+          "url": "https://elearningelements.ru/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X044"
+        },
+        {
+          "url": "https://elearningelements.ru/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R06"
+        }
+      ]
+    },
+    {
+      "url": "https://elearningelements.ru/journal",
+      "occurrences": [
+        {
+          "url": "https://elearningelements.ru/journal",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X045"
+        },
+        {
+          "url": "https://elearningelements.ru/journal",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R07"
+        }
+      ]
+    },
+    {
+      "url": "https://forms.yandex.ru/cloud/694bcdebd046887c0f369161/",
+      "occurrences": [
+        {
+          "url": "https://forms.yandex.ru/cloud/694bcdebd046887c0f369161/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X046"
+        },
+        {
+          "url": "https://forms.yandex.ru/cloud/694bcdebd046887c0f369161/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R08"
+        }
+      ]
+    },
+    {
+      "url": "https://www.mk-conference.ru/obychenie",
+      "occurrences": [
+        {
+          "url": "https://www.mk-conference.ru/obychenie",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X048"
+        },
+        {
+          "url": "https://www.mk-conference.ru/obychenie",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R10"
+        },
+        {
+          "url": "https://www.mk-conference.ru/obychenie",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "devents-O06"
+        }
+      ]
+    },
+    {
+      "url": "https://www.mk-conference.ru/ai",
+      "occurrences": [
+        {
+          "url": "https://www.mk-conference.ru/ai",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X050"
+        },
+        {
+          "url": "https://www.mk-conference.ru/ai",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R12"
+        },
+        {
+          "url": "https://www.mk-conference.ru/ai",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "devents-O08"
+        }
+      ]
+    },
+    {
+      "url": "https://exportedu.ru/howto",
+      "occurrences": [
+        {
+          "url": "https://exportedu.ru/howto",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X053"
+        },
+        {
+          "url": "https://exportedu.ru/howto",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R15"
+        }
+      ]
+    },
+    {
+      "url": "https://pptrf.ru/projectmembers/education/",
+      "occurrences": [
+        {
+          "url": "https://pptrf.ru/projectmembers/education/",
+          "stage": "baseline",
+          "kind": "discovery",
+          "id": "FD-X054"
+        },
+        {
+          "url": "https://pptrf.ru/projectmembers/education/",
+          "stage": "delta",
+          "kind": "review",
+          "id": "devents-R16"
+        },
+        {
+          "url": "https://pptrf.ru/projectmembers/education/",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "retry_other.json:discovery:10"
+        }
+      ]
+    },
+    {
+      "url": "https://method.gsom.spbu.ru/community",
+      "occurrences": [
+        {
+          "url": "https://method.gsom.spbu.ru/community",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "digital-O18"
+        },
+        {
+          "url": "https://method.gsom.spbu.ru/community",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "discovery_digital.json:discovery:1"
+        }
+      ]
+    },
+    {
+      "url": "https://auditorium-cg.ru/ccf26",
+      "occurrences": [
+        {
+          "url": "https://auditorium-cg.ru/ccf26",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "devents-O03"
+        },
+        {
+          "url": "https://auditorium-cg.ru/ccf26",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "discovery_events.json:discovery:5"
+        }
+      ]
+    },
+    {
+      "url": "https://hrarea.space/partners",
+      "occurrences": [
+        {
+          "url": "https://hrarea.space/partners",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "discovery-functional-O06"
+        },
+        {
+          "url": "https://hrarea.space/partners",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "discovery_functional.json:discovery:2"
+        }
+      ]
+    },
+    {
+      "url": "https://profi.ru/geo-spb/buhgaltery_i_yuristy/business-trainer/price/",
+      "occurrences": [
+        {
+          "url": "https://profi.ru/geo-spb/buhgaltery_i_yuristy/business-trainer/price/",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "retry_hr-O01"
+        },
+        {
+          "url": "https://profi.ru/geo-spb/buhgaltery_i_yuristy/business-trainer/price/",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "retry_hr-O02"
+        },
+        {
+          "url": "https://profi.ru/geo-spb/buhgaltery_i_yuristy/business-trainer/price/",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "retry_hr.json:discovery:1"
+        }
+      ]
+    },
+    {
+      "url": "https://profi.ru/registration/it_freelance/marketing/internet-marketing/",
+      "occurrences": [
+        {
+          "url": "https://profi.ru/registration/it_freelance/marketing/internet-marketing/",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "retry_hr-O03"
+        },
+        {
+          "url": "https://profi.ru/registration/it_freelance/marketing/internet-marketing/",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "retry_hr.json:discovery:2"
+        }
+      ]
+    },
+    {
+      "url": "https://youdo.com/rabota/obuchenie/podrabotka-biznes-trenerom/gor-peresvet",
+      "occurrences": [
+        {
+          "url": "https://youdo.com/rabota/obuchenie/podrabotka-biznes-trenerom/gor-peresvet",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "retry_hr-O04"
+        },
+        {
+          "url": "https://youdo.com/rabota/obuchenie/podrabotka-biznes-trenerom/gor-peresvet",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "retry_hr-O05"
+        },
+        {
+          "url": "https://youdo.com/rabota/obuchenie/podrabotka-biznes-trenerom/gor-peresvet",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "retry_hr-O06"
+        },
+        {
+          "url": "https://youdo.com/rabota/obuchenie/podrabotka-biznes-trenerom/gor-peresvet",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "retry_hr-O07"
+        },
+        {
+          "url": "https://youdo.com/rabota/obuchenie/podrabotka-biznes-trenerom/gor-peresvet",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "retry_hr-O08"
+        },
+        {
+          "url": "https://youdo.com/rabota/obuchenie/podrabotka-biznes-trenerom/gor-peresvet",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "retry_hr.json:discovery:4"
+        }
+      ]
+    },
+    {
+      "url": "https://www.buhonline.ru/forum/index?g=posts&t=869788",
+      "occurrences": [
+        {
+          "url": "https://www.buhonline.ru/forum/index?g=posts&t=869788",
+          "stage": "delta",
+          "kind": "observation",
+          "id": "retry_other-O02"
+        },
+        {
+          "url": "https://www.buhonline.ru/forum/index?g=posts&t=869788",
+          "stage": "delta",
+          "kind": "discovery",
+          "id": "retry_other.json:discovery:2"
+        }
+      ]
+    }
+  ],
+  "duplicate_note": "Exact URL equality only, report-only. Records are preserved. An intentional update, cross-reference, or mirror is not an error.",
+  "semantic_qa_note": "Structure cannot prove publication dates, buyer identity, payment or subject fit. Those require reading the cited evidence."
+}

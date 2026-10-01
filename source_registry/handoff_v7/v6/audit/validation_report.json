@@ -1,0 +1,10 @@
+{
+  "v5_files_byte_identical": 316,
+  "all_191_ids_retained": true,
+  "rebuild_idempotent": true,
+  "unit_tests_passed": 5,
+  "workbook_sheets": 14,
+  "export_formula_errors": 0,
+  "pilot_running": false,
+  "no_new_buyer_confirmations": true
+}

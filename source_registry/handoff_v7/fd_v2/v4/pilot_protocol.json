@@ -1,0 +1,30 @@
+{
+  "status": "prepared_not_started",
+  "duration_days": 14,
+  "primary_window_days": 14,
+  "secondary_window_days": 30,
+  "overlap_hours": 48,
+  "cadence_proposal": {
+    "high_priority_hours": 6,
+    "other_active_hours": 24,
+    "discovery_hours": 168
+  },
+  "baseline": "Same sources, same time window, independent manual review before keyword filtering",
+  "audit_sample_per_source": 10,
+  "denominator": "Reviewed accessible documents only; unsegmented feed snapshots require manual post enumeration before post-level recall",
+  "success_metrics": [
+    "incremental_unique_need_candidates",
+    "buyer_confirmed_needs",
+    "time_to_detection",
+    "sample_missed_rate",
+    "coverage_gaps",
+    "processing_cost"
+  ],
+  "exclusions_not_deletions": [
+    "goods_only",
+    "workers_vocational_only",
+    "corporate_parties_only",
+    "pure_consulting"
+  ],
+  "notes": "Sampling before lexical filtering; unmatched retained. No claim of internet-wide recall or 10x achieved."
+}

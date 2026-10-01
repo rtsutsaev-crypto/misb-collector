@@ -1,0 +1,178 @@
+{
+  "reviewed_at": "2026-10-01",
+  "reviewer": "/root/fresh_provider_calls",
+  "reviewed_files": [
+    {
+      "file": "/workspace/scratch/954a05902e22/fresh-research/output_hr.json",
+      "sources": 20,
+      "observations": 7,
+      "sha256": "ea3e955c7ce182ec51e02031cf4fb1217d126f5bb88f14926cc7c7cb524eb84b"
+    },
+    {
+      "file": "/workspace/scratch/954a05902e22/fresh-research/output_bykz.json",
+      "sources": 20,
+      "observations": 11,
+      "sha256": "a4a6c9a8c53bcac5fae8dd116b6b4f3fd3e8503a8e652603e9dc9f2ff33c380b"
+    },
+    {
+      "file": "/workspace/scratch/954a05902e22/fresh-research/output_providers.json",
+      "sources": 20,
+      "observations": 23,
+      "sha256": "12daaf7b2d449aa13464fed391a9ffd0ff09ec8b5e2134f42816b3c4e740b8d8"
+    },
+    {
+      "file": "/workspace/scratch/954a05902e22/fresh-research/output_functional.json",
+      "sources": 20,
+      "observations": 11,
+      "sha256": "179a1771e84f08d0d55feb14da956145b6960e1e969e8f32033183666d179235"
+    },
+    {
+      "file": "/workspace/scratch/954a05902e22/fresh-research/output_edtech.json",
+      "sources": 20,
+      "observations": 41,
+      "sha256": "e8a0c4d3b7c645f7cf654c0338771dced70224b8183bebfe47c010424b587185"
+    }
+  ],
+  "scope": "Независимый просмотр полей и классификаций пяти групп, машинная проверка схемы, точечное повторное чтение первоисточников у сомнительных ролей/дат/оплаты. Не полный повторный веб-обход.",
+  "schema_issues": [],
+  "schema_checks": [
+    "Все обязательные поля присутствуют; обязательные строки не пустые",
+    "Значения перечислений соответствуют протоколу",
+    "Связи observation → source целы",
+    "Summary не превышает 90 слов",
+    "Нет будущих published_at",
+    "Нет apparently_open при нормализованном прошедшем deadline"
+  ],
+  "proposed_changes": [
+    {
+      "file": "output_edtech.json",
+      "entity": "source",
+      "local_id": "edtech-09",
+      "field": "review_outcome",
+      "value": "not_assessable",
+      "severity": "medium",
+      "confidence": "high",
+      "reason": "Доступ помечен profile_only/search_index; текущая лента не прочитана. По протоколу результат такого доступа нельзя сводить к отсутствию релевантных записей. Сведения об архивных поисковых фрагментах сохранить в actual_scope.",
+      "evidence_url": "https://t.me/educational_lab",
+      "original_value": "no_relevant_in_viewed_sample"
+    },
+    {
+      "file": "output_edtech.json",
+      "entity": "source",
+      "local_id": "edtech-10",
+      "field": "review_outcome",
+      "value": "only_early_signals",
+      "severity": "low",
+      "confidence": "high",
+      "reason": "Единственное сохранённое наблюдение этого источника edtech-O11 корректно classified early_signal — проектная вакансия. only_early_signals согласует итог источника с наблюдением и не создаёт впечатления найденного подрядного заказа.",
+      "evidence_url": "https://t.me/s/lab_vacancies?before=649",
+      "original_value": "undated_relevant_found"
+    },
+    {
+      "file": "output_edtech.json",
+      "entity": "observation",
+      "local_id": "edtech-O01",
+      "field": "signal_type",
+      "value": "expert_call",
+      "severity": "medium",
+      "confidence": "moderate",
+      "reason": "Первичный открытый Telegram-бриф и ProjectExperts подтверждают поиск оплачиваемого бизнес-тренера для управленцев. Не названы ни конечный заказчик, ни провайдер-посредник, ни субподрядное отношение. expert_call точнее фиксирует доказанное; subcontract можно вернуть после уточнения роли заказчика. Оплату, профиль и свежесть не менять.",
+      "evidence_url": "https://t.me/Project_Best_Speakers/2859",
+      "web_refs": [
+        "turn675view2",
+        "turn788view0"
+      ],
+      "original_value": "subcontract"
+    },
+    {
+      "file": "output_edtech.json",
+      "entity": "observation",
+      "local_id": "edtech-O11",
+      "field": "fit_reason",
+      "value": "Разработка образовательной программы — смежная методическая компетенция. Тематика литературного мастерства вне основного профиля МИСБ; это проектная вакансия, возможность внешнего договора не подтверждена.",
+      "severity": "low",
+      "confidence": "high",
+      "reason": "Текущий универсальный fit_reason утверждает предполагаемое соответствие бизнес-обучению и развитию руководителей, хотя конкретное наблюдение посвящено литературному мастерству. adjacent и early_signal уже корректны.",
+      "evidence_url": "https://t.me/s/lab_vacancies?before=649",
+      "original_value": "Предполагаемое соответствие бизнес-обучению и развитию руководителей; содержание и требования необходимо сопоставить с экспертами МИСБ."
+    }
+  ],
+  "confirmed_without_change": [
+    {
+      "local_ids": [
+        "providers-O14b"
+      ],
+      "reason": "Netology прямо обещает дополнительный доход эксперту; external project work, дата не объявляется свежей. explicit_paid обоснован.",
+      "evidence_url": "https://netology.ru/job/fdf5523b-cad0-46ce-934e-8e06862bff27",
+      "web_refs": [
+        "turn766view0"
+      ]
+    },
+    {
+      "local_ids": [
+        "providers-O15a",
+        "providers-O15b"
+      ],
+      "reason": "Yandex прямо оговаривает потребность в услугах, а не трудоустройство. CTO: примерно 30–35 тыс. руб. в месяц, AI: вознаграждение после отбора. Классификация expert_call и оплата корректны.",
+      "evidence_urls": [
+        "https://practicum.yandex.ru/job/vacancy-384/",
+        "https://practicum.yandex.ru/job/vacancy-359/"
+      ],
+      "web_refs": [
+        "turn766view1",
+        "turn766view2"
+      ]
+    },
+    {
+      "local_ids": [
+        "functional-O08"
+      ],
+      "reason": "Несмотря на слова «вакансия» и «зарплата», первоисточник описывает краткий проект: 5–12 дней обучения + удалённое сопровождение, договор до поездки. Архивный direct_request 2021 года допустим; не считать свежим.",
+      "evidence_url": "https://www.tendery.ru/forum/viewtopic.php?f=5&t=2053293",
+      "web_refs": [
+        "turn770view0"
+      ]
+    },
+    {
+      "local_ids": [
+        "functional-O05"
+      ],
+      "reason": "ASUD действительно показывает будущую дату 18.05.2027 и открытый вызов докладов. Старые 2026-фрагменты уже оговорены в limitations; дата публикации не выдумана.",
+      "evidence_url": "https://assud.ru/vserossijskij-professionalnyj-forum2027/",
+      "web_refs": [
+        "turn770view1"
+      ]
+    },
+    {
+      "local_ids": [
+        "edtech-O13"
+      ],
+      "reason": "Прошедший дедлайн 30.09 правильно имеет closed, несмотря на надпись страницы об открытом приёме."
+    },
+    {
+      "local_ids": [
+        "edtech-O01",
+        "edtech-O03",
+        "edtech-O06"
+      ],
+      "reason": "Абсолютные даты соответствующих номеров в авторской ленте ProjectExperts подтверждают публикации 27/26/29 сентября. Они не подменены датами мероприятий.",
+      "evidence_url": "https://projectexperts.ru/user/bestspeakers/",
+      "web_refs": [
+        "turn783view0",
+        "turn783view1",
+        "turn783view2"
+      ]
+    }
+  ],
+  "aggregation_guards": [
+    "Ни одно наблюдение не удалять; предлагаемые изменения только уточняют итог/тип/обоснование.",
+    "Свежая публикация early_signal/reference_only не равна свежему коммерческому заказу.",
+    "Постоянные экспертные пулы и undated-посты не включать в число заявок за 14/30 дней.",
+    "40 млн руб. в edtech-O07 — бюджет всей конференции с НДС и агентской комиссией, не бюджет обучения, не цена выступления и не объём возможного контракта МИСБ.",
+    "Зарплаты из вакансий, редакционные гонорары за статьи и агентские комиссии не суммировать с бюджетами закупки обучения.",
+    "PAGE и Олимп: бартер/продвижение, а не обещанный денежный заказ; соответствующие unpaid уже верны.",
+    "Вопросы на функциональных форумах и проведённые банковские семинары — ранние сигналы, не найденная закупка.",
+    "Явной ситуации out_of_scope, ошибочно выданной за core, в рассмотренных пяти группах не найдено. Открытая тема делового события сама по себе ещё не подтверждает конкретную программу МИСБ."
+  ],
+  "result": "Критических ошибок оплаты, подмены дат или выдачи обычной вакансии за действующий заказ не обнаружено. Четыре предложения, из них два уточнения итогов источников; исходные файлы не изменялись."
+}

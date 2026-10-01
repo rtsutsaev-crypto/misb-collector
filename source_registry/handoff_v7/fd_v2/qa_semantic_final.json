@@ -1,0 +1,501 @@
+{
+  "as_of": "2026-10-01",
+  "status": "passed_with_documented_limitations",
+  "selection": "10 свежих новых наблюдений с рисками бюджета, прошедшего события, непрофильной аудитории и повторного выпуска. Дополнительно проверены свежий ранний сигнал АКК и совпадение Elements с v1.",
+  "fresh_observations_reviewed": [
+    {
+      "local_id": "digital-O01",
+      "file": "discovery_digital.json",
+      "title": "№2632 — онлайн-консультация по продвижению сайта",
+      "published_at": "2026-09-25",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962632-est-gonorar/",
+      "date_evidence_urls": [
+        "https://projectexperts.ru/user/bestspeakers/page/2/"
+      ],
+      "result": "confirmed_with_limitations",
+      "note": "Дата 25.09 и 2 000 руб. подтверждены. Консультация по сайту — смежная услуга, adjacent верно.",
+      "web_refs": [
+        "turn895view0"
+      ]
+    },
+    {
+      "local_id": "digital-O02",
+      "file": "discovery_digital.json",
+      "title": "№2630 — MaxCapital: управление частным капиталом",
+      "published_at": "2026-09-24",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962630/",
+      "date_evidence_urls": [
+        "https://projectexperts.ru/user/bestspeakers/page/2/"
+      ],
+      "result": "resolved",
+      "note": "Дата 24.09 подтверждена. Приглашение касается частного капитала инвесторов; core завышает корпоративное соответствие. Гонорар не обещан. Исправлено агентом на adjacent.",
+      "web_refs": [
+        "turn895view0",
+        "turn895view2"
+      ]
+    },
+    {
+      "local_id": "digital-O03",
+      "file": "discovery_digital.json",
+      "title": "№2629 — электронные закупки",
+      "published_at": "2026-09-24",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962629/",
+      "date_evidence_urls": [
+        "https://projectexperts.ru/user/bestspeakers/page/2/"
+      ],
+      "result": "confirmed_with_limitations",
+      "note": "Публикация и событие 24.09 подтверждены; событие прошло, closed верно. Не включать в открытые лиды.",
+      "web_refs": [
+        "turn895view0"
+      ]
+    },
+    {
+      "local_id": "digital-O04",
+      "file": "discovery_digital.json",
+      "title": "№2628 — КУ Правительства Приморского края: кризисный менеджмент",
+      "published_at": "2026-09-23",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962628-est-gonorar/",
+      "date_evidence_urls": [
+        "https://projectexperts.ru/user/bestspeakers/page/2/"
+      ],
+      "result": "confirmed_with_limitations",
+      "note": "23.09 — дата записи; университет правительства явно заказывает двухдневный тренинг и обсуждает оплату. explicit_paid верно.",
+      "web_refs": [
+        "turn895view0",
+        "turn899view3"
+      ]
+    },
+    {
+      "local_id": "digital-O06",
+      "file": "discovery_digital.json",
+      "title": "№2625 — инвестиционный эксперт для «Бизнес апгрейд»",
+      "published_at": "2026-09-23",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962625/",
+      "date_evidence_urls": [
+        "https://projectexperts.ru/user/bestspeakers/page/2/"
+      ],
+      "result": "confirmed_with_limitations",
+      "note": "23.09 подтверждено; инвестиционный воркшоп для собственников. Сходство с предыдущими выпусками уже сохранено через candidate_duplicate_of.",
+      "web_refs": [
+        "turn895view0"
+      ]
+    },
+    {
+      "local_id": "digital-O07",
+      "file": "discovery_digital.json",
+      "title": "№2624 — информационная безопасность мероприятия",
+      "published_at": "2026-09-23",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962624-est-gonorar/",
+      "date_evidence_urls": [
+        "https://projectexperts.ru/user/bestspeakers/page/2/"
+      ],
+      "result": "confirmed_with_limitations",
+      "note": "Курс состоялся 23.09; указаны 2 тыс. за академический час. closed и бюджет корректны.",
+      "web_refs": [
+        "turn895view0"
+      ]
+    },
+    {
+      "local_id": "digital-O08",
+      "file": "discovery_digital.json",
+      "title": "№2623 — обучающий разбор социальных сетей",
+      "published_at": "2026-09-22",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962623-est-gonorar/",
+      "date_evidence_urls": [
+        "https://projectexperts.ru/user/bestspeakers/page/2/"
+      ],
+      "result": "confirmed_with_limitations",
+      "note": "22.09 и от 10 тыс. подтверждены; оплачиваемый разбор соцсетей участников программы. Открытость unknown не завышена.",
+      "web_refs": [
+        "turn895view0"
+      ]
+    },
+    {
+      "local_id": "digital-O12",
+      "file": "discovery_digital.json",
+      "title": "№2619 — повышение квалификации педагогов школы программирования",
+      "published_at": "2026-09-20",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962619-est-gonorar/",
+      "date_evidence_urls": [
+        "https://projectexperts.ru/user/bestspeakers/page/3/"
+      ],
+      "result": "confirmed_with_limitations",
+      "note": "20.09 и обсуждаемая оплата подтверждены. Повышение квалификации педагогов корректно отделено как adjacent.",
+      "web_refs": [
+        "turn899view0",
+        "turn899view2"
+      ]
+    },
+    {
+      "local_id": "digital-O14",
+      "file": "discovery_digital.json",
+      "title": "№2617 — навыки молодого специалиста 2030",
+      "published_at": "2026-09-19",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962617/",
+      "date_evidence_urls": [
+        "https://projectexperts.ru/user/bestspeakers/page/3/"
+      ],
+      "result": "confirmed_with_limitations",
+      "note": "19.09 — публикация, 26.09 — событие. Правильно closed и adjacent, без подмены дат.",
+      "web_refs": [
+        "turn899view0"
+      ]
+    },
+    {
+      "local_id": "digital-O16",
+      "file": "discovery_digital.json",
+      "title": "№2615 — банковское выступление о влиянии сервиса на бизнес",
+      "published_at": "2026-09-18",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962615-est-gonorar/",
+      "date_evidence_urls": [
+        "https://projectexperts.ru/user/bestspeakers/page/3/"
+      ],
+      "result": "confirmed_with_limitations",
+      "note": "18.09 подтверждено. 350 тыс. прямо названы приемлемым гонораром спикеру, а не бюджетом конференции.",
+      "web_refs": [
+        "turn899view0",
+        "turn899view1"
+      ]
+    }
+  ],
+  "proposed_changes": [
+    {
+      "file": "discovery_digital.json",
+      "local_id": "digital-O02",
+      "field": "misb_fit",
+      "value": "adjacent",
+      "reason": "Съезд инвесторов посвящён структурированию и росту частного капитала. Внешний эксперт востребован, но обучение сотрудников/корпоративных финансовых специалистов не установлено. Сохранить запись.",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962630/",
+      "web_refs": [
+        "turn895view2"
+      ],
+      "current_value": "adjacent",
+      "resolution": "resolved"
+    },
+    {
+      "file": "discovery_digital.json",
+      "local_id": "digital-O02",
+      "field": "fit_reason",
+      "value": "Финансовая тематика смежна профилю МИСБ, но речь о частном капитале участников съезда инвесторов. Корпоративное обучение сотрудников или специалистов не подтверждено.",
+      "reason": "Согласовать обоснование со смежным профилем.",
+      "evidence_url": "https://projectexperts.ru/poisk-spikera-%E2%84%962630/",
+      "web_refs": [
+        "turn895view2"
+      ],
+      "current_value": "Личная финансовая тематика для инвесторов; корпоративное обучение руководителей или сотрудников не доказано.",
+      "resolution": "resolved"
+    },
+    {
+      "file": "discovery_events.json",
+      "local_id": "devents-O05",
+      "field": "existing_observation_id",
+      "value": "FD-O032",
+      "reason": "Полное совпадение с v1 edtech-O13: страница /eespeakers, пост learningelements/1511, событие 20.10 и дедлайн 30.09. Не новая уникальная потребность.",
+      "evidence_url": "https://elearningelements.ru/eespeakers",
+      "current_value": "FD-O032",
+      "resolution": "resolved"
+    },
+    {
+      "file": "discovery_events.json",
+      "local_id": "devents-O05",
+      "field": "change_reason",
+      "value": "Уточнение известного FD-O032 по странице набора и Telegram-посту; запись отличается от июньских FD-O117/FD-O118, но уже присутствовала в v1.",
+      "reason": "Убрать ошибочное утверждение о впервые найденном октябрьском call.",
+      "evidence_url": "https://elearningelements.ru/eespeakers",
+      "current_value": "Повторно проверена известная FD-O032: та же карточка /eespeakers и пост /learningelements/1511; подтверждено событие 20.10.2026 и истекший срок 30.09.2026 при конфликтующей шапке «приём открыт». Это уточнение прежнего наблюдения.",
+      "resolution": "resolved"
+    }
+  ],
+  "additional_checks": [
+    {
+      "local_id": "discovery-functional-O03",
+      "result": "confirmed",
+      "note": "Первичная страница Treasury Inside показывает 28Сен2026. Это повестка профессионального сообщества, early_signal корректен; закупка не заявлена.",
+      "evidence_url": "https://corptreasury.ru/treasuryinside9/",
+      "web_refs": [
+        "turn892view0"
+      ]
+    },
+    {
+      "local_id": "devents-O08",
+      "result": "confirmed_with_limitations",
+      "note": "Будущий выпуск 2–3 июня 2027 и маршрут стать спикером реальны; дата публикации не установлена. Цена провайдерского билета не гонорар.",
+      "evidence_url": "https://www.mk-conference.ru/ai",
+      "web_refs": [
+        "turn892view1"
+      ]
+    },
+    {
+      "local_id": "retry_hr-O03",
+      "result": "independent_recheck_limited",
+      "note": "Прямая страница вновь показала браузерный барьер. Поиск нашёл ту же официальную рубрику с датой23.09, но короткий повторный сниппет не позволил независимо подтвердить привязку даты к тексту. Агент подробно объяснил порядок элементов исходного индексного блока; новое опровержение не найдено.",
+      "evidence_url": "https://profi.ru/registration/it_freelance/marketing/internet-marketing/",
+      "web_refs": [
+        "turn906view0",
+        "turn907search0"
+      ]
+    },
+    {
+      "local_id": "retry_other-O04",
+      "result": "partially_confirmed",
+      "note": "Прямое открытие требует JS; официальный поисковый индекс подтверждает право аттестованных тренеров вести программы на возмездной основе. Это постоянное сотрудничество, не свежий конкретный заказ.",
+      "evidence_url": "https://exportedu.ru/tutors",
+      "web_refs": [
+        "turn906view1",
+        "turn907search1"
+      ]
+    }
+  ],
+  "limitations": "Прочитаны публичные брифы, полные контакты за барьером не открывались. Проверка даты и гонорара не доказывает незакрытую потребность; закрытые, смежные и дубли сохраняются.",
+  "source_files_modified": false,
+  "baseline_overlap_check": {
+    "baseline_observations": 131,
+    "new_numbered_cards": 17,
+    "exact_brief_number_matches": [],
+    "method": "Номера в заголовках и URL; затем сравнение темы, аудитории, города, дат и бюджета со всеми131 наблюдениями. Тематическая близость без совпадения заказчика не объявляется доказанным дублем.",
+    "per_card": [
+      {
+        "local_id": "digital-O01",
+        "brief_number": "2632",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O02",
+        "brief_number": "2630",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O03",
+        "brief_number": "2629",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O04",
+        "brief_number": "2628",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O05",
+        "brief_number": "2626",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O06",
+        "brief_number": "2625",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O07",
+        "brief_number": "2624",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O08",
+        "brief_number": "2623",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O09",
+        "brief_number": "2622",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O10",
+        "brief_number": "2621",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O11",
+        "brief_number": "2620",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O12",
+        "brief_number": "2619",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O13",
+        "brief_number": "2618",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O14",
+        "brief_number": "2617",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O15",
+        "brief_number": "2616",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O16",
+        "brief_number": "2615",
+        "exact_number_match_in_baseline": false
+      },
+      {
+        "local_id": "digital-O17",
+        "brief_number": "2614",
+        "exact_number_match_in_baseline": false
+      }
+    ],
+    "candidate_overlap": [
+      {
+        "local_id": "digital-O06",
+        "baseline_ids": [
+          "FD-O034",
+          "FD-O038"
+        ],
+        "status": "already_linked_as_candidate",
+        "reason": "Регулярные инвестиционные воркшопы предпринимателей, сходные формат/аудитория; разные номера и скрытые контакты не позволяют доказать отдельный заказ."
+      }
+    ],
+    "weak_similarity_not_merged": [
+      {
+        "local_ids": [
+          "digital-O09",
+          "digital-O15",
+          "digital-O17"
+        ],
+        "baseline_id": "FD-O037",
+        "reason": "Москва/октябрь/аудитория собственников может означать серию одного организатора. Разные темы не доказывают тождество запроса; данных для объединения нет."
+      },
+      {
+        "local_id": "digital-O16",
+        "baseline_id": "FD-O026",
+        "reason": "Крупный неназванный банк у обоих, но тема сервиса и гонорар 350 тыс. не совпадают с лидерской конференцией на 700 человек и общим бюджетом40 млн. Не объединять по отрасли."
+      }
+    ],
+    "aggregation_rule": "17 новых карточек/наблюдений относительно набора, а не 17 гарантированно уникальных новых коммерческих заказов. Сохранять известные и вероятные связи; статусы closed/unknown и профиль учитывать отдельно.",
+    "additional_mirror_review": [
+      {
+        "local_id": "digital-O35",
+        "baseline_ids": [
+          "FD-O059"
+        ],
+        "date_scope": "mirror_publication_only",
+        "result": "explicit_relation_present"
+      },
+      {
+        "local_id": "digital-O36",
+        "baseline_ids": [
+          "FD-O057"
+        ],
+        "date_scope": "mirror_publication_only",
+        "result": "explicit_relation_present"
+      },
+      {
+        "local_id": "digital-O37",
+        "baseline_ids": [
+          "FD-O056"
+        ],
+        "date_scope": "mirror_publication_only",
+        "result": "explicit_relation_present"
+      },
+      {
+        "local_id": "digital-O38",
+        "baseline_ids": [
+          "FD-O060"
+        ],
+        "date_scope": "mirror_publication_only",
+        "result": "explicit_relation_present"
+      },
+      {
+        "local_id": "digital-O39",
+        "baseline_ids": [
+          "FD-O058"
+        ],
+        "date_scope": "mirror_publication_only",
+        "result": "explicit_relation_present"
+      },
+      {
+        "local_id": "digital-O40",
+        "baseline_ids": [
+          "FD-O055"
+        ],
+        "result": "candidate_relation_present"
+      }
+    ]
+  },
+  "structural_qa": {
+    "report": "qa_structure_final.json",
+    "status": "passed",
+    "counts": {
+      "expected_files": 5,
+      "inspected_files": 5,
+      "assigned_targets": 97,
+      "reviewed_unique_targets": 97,
+      "reviews": 97,
+      "observations": 74,
+      "new_observations": 65,
+      "baseline_observation_updates": 9,
+      "discovery": 59,
+      "proposed_channel_candidates": 11,
+      "exact_duplicate_url_groups": 105,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "reviewed_files": [
+    {
+      "file": "discovery_digital.json",
+      "reviews": 21,
+      "observations": 43,
+      "sha256": "8e4da7cdb9c19527269081c21b940bc6e57b8b39af3404432cfcfe5ed77b89fb"
+    },
+    {
+      "file": "discovery_events.json",
+      "reviews": 16,
+      "observations": 9,
+      "sha256": "63094f6c2a2cf1b4d6c54106c5f463f9714642ffddb2d2371f82b5854d832725"
+    },
+    {
+      "file": "discovery_functional.json",
+      "reviews": 17,
+      "observations": 8,
+      "sha256": "5eb47cf696707ca97b9d36b49b6a9a0be95b8d920118f3bd9ec956ef28b8fe54"
+    },
+    {
+      "file": "retry_hr.json",
+      "reviews": 25,
+      "observations": 9,
+      "sha256": "da2cfc02f70738135afc5aca095fb3fa4ca8d6edfcede252a584230480cde872"
+    },
+    {
+      "file": "retry_other.json",
+      "reviews": 18,
+      "observations": 5,
+      "sha256": "656b99a2ca5dba0006265e27129f4742595601f869502129a6ef7fbbb7aa02bf"
+    }
+  ],
+  "findings_and_resolutions": [
+    {
+      "finding": "devents-O05 дублировал известный FD-O032 без связи",
+      "resolution": "Root добавил existing_observation_id=FD-O032 и уточнил change_reason; проверено в финальном JSON.",
+      "status": "resolved"
+    },
+    {
+      "finding": "Частный капитал MaxCapital digital-O02 был помечен core",
+      "resolution": "Агент изменил на adjacent и уточнил обоснование; проверено в финальном JSON.",
+      "status": "resolved"
+    },
+    {
+      "finding": "Пять карточек BestSpeakers соответствуют известным публикациям СПИКЕРСКОЙ",
+      "resolution": "digital-O35–O39 сохранены отдельными публикациями, связаны related_observation_ids с FD-O059/057/056/060/058; дата отмечена mirror_publication_only, исходная дата Telegram остаётся null.",
+      "status": "resolved"
+    },
+    {
+      "finding": "Вероятные повторы инвестиционных воркшопов и выступления союза предпринимателей",
+      "resolution": "digital-O06 сохраняет candidate_duplicate_of FD-O034/FD-O038; digital-O40 — FD-O055. Не утверждать уникальность коммерческих заказов.",
+      "status": "qualified"
+    },
+    {
+      "finding": "Общий URL каталога у разных заданий Profi/YouDo",
+      "resolution": "Root подтвердил, что merge связывает shared URL как candidate / identity_unconfirmed, не объявляет тождество заявок.",
+      "status": "qualified"
+    }
+  ],
+  "coverage_statement": "Структурно проверены все пять финальных JSON:97/97 reviews, все74 наблюдения и59 discovery. Содержательно независимо прочитаны первоисточники 10 выбранных свежих карточек Digital, дополнительно проверены два иных наблюдения и два случая с ограниченной повторной доступностью. Сверены номера и темы первых17 BestSpeakers с baseline131; проверены явные связи пяти зеркал и двух групп вероятных повторов. Это выборочная содержательная QA, не повторное исследование всех97 источников.",
+  "count_interpretation": "65 новых записей наблюдений и9 уточнений baseline — не65 уникальных новых заказов. Свежесть публикации, открытость, оплата, профиль, зеркало и ранний сигнал считаются отдельно.11 предложений promotion — кандидаты, не подтверждённо настроенные каналы."
+}

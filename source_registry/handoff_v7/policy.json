@@ -1,0 +1,19 @@
+{
+  "as_of": "2026-10-02",
+  "timezone": "Europe/Moscow",
+  "history_window_days": 14,
+  "monthly_global_cash_cap_rub": 10000,
+  "exploration_capacity_share": 0.2,
+  "paid_calls_enabled": false,
+  "pilot_running": false,
+  "schedule": null,
+  "retain_all_records": true,
+  "source_quality_axes": [
+    "buyer_presence",
+    "misb_relevance",
+    "freshness",
+    "actionability",
+    "incremental_coverage",
+    "collection_reliability"
+  ]
+}

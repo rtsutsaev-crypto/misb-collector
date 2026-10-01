@@ -1,0 +1,26 @@
+{
+  "sheets": 14,
+  "rendered_sheets": [
+    "Обзор",
+    "Действия 37",
+    "Все потребности",
+    "Покупатели",
+    "Предложения МИСБ",
+    "Проверки",
+    "Пробы источников",
+    "Поверхности",
+    "Эффективность",
+    "Обратная связь",
+    "Поиск",
+    "Пилот 14 дней",
+    "Бюджет",
+    "Claude"
+  ],
+  "summary_checked": true,
+  "budget_unknown_zero_and_overrun_passed": true,
+  "unit_cost_zero_denominator_passed": true,
+  "formula_error_inspection": "{\"kind\":\"notice\",\"message\":\"Cell search matched 0 entries.\"}",
+  "visual_qa": "all 14 sheets plus axes/metrics/feedback panels reviewed",
+  "exported_cached_values_verified": true,
+  "exported_formula_errors": 0
+}

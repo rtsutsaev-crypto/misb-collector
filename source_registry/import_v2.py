@@ -35,8 +35,8 @@ DATASET = "misb-v2"
 # Platforms where one domain hosts thousands of unrelated channels: a shared host says nothing about the channel.
 SHARED_HOSTS = {"t.me", "vk.com", "ok.ru", "youtube.com", "dzen.ru", "zen.yandex.ru", "rutube.ru"}
 # Plan sources that check registry addresses in turn (registry_plan_v2.py): reg2-* for the v2/v3 registry, cu-* for
-# the corporate universities package, fd-* for the fresh demand package.
-ROTATION = ("reg2-", "cu-", "fd-")
+# the corporate universities package, fd-* for the fresh demand package, v7-* for the master package v7.
+ROTATION = ("reg2-", "cu-", "fd-", "v7-")
 
 
 def out_tag() -> str:
