@@ -440,7 +440,7 @@ def main():
                 rel, why, _ = m.classify(l.get("title", ""), l.get("okpd2") or ())
                 if not rel: ex[site_key(i)] = why[:60]
         doc = {"version": "collector " + VERSION, "date": x.date, "excluded": ex,
-               "note": "Лиды, которые фильтр сбора (config/collectorlib) не пропустил бы. Сайт показывает их как «исключено по профилю» (по умолчанию скрыты), кроме лидов в работе. Ничего не удалено."}
+               "note": "Лиды, которые фильтр сбора (collector.py) не пропустил бы. Сайт показывает их как «исключено по профилю» (по умолчанию скрыты), кроме лидов в работе. Ничего не удалено."}
         json.dump(doc, open(x.out, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
         if os.path.getsize(x.out) > 240_000:   # лимит документа базы 256 КБ: сокращаем причины до категории
             doc["excluded"] = {k: v.split(":")[0][:20] for k, v in ex.items()}
