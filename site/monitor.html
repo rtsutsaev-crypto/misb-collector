@@ -467,7 +467,7 @@ const S = { seg:null, reg:[], regMeta:null, sets:[], state:{}, feedback:[], conf
 
 /* ---------- helpers ---------- */
 function keyOf(id){const s=String(id||"");if(/^[A-Za-z0-9_\-.~:@+]{1,150}$/.test(s))return s;let h=2166136261;for(const c of s){h^=c.codePointAt(0);h=Math.imul(h,16777619)>>>0}return "h"+h.toString(36)+"-"+s.replace(/[^A-Za-z0-9]/g,"").slice(0,40)}
-const fmtMoney = n=>n?new Intl.NumberFormat("ru-RU").format(Math.round(n)):"—";
+const NF_RU=new Intl.NumberFormat("ru-RU");const fmtMoney = n=>n?NF_RU.format(Math.round(n)):"—";
 const COUNTRY_NAME={RU:"Россия",KZ:"Казахстан",BY:"Беларусь",UZ:"Узбекистан",KG:"Кыргызстан"};
 const isRub = l=>!l.currency||l.currency==="RUB";
 const moneyOf = (l,long)=>l.price?(fmtMoney(l.price)+(isRub(l)?(long?" ₽":""):" "+l.currency)):"—";
@@ -478,9 +478,13 @@ function grade(f){return f>=65?"hi":f>=40?"mid":"lo"}
 function toast(msg){const r=$("#toastRoot");r.replaceChildren(el("div",{class:"toast",role:"status",text:msg}));setTimeout(()=>{r.replaceChildren()},2600)}
 
 /* holdings matching */
-let ALIASES=[],ALIAS_SRC=null,HMEMO=new Map();
-function buildAliases(){if(ALIAS_SRC===S.holdings&&ALIASES.length)return;ALIAS_SRC=S.holdings;HMEMO=new Map();ALIASES=[];const walk=(n,root,path)=>{const p=[...path,n.name];for(const a of n.aliases||[]){const al=a.toLowerCase();const esc=al.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");let src="(^|[^а-яёa-z0-9])"+esc;if(al.length<=4&&!al.endsWith("-"))src+="(?=$|[^а-яёa-z0-9])";ALIASES.push({re:new RegExp(src,"i"),al,len:al.length,root,node:n.name,depth:p.length,path:p})}for(const c of n.children||[])walk(c,root,p)};for(const g of (S.holdings?.groups||[]))walk(g,g.name,[])}
-function matchHolding(text){const t=text.toLowerCase();if(HMEMO.has(t))return HMEMO.get(t);let best=null;for(const a of ALIASES){if(t.indexOf(a.al)>=0&&a.re.test(t)){if(!best||a.depth>best.depth||(a.depth===best.depth&&a.len>best.len))best=a}}HMEMO.set(t,best);return best}
+let ALIASES=[],ALIAS_SRC=null,HMEMO=new Map(),AIDX=new Map(),AANY=[];
+function buildAliases(){if(ALIAS_SRC===S.holdings&&ALIASES.length)return;ALIAS_SRC=S.holdings;HMEMO=new Map();ALIASES=[];const walk=(n,root,path)=>{const p=[...path,n.name];for(const a of n.aliases||[]){const al=a.toLowerCase();const esc=al.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");let src="(^|[^а-яёa-z0-9])"+esc;if(al.length<=4&&!al.endsWith("-"))src+="(?=$|[^а-яёa-z0-9])";ALIASES.push({re:new RegExp(src,"i"),al,len:al.length,root,node:n.name,depth:p.length,path:p,i:ALIASES.length})}for(const c of n.children||[])walk(c,root,p)};for(const g of (S.holdings?.groups||[]))walk(g,g.name,[]);
+  /* Индекс по началу псевдонима: псевдоним совпадает только с начала слова, поэтому для текста достаточно проверить псевдонимы, чьи первые 1–3 буквы стоят в начале какого-нибудь его слова. */
+  AIDX=new Map();AANY=[];for(const a of ALIASES){const m=/^[а-яёa-z0-9]{1,3}/.exec(a.al);if(!m){AANY.push(a);continue}const k=m[0];if(!AIDX.has(k))AIDX.set(k,[]);AIDX.get(k).push(a)}}
+const ALNUM=/[а-яёa-z0-9]/;
+function aliasCands(t){const out=new Set(AANY);for(let i=0;i<t.length;i++){if(!ALNUM.test(t[i])||(i>0&&ALNUM.test(t[i-1])))continue;for(let L=1;L<=3&&i+L<=t.length;L++){if(!ALNUM.test(t[i+L-1]))break;const c=AIDX.get(t.substr(i,L));if(c)for(const a of c)out.add(a)}}return out}
+function matchHolding(text){const t=text.toLowerCase();if(HMEMO.has(t))return HMEMO.get(t);let best=null;for(const a of aliasCands(t)){if(t.indexOf(a.al)>=0&&a.re.test(t)){if(!best||a.depth>best.depth||(a.depth===best.depth&&(a.len>best.len||(a.len===best.len&&a.i<best.i))))best=a}}HMEMO.set(t,best);return best}
 
 /* fit */
 const KRE=new Map();const WCH="а-яёa-z0-9";
@@ -939,9 +943,14 @@ function renderOutreach(){const box=$("#outRows");if(!box)return;
 ["#oq","#oSeg","#oSort","#oCu"].forEach(id=>$(id).addEventListener(id==="#oq"?"input":"change",()=>renderOutreach()));
 
 /* tabs */
-const TAB_GROUP={leads:"buy",accounts:"buy",subject:"buy",funnel:"buy",import:"buy",sources:"src",method:"src",corp:"hold",orgs:"hold"};const GROUP_FIRST={buy:"leads",src:"sources",hold:"corp"};
+const TAB_GROUP={leads:"buy",accounts:"buy",subject:"buy",funnel:"buy",import:"buy",sources:"src",method:"src",corp:"hold",orgs:"hold"};
+/* Вкладки рисуются, только когда видны: после пересчёта скрытые помечаются устаревшими и перерисовываются при открытии. */
+const TAB_RENDER=()=>({leads:[renderLeads],accounts:[renderAccounts,renderOutreach],sources:[renderReg,renderSources,renderCatalog],corp:[renderCorp],subject:[renderSubject],orgs:[renderOrgs],method:[renderMethod],funnel:[renderFunnel],import:[renderSets]});
+let STALE=new Set();
+function curTab(){return Object.keys(TAB_GROUP).find(x=>{const e=$("#tab-"+x);return e&&!e.hidden})||"leads"}
+function renderTab(t){STALE.delete(t);for(const f of TAB_RENDER()[t]||[])f()}const GROUP_FIRST={buy:"leads",src:"sources",hold:"corp"};
 function switchGroup(g){const t=(S.lastTab&&S.lastTab[g])||GROUP_FIRST[g];switchTab(t)}
-function switchTab(t){const g=TAB_GROUP[t]||"buy";S.lastTab=S.lastTab||{};S.lastTab[g]=t;document.querySelectorAll("#ptabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.group===g)));document.querySelectorAll("#tabs button").forEach(b=>{b.hidden=b.dataset.group!==g;b.setAttribute("aria-selected",String(b.dataset.tab===t))});["leads","accounts","corp","orgs","subject","funnel","sources","method","import"].forEach(x=>$("#tab-"+x).hidden=x!==t);if(t==="orgs")loadOrgDir();try{localStorage.setItem("misb-tab",t)}catch(e){}}
+function switchTab(t){const g=TAB_GROUP[t]||"buy";S.lastTab=S.lastTab||{};S.lastTab[g]=t;document.querySelectorAll("#ptabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.group===g)));document.querySelectorAll("#tabs button").forEach(b=>{b.hidden=b.dataset.group!==g;b.setAttribute("aria-selected",String(b.dataset.tab===t))});["leads","accounts","corp","orgs","subject","funnel","sources","method","import"].forEach(x=>$("#tab-"+x).hidden=x!==t);if(STALE.has(t))renderTab(t);if(t==="orgs")loadOrgDir();try{localStorage.setItem("misb-tab",t)}catch(e){}}
 $("#tabs").addEventListener("click",e=>{const b=e.target.closest("button[data-tab]");if(b)switchTab(b.dataset.tab)});
 $("#ptabs").addEventListener("click",e=>{const b=e.target.closest("button[data-group]");if(b)switchGroup(b.dataset.group)});
 try{const t=localStorage.getItem("misb-tab");switchTab(t&&$("#tab-"+t)?t:"leads")}catch(e){switchTab("leads")}
@@ -1126,8 +1135,10 @@ $("#catF")?.addEventListener("change",renderCatalog);
 function renderProviders(){const b=$("#provBox");if(!b)return;const P=S.providers?.providers||[];if(!P.length){b.replaceChildren();return}const cols=Object.keys(P[0]);
   b.replaceChildren(el("div",{class:"tablebox"},el("table",{style:"min-width:760px"},el("thead",{},el("tr",{},...cols.map(c=>el("th",{text:c})))),el("tbody",{},...P.map(p=>el("tr",{style:"cursor:default"},...cols.map(c=>{const v=String(p[c]??"");return el("td",{style:"font-size:12.5px"},/^https?:\/\//.test(v)?el("a",{href:v,target:"_blank",rel:"noopener",text:v.replace(/^https?:\/\//,"").slice(0,40)}):v)})))))))}
 
-function renderAll(){buildAliases();recompute();fillSelects();renderKPIs();renderLeads();renderAccounts();renderOutreach();renderReg();renderCorp();renderSubject();renderSources();renderCatalog();renderOrgs();renderMethod();renderFunnel();renderSets();renderRun();if(S.openKey)renderDrawer()}
-let raf=0;const schedule=()=>{if(raf)return;raf=requestAnimationFrame(()=>{raf=0;renderAll()})};
+function renderAll(){buildAliases();recompute();fillSelects();renderKPIs();STALE=new Set(Object.keys(TAB_RENDER()));renderTab(curTab());renderRun();if(S.openKey)renderDrawer()}
+/* Перерисовка пачками: при загрузке ждём лиды, настройки fit и холдинги (не дольше 5 с), дальше — не чаще раза в 150 мс. */
+let raf=0,booted=false;const T0=Date.now();const GOT=new Set();
+const schedule=()=>{if(raf)return;raf=setTimeout(()=>{raf=0;if(!booted&&!(GOT.has("sets")&&GOT.has("fit")&&GOT.has("hold"))&&Date.now()-T0<5000){schedule();return}booted=true;renderAll()},booted?150:60)};
 
 /* ---------- boot ---------- */
 renderAll();
@@ -1140,7 +1151,7 @@ renderAll();
   S.db=db;
   if(user){try{S.uid=await user.id();S.canEdit=await user.canEdit();S.canWrite=await user.can("data.write")}catch(e){}}
   const err=e=>{if(e&&e.code==="revoked"){$("#dbNotice").hidden=false;$("#dbNotice").textContent="Доступ к базе отозван для этого просмотра."}};
-  db.collection("leadsets").onSnapshot(s=>{S.sets=s.docs.filter(d=>d.exists).map(d=>({id:d.id,data:d.data()}));schedule()},err);
+  db.collection("leadsets").onSnapshot(s=>{GOT.add("sets");S.sets=s.docs.filter(d=>d.exists).map(d=>({id:d.id,data:d.data()}));schedule()},err);
   loadOrgIndex(db);loadSegments(db);
   db.doc("orgdir/catalog").onSnapshot(d=>{S.catalog=d.exists?d.data().rows||[]:[];renderCatalog()},()=>{});
   db.collection("ownership").onSnapshot(s=>{const m={};s.docs.forEach(d=>{m[d.id]=d.data()});S.own=m;schedule()},()=>{});
@@ -1161,8 +1172,8 @@ renderAll();
   db.collection("feedback").onSnapshot(s=>{S.feedback=s.docs.map(d=>d.data());schedule()},err);
   db.collection("sources").onSnapshot(s=>{S.sources=s.docs.map(d=>d.data());schedule()},err);
   db.collection("srcreg").onSnapshot(s=>{const ds=s.docs.filter(d=>d.exists);S.reg=ds.map(d=>d.data()).filter(x=>x&&x.datasetId&&x.sourceId);const m=ds.find(d=>d.id==="_meta");S.regMeta=m?m.data():null;schedule()},()=>{});
-  db.doc("config/fit").onSnapshot(d=>{S.config=d.exists?d.data():null;schedule()},err);
-  db.doc("meta/holdings").onSnapshot(d=>{S.holdingsRu=d.exists?d.data():null;mergeHoldings();schedule()},err);
+  db.doc("config/fit").onSnapshot(d=>{GOT.add("fit");S.config=d.exists?d.data():null;schedule()},err);
+  db.doc("meta/holdings").onSnapshot(d=>{GOT.add("hold");S.holdingsRu=d.exists?d.data():null;mergeHoldings();schedule()},err);
   db.doc("meta/holdings-kz").onSnapshot(d=>{S.holdingsKz=d.exists?d.data():null;mergeHoldings();schedule()},()=>{});
   db.doc("meta/taxonomy").onSnapshot(d=>{S.taxonomy=d.exists?d.data():null;schedule()},err);
   db.doc("config/collector").onSnapshot(d=>{S.collector=d.exists?d.data():null;renderRun()},err);
