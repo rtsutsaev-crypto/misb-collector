@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "main_institutions": 200,
+  "all_research_records": 247,
+  "sources": 474,
+  "queries": 800,
+  "raw_records_and_channels_preserved": true,
+  "json_schema_valid": true,
+  "csv_json_xlsx_parity": true,
+  "formula_errors": 0,
+  "country_and_type_totals_match": true,
+  "manifest_hashes_match": true,
+  "live_collectors_tested": false,
+  "all_15_sheets_visually_reviewed": true
+}

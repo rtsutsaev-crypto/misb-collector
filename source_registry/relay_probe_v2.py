@@ -1,11 +1,11 @@
 """Повторная проверка недоступных адресов через российский релей:
-RELAY_URL=… RELAY_TOKEN=… python3 relay_probe_v2.py <папка srcreg-v2 из import_v2.py build> relay.json
+RELAY_URL=… RELAY_TOKEN=… python3 relay_probe_v2.py <папка srcreg-v2/v3 из import_v2.py или srcreg-cu из import_cu.py> relay.json
 Токен — только из окружения (текст задания), в файлы не пишется."""
 import json,sys,os,subprocess,re,html,glob,concurrent.futures as cf
 D,OUT=sys.argv[1],sys.argv[2];TOK=os.environ["RELAY_TOKEN"];RELAY=os.environ.get("RELAY_URL","").rstrip("/")
 PROC=re.compile(r"закупк|тендер|конкурс|запрос\s+(?:котировок|предложений|цен)|аукцион|лот\b|извещени|tender|procurement",re.I)
 DATE=re.compile(r"\b\d{2}\.\d{2}\.\d{4}\b|\b20\d{2}-\d{2}-\d{2}\b")
-docs=[json.load(open(f)) for f in glob.glob(os.path.join(D,'misb-v*--*.json'))]
+docs=[json.load(open(f)) for f in glob.glob(os.path.join(D,'misb-*--*.json'))]
 todo=[d for d in docs if d['access']['state'] in ('unreachable','forbidden','http_error','empty_page')]
 def get(d):
     u=d['url']

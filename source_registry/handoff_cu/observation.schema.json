@@ -1,0 +1,109 @@
+{
+  "type": "object",
+  "required": [
+    "observation_id",
+    "source_id",
+    "institution_id",
+    "observed_at",
+    "evidence_url",
+    "raw_text",
+    "signal_type",
+    "demand_status"
+  ],
+  "properties": {
+    "observation_id": {
+      "type": "string"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "institution_id": {
+      "type": "string"
+    },
+    "observed_at": {
+      "type": "string"
+    },
+    "published_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidence_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "raw_text": {
+      "type": "string"
+    },
+    "signal_type": {
+      "enum": [
+        "direct_request",
+        "early_signal",
+        "partnership",
+        "reference",
+        "unknown"
+      ]
+    },
+    "demand_status": {
+      "enum": [
+        "unqualified",
+        "review",
+        "qualified",
+        "expired",
+        "not_relevant"
+      ]
+    },
+    "buyer_organization": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "buyer_role": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "country": {
+      "enum": [
+        "RU",
+        "BY",
+        "KZ",
+        "unknown"
+      ]
+    },
+    "service_codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "budget_rub": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "deadline": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "commercial_hypothesis": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provenance": {
+      "type": "array"
+    },
+    "raw_retained": {
+      "const": true
+    }
+  },
+  "additionalProperties": true
+}

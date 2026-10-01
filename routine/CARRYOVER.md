@@ -145,3 +145,10 @@
     расширена: reg2-lists 26 адресов, reg2-pages 343, reg2-retry 82; новый источник `reg3-search` — 256 шаблонов
     веб-поиска по 8 за запуск, результат шаблона в `meta/query-checks`, новые домены в `meta/discoveries`
     (`collector/discoveries.py`). Telegram читается через t.me/s/<канал>. Отчёт — `source_registry/REPORT-v3-2026-10-01.md`.
+25. **01.10.2026, версия 6.2: корпоративные университеты (247 организаций, 474 канала).** Пакет
+    MISB_corporate_universities импортирован (`source_registry/import_cu.py`, документы `misb-cu--CU-SRC-…`, организация —
+    в поле `inst`; копия пакета — `source_registry/handoff_cu/`, отчёт — `source_registry/REPORT-cu-2026-10-01.md`).
+    Новые источники сбора: `cu-lists` (8 адресов, все за запуск), `cu-pages` (290, по 15), `cu-retry` (120, по 4) — результат
+    в `meta/cu-checks`; `cu-search` — 800 шаблонов (644 разных текста) по 8 за запуск, сначала закупки и приглашения
+    экспертов, результат в `meta/cu-query-checks`. В поиск TenderGuru по холдингам добавлены 57 российских групп
+    (`holdings.terms`, batch 10 → 12). `registry_checks.py`: документ проверок — поле `checksDoc` источника, не больше 240 КБ.

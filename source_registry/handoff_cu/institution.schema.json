@@ -1,0 +1,70 @@
+{
+  "type": "object",
+  "required": [
+    "institution_id",
+    "name",
+    "country",
+    "institution_type",
+    "selection",
+    "primary_url",
+    "institution_evidence_url",
+    "verified",
+    "source_ids"
+  ],
+  "properties": {
+    "institution_id": {
+      "type": "string",
+      "pattern": "^CU-[0-9]{4,}$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "country": {
+      "enum": [
+        "RU",
+        "BY",
+        "KZ"
+      ]
+    },
+    "institution_type": {
+      "enum": [
+        "corporate_university",
+        "corporate_academy",
+        "company_training_center",
+        "industry_training_center",
+        "candidate"
+      ]
+    },
+    "selection": {
+      "enum": [
+        "main_200",
+        "reserve"
+      ]
+    },
+    "primary_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "institution_evidence_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "verified": {
+      "enum": [
+        "content_read",
+        "search_index",
+        "candidate"
+      ]
+    },
+    "source_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confirmed_paid_demand": {
+      "const": false
+    }
+  },
+  "additionalProperties": true
+}

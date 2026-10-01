@@ -1,0 +1,156 @@
+{
+  "package_version": "1.0",
+  "created_at": "2026-10-01",
+  "counts": {
+    "main_institutions": 200,
+    "all_research_records": 247,
+    "eligible_named_structures": 217,
+    "reserve": 47,
+    "reserve_confirmed_extra": 17,
+    "reserve_needs_review": 30,
+    "sources": 474,
+    "main_sources": 407,
+    "normalized_url_groups": 444,
+    "queries": 800,
+    "discovery_recipes": 28,
+    "relationships": 56,
+    "playbooks": 20,
+    "acceptance_tests": 24,
+    "countries": {
+      "RU": 147,
+      "BY": 20,
+      "KZ": 33
+    },
+    "types": {
+      "corporate_university": 79,
+      "corporate_academy": 29,
+      "company_training_center": 86,
+      "industry_training_center": 6
+    },
+    "main_evidence": {
+      "content_read": 74,
+      "search_index": 126,
+      "candidate": 0
+    }
+  },
+  "artifact_checks": {
+    "main_200_distinct_ids": true,
+    "all_raw_research_preserved": true,
+    "all_channels_have_tasks": true,
+    "connector_runtime_tests_executed": false,
+    "operator_status_guard_checked": true,
+    "query_templates_executed": false
+  },
+  "files": [
+    {
+      "name": "institutions.jsonl",
+      "bytes": 980719,
+      "sha256": "323bbadef08d89697b68c00610b6ff2cb84fd584c84ad916618e9426b14176c8"
+    },
+    {
+      "name": "sources.jsonl",
+      "bytes": 1253000,
+      "sha256": "5842ea6181a349ae38d892f1f402d14ec9a902138d383cba9a9cf1a0b016de96"
+    },
+    {
+      "name": "raw_research_records.jsonl",
+      "bytes": 1173027,
+      "sha256": "e83ccafcbf4ac36c78a489c63432da506a3ffaa006568e94daf30cca0764c320"
+    },
+    {
+      "name": "source_relationships.jsonl",
+      "bytes": 16712,
+      "sha256": "6d0880b53a21c886e64bf2126fe750d769e516de3fd813cc7b0e0019d40c2810"
+    },
+    {
+      "name": "connector_tasks.jsonl",
+      "bytes": 513717,
+      "sha256": "5ac6b28a07bb4370ce756269f3c8cd696597cb37f2fec4792ee421fbcf4708bc"
+    },
+    {
+      "name": "search_queries.jsonl",
+      "bytes": 974092,
+      "sha256": "d14b6c2e967e170b72e47c65d33240e2f43943d590249afc1cfbbe4eb0f4e414"
+    },
+    {
+      "name": "discovery_recipes.jsonl",
+      "bytes": 15125,
+      "sha256": "3ec5b326a3f4a5d8719e654315ed000bcef65f9e8f1487d53751a5b18e05efcd"
+    },
+    {
+      "name": "editorial_adjustments.json",
+      "bytes": 6549,
+      "sha256": "cd55ead4df1f11c480329ee89a05db82722b63cad6179fedd078fe5b148dceca"
+    },
+    {
+      "name": "independent_research_audit.txt",
+      "bytes": 14759,
+      "sha256": "b9444470aa610d36dd7bc92ac6e733fcdbff22702a5a08eff8bfdd86fdb68fb9"
+    },
+    {
+      "name": "commercial_playbooks.json",
+      "bytes": 15735,
+      "sha256": "20a2181ef4c74180ec231edacbd563990ef2e9eb61cc49734710c66fbd4f5afc"
+    },
+    {
+      "name": "vocabulary.json",
+      "bytes": 27307,
+      "sha256": "a41cb75f8b90257e3fd80ebc31a6fc0490f0e9a0aaae81d837d652f13be0d9c8"
+    },
+    {
+      "name": "misb_profile.json",
+      "bytes": 1139,
+      "sha256": "42216bcd0d57520804a1fbe5cc55d884aea2ada62c4f3aa9a1bbaeb2afb8ebd3"
+    },
+    {
+      "name": "policy.json",
+      "bytes": 8896,
+      "sha256": "56d11c1e4d2a5d156312f671ca6b130c3d7e8c4e356ed29e20fa201fa7095407"
+    },
+    {
+      "name": "budget_policy.json",
+      "bytes": 2061,
+      "sha256": "153f9f29cca8be01e58c2b8a856120ed1bc54396ac9bd1fa90357b8634a70bc6"
+    },
+    {
+      "name": "protocol.json",
+      "bytes": 7056,
+      "sha256": "79eb35a82e4ad08c3744068fae8815822f8cbcfafec1dc08b33044527274ee84"
+    },
+    {
+      "name": "institution.schema.json",
+      "bytes": 1228,
+      "sha256": "03c430fc385791754ea48e3d179b82b1f7b942f6f39f5723e5eaa3155154747f"
+    },
+    {
+      "name": "source.schema.json",
+      "bytes": 1047,
+      "sha256": "e12abd9e4d5452e490c012c3c524ad8bc96fb11fc3b8d0a8fd7325041cd5d71d"
+    },
+    {
+      "name": "observation.schema.json",
+      "bytes": 1738,
+      "sha256": "4cf5416f6467284c8da0453a6775079a3968458cc64ea638fe375cfe944f66c8"
+    },
+    {
+      "name": "counts.json",
+      "bytes": 670,
+      "sha256": "8a3dc74929eebcb32da0ee076c91612737e0300d90df494a72f93b09a830f893"
+    },
+    {
+      "name": "README_CLAUDE.txt",
+      "bytes": 6696,
+      "sha256": "0a23ea21cf7a922b8695f73b8a301da69c5e8d9997c89e1bbea12f111bff0720"
+    },
+    {
+      "name": "institutions.csv",
+      "bytes": 660190,
+      "sha256": "a9d784892c98ae9e7870041e480236fa24383d515f8a31d9e49a01682ba859f2"
+    },
+    {
+      "name": "sources.csv",
+      "bytes": 409639,
+      "sha256": "2135c052eb87cf3ccdbb9cdaa93cfbd933d95bd2906d1da827039dc4adbff6a8"
+    }
+  ]
+}
