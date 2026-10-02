@@ -1019,13 +1019,14 @@ let REG_ON=false;function loadReg(){if(REG_ON||!S.db)return;REG_ON=true;const db
   db.doc("meta/cu-query-checks").onSnapshot(d=>{S.cuQueryChecks=d.exists?(d.data().items||{}):{};renderReg()},()=>{});
   db.doc("meta/discoveries").onSnapshot(d=>{S.discoveries=d.exists?(d.data().items||{}):{};renderReg();renderDisc()},()=>{})}
 /* Запросы-сигналы: не закупки площадок, а запросы и приглашения (наблюдения пакетов в коллекции demand и находки сбора в каналах).
-   Они идут в «Закупки» как лиды с меткой «Запрос-сигнал»; срок приёма: дедлайн, иначе 30 дней от публикации, без даты — открыт, пока не закрыт. */
+   Они идут в «Закупки» как лиды с меткой «Запрос-сигнал»; срок приёма: дедлайн, иначе 30 дней от публикации, без даты — открыт, пока не закрыт (находка сбора — 60 дней). */
 const SIG_SRC=s=>/^(demand:|fd-|cu-|v7-|reg2-|reg3-search)/.test(s||"")||/спикер|speaker/i.test(s||"");
 const DM_PAID={explicit_paid:"оплачивается",budget_stated:"бюджет указан",unspecified:"оплата не уточнена",unpaid:"без оплаты",speaker_pays:"платит спикер",unknown:"неизвестно"};
 const DM_ST={apparently_open:"внешне открыт",standing_pool:"постоянный пул",closed:"закрыт",unknown:"статус неизвестен"};
 const NEED_ST={buyer_unconfirmed:"покупатель не подтверждён",historically_closed:"закрыт (история)",likely_completed_linkage_inferred:"вероятно, исполнен"};
 const NEED_EV={legacy_not_rechecked:"не перепроверено",public_teaser_restricted:"виден только анонс",reader_error:"повторно не прочиталось",request_body_read:"текст запроса прочитан",generic_page:"общая страница"};
-function isOpen(l){return l.sigPkg&&l.dl==null?!l.sigClosed:(l.dl!=null&&l.dl>=0)}
+/* без срока: запись пакета открыта, пока не закрыта; находка сбора — 60 дней от даты находки */
+function isOpen(l){if(l.dl!=null)return l.dl>=0;if(l.sigPkg)return !l.sigClosed;if(l.sig)return (TODAY-new Date(String(l.collectedAt||"").slice(0,10)+"T00:00:00"))/864e5<=60;return false}
 function demandRaw(o){const nd=o.need||{};const id=o.observation_id||o._id;const pub=o.published_at||null;const dl=o.deadline||nd.lastDate||"";
   const cust=String(o.requester_organization||"");const cc=/^(RU|KZ|BY|UZ|KG)$/.test(o.country||"")?o.country:undefined;
   const vu=!dl&&pub?new Date(new Date(pub+"T00:00:00").getTime()+30*864e5).toISOString().slice(0,10):undefined;
