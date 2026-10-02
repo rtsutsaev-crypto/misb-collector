@@ -78,6 +78,9 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:now
 .chip{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:0 6px;font-size:11.5px;color:var(--muted);background:var(--surface)}
 .chip.dir{border-color:transparent;background:var(--accent-soft);color:var(--ink)}
 .chip.mand{border-color:transparent;background:var(--lo-bg);color:var(--lo)}
+.triage{display:flex;gap:4px;margin-top:6px}.tri{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:6px;min-width:30px;height:26px;padding:0 6px;font-size:14px;line-height:1;cursor:pointer}
+.tri:hover{border-color:var(--accent);color:var(--accent)}.tri[aria-pressed="true"].checked{background:var(--info-bg);color:var(--info);border-color:var(--info)}.tri[aria-pressed="true"].further{background:var(--hi-bg);color:var(--hi);border-color:var(--hi)}.tri[aria-pressed="true"].uninteresting{background:var(--lo-bg);color:var(--lo);border-color:var(--lo)}
+.st.checked{background:var(--info-bg);color:var(--info)}.st.further{background:var(--hi-bg);color:var(--hi)}.st.uninteresting{background:var(--lo-bg);color:var(--lo)}
 .chip.sig{background:var(--accent-soft);color:var(--accent);font-weight:600}
 .tabn{display:inline-block;margin-left:6px;min-width:18px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:11px;line-height:18px;text-align:center}
 .dmdl{display:grid;grid-template-columns:minmax(0,16ch) minmax(0,1fr);gap:4px 14px;margin:4px 0;font-size:13px}.dmdl dt{color:var(--muted)}.dmdl dd{margin:0}
@@ -463,7 +466,9 @@ input[type=file]{max-width:100%}
 <script>
 (function(){
 const TODAY = new Date(); TODAY.setHours(0,0,0,0);
-const STATUSES = [["new","Новый"],["work","В работе"],["bid","Заявка подана"],["won","Выиграли"],["lost","Проиграли"],["skip","Не наш лид"]];
+const STATUSES = [["new","Новый"],["checked","Проверено"],["further","Для дальнейшей проработки"],["uninteresting","Не интересно"],["work","В работе"],["bid","Заявка подана"],["won","Выиграли"],["lost","Проиграли"],["skip","Не наш лид"]];
+/* быстрая ручная разметка карточек в строке списка; это значения того же статуса, на карточке одно из них, повторный клик возвращает «Новый» */
+const TRIAGE=[["checked","✓","Проверено"],["further","➜","Для дальнейшей проработки"],["uninteresting","✕","Не интересно"]];
 const STATUS_LABEL = Object.fromEntries(STATUSES);
 const LOSS_REASONS=["Цена выше победителя","Не хватило опыта или квалификации","Документы или оформление","Нужна лицензия или аккредитация","Не успели к сроку","Заказчик выбрал своего","Закупка отменена","Другое"];
 const REASONS = ["Наш профиль","Не наш профиль","Обязательное обучение","Мало денег","Развлекательное","Дубль","Интересный заказчик"];
@@ -756,7 +761,7 @@ function renderLeads(){const list=sorted(filtered());const pages=Math.max(1,Math
   const cl=$("#countLine");const base=`Показано ${list.length} из ${LEADS.filter(countryOk).length}`;cl.classList.add("big");if(S.filters.run)cl.replaceChildren(el("span",{text:`${base} · новые лиды обновления${runLabel(S.filters)} `}),el("button",{class:"linkbtn",type:"button",onclick:clearRunFilter},"убрать отбор"));else cl.textContent=base;
   document.querySelectorAll("th.sort").forEach(th=>{th.querySelector(".arr").textContent=th.dataset.sort===S.sort.key?(S.sort.dir>0?"↑":"↓"):"";th.setAttribute("aria-sort",th.dataset.sort===S.sort.key?(S.sort.dir>0?"ascending":"descending"):"none")});
   const rows=slice.map(l=>{const dl=l.dl;const dlc=dl==null?"":dl<0?"closed":dl<=3?"soon":"open";
-    return el("tr",{tabindex:"0",onclick:()=>openLead(l.key),onkeydown:e=>{if(e.key==="Enter")openLead(l.key)}},
+    return el("tr",{tabindex:"0",onclick:()=>openLead(l.key),onkeydown:e=>{if(e.key==="Enter"&&e.target===e.currentTarget)openLead(l.key)}},
       el("td",{class:"num"},el("span",{class:`pill fit ${grade(l.fit)}`,text:l.fit})),
       el("td",{},el("div",{class:"t-title",text:l.title}),el("div",{class:"t-sub"},l.sig?el("span",{class:"chip sig",title:l.sigPkg?[...new Set([l.sigPkg.cls,l.sigPkg.type].filter(Boolean))].join(" · "):"Найдено сбором в канале или поиском: запрос, приглашение или сигнал потребности, а не закупка площадки",text:"Запрос-сигнал"}):null,el("span",{class:"chip",text:l.cat}),...l.dirs.slice(0,2).map(d=>el("span",{class:d===MAND?"chip mand":"chip dir",text:d})),l.law?el("span",{class:"chip",text:l.law}):null,l.etp?el("span",{class:"chip etp",title:"Электронная площадка по извещению ЕИС",text:l.etp}):null,l.ld&&(l.ld.tz||[]).length?el("span",{class:"chip tz",title:"В извещении есть файл ТЗ — ссылка на карточке",text:"ТЗ"}):null,l.cc&&l.cc!=="RU"?el("span",{class:"chip",text:COUNTRY_NAME[l.cc]||l.cc}):null,l.cls==="needs_review"?el("span",{class:"chip flag",title:l.why.join("; "),text:"проверить"}):null,l.cancelled?el("span",{class:"chip mand",text:"отменена"}):null,l.deadlineWas!==undefined&&l.changedAt?el("span",{class:"chip flag",title:l.deadlineWas?`срок изменён ${fmtDate(l.changedAt)}: был ${fmtDate(l.deadlineWas)}`:`срок появился ${fmtDate(l.changedAt)}: раньше не был указан`,text:l.deadlineWas?"срок изменён":"срок добавлен"}):null,l.cls==="excluded"?el("span",{class:"chip mand",title:l.why.join("; "),text:"исключено по профилю"}):null,...l.flags.filter(x=>x!=="mandatory").map(x=>el("span",{class:`chip flag ${x}`,text:FLAG_LABEL[x]})),l.claim&&!l.holding?el("span",{class:`chip claim c-${l.claim.st}`,title:`Группа по справочнику: ${CLAIM_LABEL[l.claim.st]||l.claim.st}; совпадение по ${l.claim.by}`,text:`${l.claim.g} · ${l.claim.st==="claimed"?"заявл.":CLAIM_LABEL[l.claim.st]||l.claim.st}`}):null,el("span",{text:srcNameL(l)}))),
       el("td",{class:"cust"},l.customer?el("span",{text:l.customer}):el("span",{class:"muted",text:"не указан в источнике"}),l.holding?el("small",{text:l.company?`${l.holding} → ${l.company}`:l.holding}):null),
@@ -764,7 +769,7 @@ function renderLeads(){const list=sorted(filtered());const pages=Math.max(1,Math
       el("td",{class:"num",text:moneyOf(l)}),
       el("td",{},el("div",{class:`dl ${dlc}`,text:l.sigPkg&&!l.deadline&&!l.validUntil?(l.sigClosed?"закрыт":"срок не указан"):l.deadline?fmtDate(l.deadline):l.expectedAt?"ожидается "+MSHORT[+String(l.expectedAt).slice(5,7)-1]+" "+String(l.expectedAt).slice(0,4):l.validUntil?"срок не указан":fmtDate(l.deadline)}),el("div",{class:"muted",style:"font-size:12px",text:dl==null?"":!l.deadline&&l.validUntil?(dl<0?"запрос устарел":`актуален до ${fmtDate(l.validUntil)}`):dl<0?"приём завершён":dl===0?"сегодня":`осталось ${dl} дн.`})),
       el("td",{class:"num",text:l.rating!=null?`${l.rating.toFixed(1)} · ${l.ratingN}`:"—"}),
-      el("td",{},el("span",{class:`st ${l.status}`,text:STATUS_LABEL[l.status]||"Новый"})))});
+      el("td",{},el("span",{class:`st ${l.status}`,text:STATUS_LABEL[l.status]||"Новый"}),el("div",{class:"triage",role:"group","aria-label":"Ручная разметка карточки"},...TRIAGE.map(([v,ic,t])=>el("button",{type:"button",class:`tri ${v}`,title:l.status===v?t+" — нажмите, чтобы снять":t,"aria-label":t,"aria-pressed":String(l.status===v),onclick:e=>{e.stopPropagation();setTriage(l,l.status===v?"new":v)},onkeydown:e=>e.stopPropagation()},ic)))))});
   $("#rows").replaceChildren(...(rows.length?rows:[el("tr",{},el("td",{colspan:"8",class:"empty",text:LEADS.length?"Под фильтры ничего не подходит. Ослабьте фильтр fit или сбросьте фильтры.":"В базе пока нет лидов."}))]));
   const pg=$("#pager");pg.replaceChildren();if(pages>1){pg.append(el("button",{class:"btn",disabled:S.page===0,onclick:()=>{S.page--;renderLeads()}},"Назад"),el("span",{class:"muted",text:`Стр. ${S.page+1} из ${pages}`}),el("button",{class:"btn",disabled:S.page>=pages-1,onclick:()=>{S.page++;renderLeads()}},"Дальше"))}}
 
@@ -784,6 +789,9 @@ function fillSelects(){if(S.seg){for(const id of ["#fSeg","#oSeg","#orgSeg"]){co
   hs.replaceChildren(el("option",{value:"",text:"Все заказчики"}),el("option",{value:"__any",text:"Только холдинги из реестра"}),...names.map(n=>el("option",{value:n,text:n})));hs.value=names.includes(cur)||cur==="__any"?cur:(S.filters.hold||"")}
 
 /* drawer */
+async function setTriage(l,v){const prev=l.status;l.status=v;S.state[l.key]={status:v,lossReason:"",by:S.uid||null,at:new Date().toISOString()};renderLeads();
+  if(!S.db){toast("Нет связи с базой: отметка не сохранена");l.status=prev;renderLeads();return}
+  try{await S.db.doc(`state/${l.key}`).set({status:v,lossReason:"",by:S.uid||null,at:new Date().toISOString()});toast(v==="new"?"Отметка снята":"Отмечено: "+STATUS_LABEL[v])}catch(e){l.status=prev;S.state[l.key]={...(S.state[l.key]||{}),status:prev};renderLeads();toast("Не удалось сохранить отметку")}}
 function openLead(k){S.openKey=k;renderDrawer()}
 function closeDrawer(){S.openKey=null;$("#drawerRoot").replaceChildren()}
 function renderDrawer(){const l=LEADS.find(x=>x.key===S.openKey);if(!l){closeDrawer();return}
