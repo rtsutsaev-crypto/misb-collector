@@ -316,6 +316,8 @@ def main():
                     if key in FULLSCAN and clf:  # full scan of a list without a text filter: the dictionary word match is loose, the collector classifier decides
                         ok, why, _ = clf.classify(r["title"], ())
                         t = why if ok else None
+                        if t and t.startswith("мероприятие") and re.search(r"культур|досуг|музе|театр|библиотек|спортивн|детск\w* (сад|школ|творчеств)|дом творчества|молодёж|молодеж", (r.get("customer") or "").lower()):
+                            t = None   # праздники и культурные события учреждений культуры и спорта — не деловые мероприятия
                     if not t or any(x in r["title"].lower() for x in exclude):
                         continue
                     ref = r["deadline"] or r.get("_pub")  # no deadline (e.g. a single-supplier purchase): the placement date decides
