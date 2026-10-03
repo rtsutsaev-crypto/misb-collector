@@ -25,7 +25,7 @@ def main():
     s = next((s for s in plan["sources"] if s["key"] == x.key), None)
     if not s:
         raise SystemExit(f"нет источника {x.key}")
-    field = next((f for f in ("urls", "queries", "requests") if s.get(f)), None)
+    field = next((f for f in ("urls", "queries", "requests", "customerInns") if s.get(f)), None)
     lst = s.get(field) or []
     reg = s.get("registry") or {}
     batch = s.get("batch")
