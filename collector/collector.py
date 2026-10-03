@@ -13,7 +13,7 @@
 """
 import argparse, json, re, sys, os, glob, datetime as dt
 
-VERSION = "1.7"
+VERSION = "1.8"
 
 # ---------- морфология ----------
 W = r"[а-яёa-z0-9ʻ'’]"          # символ слова
@@ -109,6 +109,10 @@ EXCL_HARD = [
 # Мягкие исключения: скрывают лот, только если в нём нет признака обучения взрослых/персонала.
 EXCL_SOFT = [r"(?<!\w)детск", r"(?<!\w)дет(ей|и|ям)(?!\w)", r"дошкольн", r"несовершеннолетн", r"спортивн", r"(?<!\w)смен(а|ы)(?!\w)",
              r"учащихся", r"студент", r"обучающихся", r"олимпиадн", r"общеразвивающ"]
+# Тема обучения и близких мероприятий рядом с формулировкой исследования рынка / анализа цен (без строгой формы обучения).
+NEAR = re.compile(r"обучени|образовательн|образовани|повышени\w* квалификац|переподготовк|профессиональн\w* подготовк|тренинг|семинар|курс(ы|ов|ам)(?!\w)|конференц|форум|вебинар|мастер-класс|коучинг|менторинг|ментор|наставнич|"
+                  r"ассессмент|оценк\w* (персонал|компетенц)|развити\w* (персонал|кадр|руководител|сотрудник|компетенц)|бизнес-школ|школ\w* (бизнес|менеджмент|руководител)|бизнес-образован|корпоративн\w* (университет|академи)|"
+                  r"(деловых|корпоративных|обучающих|образовательных|развивающих) мероприят|мероприят\w* для (сотрудник|работник|персонал|руководител)|тимбилдинг|командообразован|деловая игра|стратегическ\w* сесси|лидерств|soft skills|гибких навыков", re.I)
 MGMT = re.compile(r"управлени|менеджмент|маркетинг|бизнес|руководител|директор|экономик|финанс|предпринимател|управляющ|развити\w* (компани|предприяти)")
 CLIN = re.compile(r"врач|сестринск|фельдшер|акушер|лечебн|пациент|ординатур|клиническ\w* (практик|исследован)|ich-gcp|(средн\w* )?медицинск\w* (персонал|работник|сотрудник|специалист|кадр|юрист)|спортивн\w* медицин")
 SECTOR = re.compile(r"(медицинск|фармац|стоматолог|клиник|транспортн|спортивн|детск)")
@@ -173,6 +177,8 @@ class Matcher:
         self.soft = re.compile("|".join(f"(?:{x})" for x in EXCL_SOFT))
         self.adult = re.compile(ADULT)
         self.consult = re.compile("|".join(f"(?:{x})" for x in CONSULT))
+        mk = [phrase_rx(p) for p in d.get("market", [])]
+        self.market = re.compile("|".join(f"(?:{x})" for x in mk if x)) if any(mk) else None
         self.okpd = tuple(str(x) for x in d.get("okpd2", []))
         self.flags = {k: re.compile("|".join(v)) for k, v in
                       dict(mandatory=MANDATORY, tek=TEK, smp=SMP, license=LICENSE, grant=GRANT).items()}
@@ -204,6 +210,9 @@ class Matcher:
             return True, "форма: " + fm.group(0), terms
         if ok:
             return True, f"ОКПД2 {ok}", []
+        mk = self.market.search(body) if self.market else None
+        if mk and NEAR.search(body):
+            return True, "исследование рынка: " + mk.group(0), ["исследование рынка"]
         cs = self.consult.search(body)
         if cs and (cs.group(0).startswith(("консалтинг", "организационн", "кадров", "разработк")) or re.search(CONSULT_CTX, body)):
             return True, "консалтинг: " + cs.group(0), ["консалтинг"]
@@ -211,7 +220,9 @@ class Matcher:
 
     def flag_list(self, title, customer=""):
         s = norm_text(title + " " + (customer or ""))
-        return [k for k, rx in self.flags.items() if rx.search(s)]
+        fl = [k for k, rx in self.flags.items() if rx.search(s)]
+        if self.market and self.market.search(s) and "rfq" not in fl: fl.append("rfq")
+        return fl
 
     def score(self, lead, today):
         """0–100: чем выше, тем ближе к профилю МИСБ и тем срочнее."""
@@ -249,6 +260,11 @@ def tp_key(lead):
     return norm_key(lead.get("title"))[:60] + "|" + str(lead.get("currency") or "RUB") + "|" + str(round(p))
 
 
+def dup_key(lead):
+    """Название + срок; у лида без срока — название + заказчик (одинаковые «Оказание образовательных услуг» у разных заказчиков — разные закупки)."""
+    return norm_key(lead.get("title")) + "|" + (lead.get("deadline") or "~" + str(lead.get("customerInn") or lead.get("customer") or ""))
+
+
 class Known:
     def __init__(self):
         self.ids, self.keys, self.tp = {}, set(), {}
@@ -257,7 +273,7 @@ class Known:
         dl = lead.get("deadline", "") if deadline is None else deadline
         for i in (lead.get("id"), lead.get("eisNumber")):
             if i: self.ids[str(i)] = dl
-        self.keys.add(norm_key(lead.get("title")) + "|" + (lead.get("deadline") or ""))
+        self.keys.add(dup_key(lead))
         t = tp_key(lead)
         if t: self.tp.setdefault(t, set()).add(family(lead.get("source")))
 
@@ -272,7 +288,7 @@ class Known:
         return None
 
     def dup(self, lead):
-        return norm_key(lead.get("title")) + "|" + (lead.get("deadline") or "") in self.keys
+        return dup_key(lead) in self.keys
 
     @classmethod
     def from_db(cls, leadsets_dir, updates_dir=None):
@@ -310,7 +326,7 @@ def build_lead(row, m, source, today, country="RU", currency="RUB"):
          "deadline": row.get("deadline") or "", "law": row["law"] if "law" in row else law_of(row["id"]), "url": row.get("url") or "",
          "source": source, "collectedAt": today, "flags": [], "country": row.get("country") or country,
          "currency": row.get("currency") or currency}
-    for k in ("customerInn", "contacts", "verify", "platform", "note", "eisNumber", "okpd2", "stage", "topic", "purchaseType", "publishedAt"):
+    for k in ("customerInn", "contacts", "verify", "platform", "note", "eisNumber", "okpd2", "stage", "topic", "purchaseType", "publishedAt", "validUntil"):
         if row.get(k): l[k] = row[k]
     l["flags"] = sorted(set(row.get("flags") or []) | set(m.flag_list(title, l["customer"])))
     if is_late(l["deadline"], today, "rfq" in l["flags"]): l["flags"] = sorted(set(l["flags"]) | {"late"})
@@ -351,6 +367,16 @@ def process_rows(rows, m, known, source, today, max_age_days=30, **kw):
 
 # ---------- встроенные примеры ----------
 CASES = [
+    (True, "Анализ цен на услуги по организации деловых мероприятий"),
+    (True, "Маркетинговые исследования в сфере бизнес-образования"),
+    (True, "Изучение рынка корпоративных мероприятий для сотрудников"),
+    (True, "Мониторинг цен на услуги ментора"),
+    (True, "Запрос ценовых предложений на услуги бизнес-школы"),
+    (True, "Анализ рынка услуг по развитию персонала"),
+    (False, "Исследование рынка труда"),
+    (False, "Анализ цен на поставку компьютеров"),
+    (False, "Мониторинг цен на аренду офисных помещений"),
+    (False, "Запрос цен на поставку канцелярских товаров"),
     (True, "Оказание услуг по обучению по программе: Руководитель медицинского бизнеса"),
     (True, "Оказание услуг по обучению по программе: Управление спортивными организациями и фитнес-центрами"),
     (True, "Оказание услуг по обучению по программе: Управление фармацевтической деятельностью"),

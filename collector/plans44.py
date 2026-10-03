@@ -38,14 +38,14 @@ def to_row(x, today, min_price=0):
     inn = x.get("customer") or ""
     pos = c.get("positionNumber")
     if not pos or not c.get("purchaseObjectInfo"): return None
-    # месяц в позициях плана-графика не отдаётся: текущий год — конец года, будущий — начало года
-    deadline = f"{year}-12-31" if year == int(today[:4]) else f"{year}-01-15"
+    # месяц объявления в позициях плана-графика не отдаётся: срока подачи нет, лид актуален до конца года плана (validUntil)
+    deadline = ""
     okpd = (c.get("OKPD2Info") or {}).get("OKPDCode") or ""
     return {"id": "plan44-" + pos, "title": c["purchaseObjectInfo"].strip(), "customer": ("ИНН " + inn) if inn else "",
             "customerInn": inn, "region": G.REG.get(int(x.get("region") or 0), ""), "price": price if price > 0 else None,
-            "deadline": deadline, "law": "44-ФЗ", "okpd2": [okpd] if okpd else [], "flags": ["plan"],
+            "deadline": deadline, "validUntil": f"{year}-12-31", "law": "44-ФЗ", "okpd2": [okpd] if okpd else [], "flags": ["plan"],
             "url": G.EIS + (c.get("IKZ") or pos), "publishedAt": (c.get("publishDate") or "")[:10],
-            "note": f"План-график 44-ФЗ {x.get('plan_number')}, позиция {pos}: закупка на {year} год, срок объявления в плане не указан"}
+            "note": f"План-график 44-ФЗ {x.get('plan_number')}, позиция {pos}: закупка на {year} год, срок объявления не указан, актуален до конца года плана"}
 
 
 def customers_from(leadsets):
