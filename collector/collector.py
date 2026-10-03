@@ -305,7 +305,7 @@ def build_lead(row, m, source, today, country="RU", currency="RUB"):
          "deadline": row.get("deadline") or "", "law": row["law"] if "law" in row else law_of(row["id"]), "url": row.get("url") or "",
          "source": source, "collectedAt": today, "flags": [], "country": row.get("country") or country,
          "currency": row.get("currency") or currency}
-    for k in ("customerInn", "contacts", "verify", "platform", "note", "eisNumber", "okpd2", "stage", "topic"):
+    for k in ("customerInn", "contacts", "verify", "platform", "note", "eisNumber", "okpd2", "stage", "topic", "purchaseType", "publishedAt"):
         if row.get(k): l[k] = row[k]
     l["flags"] = sorted(set(row.get("flags") or []) | set(m.flag_list(title, l["customer"])))
     if is_late(l["deadline"], today, "rfq" in l["flags"]): l["flags"] = sorted(set(l["flags"]) | {"late"})
