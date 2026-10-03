@@ -16,9 +16,9 @@ BASE = "https://v2.gosplan.info"
 
 def get(path, params):
     url = BASE + path + "?" + urllib.parse.urlencode(dict(params, apikey=KEY))
-    for t in range(4):
+    for t in range(2):
         try:
-            with urllib.request.urlopen(url, timeout=60) as r:
+            with urllib.request.urlopen(url, timeout=25) as r:
                 return json.loads(r.read().decode())
         except urllib.error.HTTPError as e:
             if e.code == 429 or e.code >= 500: time.sleep(2 + 3 * t); continue
@@ -32,7 +32,7 @@ def main():
     a = argparse.ArgumentParser()
     a.add_argument("--leadsets", required=True); a.add_argument("--known"); a.add_argument("--dict", default="dictionary.json")
     a.add_argument("--date", required=True); a.add_argument("--out", required=True)
-    a.add_argument("--max", type=int, default=60); a.add_argument("--min-age", type=int, default=14); a.add_argument("--max-age", type=int, default=120)
+    a.add_argument("--max", type=int, default=60); a.add_argument("--budget-sec", type=int, default=240); a.add_argument("--min-age", type=int, default=14); a.add_argument("--max-age", type=int, default=120)
     x = a.parse_args()
     today = dt.date.fromisoformat(x.date)
     lo, hi = (today - dt.timedelta(days=x.max_age)).isoformat(), (today - dt.timedelta(days=x.min_age)).isoformat()
@@ -53,11 +53,15 @@ def main():
             if old and (not old.get("none") or (today - dt.date.fromisoformat(old.get("checkedAt", "2000-01-01"))).days < 14): continue
             if m.classify(l.get("title", ""), l.get("okpd2") or ())[0]: cand.append((l["deadline"], i, l))
     cand.sort(reverse=True)
-    docs, st = [], {"candidates": len(cand), "requests": 0, "found": 0, "none": 0}
+    docs, st = [], {"candidates": len(cand), "requests": 0, "found": 0, "none": 0, "failed": 0}
+    t0, bad = time.time(), 0
     for _, i, l in cand[: x.max]:
+        if time.time() - t0 > x.budget_sec or bad >= 5:   # ГосПлан не отвечает или бюджет вышел — остальное в следующий запуск
+            st["stopped"] = "бюджет времени" if bad < 5 else "5 сбоев подряд"; break
         j = get("/fz44/contracts", {"purchase_number": i, "limit": 5}); st["requests"] += 1
         time.sleep(0.15)
-        if j is None: continue
+        if j is None: bad += 1; st["failed"] += 1; continue
+        bad = 0
         k = C.site_key(i)
         if isinstance(j, list) and j:
             c = sorted(j, key=lambda r: r.get("published_at") or "")[0]
