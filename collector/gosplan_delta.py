@@ -76,8 +76,9 @@ def to_row(x, law):
             "region": REG.get(int(x.get("region") or 0), ""), "price": x.get("max_price"), "deadline": dl[:10],
             "url": EIS + num, "okpd2": x.get("okpd2") or [], "law": "44-ФЗ" if law == "fz44" else "223-ФЗ",
             "stage": str(x.get("stage") or ""),
-            "flags": ["rfq"] if re.search(r"EZK|ZK\d|ZKB|ZP|Quotation|Proposal", str(x.get("purchase_type") or ""), re.I) else [],
-            "purchaseType": x.get("purchase_type") or ""}
+            "flags": (["rfq"] if re.search(r"EZK|ZK\d|ZKB|ZP|Quotation|Proposal", str(x.get("purchase_type") or ""), re.I) else [])
+                     + (["smp"] if re.search(r"SMBO|ESMBO", str(x.get("purchase_type") or ""), re.I) else []),
+            "purchaseType": x.get("purchase_type") or "", "publishedAt": (x.get("published_at") or "")[:10]}
 
 
 def main():
