@@ -361,11 +361,11 @@
    "key": "energybase",
    "method": "Отраслевой агрегатор закупок ТЭК: раздел «Подготовка персонала» по всем компаниям и тот же раздел у Газпром нефти, Роснефти, Лукойла, Газпрома, Татнефти, Транснефти, Росатома, РусГидро и СИБУРа. Проверено 28.09.2026: страницы открываются из облака (curl и WebFetch), 20 карточек на странице.",
    "name": "Energybase · Подготовка персонала (ТЭК)",
-   "note": "Только первая страница каждого адреса: robots.txt запрещает адреса с «?» (в том числе ?page=), /search и /tender-outdated и просит 6 с между запросами. ID лида — идентификатор из ссылки карточки https://energybase.ru/tender/<id> (без приставки), ссылка лида — адрес карточки; срок — «Дата и время окончания подачи заявок». Регистрационный номер и площадка скрыты за входом — их не угадывай. Заказчики с формой «ТОО» — Казахстан: берём, country KZ, currency KZT. В разделе встречаются и нецелевые закупки (поставки, ремонт) — их отсекает общий отбор по словарю.",
+   "note": "Только первая страница каждого адреса: robots.txt запрещает адреса с «?» (в том числе ?page=), /search и /tender-outdated и просит 6 с между запросами. ID лида — идентификатор из ссылки карточки https://energybase.ru/tender/<id> (без приставки), ссылка лида — адрес карточки; срок — «Дата и время окончания подачи заявок». Регистрационный номер и площадка скрыты за входом — их не угадывай. Заказчики с формой «ТОО» — Казахстан: берём, country KZ, currency KZT. В разделе встречаются и нецелевые закупки (поставки, ремонт) — их отсекает общий отбор по словарю. 03.10.2026: читается скриптом pages.py --site energybase (сроки из «Дата и время окончания подачи заявок»; срок не позже даты объявления отбрасывается), а не WebFetch.",
    "pause": 6,
    "planned": 10,
    "source": "energybase",
-   "type": "pages",
+   "type": "pages-script",
    "urls": [
     "https://energybase.ru/tender/catalog/training-services",
     "https://energybase.ru/integrated/gazprom-neft/tenders/training-services",
@@ -377,18 +377,20 @@
     "https://energybase.ru/generation/rosatom/tenders/training-services",
     "https://energybase.ru/generation/rushydro/tenders/training-services",
     "https://energybase.ru/petrochemistry/sibur/tenders/training-services"
-   ]
+   ],
+   "prevType": "pages",
+   "site": "energybase"
   },
   {
    "batch": 8,
    "key": "energybase-cos",
    "method": "Тот же раздел «Подготовка персонала» на страницах ещё 37 компаний ТЭК (нефтепереработка, добыча, сервис, электроэнергетика). Адреса проверены 28.09.2026: открываются из облака, робот-файл их разрешает. Порциями по 8 адресов за запуск (ротация).",
    "name": "Energybase · компании ТЭК, раздел «Подготовка персонала»",
-   "note": "Те же правила, что у источника energybase: только первая страница адреса (адреса с «?» robots.txt запрещает), пауза 6 с, ID лида — идентификатор из ссылки https://energybase.ru/tender/<id>, срок — «Дата и время окончания подачи заявок»; регистрационный номер и площадка скрыты за входом. Заказчик указан в карточке списка. Нецелевое отсекает общий отбор по словарю. Если карточка уже есть в базе (по ID или по названию и сроку), не дублируй.",
+   "note": "Те же правила, что у источника energybase: только первая страница адреса (адреса с «?» robots.txt запрещает), пауза 6 с, ID лида — идентификатор из ссылки https://energybase.ru/tender/<id>, срок — «Дата и время окончания подачи заявок»; регистрационный номер и площадка скрыты за входом. Заказчик указан в карточке списка. Нецелевое отсекает общий отбор по словарю. Если карточка уже есть в базе (по ID или по названию и сроку), не дублируй. 03.10.2026: читается скриптом pages.py --site energybase (сроки из «Дата и время окончания подачи заявок»; срок не позже даты объявления отбрасывается), а не WebFetch.",
    "pause": 6,
    "planned": 8,
    "source": "energybase",
-   "type": "pages",
+   "type": "pages-script",
    "urls": [
     "https://energybase.ru/downstream/gazprom-pererabotka-blagovesensk/tenders/training-services",
     "https://energybase.ru/downstream/gazprom-savalat-neftekhim/tenders/training-services",
@@ -427,7 +429,9 @@
     "https://energybase.ru/vendor/gsprom/tenders/training-services",
     "https://energybase.ru/vendor/proektirovanie-gazprom/tenders/training-services",
     "https://energybase.ru/vendor/sibintek/tenders/training-services"
-   ]
+   ],
+   "prevType": "pages",
+   "site": "energybase"
   },
   {
    "base": "https://v2.gosplan.info",
@@ -24849,5 +24853,5 @@
   }
  ],
  "updatedAt": "2026-10-01",
- "version": "6.4"
+ "version": "6.5"
 }
