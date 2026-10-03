@@ -4796,6 +4796,22 @@
    "refreshDays": 7
   },
   {
+   "key": "etp-mosreg",
+   "name": "Электронный магазин Московской области (через релей)",
+   "type": "etp-search",
+   "source": "etp",
+   "country": "RU",
+   "sources": "mosreg",
+   "pause": 1.2,
+   "planned": 1,
+   "light": true,
+   "urls": [
+    "https://market.mosreg.ru/"
+   ],
+   "method": "Полный обход открытых закупок магазина (POST api.market.mosreg.ru через релей: около 78 страниц по 10), отбор по словарю делает скрипт. Каждый запуск; без ротации слов. Нужны адрес и токен релея из текста задания (RELAY_URL, RELAY_TOKEN в окружении команды).",
+   "note": "03.10.2026: релей разрешил api.market.mosreg.ru и принимает POST (проверено: 774 открытые закупки, 78 страниц). Без релея в задании источник пропусти (status skipped, note «релей не настроен»)."
+  },
+  {
    "country": "RU",
    "key": "speaker-boards",
    "maxAgeDays": 15,
@@ -25408,5 +25424,5 @@
   }
  ],
  "updatedAt": "2026-10-01",
- "version": "6.12"
+ "version": "6.13"
 }

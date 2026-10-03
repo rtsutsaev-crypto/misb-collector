@@ -13,26 +13,14 @@
 сертификаты, перезапустить релей. Проверка: `/fetch?url=https://icetrade.by/` возвращает `x-upstream-status: 200`
 (сейчас 599). Если это так — источники `by-icetrade` и `by-goszakupki` я возвращаю в план (`type` = `prevType`).
 
-## Шаг 2. POST через релей — даёт электронный магазин Московской области
+## Шаг 2. POST через релей — выполнен 03.10.2026
 
-Магазин (api.market.mosreg.ru) отвечает только на POST и только с российских адресов. Нужно, чтобы релей умел
-передавать POST дальше.
-
-1. В обработчике `/fetch` добавьте приём метода POST: тот же параметр `url`, тело запроса и заголовок
-   `Content-Type` передаются на указанный адрес без изменений; ответ сайта возвращается как есть.
-2. Ограничьте POST списком разрешённых узлов — сейчас в нём должен быть один: `api.market.mosreg.ru`. Для остальных
-   узлов POST отклоняйте (код 403). Токен проверяйте так же, как для GET.
-3. Проверка с любого компьютера (токен подставьте свой):
-   ```sh
-   curl -sS -X POST -H 'X-Relay-Token: <токен>' -H 'Content-Type: application/json' \
-     --data '{"page":1,"pageSize":10}' \
-     'https://<адрес релея>/fetch?url=https%3A%2F%2Fapi.market.mosreg.ru%2Fapi%2FTrade%2FGetTradesForParticipantOrAnonymous' -i | head -20
-   ```
-   Ожидается код 200 и JSON; пустой ответ или 4xx от сайта — тоже полезный результат, пришлите его мне.
-
-Со стороны коллектора всё уже готово: `etp_search.py` сам отправляет запросы к `api.market.mosreg.ru` через релей,
-если в окружении есть `RELAY_URL` и `RELAY_TOKEN`. После вашего «готово: шаг 2» я включу источник `etp-search` с
-`mosreg` в план.
+Релей (`/opt/relay/relay.py`, служба `relay.service`, за Caddy на 443) уже принимает POST: параметр `url` и тело запроса, цели
+передаются только заголовки `X-Up-*` (тип содержимого — `X-Up-Content-Type`), ответ всегда 200, код цели — в `X-Upstream-Status`.
+Допустимые узлы задаёт шаблон `RELAY_ALLOW` в `/etc/default/relay` (применяется и к GET, и к POST); 03.10.2026 в него добавлено
+`api\.market\.mosreg\.ru`, релей перезапущен (резервная копия — `/etc/default/relay.bak`). Проверка: POST на
+`api.market.mosreg.ru/api/Trade/GetTradesForParticipantOrAnonymous` через релей вернул `x-upstream-status: 200` и JSON
+(774 открытые закупки, 78 страниц). Источник `etp-mosreg` включён в план 6.13.
 
 ## Шаг 3. FTP ЕИС — проверен 03.10.2026, закрыт
 
