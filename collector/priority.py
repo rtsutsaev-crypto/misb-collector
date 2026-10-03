@@ -124,6 +124,10 @@ def proc_k(l, icp):
     return k["other"], ""
 
 
+EVENT_LIFT = re.compile(r"(деловы|корпоративн|обучающ|развивающ|управленческ|командн|стратегическ)\w*[\s\-]+(мероприяти|событи|сесси)|мероприяти\w* для (сотрудник|работник|персонал|руководител)|тимбилдинг|командообразован|круглы\w* стол|выездн\w* (сесси|семинар)")
+CONSULT_LIFT = re.compile(r"оценк\w* (персонал|компетенц)|ассессмент|оргдиагностик|организационн\w* (диагностик|развити)|методологическ\w* (сопровожд|поддержк)|кадров\w* аудит|консультационн\w* услуг\w* .*(персонал|управлен|кадр)")
+
+
 def tier_of(l, ds, fs, pen, mand, title, icp, price_rub):
     t = title.lower().replace("ё", "е")
     corp = bool(CORP.search(l.get("customer") or "")) or "tek" in (l.get("flags") or []) or l.get("law") in ("223-ФЗ", "Коммерческий")
@@ -133,6 +137,7 @@ def tier_of(l, ds, fs, pen, mand, title, icp, price_rub):
     if PERIPHERY_RX.search(t): return "периферия"
     if set(ds) & CORE_DIRS and pen > -10: return "ядро"
     if fs and ADULT.search(t): return "ядро-общ"
+    if EVENT_LIFT.search(t) or CONSULT_LIFT.search(t): return "ядро-общ"   # решение заказчика 04.10.2026: мероприятия и консалтинг в профиле
     return "периферия"
 
 
@@ -140,7 +145,7 @@ def main():
     a = argparse.ArgumentParser()
     for k in ("leadsets", "updates", "verdicts", "watchlist", "buyers", "out", "date"): a.add_argument("--" + k, required=k in ("leadsets", "out", "date"))
     a.add_argument("--fit", default="fit.json"); a.add_argument("--icp", default="icp.json"); a.add_argument("--dict", default="dictionary.json")
-    a.add_argument("--state"); a.add_argument("--all", help="записать priority всех лидов в этот файл (для проверки)")
+    a.add_argument("--state"); a.add_argument("--accepted", help="meta/llm-accept.json: лиды, принятые вторым проходом модели — минимум ярус «ядро-общ»"); a.add_argument("--all", help="записать priority всех лидов в этот файл (для проверки)")
     x = a.parse_args()
     icp = json.load(open(x.icp, encoding="utf-8"))
     fit = Fit((lambda d: d.get("data", d))(json.load(open(x.fit, encoding="utf-8"))))
@@ -157,6 +162,9 @@ def main():
             if l:
                 if u.get("deadline"): l["deadline"] = u["deadline"]
                 if u.get("cancelled"): l["cancelled"] = True
+    acc_keys = {}
+    if x.accepted and os.path.exists(x.accepted):
+        acc_keys = (lambda j: j.get("data", j).get("accepted", {}))(json.load(open(x.accepted, encoding="utf-8")))
     verdicts = {}
     if x.verdicts and os.path.exists(x.verdicts):
         j = json.load(open(x.verdicts, encoding="utf-8")); verdicts = (j.get("data", j)).get("excluded", {})
@@ -175,7 +183,7 @@ def main():
     rows = []
     for lid, l in leads.items():
         key = site_key(lid)
-        if key in verdicts or not m.classify(l.get("title", ""), l.get("okpd2") or ())[0] and not str(l.get("source", "")).startswith(("Запросы на спикеров", "fd-", "reg2-", "cu-", "v7-")): continue
+        if key not in acc_keys and (key in verdicts or not m.classify(l.get("title", ""), l.get("okpd2") or ())[0] and not str(l.get("source", "")).startswith(("Запросы на спикеров", "fd-", "reg2-", "cu-", "v7-"))): continue
         kd, wd = deadline_k(l, today, icp)
         if kd == 0: continue
         pf, ds, fs, pen, mand, why = fit.profile(l)
@@ -192,6 +200,7 @@ def main():
         pr = round(pf * kp * kd * kr * kg * kc * kn)
         price_rub = l.get("price") if (l.get("currency") or "RUB") == "RUB" else None
         tier = tier_of(l, ds, fs, pen, mand, l.get("title") or "", icp, price_rub)
+        if key in acc_keys and tier == "периферия": tier = "ядро-общ"
         parts = [p for p in (wd, wp, wg, wc, *wr, "похоже на поставку или мероприятие: проверить предмет" if kn < 1 else "") if p]
         rows.append({"id": lid, "key": key, "priority": pr, "tier": tier, "profile": pf, "late": kd <= icp["deadline"]["today"] and bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", l.get("deadline") or "")),
                      "parts": "; ".join(parts), "days": (dt.date.fromisoformat(l["deadline"]) - today).days if re.fullmatch(r"\d{4}-\d{2}-\d{2}", l.get("deadline") or "") else None})

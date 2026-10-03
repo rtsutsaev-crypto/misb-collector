@@ -10,7 +10,8 @@
    "pause": 0.12,
    "planned": 1,
    "source": "gosplan:fz44 | gosplan:fz223",
-   "type": "gosplan-delta"
+   "type": "gosplan-delta",
+   "light": true
   },
   {
    "key": "rt-treningi",
@@ -24,7 +25,8 @@
    "type": "pages-script",
    "urls": [
     "https://rostender.info/category/tendery-treningi"
-   ]
+   ],
+   "light": true
   },
   {
    "key": "rt-seminary",
@@ -40,7 +42,8 @@
     "https://rostender.info/category/tendery-seminary",
     "https://rostender.info/category/tendery-seminary?page=2",
     "https://rostender.info/category/tendery-seminary?page=3"
-   ]
+   ],
+   "light": true
   },
   {
    "key": "rt-pk",
@@ -57,7 +60,8 @@
     "https://rostender.info/category/tendery-povyshenie-kvalifikacii?page=2",
     "https://rostender.info/category/tendery-povyshenie-kvalifikacii?page=3",
     "https://rostender.info/category/tendery-povyshenie-kvalifikacii?page=4"
-   ]
+   ],
+   "light": true
   },
   {
    "key": "rt-obr",
@@ -74,7 +78,8 @@
     "https://rostender.info/tendery-uslugi-v-oblasti-obrazovaniya-i-povysheniya-kvalifikacii?page=2",
     "https://rostender.info/tendery-uslugi-v-oblasti-obrazovaniya-i-povysheniya-kvalifikacii?page=3",
     "https://rostender.info/tendery-uslugi-v-oblasti-obrazovaniya-i-povysheniya-kvalifikacii?page=4"
-   ]
+   ],
+   "light": true
   },
   {
    "key": "rt-obuch",
@@ -89,7 +94,8 @@
    "urls": [
     "https://rostender.info/category/tendery-obuchenie-personala",
     "https://rostender.info/category/tendery-obuchenie-personala?page=2"
-   ]
+   ],
+   "light": true
   },
   {
    "key": "rt-event",
@@ -103,7 +109,8 @@
    "type": "pages-script",
    "urls": [
     "https://rostender.info/category/tendery-event-meropriyatiya"
-   ]
+   ],
+   "light": true
   },
   {
    "customer": "АНО «Корпоративная Академия Росатома»",
@@ -137,7 +144,8 @@
     "https://www.komtender.ru/tendery-uslugi-v-oblasti-obrazovaniya-i-povysheniya-kvalifikacii?page=6",
     "https://www.komtender.ru/tendery-uslugi-v-oblasti-obrazovaniya-i-povysheniya-kvalifikacii?page=7",
     "https://www.komtender.ru/tendery-uslugi-v-oblasti-obrazovaniya-i-povysheniya-kvalifikacii?page=8"
-   ]
+   ],
+   "light": true
   },
   {
    "key": "synapse",
@@ -175,7 +183,8 @@
     "https://www.b2b-center.ru/search/industry/konsultacionnye-uslugi/?page=2",
     "https://www.b2b-center.ru/search/industry/povyshenie-kvalifikacii/?page=2",
     "https://www.b2b-center.ru/search/industry/okazanie-obrazovatelnyx-uslug/?page=2"
-   ]
+   ],
+   "light": true
   },
   {
    "key": "b2b-market",
@@ -228,7 +237,8 @@
     "https://www.bicotender.ru/tags/tendery-na-obuchenie-personala.html",
     "https://www.bicotender.ru/tags/tendery-po-obucheniyu-po-ohrane-truda.html",
     "https://www.bicotender.ru/zakupki-i-tendery/kategorii/professionalnye-uslugi-i-raboty/obrazovatelnye-uslugi/vse-tendery-i-zakupki-na-treningi-i-obuchenie/"
-   ]
+   ],
+   "light": true
   },
   {
    "key": "zmo-lenreg",
@@ -240,7 +250,8 @@
    "type": "pages",
    "urls": [
     "http://zakupki.lenreg.ru/Search/NewRequests"
-   ]
+   ],
+   "light": true
   },
   {
    "key": "zmo-vendorportal",
@@ -252,7 +263,8 @@
    "type": "pages",
    "urls": [
     "https://vendorportal.ru/Market/OfferInvitationOpen"
-   ]
+   ],
+   "refreshDays": 3
   },
   {
    "key": "corp-sibur",
@@ -355,7 +367,8 @@
    "type": "pages",
    "urls": [
     "https://rusal.ru/suppliers/selection/prochie-uslugi/"
-   ]
+   ],
+   "refreshDays": 5
   },
   {
    "key": "energybase",
@@ -431,7 +444,8 @@
     "https://energybase.ru/vendor/sibintek/tenders/training-services"
    ],
    "prevType": "pages",
-   "site": "energybase"
+   "site": "energybase",
+   "refreshDays": 3
   },
   {
    "base": "https://v2.gosplan.info",
@@ -2597,7 +2611,8 @@
    "pause": 0.3,
    "planned": 1,
    "maxRequests": 120,
-   "batch": 60
+   "batch": 60,
+   "light": true
   },
   {
    "aheadFrom": 14,
@@ -4188,7 +4203,8 @@
     }
    ],
    "source": "tenderguru",
-   "type": "api"
+   "type": "api",
+   "light": true
   },
   {
    "auth": "ключ TenderGuru из задания",
@@ -4621,7 +4637,8 @@
      "kwords": "повышение квалификации",
      "platform": "SberB2B"
     }
-   ]
+   ],
+   "refreshDays": 2
   },
   {
    "auth": "ключ TenderGuru из задания",
@@ -4711,7 +4728,8 @@
     }
    ],
    "source": "tenderguru",
-   "type": "api"
+   "type": "api",
+   "refreshDays": 2
   },
   {
    "base": "https://tender.lot-online.ru/api-gateway/indexer/api",
@@ -4757,17 +4775,18 @@
     }
    ],
    "source": "rad",
-   "type": "api"
+   "type": "api",
+   "refreshDays": 2
   },
   {
-   "batch": 60,
+   "batch": 30,
    "country": "RU",
    "key": "etp-search",
    "method": "Публичные JSON-списки площадок, поиск по словам словаря; порциями по 60 слов за запуск (ротация); закрытые процедуры моложе года сохраняются как сигнал потребности.",
    "name": "ЭТП · МТС Закупки, РЭСТ, Торги РФ и Федерации, РЖД-Медицина, ЛСР: поиск по словарю",
    "note": "29.09.2026 по слову «обучение»: МТС 89 закупок, все завершённые; РЭСТ 3; Торги РФ 3; Торги Федерации 0; РЖД-Медицина 53 (в т.ч. обучение медперсонала 2026 г.); ЛСР 1. Код скрипта — collector/etp_search.py, исходник etp_api/etp_search.py. Завершённые закупки не старше года сохраняются как сигнал потребности. 03.10.2026: не чаще раза в 7 дн. — 88 из 94 лидов исключены словарём, 0 новых в последних запусках.",
    "pause": 1.2,
-   "planned": 60,
+   "planned": 30,
    "source": "etp",
    "sources": "mts,rest,rftorgi,fedtorgi,rzdm,lsr",
    "type": "etp-search",
@@ -6597,7 +6616,8 @@
    },
    "method": "Порция batch адресов по кругу (meta/rotation). Каждый адрес независим: ошибка одной страницы не останавливает остальные. Результат каждой страницы — в meta/registry-checks (registry_checks.py).",
    "note": "Каналы пакета «Свежие потребности» 01.10.2026 первой волны: биржа HRTime, Telegram спикеров, HR/T&D-сообщества, приглашения экспертов школ и ассоциаций. Читаются каждый запуск.",
-   "verify": "Свежая потребность из канала (запрос, поиск эксперта, приглашение провайдеру, субподряд): проверить дату публикации, актуальность, заказчика, оплату и маршрут отклика. Отклик — только человеком."
+   "verify": "Свежая потребность из канала (запрос, поиск эксперта, приглашение провайдеру, субподряд): проверить дату публикации, актуальность, заказчика, оплату и маршрут отклика. Отклик — только человеком.",
+   "light": true
   },
   {
    "key": "fd-pages",
@@ -7106,7 +7126,8 @@
     "https://partad.ru/News": "MISB-487"
    },
    "method": "Порция batch адресов по кругу (meta/rotation). Каждый адрес независим: ошибка одной страницы не останавливает остальные. Результат каждой страницы — в meta/registry-checks (registry_checks.py).",
-   "note": "Адреса реестра 01.10.2026, у которых из облака виден список закупок. Лиды — по общим правилам pages."
+   "note": "Адреса реестра 01.10.2026, у которых из облака виден список закупок. Лиды — по общим правилам pages.",
+   "refreshDays": 2
   },
   {
    "key": "reg2-pages",
@@ -10623,7 +10644,8 @@
    "method": "Порция batch адресов по кругу (meta/rotation). Каждый адрес независим: ошибка одной страницы не останавливает остальные. Результат каждой страницы — в meta/cu-checks (registry_checks.py).",
    "note": "Каналы корпоративных университетов и учебных центров (пакет 01.10.2026), у которых из облака виден список (закупки, программы с датами). Лиды — по общим правилам pages.",
    "checksDoc": "meta/cu-checks",
-   "verify": "Канал корпоративного университета или учебного центра: проверить, что это закупка или запрос внешнего обучения, и канал отклика."
+   "verify": "Канал корпоративного университета или учебного центра: проверить, что это закупка или запрос внешнего обучения, и канал отклика.",
+   "refreshDays": 3
   },
   {
    "key": "cu-pages",
@@ -18388,7 +18410,8 @@
    "method": "Порция batch адресов по кругу (meta/rotation). Каждый адрес независим: ошибка одной страницы не останавливает остальные. Результат каждой страницы — в meta/v7-checks (registry_checks.py).",
    "note": "Адреса из 21 прежнего файла (консолидация v5), которых не было ни в плане сбора, ни в реестре, ни в справочнике организаций: каналы, сайты организаций, сообщества, разделы закупок.",
    "checksDoc": "meta/v7-checks",
-   "verify": "Сигнал с адреса из прежних файлов: проверить, что это запрос, приглашение или закупка обучения, дату и заказчика."
+   "verify": "Сигнал с адреса из прежних файлов: проверить, что это запрос, приглашение или закупка обучения, дату и заказчика.",
+   "refreshDays": 3
   },
   {
    "key": "v7-retry",
@@ -23393,7 +23416,8 @@
    "pause": 0.2,
    "planned": 1,
    "script": "eis_ids.py, eisdocs.py",
-   "type": "eis-docs"
+   "type": "eis-docs",
+   "light": true
   },
   {
    "key": "results",
@@ -23841,7 +23865,8 @@
     "оқыту",
     "изучение рынка",
     "ценовых предложений"
-   ]
+   ],
+   "refreshDays": 5
   },
   {
    "country": "KZ",
@@ -25213,5 +25238,5 @@
   }
  ],
  "updatedAt": "2026-10-01",
- "version": "6.10"
+ "version": "6.11"
 }

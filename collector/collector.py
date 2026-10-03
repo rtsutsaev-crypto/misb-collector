@@ -13,7 +13,7 @@
 """
 import argparse, json, re, sys, os, glob, datetime as dt
 
-VERSION = "1.8"
+VERSION = "1.9"
 
 # ---------- морфология ----------
 W = r"[а-яёa-z0-9ʻ'’]"          # символ слова
@@ -113,6 +113,12 @@ EXCL_SOFT = [r"(?<!\w)детск", r"(?<!\w)дет(ей|и|ям)(?!\w)", r"до�
 NEAR = re.compile(r"обучени|образовательн|образовани|повышени\w* квалификац|переподготовк|профессиональн\w* подготовк|тренинг|семинар|курс(ы|ов|ам)(?!\w)|конференц|форум|вебинар|мастер-класс|коучинг|менторинг|ментор|наставнич|"
                   r"ассессмент|оценк\w* (персонал|компетенц)|развити\w* (персонал|кадр|руководител|сотрудник|компетенц)|бизнес-школ|школ\w* (бизнес|менеджмент|руководител)|бизнес-образован|корпоративн\w* (университет|академи)|"
                   r"(деловых|корпоративных|обучающих|образовательных|развивающих) мероприят|мероприят\w* для (сотрудник|работник|персонал|руководител)|тимбилдинг|командообразован|деловая игра|стратегическ\w* сесси|лидерств|soft skills|гибких навыков", re.I)
+# Деловые и корпоративные мероприятия (решение заказчика 04.10.2026): принимаем без слов «обучение», но не праздники, концерты, спорт, выставки.
+EVENT = [r"(деловы\w*|корпоративн\w*|обучающ\w*|развивающ\w*|профессиональн\w*|управленческ\w*|командн\w*|стратегическ\w*)[\s\-]+(мероприяти\w*|событи\w*|сесси\w*)",
+         r"мероприяти\w* для (сотрудник|работник|персонал|руководител|партнер|партнёр|клиент)", r"организаци\w* и проведени\w* (деловых |корпоративных )?мероприяти",
+         r"тимбилдинг|тим-билдинг|командообразован", r"круглы\w* стол", r"выездн\w* (сесси|семинар|мероприяти)", r"(деловой|корпоративный) (форум|завтрак|ужин)"]
+EVENT_NOT = [r"праздн", r"новогодн", r"концерт", r"фестивал", r"спортивн", r"соревнован", r"чемпионат", r"турнир", r"выставк", r"ярмарк", r"шоу", r"юбилей",
+             r"выпускн", r"квиз", r"экскурс", r"туристич", r"культурно-массов", r"театр", r"музе", r"детск", r"школьн", r"день города", r"парад", r"антитеррор", r"гражданск\w* оборон", r"спорт", r"гимнастик", r"посвящ", r"(?<!\w)дн[юяе](?!\w* (знани|рождени))\w*\s", r"культурн", r"палитр", r"межнациональ", r"патриот", r"молод[её]ж", r"городск", r"народн", r"творческ", r"благотворит"]
 MGMT = re.compile(r"управлени|менеджмент|маркетинг|бизнес|руководител|директор|экономик|финанс|предпринимател|управляющ|развити\w* (компани|предприяти)")
 CLIN = re.compile(r"врач|сестринск|фельдшер|акушер|лечебн|пациент|ординатур|клиническ\w* (практик|исследован)|ich-gcp|(средн\w* )?медицинск\w* (персонал|работник|сотрудник|специалист|кадр|юрист)|спортивн\w* медицин")
 SECTOR = re.compile(r"(медицинск|фармац|стоматолог|клиник|транспортн|спортивн|детск)")
@@ -177,6 +183,8 @@ class Matcher:
         self.soft = re.compile("|".join(f"(?:{x})" for x in EXCL_SOFT))
         self.adult = re.compile(ADULT)
         self.consult = re.compile("|".join(f"(?:{x})" for x in CONSULT))
+        self.event = re.compile("|".join(f"(?:{x})" for x in EVENT))
+        self.event_not = re.compile("|".join(f"(?:{x})" for x in EVENT_NOT))
         mk = [phrase_rx(p) for p in d.get("market", [])]
         self.market = re.compile("|".join(f"(?:{x})" for x in mk if x)) if any(mk) else None
         self.okpd = tuple(str(x) for x in d.get("okpd2", []))
@@ -213,6 +221,9 @@ class Matcher:
         mk = self.market.search(body) if self.market else None
         if mk and NEAR.search(body):
             return True, "исследование рынка: " + mk.group(0), ["исследование рынка"]
+        ev = self.event.search(body)
+        if ev and not self.event_not.search(t):
+            return True, "мероприятие: " + ev.group(0), ["мероприятие"]
         cs = self.consult.search(body)
         if cs and (cs.group(0).startswith(("консалтинг", "организационн", "кадров", "разработк")) or re.search(CONSULT_CTX, body)):
             return True, "консалтинг: " + cs.group(0), ["консалтинг"]
@@ -221,6 +232,7 @@ class Matcher:
     def flag_list(self, title, customer=""):
         s = norm_text(title + " " + (customer or ""))
         fl = [k for k, rx in self.flags.items() if rx.search(s)]
+        if self.event.search(s) and not self.event_not.search(s): fl.append("event")
         if self.market and self.market.search(s) and "rfq" not in fl: fl.append("rfq")
         return fl
 
@@ -367,6 +379,19 @@ def process_rows(rows, m, known, source, today, max_age_days=30, **kw):
 
 # ---------- встроенные примеры ----------
 CASES = [
+    (True, "Оказание услуг по организации и проведению корпоративного мероприятия для сотрудников"),
+    (True, "Оказание услуг по организации деловых мероприятий"),
+    (True, "Организация командообразующего мероприятия (тимбилдинг) для работников"),
+    (True, "Услуги по организации и проведению стратегической сессии руководителей"),
+    (True, "Организация и проведение круглого стола по вопросам управления персоналом"),
+    (False, "Организация и проведение спортивных мероприятий"),
+    (False, "Организация городского фестиваля"),
+    (False, "Оказание услуг по организации и проведению мероприятия, посвященного Дню работника сельского хозяйства"),
+    (False, "Оказание услуг для проведения мероприятия по виду спорта художественная гимнастика"),
+    (False, "Услуги по организации и проведению мероприятий в рамках проекта Палитра культур"),
+    (False, "Организация питания на корпоративном мероприятии"),
+    (False, "Аренда зала для проведения мероприятия"),
+    (False, "Услуги по организации новогоднего праздника для детей сотрудников"),
     (True, "Анализ цен на услуги по организации деловых мероприятий"),
     (True, "Маркетинговые исследования в сфере бизнес-образования"),
     (True, "Изучение рынка корпоративных мероприятий для сотрудников"),
@@ -495,7 +520,7 @@ def main():
     a.add_argument("cmd", choices=["test", "audit", "score", "rows", "verdicts", "known"])
     a.add_argument("--dict", default="dictionary.json")
     a.add_argument("--leadsets"); a.add_argument("--updates"); a.add_argument("--in", dest="inp")
-    a.add_argument("--known"); a.add_argument("--source", default=""); a.add_argument("--country", default="RU")
+    a.add_argument("--known"); a.add_argument("--accepted"); a.add_argument("--source", default=""); a.add_argument("--country", default="RU")
     a.add_argument("--currency", default="RUB"); a.add_argument("--date", default=dt.date.today().isoformat())
     a.add_argument("--out", default="out.json")
     x = a.parse_args()
@@ -527,6 +552,9 @@ def main():
     if x.cmd == "verdicts":
         # meta/collector-verdicts: лиды базы, которые фильтр не пропустил бы; сайт показывает их как «исключено по профилю»
         ex, seen = {}, set()
+        accepted = {}
+        if x.accepted and os.path.exists(x.accepted):
+            accepted = (lambda j: j.get("data", j).get("accepted", {}))(json.load(open(x.accepted, encoding="utf-8")))
         for f in sorted(glob.glob(os.path.join(x.leadsets, "*.json"))):
             d = json.load(open(f, encoding="utf-8")); d = d.get("data", d)
             for l in d.get("leads", []):
@@ -535,7 +563,7 @@ def main():
                 seen.add(i)
                 if str(l.get("source", "")).startswith(("Запросы на спикеров", "speakers")): continue
                 rel, why, _ = m.classify(l.get("title", ""), l.get("okpd2") or ())
-                if not rel: ex[site_key(i)] = why[:60]
+                if not rel and site_key(i) not in accepted: ex[site_key(i)] = why[:60]
         doc = {"version": "collector " + VERSION, "date": x.date, "excluded": ex,
                "note": "Лиды, которые фильтр сбора (collector.py) не пропустил бы. Сайт показывает их как «исключено по профилю» (по умолчанию скрыты), кроме лидов в работе. Ничего не удалено."}
         json.dump(doc, open(x.out, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
