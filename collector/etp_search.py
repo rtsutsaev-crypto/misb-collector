@@ -28,6 +28,7 @@ shows them as "завершён (сигнал потребности)". Output f
 import argparse
 import datetime as dt
 import json
+import os
 import re
 import sys
 import time
@@ -40,6 +41,7 @@ import ssl
 CTX = None  # set by --cafile: an extra root certificate (PEM) added to the trust store; verification stays on
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36 misb-collector"
 STAT = {}
+RELAY_HOSTS = ("api.market.mosreg.ru",)  # hosts fetched through the Russian relay (POST /fetch?url=...) when RELAY_URL and RELAY_TOKEN are set; the token comes only from the environment
 
 
 def http(url, body=None, tries=4):
@@ -49,6 +51,9 @@ def http(url, body=None, tries=4):
     if data is not None:
         hdr["Content-Type"] = "application/json"
     err = None
+    relay = os.environ.get("RELAY_URL", "").rstrip("/")
+    if relay and os.environ.get("RELAY_TOKEN") and urllib.parse.urlparse(url).hostname in RELAY_HOSTS:
+        hdr["X-Relay-Token"] = os.environ["RELAY_TOKEN"]; url = relay + "/fetch?url=" + urllib.parse.quote(url, safe="")
     for i in range(tries):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, data=data, headers=hdr), timeout=45, context=CTX) as r:
