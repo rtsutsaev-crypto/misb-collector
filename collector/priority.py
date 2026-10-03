@@ -12,7 +12,7 @@ tier: ядро — есть бизнес-направление МИСБ и шт
 """
 import argparse, collections, datetime as dt, glob, json, os, re
 
-from collector import Matcher, site_key
+from collector import Matcher, site_key, tp_key
 
 W = "а-яёa-z0-9"
 CORE_DIRS = {"Лидерство, управление, командообразование", "Бухгалтерский учёт, налоги, аудит", "Право и договорная работа", "Снабжение, закупки и логистика",
@@ -195,6 +195,12 @@ def main():
     rows.sort(key=lambda r: -r["priority"])
     q = icp["queue"]
     todo = [r for r in rows if r["key"] not in marked and r["priority"] >= q["minPriority"] and (r["days"] is None or r["days"] >= q["minDaysLeft"]) and r["tier"] in ("ядро", "ядро-общ")]
+    seen_tp, uniq = set(), []
+    for r in todo:                                   # одна закупка из разных источников — одна строка очереди (лучший экземпляр идёт первым)
+        t = tp_key(leads[r["id"]]) or r["id"]
+        if t in seen_tp: continue
+        seen_tp.add(t); uniq.append(r)
+    todo = uniq
     bands = collections.Counter("≥80" if r["priority"] >= 80 else "60–79" if r["priority"] >= 60 else "40–59" if r["priority"] >= 40 else "<40" for r in rows)
     doc = {"date": x.date, "count": len(rows), "bands": dict(bands), "tiers": dict(collections.Counter(r["tier"] for r in rows)),
            "queue": [r["id"] for r in todo[: q["size"]]],
