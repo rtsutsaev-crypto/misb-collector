@@ -1,6 +1,6 @@
-"""pages.py — чтение списков РосТендера, Комтендера, goszakup.kz, MITWORK (eep.mitwork.kz) и подборок B2B-Center (один движок) без WebFetch: все строки страницы, дословно.
+"""pages.py — чтение списков РосТендера, Energybase, Комтендера, goszakup.kz, MITWORK (eep.mitwork.kz) и подборок B2B-Center (один движок) без WebFetch: все строки страницы, дословно.
 
-Запуск: python3 pages.py --site rostender|komtender|goszakup|mitwork|b2b --urls URL [URL …] --pause 3 --out rows.json [--relay URL --relay-token TOKEN]
+Запуск: python3 pages.py --site rostender|komtender|goszakup|mitwork|b2b|energybase --urls URL [URL …] --pause 3 --out rows.json [--relay URL --relay-token TOKEN]
 rows.json: {"rows": [{id, title, customer, region, price, deadline, url, law}], "pages": [{url, status, rows, note}]}
 Дальше строки идут в collector.py rows. Проверки «подождите»/капчи не обходятся: такая страница — status "blocked".
 """
@@ -8,7 +8,7 @@ import argparse, html, json, re, subprocess, time
 
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36"
 HOST = {"rostender": "https://rostender.info", "komtender": "https://www.komtender.ru", "goszakup": "https://old.goszakup.gov.kz", "b2b": "https://www.b2b-center.ru",
-        "mitwork": "https://eep.mitwork.kz"}
+        "mitwork": "https://eep.mitwork.kz", "energybase": "https://energybase.ru"}
 RELAY = {"url": "", "token": ""}   # --relay/--relay-token: чтение через российский сервер (см. config/collector); токен только из текста запуска
 
 
@@ -60,6 +60,28 @@ def parse_goszakup(page):
         rows.append({"id": lot, "title": title, "customer": cust_name,
                      "region": "Казахстан", "price": amount, "deadline": "", "url": f"{HOST['goszakup']}/ru/announce/index/{ann.group(1)}",
                      "law": "", "country": "KZ", "currency": "KZT", "note": f"goszakup.gov.kz, лот {lot}; {method}; {status}"})
+    return rows
+
+
+def parse_goszakup_announce(page):
+    """Реестр объявлений goszakup.gov.kz /ru/search/announce: № объявления, наименование, организатор, способ, начало и окончание приёма заявок, сумма, статус.
+    В отличие от списка лотов здесь есть срок подачи. Берём только «Опубликовано…»; срок в прошлом — строка отбрасывается сборщиком (max_age)."""
+    t = re.search(r'<table[^>]*id="search-result"[^>]*>(.*?)</table>', page, re.S)
+    rows = []
+    for r in re.findall(r"<tr[^>]*>(.*?)</tr>", t.group(1) if t else "", re.S)[1:]:
+        tds = re.findall(r"<td[^>]*>(.*?)</td>", r, re.S)
+        ann = re.search(r'<a href="/ru/announce/index/(\d+)"[^>]*>(.*?)</a>', r, re.S)
+        num = re.search(r"<strong>(\d+-\d+)</strong>", r)
+        if len(tds) < 7 or not ann or not num: continue
+        status = clean(tds[6])
+        if not status.startswith("Опубликован"): continue
+        org = re.search(r"Организатор:</b>\s*(.*?)<br", r, re.S)
+        end = re.search(r"(20\d\d-\d\d-\d\d)", tds[4])
+        method = clean(tds[2])
+        rows.append({"id": num.group(1), "title": clean(ann.group(2)), "customer": clean(org.group(1)) if org else "",
+                     "region": "Казахстан", "price": price(clean(tds[5])), "deadline": end.group(1) if end else "",
+                     "url": f"{HOST['goszakup']}/ru/announce/index/{ann.group(1)}", "law": "", "country": "KZ", "currency": "KZT",
+                     "note": f"goszakup.gov.kz, объявление {num.group(1)}; {method}; {status}"})
     return rows
 
 
@@ -115,10 +137,40 @@ def parse_mitwork(page, today):
     return rows
 
 
+MONTHS = {"января": 1, "февраля": 2, "марта": 3, "апреля": 4, "мая": 5, "июня": 6, "июля": 7, "августа": 8, "сентября": 9, "октября": 10, "ноября": 11, "декабря": 12}
+
+
+def ru_date(s):
+    """«14 октября 2026 г., 12:00» → 2026-10-14; нет даты — пусто."""
+    m = re.search(r"(\d{1,2})\s+([а-яё]+)\s+(20\d\d)", (s or "").lower())
+    if not m or m.group(2) not in MONTHS: return ""
+    return f"{m.group(3)}-{MONTHS[m.group(2)]:02d}-{int(m.group(1)):02d}"
+
+
+def parse_energybase(page):
+    """Карточки tender-card: id из ссылки /tender/<id>, срок — «Дата и время окончания подачи заявок»; цена на странице скрыта (нужен вход).
+    Срок не позже даты объявления — не срок подачи (так раньше записывались даты публикации): строка без срока."""
+    rows = []
+    for part in page.split('<div class="tender-card">')[1:]:
+        a = re.search(r'class="tender-card__title">\s*<a href="https://energybase\.ru/tender/([^"/]+)"[^>]*>(.*?)</a>', part, re.S)
+        if not a: continue
+        def prop(label):
+            m = re.search(r'property-label">' + label + r'</span>\s*<a[^>]*>(.*?)</a>', part, re.S)
+            return clean(m.group(1)) if m else ""
+        pub = re.search(r'Дата объявления</span>([^<]*)', part)
+        d = re.search(r'Дата и время окончания подачи заявок</span>([^<]*)', part)
+        dl, pb = ru_date(d.group(1)) if d else "", ru_date(pub.group(1)) if pub else ""
+        if dl and pb and dl <= pb: dl = ""
+        rows.append({"id": a.group(1), "title": clean(a.group(2)), "customer": prop("Заказчик"), "region": prop("Регион"), "price": None,
+                     "deadline": dl, "url": f"{HOST['energybase']}/tender/{a.group(1)}", "law": ""})
+    return rows
+
+
 def parse(site, page):
-    if site == "goszakup": return parse_goszakup(page)
+    if site == "goszakup": return parse_goszakup_announce(page) if 'Окончание приема заявок' in page else parse_goszakup(page)
     if site == "mitwork": return parse_mitwork(page, time.strftime("%Y-%m-%d"))
     if site == "b2b": return parse_b2b(page)
+    if site == "energybase": return parse_energybase(page)
     rows = []
     for part in page.split('class="tender-row row"')[1:]:
         rid = re.match(r'\s*id="(\d+)"', part)
@@ -155,7 +207,7 @@ def main():
     out, pages, seen = [], [], set()
     if x.site == "goszakup":
         import urllib.parse
-        x.urls = [f"{HOST['goszakup']}/ru/search/lots?" + urllib.parse.urlencode({"filter[name]": w, "count_record": 100}) for w in x.words] or x.urls
+        x.urls = [f"{HOST['goszakup']}/ru/search/announce?" + urllib.parse.urlencode({"filter[name]": w, "count_record": 100}) for w in x.words] or x.urls
     if x.site == "mitwork":
         import urllib.parse
         x.urls = [f"{HOST['mitwork']}/ru/publics/buys?" + urllib.parse.urlencode({"filter[search]": w}) for w in x.words] or x.urls
