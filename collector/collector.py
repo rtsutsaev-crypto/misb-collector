@@ -232,15 +232,34 @@ class Matcher:
 
 
 # ---------- дедуп ----------
+def family(source):
+    """Семейство источника: «gosplan:fz44» → gosplan, «Запросы на спикеров · BestSpeakers» → запросы на спикеров."""
+    return re.split(r"[:·]", str(source or ""))[0].strip().lower()
+
+
+def tp_key(lead):
+    """Ключ «то же название и та же цена» для склейки одной закупки из разных источников; без цены ключа нет (слишком рискованно)."""
+    p = lead.get("price")
+    if not isinstance(p, (int, float)) or p <= 0: return ""
+    return norm_key(lead.get("title"))[:60] + "|" + str(lead.get("currency") or "RUB") + "|" + str(round(p))
+
+
 class Known:
     def __init__(self):
-        self.ids, self.keys = {}, set()
+        self.ids, self.keys, self.tp = {}, set(), {}
 
     def add(self, lead, deadline=None):
         dl = lead.get("deadline", "") if deadline is None else deadline
         for i in (lead.get("id"), lead.get("eisNumber")):
             if i: self.ids[str(i)] = dl
         self.keys.add(norm_key(lead.get("title")) + "|" + (lead.get("deadline") or ""))
+        t = tp_key(lead)
+        if t: self.tp.setdefault(t, set()).add(family(lead.get("source")))
+
+    def xdup(self, lead, source):
+        """Эта закупка уже есть в базе из другого источника (то же название и цена; сроки не расходятся больше чем на 3 дня)."""
+        t = tp_key(lead)
+        return bool(t) and bool(self.tp.get(t, set()) - {family(source)})
 
     def has(self, lead):
         for i in (lead.get("id"), lead.get("eisNumber")):
@@ -319,6 +338,7 @@ def process_rows(rows, m, known, source, today, max_age_days=30, **kw):
         if dl and dl < min_dl: st["old"] += 1; continue
         if str(r["id"]) in leads: continue
         if known.dup(r): st["dup"] += 1; continue
+        if known.xdup(r, source): st["xdup"] = st.get("xdup", 0) + 1; continue
         leads[str(r["id"])] = build_lead(r, m, source, today, **kw)
     st["new"] = len(leads)
     return list(leads.values()), list(updates.values()), st
@@ -433,7 +453,7 @@ def site_key(i):
 
 def main():
     a = argparse.ArgumentParser()
-    a.add_argument("cmd", choices=["test", "audit", "score", "rows", "verdicts"])
+    a.add_argument("cmd", choices=["test", "audit", "score", "rows", "verdicts", "known"])
     a.add_argument("--dict", default="dictionary.json")
     a.add_argument("--leadsets"); a.add_argument("--updates"); a.add_argument("--in", dest="inp")
     a.add_argument("--known"); a.add_argument("--source", default=""); a.add_argument("--country", default="RU")
@@ -447,11 +467,17 @@ def main():
         leads = json.load(open(x.inp, encoding="utf-8"))
         for l in leads: l["score"], l["why"] = m.score(l, x.date)
         json.dump(leads, open(x.out, "w", encoding="utf-8"), ensure_ascii=False); return
+    if x.cmd == "known":
+        # known.json из базы: id и eisNumber → срок (с учётом leadupdates), пары «название|срок», пары «название|цена» с семействами источников
+        k = Known.from_db(x.leadsets, x.updates)
+        json.dump({"ids": k.ids, "keys": sorted(k.keys), "tp": {t: sorted(v) for t, v in k.tp.items()}}, open(x.out, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+        print(f"id {len(k.ids)}, пар название|срок {len(k.keys)}, пар название|цена {len(k.tp)}, размер {os.path.getsize(x.out)} байт"); return
     if x.cmd == "rows":
         known = Known()
         if x.known:
             kj = json.load(open(x.known, encoding="utf-8"))
             known.ids = kj.get("ids", {}); known.keys = set(kj.get("keys", []))
+            known.tp = {k: set(v) for k, v in kj.get("tp", {}).items()}
         rows = json.load(open(x.inp, encoding="utf-8"))
         if isinstance(rows, dict):                     # вывод pages.py: {"rows": [...], "pages": [...]}
             rows = rows.get("rows", [])
