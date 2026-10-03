@@ -63,6 +63,28 @@ def parse_goszakup(page):
     return rows
 
 
+def parse_goszakup_announce(page):
+    """Реестр объявлений goszakup.gov.kz /ru/search/announce: № объявления, наименование, организатор, способ, начало и окончание приёма заявок, сумма, статус.
+    В отличие от списка лотов здесь есть срок подачи. Берём только «Опубликовано…»; срок в прошлом — строка отбрасывается сборщиком (max_age)."""
+    t = re.search(r'<table[^>]*id="search-result"[^>]*>(.*?)</table>', page, re.S)
+    rows = []
+    for r in re.findall(r"<tr[^>]*>(.*?)</tr>", t.group(1) if t else "", re.S)[1:]:
+        tds = re.findall(r"<td[^>]*>(.*?)</td>", r, re.S)
+        ann = re.search(r'<a href="/ru/announce/index/(\d+)"[^>]*>(.*?)</a>', r, re.S)
+        num = re.search(r"<strong>(\d+-\d+)</strong>", r)
+        if len(tds) < 7 or not ann or not num: continue
+        status = clean(tds[6])
+        if not status.startswith("Опубликован"): continue
+        org = re.search(r"Организатор:</b>\s*(.*?)<br", r, re.S)
+        end = re.search(r"(20\d\d-\d\d-\d\d)", tds[4])
+        method = clean(tds[2])
+        rows.append({"id": num.group(1), "title": clean(ann.group(2)), "customer": clean(org.group(1)) if org else "",
+                     "region": "Казахстан", "price": price(clean(tds[5])), "deadline": end.group(1) if end else "",
+                     "url": f"{HOST['goszakup']}/ru/announce/index/{ann.group(1)}", "law": "", "country": "KZ", "currency": "KZT",
+                     "note": f"goszakup.gov.kz, объявление {num.group(1)}; {method}; {status}"})
+    return rows
+
+
 def parse_b2b(page):
     """Тематические подборки B2B-Center /search/industry/<тема>/ (агрегатор: РТС-тендер и его ЗМО, ЕИС, ЕАТ «Берёзка»).
     Карточка — schema.org: name, endDate, url, price; организатор, регион, ссылка на площадку-источник, метки (закон, площадка, способ).
@@ -145,7 +167,7 @@ def parse_energybase(page):
 
 
 def parse(site, page):
-    if site == "goszakup": return parse_goszakup(page)
+    if site == "goszakup": return parse_goszakup_announce(page) if 'Окончание приема заявок' in page else parse_goszakup(page)
     if site == "mitwork": return parse_mitwork(page, time.strftime("%Y-%m-%d"))
     if site == "b2b": return parse_b2b(page)
     if site == "energybase": return parse_energybase(page)
@@ -185,7 +207,7 @@ def main():
     out, pages, seen = [], [], set()
     if x.site == "goszakup":
         import urllib.parse
-        x.urls = [f"{HOST['goszakup']}/ru/search/lots?" + urllib.parse.urlencode({"filter[name]": w, "count_record": 100}) for w in x.words] or x.urls
+        x.urls = [f"{HOST['goszakup']}/ru/search/announce?" + urllib.parse.urlencode({"filter[name]": w, "count_record": 100}) for w in x.words] or x.urls
     if x.site == "mitwork":
         import urllib.parse
         x.urls = [f"{HOST['mitwork']}/ru/publics/buys?" + urllib.parse.urlencode({"filter[search]": w}) for w in x.words] or x.urls
