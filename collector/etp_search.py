@@ -285,6 +285,12 @@ def main():
     if a.limit_words and total_words:
         words = [words[(a.offset + i) % total_words] for i in range(min(a.limit_words, total_words))]
     dic = Dict(formats + topics)
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import collector as C
+        clf = C.Matcher(d.get("data", d))
+    except Exception as e:  # noqa: BLE001
+        clf = None; print("collector classifier unavailable, loose matching for full scans:", e, file=sys.stderr)
     known = set(open(a.known, encoding="utf-8").read().split()) if a.known else set()
     out, seen = [], set()
     for key in [s for s in a.sources.split(",") if s]:
@@ -307,6 +313,9 @@ def main():
                 st["records"] += len(rows)
                 for r in rows:
                     t = dic.hit(r["title"])
+                    if key in FULLSCAN and clf:  # full scan of a list without a text filter: the dictionary word match is loose, the collector classifier decides
+                        ok, why, _ = clf.classify(r["title"], ())
+                        t = why if ok else None
                     if not t or any(x in r["title"].lower() for x in exclude):
                         continue
                     ref = r["deadline"] or r.get("_pub")  # no deadline (e.g. a single-supplier purchase): the placement date decides
