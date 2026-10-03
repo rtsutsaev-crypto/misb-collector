@@ -24,7 +24,7 @@ def get(u):
 def parse(num,d):
     law='44' if num.startswith('0') else '223'
     docs=sorted(d.get('docs') or [],key=lambda x:x.get('published_at') or '')
-    notices=[x for x in docs if re.search(r'Notification|purchaseNotice',x.get('doc_type') or '')]
+    notices=[x for x in docs if re.search(r'Notification|purchaseNotice',x.get('doc_type') or '') and not re.search(r'Cancel|Rejection|Clarification|Prolongation',x.get('doc_type') or '')]  # 2.0: отмена — не извещение, в ней нет площадки
     last=notices[-1] if notices else (docs[-1] if docs else None)
     out={'law':law,'checkedAt':time.strftime('%Y-%m-%d')}
     if not last: return None
@@ -35,6 +35,10 @@ def parse(num,d):
         out['platform']=pname(etp.get('url'),etp.get('name')); out['platformUrl']=etp.get('url') or ''
         if etp.get('name') and etp.get('name')!=out['platform']: out['platformFull']=etp['name']
     elif s.get('applSubmisionPlace'): out['platformNote']=str(s['applSubmisionPlace'])[:200]
+    # 2.0: электронная ли закупка и каким способом — без площадки это «без ЭТП», а не «неизвестно»
+    out['electronic']=bool(etp.get('url') or etp.get('name'))
+    if law=='223' and s.get('purchaseCodeName'): out['method']=str(s['purchaseCodeName'])[:80]
+    elif law=='44': out['method']=str(last.get('doc_type') or '')[:40]
     if s.get('urlVSRZ'): out['platformCard']=s['urlVSRZ']
     canc=[x for x in docs if re.search(r'Rejection|Cancel',x.get('doc_type') or '') and (x.get('published_at') or '')>=(last.get('published_at') or '')]
     if canc: out['cancelled']=True; out['cancelledAt']=str(canc[-1].get('published_at') or '')[:10]
