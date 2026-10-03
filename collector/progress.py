@@ -46,6 +46,7 @@ def main():
         a.add_argument("--" + f, type=int)
     a.add_argument("--note")
     a.add_argument("--stage")
+    a.add_argument("--allow-wait", action="store_true", help="finish: завершить, даже если есть источники в статусе wait (только если шаг невозможен)")
     a.add_argument("--log")
     x = a.parse_args()
 
@@ -95,6 +96,11 @@ def main():
                 p["percent"] = x.percent
             log(p, x.log)
         elif x.cmd == "finish":
+            left = [s["key"] for s in p["sources"] if s.get("status") == "wait"]
+            if left and not x.allow_wait:
+                print("НЕ ЗАВЕРШЕНО: источники ещё в статусе wait: " + ", ".join(left)
+                      + ". Выполни их или явно отметь каждый: progress.py source --key <ключ> --status skipped --note «причина». Файл не изменён.")
+                raise SystemExit(3)
             p.update(status="done", percent=100,
                      stage=f"Готово: новых {x.new}, из них с открытым приёмом {x.active}",
                      result={"new": x.new, "active": x.active, "updated": x.updated, "total": x.total})
