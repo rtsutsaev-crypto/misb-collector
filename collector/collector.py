@@ -453,7 +453,7 @@ def main():
                 i = l.get("id")
                 if not i or i in seen: continue
                 seen.add(i)
-                if str(l.get("source", "")).startswith(("gosplan:forecast", "Запросы на спикеров", "speakers")): continue
+                if str(l.get("source", "")).startswith(("Запросы на спикеров", "speakers")): continue
                 rel, why, _ = m.classify(l.get("title", ""), l.get("okpd2") or ())
                 if not rel: ex[site_key(i)] = why[:60]
         doc = {"version": "collector " + VERSION, "date": x.date, "excluded": ex,
