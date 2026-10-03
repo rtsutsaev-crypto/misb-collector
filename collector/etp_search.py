@@ -52,14 +52,19 @@ def http(url, body=None, tries=4):
         hdr["Content-Type"] = "application/json"
     err = None
     relay = os.environ.get("RELAY_URL", "").rstrip("/")
-    if relay and os.environ.get("RELAY_TOKEN") and urllib.parse.urlparse(url).hostname in RELAY_HOSTS:
-        hdr["X-Relay-Token"] = os.environ["RELAY_TOKEN"]; url = relay + "/fetch?url=" + urllib.parse.quote(url, safe="")
+    via = bool(relay and os.environ.get("RELAY_TOKEN") and urllib.parse.urlparse(url).hostname in RELAY_HOSTS)
+    if via:  # the relay forwards only X-Up-* headers to the target, so the content type goes as X-Up-Content-Type
+        hdr = {"User-Agent": UA, "X-Relay-Token": os.environ["RELAY_TOKEN"], "X-Up-Accept": "application/json"}
+        if data is not None: hdr["X-Up-Content-Type"] = "application/json"
+        url = relay + "/fetch?url=" + urllib.parse.quote(url, safe="")
     for i in range(tries):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, data=data, headers=hdr), timeout=45, context=CTX) as r:
+                if via and r.headers.get("X-Upstream-Status", "200") != "200":   # the relay itself answers 200; the target's status is in this header
+                    raise urllib.error.HTTPError(url, int(r.headers.get("X-Upstream-Status") or 599), "relay", None, None)
                 return json.loads(r.read().decode("utf-8", "replace"))
         except urllib.error.HTTPError as e:
-            if e.code in (429, 500, 502, 503, 504) and i < tries - 1:
+            if e.code in (429, 500, 502, 503, 504, 599) and i < tries - 1:
                 time.sleep(4 * (i + 1)); continue
             raise RuntimeError(f"HTTP {e.code}") from e
         except Exception as e:  # noqa: BLE001
