@@ -73,6 +73,7 @@ def main():
     a.add_argument("--new", type=int, required=True)
     a.add_argument("--active", type=int, required=True)
     a.add_argument("--updated", type=int, default=0)
+    a.add_argument("--queue", help="queue.json из priority.py: вместо трёх лучших по score — пять первых лидов очереди на сегодня")
     a.add_argument("--progress", help="файл прогресса (progress.py): добавить строку «ВНИМАНИЕ» и самые долгие источники")
     x = a.parse_args()
     m = Matcher(json.load(open(x.dict, encoding="utf-8")))
@@ -97,7 +98,13 @@ def main():
     lines = [head + "."]
     if x.new == 0:
         lines.append("Новых закупок по теме нет.")
-    for _, _, l in best[:3]:
+    qi = []
+    if x.queue and os.path.exists(x.queue):
+        qi = json.load(open(x.queue, encoding="utf-8")).get("queueInfo", [])[:5]
+    if qi:
+        lines.append("Очередь на сегодня (по приоритету):")
+        best = [(False, 0, q) for q in qi]
+    for _, _, l in (best[:5] if qi else best[:3]):
         t = cut(l.get("title"), 90)
         tail = [v for v in (cut(l.get("customer"), 50), money(l.get("price"), l.get("currency")),
                             ("до " + dmy(l.get("deadline"))) if l.get("deadline") else "") if v]
