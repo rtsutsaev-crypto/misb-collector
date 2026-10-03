@@ -107,12 +107,42 @@ def dmy(s):
     return f"{m.group(3)}-{m.group(2)}-{m.group(1)}" if m else None
 
 
+def _num(v):
+    """«120 тыс. руб.», «до 80 000 ₽», «250000» → рубли; none — числа нет."""
+    m = re.search(r"(\d[\d\s\xa0]*(?:[.,]\d+)?)\s*(тыс|т\.\s*р|к\b|млн)?", v or "", re.I)
+    if not m:
+        return None
+    try:
+        x = float(re.sub(r"[\s\xa0]", "", m.group(1)).replace(",", "."))
+    except ValueError:
+        return None
+    mul = {"т": 1e3, "к": 1e3, "м": 1e6}.get((m.group(2) or " ")[0].lower(), 1)
+    x *= mul
+    return x if x >= 1000 else None
+
+
 def money(t):
+    """Гонорар спикеру: значение стоит в поле «Оплата спикеру» (на BestSpeakers — в следующем абзаце), иначе — рядом со словами «оплата»/«гонорар»."""
+    v = field(t, r"Оплата спикеру", r"Оплата", r"Гонорар", r"Бюджет")
+    if v:
+        p = _num(v)
+        if p:
+            return p
     m = re.search(r"(?:оплат\w*[^.\n]{0,40}?|гонорар[^.\n]{0,30}?)(?:до\s+)?(\d[\d\s\xa0]{2,}\d)\s*(?:руб|₽|р\b)", t, re.I)
     if not m:
         return None
     v = int(re.sub(r"\D", "", m.group(1)))
     return float(v) if v >= 1000 else None
+
+
+def paid_note(t):
+    """Гонорар назван без суммы: «Есть гонорар», «по договорённости» — в note, цену не выдумываем."""
+    v = field(t, r"Оплата спикеру", r"Оплата", r"Гонорар")
+    if re.search(r"договор|обсужд|индивидуал", v or "", re.I):
+        return "гонорар по договорённости"
+    if re.search(r"есть|платно|оплачива", v or "", re.I):
+        return "гонорар предусмотрен, сумма не названа"
+    return ""
 
 
 def city(t):
@@ -225,6 +255,8 @@ def main():
         t = first["text"]
         title = re.sub(r"^(?:Поиск|Ищем|Нужен)\s+спикер\w*\s*№\s*\d+\.?\s*", "", first["title"]).strip(" .")
         num = next((m.group(1) for x in its for m in [re.search(r"№\s*(\d{3,5})", x["title"]) or re.search(r"bestspeakers\.ru/(?:poisk-spikera|ischem-spikera|nuzhen-spiker)-(\d{3,5})-", x["link"])] if m), "")
+        if num and ("BS-" + num) in known:
+            continue
         event = dmy(field(t, r"Дата", r"Ориентировочные даты(?: проведения)?", r"Даты? проведения")) or dmy(field(t, "Мероприятие"))
         cust = re.search(r"Заказчик\s*[—:-]\s*([^.\n]{5,140})", t)
         price = money(t)
@@ -233,9 +265,9 @@ def main():
                 + (f"; № BestSpeakers {num}" if num else "")
                 + (f"; заказчик: {cust.group(1).strip()}" if cust else "")
                 + (f"; участники: {field(t, 'Участники')[:120]}" if field(t, "Участники") else "")
-                + ("; сумма — гонорар спикеру, не цена договора" if price else "")
+                + ("; сумма — гонорар спикеру, не цена договора" if price else ("; " + paid_note(t) if paid_note(t) else ""))
                 + ("; срок — дата мероприятия" if event else "; срок не указан"))
-        leads.append({"collectedAt": a.date, "country": "RU", "currency": "RUB", "customer": "", "deadline": event or "", "flags": ["rfq"], "id": lid, "law": "Коммерческий",
+        leads.append({"collectedAt": a.date, "country": "RU", "currency": "RUB", "customer": "", "deadline": event or "", "flags": ["rfq"], "id": lid, "law": "Коммерческий", **({"eisNumber": "BS-" + num} if num else {}),
                       "note": note, "platform": "Запросы на спикеров", "price": price, "region": city(t), "source": "Запросы на спикеров · " + first["board"],
                       "title": title, "url": first["link"],
                       "verify": "Запрос с площадки спикеров: заказчик обычно не назван, контакты организатора открываются после регистрации или подписки на площадке, контакты не собираются."})

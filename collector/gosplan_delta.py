@@ -143,7 +143,7 @@ def main():
         if u["id"] in seenu: continue
         seenu.add(u["id"]); upd2.append(u)
     for l in leads:
-        l.pop("stage", None); l.pop("okpd2", None)
+        l.pop("stage", None)   # okpd2 оставляем в лиде: verdicts и разбор шума видят те же данные
         if "rfq" in l.get("flags", []) and not l.get("note"): l["note"] = "Запрос котировок или предложений"
     out = {"leads": leads, "updates": upd2, "stats": dict(stats, per=per), "state": dict(new_state, updatedAt=today)}
     json.dump(out, open(x.out, "w", encoding="utf-8"), ensure_ascii=False)
