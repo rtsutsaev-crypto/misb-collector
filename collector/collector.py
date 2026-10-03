@@ -270,6 +270,15 @@ def law_of(i):
     return ""
 
 
+def is_late(deadline, today, rfq=False):
+    """Запас времени на момент сбора: срок сегодня или завтра (для запроса цен/КП — только сегодня и раньше). Лид не скрывается."""
+    try:
+        d = (dt.date.fromisoformat(str(deadline)[:10]) - dt.date.fromisoformat(today)).days
+    except ValueError:
+        return False
+    return 0 <= d <= (0 if rfq else 1)
+
+
 def build_lead(row, m, source, today, country="RU", currency="RUB"):
     title = re.sub(r"^\s*ОКПД\s*2?:?\s*[\d.]+\s*", "", (row.get("title") or "").strip())
     l = {"id": str(row["id"]).strip(), "title": title, "customer": row.get("customer") or "",
@@ -280,6 +289,7 @@ def build_lead(row, m, source, today, country="RU", currency="RUB"):
     for k in ("customerInn", "contacts", "verify", "platform", "note", "eisNumber", "okpd2", "stage", "topic"):
         if row.get(k): l[k] = row[k]
     l["flags"] = sorted(set(row.get("flags") or []) | set(m.flag_list(title, l["customer"])))
+    if is_late(l["deadline"], today, "rfq" in l["flags"]): l["flags"] = sorted(set(l["flags"]) | {"late"})
     return l
 
 
@@ -289,6 +299,11 @@ def process_rows(rows, m, known, source, today, max_age_days=30, **kw):
     for r in rows:
         if not r.get("id") or not r.get("title"): continue
         st["rows"] += 1
+        if "#" in str(r["id"]) and re.match(r"(fd|reg2|cu|v7)-", source):   # id вида «…/ispolnitelu/#b2c» — адрес ленты, а не запроса: дубли и потеря дат
+            st["pseudo"] = st.get("pseudo", 0) + 1; continue
+        if not r.get("eisNumber"):                                          # один запрос BestSpeakers виден с разных площадок: общий ключ BS-<номер>
+            bs = re.search(r"bestspeakers\.ru/(?:poisk|ischem|nuzhen)-spikera-(\d{3,5})", r.get("url") or "")
+            if bs: r = dict(r, eisNumber="BS-" + bs.group(1))
         dl = r.get("deadline") or ""
         k = known.has(r)
         if k:

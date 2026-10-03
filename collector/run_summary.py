@@ -5,9 +5,9 @@
 или без срока, по оценке Matcher.score (близость к профилю МИСБ, ТЭК, цена, срок); обязательное обучение (охрана
 труда, электробезопасность) — после остальных, одинаковые названия — один раз. Печатает готовый текст.
 """
-import argparse, glob, json, os
+import argparse, datetime as dt, glob, json, os
 
-from collector import Matcher, norm_key
+from collector import Matcher, is_late, norm_key
 
 SITE = "https://claude.ai/artifact/DXESGRPAkHFVVU8Ugj5PUQ"
 
@@ -37,6 +37,34 @@ def dmy(d):
     return f"{d[8:10]}.{d[5:7]}" if len(d or "") >= 10 else ""
 
 
+def health(p, active):
+    """Здоровье запуска: ключи отказали, много failed, пустой полный план, самые долгие источники (по меткам progress.py)."""
+    src = p.get("sources") or []
+    failed = [s for s in src if s.get("status") == "failed"]
+    out = []
+    warn = []
+    if len(failed) >= 8:
+        warn.append(f"отказали {len(failed)} источников")
+    keyfail = [s["key"] for s in failed if "ключ" in (s.get("note") or "").lower() or "403" in (s.get("note") or "")]
+    if keyfail:
+        warn.append("ключ не принят (403): " + ", ".join(keyfail[:6]))
+    run = [s for s in src if s.get("status") not in ("skipped", "wait")]
+    if len(run) >= 40 and active < 15:
+        warn.append(f"с открытым приёмом только {active} при полном плане")
+    delta = next((s for s in src if s["key"] == "gosplan-delta"), None)
+    if delta and delta.get("status") == "ok" and not delta.get("found") and dt.datetime.now(dt.timezone.utc).weekday() < 5:
+        warn.append("gosplan-delta прошла без подходящих — проверьте курсор")
+    if warn:
+        out.append("ВНИМАНИЕ: " + "; ".join(warn) + ".")
+    slow = sorted((s for s in src if s.get("durationSec")), key=lambda s: -s["durationSec"])[:5]
+    if slow:
+        out.append("Дольше всего: " + ", ".join(f"{s['key']} {round(s['durationSec'] / 60, 1)} мин" for s in slow))
+    reqs = sum(s.get("requests") or 0 for s in src if s["key"].startswith(("gosplan", "group-profile", "contracts", "eis-docs")))
+    if reqs:
+        out.append(f"Запросов ГосПлана: {reqs}")
+    return out
+
+
 def main():
     a = argparse.ArgumentParser()
     a.add_argument("--dict", default="dictionary.json")
@@ -45,21 +73,25 @@ def main():
     a.add_argument("--new", type=int, required=True)
     a.add_argument("--active", type=int, required=True)
     a.add_argument("--updated", type=int, default=0)
+    a.add_argument("--progress", help="файл прогресса (progress.py): добавить строку «ВНИМАНИЕ» и самые долгие источники")
     x = a.parse_args()
     m = Matcher(json.load(open(x.dict, encoding="utf-8")))
-    seen, best = set(), []
+    seen, best, late = set(), [], 0
     for l in leads_in(x.leads):
         k = norm_key(str(l.get("title") or "")) or str(l.get("id"))
         dl = l.get("deadline") or ""
         if k in seen or (dl and dl < x.date):
             continue
         seen.add(k)
+        if is_late(dl, x.date, "rfq" in (l.get("flags") or [])): late += 1
         s, _ = m.score(l, x.date)
         if s > 1:
             mand = "mandatory" in m.flag_list(l.get("title", ""), l.get("customer", ""))
             best.append((mand, -s, l))
     best.sort(key=lambda t: t[:2])
     head = f"МИСБ: новых лидов {x.new}, с открытым приёмом {x.active}"
+    if late:
+        head += f" (поздних — срок сегодня или завтра: {late})"
     if x.updated:
         head += f", обновлено {x.updated}"
     lines = [head + "."]
@@ -70,6 +102,8 @@ def main():
         tail = [v for v in (cut(l.get("customer"), 50), money(l.get("price"), l.get("currency")),
                             ("до " + dmy(l.get("deadline"))) if l.get("deadline") else "") if v]
         lines.append(f"• {t}" + (f" — {', '.join(tail)}" if tail else ""))
+    if x.progress:
+        lines += health(json.load(open(x.progress, encoding="utf-8")), x.active)
     lines.append(f"Все новые: кнопка «смотреть» на сайте {SITE}" if x.new else f"Сайт: {SITE}")
     print("\n".join(lines))
 

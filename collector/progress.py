@@ -3,7 +3,8 @@ ArtifactData set, collection "progress", doc_id "current", file_path <файл>,
 
   python3 progress.py init   --file prog.json --plan sources-plan.json --run RUNID [--version 5.6]
   python3 progress.py source --file prog.json --key KEY --status ok|partial|failed|skipped|reading
-                             [--done N] [--found N] [--fresh N] [--updated N] [--note "…"] [--log "…"]
+                             [--done N] [--found N] [--fresh N] [--updated N] [--requests N] [--errors N] [--late N] [--note "…"] [--log "…"]
+                             (метки startedAt/finishedAt/durationSec ставятся сами: reading — старт, ok/partial/failed — финиш)
   python3 progress.py stage  --file prog.json --stage "…" [--percent N] [--log "…"]
   python3 progress.py finish --file prog.json --new N --active N --updated N --total N
   python3 progress.py error  --file prog.json --stage "…"
@@ -41,7 +42,7 @@ def main():
     a.add_argument("--version", default="")
     a.add_argument("--key")
     a.add_argument("--status")
-    for f in ("done", "found", "fresh", "updated", "percent", "new", "active", "total"):
+    for f in ("done", "found", "fresh", "updated", "requests", "errors", "late", "percent", "new", "active", "total"):
         a.add_argument("--" + f, type=int)
     a.add_argument("--note")
     a.add_argument("--stage")
@@ -69,7 +70,14 @@ def main():
                 raise SystemExit(f"источника {x.key} нет в прогрессе")
             if x.status:
                 s["status"] = x.status
-            for f in ("done", "found", "fresh", "updated"):
+                if x.status == "reading":
+                    s.setdefault("startedAt", now())
+                elif x.status in ("ok", "partial", "failed", "skipped"):
+                    s["finishedAt"] = now()
+                    if s.get("startedAt"):
+                        s["durationSec"] = max(0, round((dt.datetime.strptime(s["finishedAt"], "%Y-%m-%dT%H:%M:%S.000Z")
+                                                         - dt.datetime.strptime(s["startedAt"], "%Y-%m-%dT%H:%M:%S.000Z")).total_seconds()))
+            for f in ("done", "found", "fresh", "updated", "requests", "errors", "late"):
                 if getattr(x, f) is not None:
                     s[f] = getattr(x, f)
             if x.status in ("ok", "partial", "failed") and x.done is None:
