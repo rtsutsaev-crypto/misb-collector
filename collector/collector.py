@@ -249,6 +249,11 @@ def tp_key(lead):
     return norm_key(lead.get("title"))[:60] + "|" + str(lead.get("currency") or "RUB") + "|" + str(round(p))
 
 
+def dup_key(lead):
+    """Название + срок; у лида без срока — название + заказчик (одинаковые «Оказание образовательных услуг» у разных заказчиков — разные закупки)."""
+    return norm_key(lead.get("title")) + "|" + (lead.get("deadline") or "~" + str(lead.get("customerInn") or lead.get("customer") or ""))
+
+
 class Known:
     def __init__(self):
         self.ids, self.keys, self.tp = {}, set(), {}
@@ -257,7 +262,7 @@ class Known:
         dl = lead.get("deadline", "") if deadline is None else deadline
         for i in (lead.get("id"), lead.get("eisNumber")):
             if i: self.ids[str(i)] = dl
-        self.keys.add(norm_key(lead.get("title")) + "|" + (lead.get("deadline") or ""))
+        self.keys.add(dup_key(lead))
         t = tp_key(lead)
         if t: self.tp.setdefault(t, set()).add(family(lead.get("source")))
 
@@ -272,7 +277,7 @@ class Known:
         return None
 
     def dup(self, lead):
-        return norm_key(lead.get("title")) + "|" + (lead.get("deadline") or "") in self.keys
+        return dup_key(lead) in self.keys
 
     @classmethod
     def from_db(cls, leadsets_dir, updates_dir=None):
@@ -310,7 +315,7 @@ def build_lead(row, m, source, today, country="RU", currency="RUB"):
          "deadline": row.get("deadline") or "", "law": row["law"] if "law" in row else law_of(row["id"]), "url": row.get("url") or "",
          "source": source, "collectedAt": today, "flags": [], "country": row.get("country") or country,
          "currency": row.get("currency") or currency}
-    for k in ("customerInn", "contacts", "verify", "platform", "note", "eisNumber", "okpd2", "stage", "topic", "purchaseType", "publishedAt"):
+    for k in ("customerInn", "contacts", "verify", "platform", "note", "eisNumber", "okpd2", "stage", "topic", "purchaseType", "publishedAt", "validUntil"):
         if row.get(k): l[k] = row[k]
     l["flags"] = sorted(set(row.get("flags") or []) | set(m.flag_list(title, l["customer"])))
     if is_late(l["deadline"], today, "rfq" in l["flags"]): l["flags"] = sorted(set(l["flags"]) | {"late"})
