@@ -2236,46 +2236,6 @@
   },
   {
    "base": "https://v2.gosplan.info",
-   "common": "limit=50&sort=published_at_desc",
-   "deep": 6,
-   "key": "gosplan-plan44",
-   "method": "Позиции планов закупок 44-ФЗ учебных и смежных классов ОКПД2: закупка видна за месяцы и годы до объявления. Брать только позиции на годы позже текущего.",
-   "name": "Планы закупок 44-ФЗ · позиции на будущие годы",
-   "note": "Ответ: массив позиций; у позиции plan_number, customer (ИНН), region, published_at и source.commonInfo: positionNumber, IKZ, publishYear, purchaseObjectInfo (предмет), OKPD2Info.OKPDCode; source.financeInfo.total — сумма. Лид: id \"plan44-\" + positionNumber, title = purchaseObjectInfo, customer = \"ИНН \" + customer, customerInn, region по коду, price = financeInfo.total (если > 0), deadline \"\", flags [\"plan\"], law 44-ФЗ, source gosplan:plan44, url https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString=<IKZ>, note «План закупок 44-ФЗ на <publishYear> год, позиция <positionNumber>». Только publishYear больше текущего года и отбор по словарю (название и ОКПД2). Проверено 29.09.2026: из 1530 позиций 226 на будущие годы, 70 по теме.",
-   "path": "/fz44/tenderplans/positions",
-   "pause": 2,
-   "planned": 6,
-   "requests": [
-    {
-     "classifier": "85.42",
-     "path": "/fz44/tenderplans/positions"
-    },
-    {
-     "classifier": "85.41",
-     "path": "/fz44/tenderplans/positions"
-    },
-    {
-     "classifier": "82.30",
-     "path": "/fz44/tenderplans/positions"
-    },
-    {
-     "classifier": "74.90",
-     "path": "/fz44/tenderplans/positions"
-    },
-    {
-     "classifier": "70.22",
-     "path": "/fz44/tenderplans/positions"
-    },
-    {
-     "classifier": "78.10",
-     "path": "/fz44/tenderplans/positions"
-    }
-   ],
-   "source": "gosplan:plan44",
-   "type": "api"
-  },
-  {
-   "base": "https://v2.gosplan.info",
    "key": "gosplan-plan223",
    "maxDetails": 100,
    "method": "Планы закупок заказчиков по 223-ФЗ: каждая позиция плана с предметом, суммой и плановым годом, кварталом и месяцем — закупка видна за месяцы до объявления (у Росатома и его дочерних — на годы вперёд).",
@@ -2632,8 +2592,8 @@
    "type": "plans44",
    "name": "Планы-графики 44-ФЗ · позиции по ОКПД2 (до объявления закупки)",
    "source": "gosplan:plan44",
-   "method": "ГосПлан /fz44/tenderplans/positions: позиции планов-графиков 44-ФЗ с кодами ОКПД2 словаря (85.42, 85.41.9, 85.59.19), от новых к старым; плюс порция заказчиков из уже собранных лидов 44-ФЗ. Отбор темы — collector.py rows. Дешевле 100 000 ₽ и прошлые годы не берутся.",
-   "note": "Добавлен 03.10.2026. Проверка: 15 запросов → 1325 позиций, 357 строк, 237 новых лидов (flag plan, срок — конец года плана, месяц объявления в плане-графике не отдаётся). Правило — в задании, пункт 17 ИЗМЕНЕНИЙ 6.7.",
+   "method": "ГосПлан /fz44/tenderplans/positions: позиции планов-графиков 44-ФЗ с кодами ОКПД2 словаря (85.42, 85.41, 85.41.9, 85.59.19), от новых к старым; плюс порция заказчиков из уже собранных лидов 44-ФЗ. Отбор темы — collector.py rows. Дешевле 100 000 ₽ и прошлые годы не берутся.",
+   "note": "Заменяет прежний api-источник с тем же ключом (модель сама собирала позиции по классам 85.42/85.41/82.30/74.90/70.22/78.10, 505 лидов к 30.09; id лидов те же — plan44-<номер позиции>, дубли отсекает known). Добавлен 03.10.2026. Месяц объявления в позиции плана-графика не отдаётся: срок — конец года плана, для будущего года — 15 января.",
    "pause": 0.3,
    "planned": 1,
    "maxRequests": 120,
