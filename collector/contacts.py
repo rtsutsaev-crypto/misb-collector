@@ -17,9 +17,9 @@ BASE = "https://v2.gosplan.info"
 
 def get(path):
     url = BASE + path + "?" + urllib.parse.urlencode({"apikey": KEY})
-    for t in range(4):
+    for t in range(2):
         try:
-            with urllib.request.urlopen(url, timeout=60) as r:
+            with urllib.request.urlopen(url, timeout=25) as r:
                 return json.loads(r.read().decode())
         except urllib.error.HTTPError as e:
             if e.code == 404: return {}
@@ -53,7 +53,7 @@ def pick(doc, num):
 def main():
     a = argparse.ArgumentParser()
     a.add_argument("--queue", required=True); a.add_argument("--known")
-    a.add_argument("--date", required=True); a.add_argument("--out", required=True); a.add_argument("--max", type=int, default=60)
+    a.add_argument("--date", required=True); a.add_argument("--out", required=True); a.add_argument("--max", type=int, default=60); a.add_argument("--budget-sec", type=int, default=240)
     x = a.parse_args()
     if not KEY: raise SystemExit("нет GOSPLAN_KEY в окружении")
     today = dt.date.fromisoformat(x.date)
@@ -72,11 +72,15 @@ def main():
             age = (today - dt.date.fromisoformat(old.get("checkedAt", "2000-01-01"))).days
             if age < (30 if old.get("none") else 90): continue
         cand.append(i)
-    docs, st = [], {"queue": len(items), "candidates": len(cand), "requests": 0, "found": 0, "none": 0}
+    docs, st = [], {"queue": len(items), "candidates": len(cand), "requests": 0, "found": 0, "none": 0, "failed": 0}
+    t0, bad = time.time(), 0
     for i in cand[: x.max]:
+        if time.time() - t0 > x.budget_sec or bad >= 5:
+            st["stopped"] = "бюджет времени" if bad < 5 else "5 сбоев подряд"; break
         j = get(("/fz44/purchases/" if i.startswith("0") else "/fz223/purchases/") + i); st["requests"] += 1
         time.sleep(0.15)
-        if j is None: continue
+        if j is None: bad += 1; st["failed"] += 1; continue
+        bad = 0
         c = pick(j, i) if isinstance(j, dict) else None
         k = C.site_key(i)
         if c:
