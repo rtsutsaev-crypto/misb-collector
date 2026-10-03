@@ -15,7 +15,7 @@ import gosplan_delta as G
 
 KEY = os.environ.get("GOSPLAN_KEY", "")
 PATH = "/fz44/tenderplans/positions"
-DEFAULT_CLASSES = ["85.42", "85.41.9", "85.59.19"]   # коды словаря: ДПО, дополнительное образование прочее, прочее образование
+DEFAULT_CLASSES = ["85.42", "85.41", "85.41.9", "85.59.19"]   # ДПО, дополнительное образование (общее и прочее), прочее образование; код ГосПлан сверяет точно
 MAX_SKIP = 1000                                        # ГосПлан: skip ≤ 1000, limit ≤ 100
 
 
@@ -36,16 +36,16 @@ def to_row(x, today, min_price=0):
     except ValueError: price = 0
     if price < min_price: return None
     inn = x.get("customer") or ""
-    ikz = c.get("IKZ") or c.get("positionNumber")
-    if not ikz or not c.get("purchaseObjectInfo"): return None
+    pos = c.get("positionNumber")
+    if not pos or not c.get("purchaseObjectInfo"): return None
     # месяц в позициях плана-графика не отдаётся: текущий год — конец года, будущий — начало года
     deadline = f"{year}-12-31" if year == int(today[:4]) else f"{year}-01-15"
     okpd = (c.get("OKPD2Info") or {}).get("OKPDCode") or ""
-    return {"id": "plan44-" + ikz, "title": c["purchaseObjectInfo"].strip(), "customer": ("ИНН " + inn) if inn else "",
+    return {"id": "plan44-" + pos, "title": c["purchaseObjectInfo"].strip(), "customer": ("ИНН " + inn) if inn else "",
             "customerInn": inn, "region": G.REG.get(int(x.get("region") or 0), ""), "price": price if price > 0 else None,
             "deadline": deadline, "law": "44-ФЗ", "okpd2": [okpd] if okpd else [], "flags": ["plan"],
-            "url": G.EIS + (c.get("positionNumber") or ""), "publishedAt": (c.get("publishDate") or "")[:10],
-            "note": f"План-график 44-ФЗ {x.get('plan_number')}, позиция {c.get('positionNumber')}: закупка на {year} год, срок объявления в плане не указан"}
+            "url": G.EIS + (c.get("IKZ") or pos), "publishedAt": (c.get("publishDate") or "")[:10],
+            "note": f"План-график 44-ФЗ {x.get('plan_number')}, позиция {pos}: закупка на {year} год, срок объявления в плане не указан"}
 
 
 def customers_from(leadsets):
