@@ -183,7 +183,7 @@ def main():
     rows = []
     for lid, l in leads.items():
         key = site_key(lid)
-        if key not in acc_keys and (key in verdicts or not m.classify(l.get("title", ""), l.get("okpd2") or ())[0] and not str(l.get("source", "")).startswith(("Запросы на спикеров", "fd-", "reg2-", "cu-", "v7-"))): continue
+        if key not in acc_keys and (key in verdicts or not m.classify(l.get("title", ""), l.get("okpd2") or ())[0] and not str(l.get("source", "")).startswith(("Запросы на спикеров", "fd-", "reg2-", "cu-", "v7-", "grants-msp"))): continue
         kd, wd = deadline_k(l, today, icp)
         if kd == 0: continue
         pf, ds, fs, pen, mand, why = fit.profile(l)
