@@ -395,6 +395,9 @@ input[type=file]{max-width:100%}
       <p><b>Как читать статусы.</b> «Работает» — сайт читается автоматически и дал лиды. «Нужен ключ» — есть официальный канал (токен, API), но ключа пока нет. «Закрыт» — площадка запрещает автоматическое чтение; её лоты частично видны через агрегаторы. «Ждёт первого сбора» — источник добавлен в план, но ещё не запускался: рабочим он считается после запуска, давшего строки. Статус проверяется при каждом сборе.</p>
     </div>
     <div class="srcs" id="srcs"></div>
+    <h3 style="margin:26px 0 8px;font-size:15px">Электронные площадки: куда подавать заявки</h3>
+    <div class="notice prose"><p>Закупки 44-ФЗ и 223-ФЗ участник подаёт на площадке, указанной в извещении. Таблица считает лиды по площадке: открытые, новые за 7 дней (по дате сбора) и открытые с fit от 65. Строка открывает список закупок этой площадки. Площадка берётся из извещения ЕИС и ссылок источников; у лидов только из агрегаторов она пока не определена.</p></div>
+    <div id="etpSum" style="overflow-x:auto"></div>
     <h3 style="margin:26px 0 8px;font-size:15px">Реестр источников МИСБ</h3>
     <div class="notice prose" id="regNote"></div>
     <div id="regSum" class="row" style="margin:8px 0"></div>
@@ -916,7 +919,14 @@ function renderCorp(){const G=S.holdings?.groups||[];const byNode={};for(const l
 
 /* sources */
 const SLABEL={ok:"Работает",partial:"Частично",needs_key:"Нужен ключ",needs_test:"Ключ есть, ждёт проверки",blocked:"Закрыт",covered:"Работает через другой источник",unavailable:"Недоступно на тарифе",ready:"Готов к загрузке",planned:"Ждёт первого сбора"};
-function renderSources(){const order={ok:0,partial:1,covered:2,ready:3,planned:3.5,needs_key:4,unavailable:5,blocked:6};
+function showEtp(v){S.filters={country:S.filters.country,etp:v,open:"open",mand:false};["#q","#fCat","#fDir","#fForm","#fFit","#fLaw","#fHold","#fStatus","#fFlag","#fSeg","#fSig"].forEach(x=>{const e=$(x);if(e)e.value=""});$("#fCust").checked=false;$("#fMand").checked=false;S.page=0;syncFilterInputs();switchTab("leads");renderLeads()}
+function renderEtpSum(){const box=$("#etpSum");if(!box)return;const by={};const add=(k,l)=>{const o=by[k]=by[k]||{open:0,week:0,core:0,total:0};o.total++;if(isOpen(l)){o.open++;if(l.fit>=65)o.core++}const age=(TODAY-new Date(String(l.collectedAt||"").slice(0,10)+"T00:00:00"))/864e5;if(age>=0&&age<=7)o.week++};
+  let none=0,noneOpen=0;for(const l of LEADS){if(l.etpKind==="etp"){add(l.etp,l);if(l.etpSec==="Газпром")add(ETP_SEC_GAZ,l)}else if(l.etpKind==="none"){none++;if(isOpen(l))noneOpen++}}
+  const keys=Object.keys(by).filter(k=>k!==ETP_SEC_GAZ).sort((a,b)=>by[b].open-by[a].open||by[b].total-by[a].total);if(by[ETP_SEC_GAZ]){const i=keys.indexOf("ЭТП ГПБ");keys.splice(i<0?keys.length:i+1,0,ETP_SEC_GAZ)}
+  const val=k=>k===ETP_SEC_GAZ?"gpb-gazprom":k;
+  const tr=k=>el("tr",{style:"cursor:pointer",tabindex:"0",onclick:()=>showEtp(val(k)),onkeydown:e=>{if(e.key==="Enter")showEtp(val(k))}},el("td",{text:k===ETP_SEC_GAZ?"   └ "+k:k}),el("td",{class:"num",text:by[k].open}),el("td",{class:"num",text:by[k].week}),el("td",{class:"num",text:by[k].core}),el("td",{class:"num",text:by[k].total}));
+  box.replaceChildren(el("table",{style:"min-width:0;max-width:760px"},el("thead",{},el("tr",{},...["Площадка","Открытых","Новых за 7 дней","Открытых с fit от 65","Всего лидов"].map((h,i)=>el("th",{class:i?"num":"",text:h})))),el("tbody",{},...keys.map(tr),el("tr",{style:"cursor:pointer",onclick:()=>showEtp("__none")},el("td",{class:"muted",text:"ЭТП не определена"}),el("td",{class:"num muted",text:noneOpen}),el("td",{class:"num muted",text:"—"}),el("td",{class:"num muted",text:"—"}),el("td",{class:"num muted",text:none})))))}
+function renderSources(){renderEtpSum();const order={ok:0,partial:1,covered:2,ready:3,planned:3.5,needs_key:4,unavailable:5,blocked:6};
   $("#srcs").replaceChildren(...[...S.sources].sort((a,b)=>(order[a.status]??9)-(order[b.status]??9)).map(s=>{const cnt=(s.match||[]).length?LEADS.filter(l=>(s.match||[]).some(m=>(l.source||"").startsWith(m))).length:0;
     return el("div",{class:"src"},el("div",{class:"name"},s.url?el("a",{href:s.url,target:"_blank",rel:"noopener",text:s.name}):s.name),el("span",{class:`pill s-${s.status}`,text:(SLABEL[s.status]||s.status)+(s.status==="covered"&&s.coveredBy?" · "+(S.sources.find(x=>x.key===s.coveredBy)?.name||s.coveredBy):"")}),el("div",{class:"note",text:s.note}),el("div",{class:"cnt",style:"text-align:right"},el("div",{class:cnt?"cnt has":"cnt",text:`${cnt} лид.`}),el("div",{text:`проверка ${fmtDate(s.checkedAt)}`})))}))}
 
