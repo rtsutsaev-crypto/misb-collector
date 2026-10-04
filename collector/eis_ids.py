@@ -7,6 +7,8 @@ gosplan:*. Внутренние номера РосТендера (11 цифр, 
 сам по себе ничего не доказывает (01.10.2026 так в ГосПлан ушли 14 номеров РосТендера, все с ответом 404).
 Порядок: новые лиды этого запуска (--new), затем известные с открытым приёмом или без срока; номера, уже лежащие в
 leaddocs, пропускаются; с --misses — и номера, которых нет в ГосПлане (правило в eis_misses.py).
+С --backfill (дозаполнение площадки, etp_resolve.py) после них идут и закрытые закупки — свежие сроки первыми, а номера из
+leaddocs без площадки и без признака electronic (разобраны до eisdocs.py 2.0) спрашиваются повторно.
 """
 import argparse, glob, json, os, re
 from datetime import datetime, timedelta
@@ -46,11 +48,16 @@ def main():
     a.add_argument("--misses")
     a.add_argument("--now")
     a.add_argument("--out", required=True)
+    a.add_argument("--match", help="meta/etp-match: номера ЕИС, найденные etp_match.py для карточек агрегаторов, — сразу после новых")
+    a.add_argument("--backfill", action="store_true", help="после открытых — закрытые закупки и старые разборы без площадки")
     x = a.parse_args()
     done = set()
     if x.leaddocs and os.path.exists(x.leaddocs):
         for d in docs_in(x.leaddocs):
-            done |= set((d.get("items") or {}).keys())
+            for n, it in (d.get("items") or {}).items():
+                if x.backfill and not it.get("platform") and "electronic" not in it:
+                    continue   # разобран до 2.0: повторить, чтобы узнать, электронная ли закупка
+                done.add(n)
     held = set()
     if x.misses:
         now = datetime.fromisoformat((x.now or "").replace("Z", "+00:00"))
@@ -78,12 +85,27 @@ def main():
         for d in docs_in(p):
             for lead in d.get("leads", []):
                 take(lead)
+    if x.match and os.path.exists(x.match):
+        m = json.load(open(x.match, encoding="utf-8")); m = m.get("data", m)
+        for it in (m.get("items") or {}).values():
+            n = str(it.get("eis") or "")
+            if EIS_RE.fullmatch(n) and n not in seen:
+                seen.add(n); out.append(n)
     fresh = len(out)
     for d in docs_in(x.leadsets):
         for lead in d.get("leads", []):
             dl = str(lead.get("deadline") or "")
             if not dl or dl >= x.date:
                 take(lead)
+    if x.backfill:
+        rest = []
+        for d in docs_in(x.leadsets):
+            for lead in d.get("leads", []):
+                dl = str(lead.get("deadline") or "")
+                if dl and dl < x.date:
+                    rest.append((dl, lead))
+        for _, lead in sorted(rest, key=lambda t: t[0], reverse=True):
+            take(lead)
     out = out[:x.limit]
     json.dump(out, open(x.out, "w", encoding="utf-8"))
     print(f"номеров {len(out)} (новых этого запуска {min(fresh, len(out))}); уже в leaddocs {len(done)}; "
