@@ -10,7 +10,7 @@ Synapse): номер извещения, по которому eisdocs.py узн
 Запуск: GOSPLAN_KEY=... python3 etp_match.py --leadsets <папка> --leaddocs <папка> [--known <meta/etp-match.json>]
         --date ГГГГ-ММ-ДД --out etp-match.json [--max 400] [--parallel 4] [--budget-sec 900]
 Берёт карточки агрегаторов без площадки и без номера ЕИС, у которых есть срок подачи; уже проверенные (в --known) не
-повторяет 30 дней. Выход — весь документ meta/etp-match: {"items": {id: {eis, score, title, at} | {none: true, at}}, "stats"}.
+повторяет 30 дней. Выход — весь документ meta/etp-match: {"items": {id: {eis, score, at} | {at}}, "stats"}; {at} — проверено, не найдено.
 Ключ ГосПлана только из окружения.
 """
 import argparse, collections, concurrent.futures as cf, datetime as dt, difflib, glob, json, os, re, time, urllib.error, urllib.parse, urllib.request
@@ -88,7 +88,7 @@ def main():
         if k and (today - dt.date.fromisoformat(k.get("at", "2000-01-01"))).days < 30: continue
         cand.append((l.get("deadline"), i, l))
     cand.sort(key=lambda t: t[0], reverse=True)            # свежие сроки первыми: открытые закупки важнее архива
-    items = dict(known); st = collections.Counter(candidates=len(cand)); t0 = time.time()
+    items = {i: ({"eis": k["eis"], "score": k.get("score", 0), "at": k["at"]} if k.get("eis") else {"at": k.get("at", x.date)}) for i, k in known.items()}; st = collections.Counter(candidates=len(cand)); t0 = time.time()
     with cf.ThreadPoolExecutor(x.parallel) as ex:
         futs = {}
         for _, i, l in cand[: x.max]:
@@ -101,10 +101,10 @@ def main():
             except Exception: st["errors"] += 1; continue
             st["requests"] += req; st["checked"] += 1
             if best and best[0] >= x.min and best[1]:
-                items[i] = {"eis": best[1], "score": best[0], "title": best[2], "at": x.date}; st["matched"] += 1
+                items[i] = {"eis": best[1], "score": best[0], "at": x.date}; st["matched"] += 1
             else:
-                items[i] = {"none": True, "score": best[0] if best else 0, "at": x.date}
-    json.dump({"items": items, "stats": dict(st), "updatedAt": x.date}, open(x.out, "w", encoding="utf-8"), ensure_ascii=False)
+                items[i] = {"at": x.date}   # не найдено: только дата проверки (документ должен оставаться меньше 256 КБ)
+    json.dump({"items": items, "stats": dict(st), "updatedAt": x.date}, open(x.out, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
     print(json.dumps(dict(st), ensure_ascii=False))
 
 
