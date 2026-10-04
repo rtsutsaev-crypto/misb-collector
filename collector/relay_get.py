@@ -10,7 +10,7 @@
 """
 import argparse, html, json, os, re, subprocess, time, urllib.parse
 
-BOT = re.compile(r"(?i)smartcaptcha|captcha|verification|hg-security|access denied|ddos-guard|checking your browser|cf-chl")
+BOT = re.compile(r"(?i)smartcaptcha\.yandexcloud|showcaptcha|hg-security|ddos-guard|checking your browser|cf-chl|<title>[^<]*(verification|access denied|just a moment|доступ ограничен|проверка браузера|вы робот)")   # слово «captcha» в коде формы — не признак
 LOGIN = re.compile(r"(?i)<input[^>]+type=[\"']password")
 
 
