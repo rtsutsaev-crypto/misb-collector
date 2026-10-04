@@ -11,7 +11,7 @@
   5. группа заказчика (справочник закупочных маршрутов) и прошлые закупки того же заказчика в базе — с пометкой «вероятно».
 
 Запуск: python3 etp_resolve.py --leadsets <папка leadsets> --leaddocs <папка leaddocs> [--match <meta/etp-match.json>]
-        [--verdicts <meta/collector-verdicts.json>] --date ГГГГ-ММ-ДД --out leadetp.json [--part 1500]
+        [--verdicts <meta/collector-verdicts.json>] --date ГГГГ-ММ-ДД --out leadetp.json [--part 600]
 Выход: {"parts": [{"items": {id: {...}}}, ...], "stats": {...}} — каждую часть записать документом leadetp/part-N
 (set целиком; лишние старые части удалить). Элемент: {kind: "etp"|"own"|"noetp", etp, section?, conf: "точно"|"вероятно",
 by, why, eis?}. Ключ — id лида, как в leaddocs.
@@ -121,7 +121,7 @@ def main():
     a = argparse.ArgumentParser()
     a.add_argument("--leadsets", required=True); a.add_argument("--leaddocs", required=True)
     a.add_argument("--match"); a.add_argument("--verdicts"); a.add_argument("--date", required=True)
-    a.add_argument("--out", required=True); a.add_argument("--part", type=int, default=1500)
+    a.add_argument("--out", required=True); a.add_argument("--part", type=int, default=600)
     x = a.parse_args()
 
     def load(f):
