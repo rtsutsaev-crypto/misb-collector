@@ -47,6 +47,7 @@ def main():
     a.add_argument("--note")
     a.add_argument("--stage")
     a.add_argument("--light", action="store_true", help="init: облегчённый запуск — читаются только источники плана с полем light")
+    a.add_argument("--manual", action="store_true", help="init: запуск с кнопки «Обновить» — читаются и источники с полем manualOnly")
     a.add_argument("--allow-wait", action="store_true", help="finish: завершить, даже если есть источники в статусе wait (только если шаг невозможен)")
     a.add_argument("--log")
     x = a.parse_args()
@@ -58,8 +59,9 @@ def main():
             planned = s.get("batch") or s.get("planned") or 1
             src.append({"key": s["key"], "name": s.get("name", s["key"]), "method": s.get("method", ""),
                         "planned": planned, "done": 0, "found": 0, "fresh": 0, "updated": 0,
-                        "status": "skipped" if (s.get("type") == "skip" or (x.light and not s.get("light"))) else "wait",
-                        "note": s.get("note", "") if s.get("type") == "skip" else ("облегчённый запуск" if x.light and not s.get("light") else "")})
+                        "status": "skipped" if (s.get("type") == "skip" or (x.light and not s.get("light")) or (s.get("manualOnly") and not x.manual)) else "wait",
+                        "note": s.get("note", "") if s.get("type") == "skip" else ("облегчённый запуск" if x.light and not s.get("light")
+                                else "только по кнопке «Обновить»" if s.get("manualOnly") and not x.manual else "")})
         t = now()
         p = {"runId": x.run, "status": "running", "startedAt": t, "updatedAt": t, "percent": 1,
              "stage": "Запуск: читаю план и базу сайта", "sources": src, "log": []}
