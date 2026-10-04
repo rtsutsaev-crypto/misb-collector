@@ -1,0 +1,12 @@
+[Unit]
+Description=MISB monitor: collection run (%i)
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=misb
+Group=misb
+EnvironmentFile=/etc/misb/env
+WorkingDirectory=/opt/misb/standalone
+ExecStart=/bin/sh -c 'exec /usr/bin/python3 -m misb.agent --db "$MISB_DB" --mode %i >> "$MISB_LOG_DIR/run-%i.log" 2>&1'
+TimeoutStartSec=4h

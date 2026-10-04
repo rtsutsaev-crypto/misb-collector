@@ -1,0 +1,6 @@
+# /etc/caddy/Caddyfile — HTTPS с автоматическим сертификатом Let's Encrypt. Замените домен на свой
+# (A-запись домена должна указывать на IP сервера; порты 80 и 443 открыты).
+monitor.example.ru {
+	encode gzip
+	reverse_proxy 127.0.0.1:8080
+}

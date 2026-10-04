@@ -1,0 +1,18 @@
+[Unit]
+Description=MISB monitor: site and data API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=misb
+Group=misb
+EnvironmentFile=/etc/misb/env
+WorkingDirectory=/opt/misb/standalone
+ExecStart=/usr/bin/python3 -m misb.server
+Restart=always
+RestartSec=5
+# сбор по кнопке запускается из этого сервиса и должен пережить его перезапуск
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
