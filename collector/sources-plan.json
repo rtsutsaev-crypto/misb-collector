@@ -7082,6 +7082,70 @@
    "verify": "Свежая потребность или сигнал из канала: проверить дату публикации, актуальность, заказчика, оплату и маршрут отклика. Ранний сигнал (вопрос, вакансия) — не готовый заказ."
   },
   {
+   "key": "hr-tg",
+   "name": "HR-сообщества · Telegram-каналы (только по кнопке)",
+   "type": "pages",
+   "source": "hr-tg",
+   "batch": 10,
+   "pause": 3,
+   "planned": 10,
+   "manualOnly": true,
+   "method": "Все адреса каждый ручной запуск; Telegram — tg_preview.py (окно 60 дней). Результат каждой страницы — в meta/hr-checks (registry_checks.py).",
+   "note": "Пакет «100 HR-сообществ» 05.10.2026: 10 публичных каналов HR / T&D / L&D, которых не было в сборе (остальные 11 каналов пакета уже читаются fd-*, v7-*, reg2-*). Только по кнопке «Обновить», по расписанию не читается. Проверено 05.10.2026: все 10 превью читаются.",
+   "checksDoc": "meta/hr-checks",
+   "verify": "Сигнал из HR-сообщества (запрос, поиск тренера, спикера, провайдера, LMS или разработчика курса): проверить дату публикации, актуальность, заказчика и оплату. Реклама курсов и штатная вакансия тренера — не заказ. Отклик — только человеком.",
+   "urls": [
+    "https://t.me/s/gigoo_ru",
+    "https://t.me/s/komandos_n1",
+    "https://t.me/s/hrprosvet",
+    "https://t.me/s/pressfeed",
+    "https://t.me/s/hr_uslugi",
+    "https://t.me/s/hrsummit",
+    "https://t.me/s/associatehr",
+    "https://t.me/s/hr_sreda_1",
+    "https://t.me/s/hrskcommunity",
+    "https://t.me/s/hrtalkskz"
+   ],
+   "registry": {
+    "https://t.me/s/gigoo_ru": "HR-DD5DEFCED8",
+    "https://t.me/s/komandos_n1": "HR-01B4F9A5BA",
+    "https://t.me/s/hrprosvet": "HR-5049DB569E",
+    "https://t.me/s/pressfeed": "HR-8C46A592D2",
+    "https://t.me/s/hr_uslugi": "HR-465D1B92CA",
+    "https://t.me/s/hrsummit": "HR-C2A91FBD92",
+    "https://t.me/s/associatehr": "HR-8D9C16390F",
+    "https://t.me/s/hr_sreda_1": "HR-B20BF2238F",
+    "https://t.me/s/hrskcommunity": "HR-9AE2FCDFA9",
+    "https://t.me/s/hrtalkskz": "HR-013985454A"
+   }
+  },
+  {
+   "key": "hr-web",
+   "name": "HR-сообщества · форумы и биржи (только по кнопке)",
+   "type": "pages",
+   "source": "hr-web",
+   "batch": 4,
+   "pause": 3,
+   "planned": 4,
+   "manualOnly": true,
+   "method": "Все адреса каждый ручной запуск, WebFetch (RSS — тем же промптом). Результат каждой страницы — в meta/hr-checks (registry_checks.py).",
+   "note": "Пакет «100 HR-сообществ» 05.10.2026: вопросы и ответы HRtime-клуба, проекты HRbazaar, кворумы E-xecutive, RSS кадрового раздела «Клерка». Только по кнопке «Обновить». Строки — сигналы: берутся сообщения с запросом на обучение, тренера, спикера, провайдера, а не каждое обсуждение.",
+   "checksDoc": "meta/hr-checks",
+   "verify": "Сигнал из HR-сообщества (запрос, поиск тренера, спикера, провайдера, LMS или разработчика курса): проверить дату публикации, актуальность, заказчика и оплату. Реклама курсов и штатная вакансия тренера — не заказ. Отклик — только человеком.",
+   "urls": [
+    "https://hrtime.ru/hrclub/voprosy-i-otvety/",
+    "https://hrbazaar.ru/projects/",
+    "https://www.e-xecutive.ru/quorums",
+    "https://club.klerk.ru/c/kadrovyj-uchet/11.rss"
+   ],
+   "registry": {
+    "https://hrtime.ru/hrclub/voprosy-i-otvety/": "HR-23B318E478",
+    "https://hrbazaar.ru/projects/": "HR-821543B833",
+    "https://www.e-xecutive.ru/quorums": "HR-68CFD1E123",
+    "https://club.klerk.ru/c/kadrovyj-uchet/11.rss": "HR-A8400DAF83"
+   }
+  },
+  {
    "key": "reg2-lists",
    "name": "Реестр 01.10 · адреса со списком закупок",
    "type": "pages",
@@ -25701,6 +25765,6 @@
    ]
   }
  ],
- "updatedAt": "2026-10-04",
- "version": "6.18"
+ "updatedAt": "2026-10-05",
+ "version": "6.19"
 }

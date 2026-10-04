@@ -1,0 +1,620 @@
+[
+  {
+    "source_id": "HR-DD5DEFCED8",
+    "canonical_key": "t.me/gigoo_ru",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-23B318E478",
+    "canonical_key": "hrtime.ru/hrclub/voprosy-i-otvety",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-B4443542F7",
+    "canonical_key": "hrtime.ru/ispolnitelu",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-01B4F9A5BA",
+    "canonical_key": "t.me/komandos_n1",
+    "legacy_v7_ids": [
+      "V7-S01b4f9a5ba"
+    ],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-C08A13BC51",
+    "canonical_key": "t.me/zloihr",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-D461EA873E",
+    "canonical_key": "t.me/project_best_speakers",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-DB1BE8CCFB",
+    "canonical_key": "t.me/speakers_l",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-FD8A2DB681",
+    "canonical_key": "hr-portal.ru/forum",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-5049DB569E",
+    "canonical_key": "t.me/hrprosvet",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-821543B833",
+    "canonical_key": "hrbazaar.ru/projects",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-8C46A592D2",
+    "canonical_key": "t.me/pressfeed",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-46A7DA6985",
+    "canonical_key": "kadrovik-praktik.ru/communication/forum",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-63155B81F8",
+    "canonical_key": "t.me/dl_marketplace",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-634967DF76",
+    "canonical_key": "t.me/npsonline",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-0D5DE7DB83",
+    "canonical_key": "t.me/+CPrGexQq0l8MR_4daElaWw",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-3B7A0545DE",
+    "canonical_key": "t.me/hrbazaar",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-465D1B92CA",
+    "canonical_key": "t.me/hr_uslugi",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-8099A6D1FB",
+    "canonical_key": "t.me/hrm_freelance",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-A32D989DD4",
+    "canonical_key": "t.me/zaprosinaspikerov",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-0800244E96",
+    "canonical_key": "t.me/bestspeakersru",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-CBC8704FC9",
+    "canonical_key": "t.me/ispring_master",
+    "legacy_v7_ids": [
+      "V7-Scbc8704fc9"
+    ],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-DF4D5E2450",
+    "canonical_key": "t.me/metod_krug",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-B2E7C74F7E",
+    "canonical_key": "t.me/cnbchatruncis",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-AA19D944FE",
+    "canonical_key": "t.me/dl_siberia",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-4ED679EFEB",
+    "canonical_key": "t.me/edmarketclubjob",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-68CFD1E123",
+    "canonical_key": "e-xecutive.ru/quorums",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-7478F4814A",
+    "canonical_key": "t.me/hrbreakfast",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-46916F458E",
+    "canonical_key": "t.me/+RYLXDjmI3IlfknhD",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-C2A91FBD92",
+    "canonical_key": "t.me/hrsummit",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-AB19610697",
+    "canonical_key": "t.me/hrdome_club",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-A07B95CBC8",
+    "canonical_key": "t.me/hrkaz",
+    "legacy_v7_ids": [
+      "V7-Sa07b95cbc8"
+    ],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-48B1CC0DCD",
+    "canonical_key": "t.me/+R0noil_i2qo4AJWK",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-199899DBA1",
+    "canonical_key": "t.me/+SmZ-wgFJPlh3lIyB",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-AA6444A33C",
+    "canonical_key": "t.me/hratwork",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-5A4EB74A99",
+    "canonical_key": "t.me/hrkanal",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-7A1BE81C05",
+    "canonical_key": "vk.com/humanrelations",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-00B110EC1C",
+    "canonical_key": "vk.com/hr_spb",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-F8A6A54606",
+    "canonical_key": "vk.com/hr_recruit",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-A18C4740AF",
+    "canonical_key": "t.me/tophr_chat",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-317D5B2225",
+    "canonical_key": "t.me/hrclubelenamashukova",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-5B392E2D97",
+    "canonical_key": "t.me/hr_compass",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-3CBCEE4F10",
+    "canonical_key": "t.me/hr_recrute",
+    "legacy_v7_ids": [
+      "V7-S3cbcee4f10"
+    ],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-D4EB81D934",
+    "canonical_key": "vk.com/hrlead",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-6544029BDF",
+    "canonical_key": "t.me/hurmattvoyu",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-CC4F1AF6CC",
+    "canonical_key": "t.me/hrit_kg",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-73CAF93F86",
+    "canonical_key": "vk.com/ithrmeetup",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-DA5E1C6B1B",
+    "canonical_key": "t.me/lessondeliverychat",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-D064E6DCBF",
+    "canonical_key": "t.me/methodclub",
+    "legacy_v7_ids": [
+      "V7-Sd064e6dcbf"
+    ],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-B70244223B",
+    "canonical_key": "t.me/rff_chat",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-19E116A941",
+    "canonical_key": "t.me/dl_vr_in_digitallearning",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-457A6FE170",
+    "canonical_key": "t.me/hrdigital",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-938F691D41",
+    "canonical_key": "t.me/+pTJmqIST1GhkYjdi",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-7F8A57B62C",
+    "canonical_key": "t.me/jobdelivery",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-A870765AA1",
+    "canonical_key": "t.me/insidepr_club_2",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-8D653DAE17",
+    "canonical_key": "t.me/kadrovikichat",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-8DD162FBD8",
+    "canonical_key": "t.me/+eBIHDNPcXJ02MzBi",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-C6272C145B",
+    "canonical_key": "t.me/hrtech_chat",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-A8400DAF83",
+    "canonical_key": "club.klerk.ru/c/kadrovyj-uchet/11",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-AFD8F7C388",
+    "canonical_key": "vk.com/club54807827",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-C83C2C8841",
+    "canonical_key": "t.me/hr_only",
+    "legacy_v7_ids": [
+      "V7-Sc83c2c8841"
+    ],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-9436F2B76C",
+    "canonical_key": "t.me/comaotvnutricoma",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-6122B163F7",
+    "canonical_key": "t.me/dl_tehcnology",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-6DE849FB5C",
+    "canonical_key": "t.me/lab_vacancies",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-613FFC4B6F",
+    "canonical_key": "t.me/ufa_hr",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-E5875B257C",
+    "canonical_key": "t.me/hrlead",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-2C86B149AF",
+    "canonical_key": "t.me/itrecruiters_community",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-D910DFD6A0",
+    "canonical_key": "t.me/newmethodologist",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-0C12681EBC",
+    "canonical_key": "vk.com/vcclub",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-570E645370",
+    "canonical_key": "t.me/e_spravkadrovika",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-9E9A9E902E",
+    "canonical_key": "t.me/+fP-lKsz76uExYTUy",
+    "legacy_v7_ids": [
+      "V7-S6cd16d6acf"
+    ],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-0ACCC021C5",
+    "canonical_key": "t.me/topfactorchat",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-6F8F3703C5",
+    "canonical_key": "t.me/chat_clubtk",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-99C0D1C85E",
+    "canonical_key": "t.me/hr_logovo",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-87A38D58CC",
+    "canonical_key": "t.me/dlbeginner",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-729B573DAD",
+    "canonical_key": "t.me/hr_chat",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-223E13019F",
+    "canonical_key": "t.me/hrchatgroup",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-FEA8A1DD8F",
+    "canonical_key": "t.me/inno_hr_club",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-F5FA70BB8A",
+    "canonical_key": "vk.com/hr_journal",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-CE80C993F2",
+    "canonical_key": "vk.com/hrelearning",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-C16EBAB524",
+    "canonical_key": "t.me/hrproriv",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-778065F178",
+    "canonical_key": "t.me/hr_serptpp",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-F6F57C2866",
+    "canonical_key": "t.me/itrecruitergroup",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-B224CCE192",
+    "canonical_key": "t.me/webtutor_developer",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-8D9C16390F",
+    "canonical_key": "t.me/associatehr",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-AA17D61DFA",
+    "canonical_key": "vk.com/club211690007",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-8F15C54F21",
+    "canonical_key": "t.me/inter_comm",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-89D0E00433",
+    "canonical_key": "t.me/insidepr",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-7605D7482A",
+    "canonical_key": "t.me/hr_kak_delat",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-6909B607D3",
+    "canonical_key": "t.me/clubtrainingfree",
+    "legacy_v7_ids": [
+      "V7-S6909b607d3"
+    ],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-F6F5D30676",
+    "canonical_key": "t.me/fasilikachat",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-524B9E3ED5",
+    "canonical_key": "t.me/hrteamtalk",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-BE3BF2B7FD",
+    "canonical_key": "vk.com/hrm_group",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-A8D7CFF6F4",
+    "canonical_key": "vk.com/hrm_spb",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-C62AA8A44B",
+    "canonical_key": "t.me/+RMfRWXf8kif6cc-6",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-B20BF2238F",
+    "canonical_key": "t.me/hr_sreda_1",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-84A74A0BB4",
+    "canonical_key": "t.me/ielearning",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-3D1E37C390",
+    "canonical_key": "t.me/hr_central_asia",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-16D6155188",
+    "canonical_key": "t.me/hrbreakfast_live",
+    "legacy_v7_ids": [
+      "V7-S16d6155188"
+    ],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-9AE2FCDFA9",
+    "canonical_key": "t.me/hrskcommunity",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  },
+  {
+    "source_id": "HR-013985454A",
+    "canonical_key": "t.me/hrtalkskz",
+    "legacy_v7_ids": [],
+    "merge_mode": "upsert_by_canonical_key_preserve_old_fields"
+  }
+]
