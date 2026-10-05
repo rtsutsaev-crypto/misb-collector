@@ -2,9 +2,12 @@
 опубликованные после курсора, без поисковых слов. Отбор делает collector.py; для заказчиков из watchlist
 (холдинги, дочки, повторные покупатели) — расширенный отбор: консалтинг и «мероприятия» тоже берутся, с флагом watch.
 Плюс проход по updated_after: у известных закупок ловит новый срок и отмену.
+С --precursors (precursors.json): закупки-предвестники (СОУТ, ISO, внедрение 1С/ERP, разработка стратегии, учебный центр,
+бережливое производство) у заказчиков из watchlist или с НМЦК от minPrice — ранние сигналы sig-pre-<номер> (source sig-precursor,
+флаг early, validUntil = публикация + months): через 2–6 месяцев такой заказчик почти всегда покупает обучение.
 
 Запуск: GOSPLAN_KEY=... python3 gosplan_delta.py --state state.json --known known.json --dict dictionary.json
-        --watch watch.json --date ГГГГ-ММ-ДД --out out.json [--max-requests 600]
+        --watch watch.json [watch_extra.json] --date ГГГГ-ММ-ДД --out out.json [--max-requests 600] [--precursors precursors.json]
 state.json: {"published": {"fz44": iso, "fz223": iso}, "updated": {"fz44": iso, "fz223": iso}} (пусто — 3 дня назад).
 out.json: {leads, updates, stats, state}. state из out.json записывается в meta/gosplan-delta.
 """
@@ -18,9 +21,10 @@ REG = {1:'Адыгея',2:'Башкортостан',3:'Бурятия',4:'Ал�
 # расширенный отбор для заказчиков из watchlist: слова «около обучения», только с начала слова
 WATCH_RX = re.compile(r"(?<![а-яё])(мероприяти\w* (для|по) (персонал|работник|сотрудник|руководител)|стратегическ|консалтинг|методическ\w* сопровожд|"
                       r"развити\w* (персонал|компетенц|кадр|руководител|команд)|корпоративн\w* (университет|академи|культур)|учебн\w* (центр|програм|мероприят)|"
-                      r"образоват|кадров\w* (резерв|аудит|политик)|оценк\w* (персонал|компетенц)|производственн\w* систем|бережлив|программ\w* развития)")
+                      r"акселер|образоват|кадров\w* (резерв|аудит|политик)|оценк\w* (персонал|компетенц)|производственн\w* систем|бережлив|программ\w* развития)")
 EIS = "https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString="
-CANCEL_STAGES = {"4"}   # stage 4 — определение поставщика отменено (у 223 — «отменена»)
+CANCEL_STAGES = {"4"}
+PRE_LIMIT = 40          # сигналов-предвестников за запуск, не больше (самые дорогие первыми)   # stage 4 — определение поставщика отменено (у 223 — «отменена»)
 
 
 def get(path, params, stats):
@@ -81,11 +85,43 @@ def to_row(x, law):
             "purchaseType": x.get("purchase_type") or "", "publishedAt": (x.get("published_at") or "")[:10]}
 
 
+def add_months(d, n):
+    y, m = divmod(d.month - 1 + n, 12)
+    return dt.date(d.year + y, m + 1, min(d.day, 28)).isoformat()
+
+
+def precursors(rows, pre, watch, known_ids, today):
+    """Ранние сигналы по закупкам-предвестникам. rows — строки to_row(); отбор: класс предвестника и (watchlist или НМЦК ≥ minPrice)."""
+    classes = [(c, re.compile(c["rx"])) for c in pre.get("classes", [])]
+    out = []
+    for r in rows:
+        sid = "sig-pre-" + r["id"]
+        if sid in known_ids: continue
+        t = C.norm_text(r["title"])
+        hit = next((c for c, rx in classes if rx.search(t)), None)
+        if not hit: continue
+        w = watch.get(r["customerInn"])
+        if not w and (r["price"] or 0) < pre.get("minPrice", 1000000): continue
+        pub = dt.date.fromisoformat((r["publishedAt"] or today)[:10])
+        l = {"id": sid, "title": f"Предвестник ({hit['key']}): {r['title'][:300]}", "customer": r["customer"], "customerInn": r["customerInn"],
+             "region": r["region"], "price": None, "deadline": "", "validUntil": add_months(pub, hit.get("months", 3)),
+             "law": r["law"], "url": r["url"], "source": "sig-precursor", "collectedAt": today, "country": "RU", "currency": "RUB",
+             "flags": sorted({"early"} | ({"watch"} | ({"tek"} if w.get("group") else set()) if w else set())),
+             "publishedAt": r["publishedAt"], "eisNumber": r["id"], "signalPrice": r["price"],
+             "note": f"Ранний сигнал: заказчик закупает «{hit['key']}» (НМЦК {r['price'] or '—'}). Ждать: {hit['expect']} — через ~{hit.get('months', 3)} мес."
+                     + (f" Группа: {w['group']}." if w and w.get("group") else "")}
+        out.append(l)
+    out.sort(key=lambda l: (not ("watch" in l["flags"]), -(l["signalPrice"] or 0)))
+    return out[:PRE_LIMIT]
+
+
 def main():
     a = argparse.ArgumentParser()
-    for k in ("state", "known", "dict", "watch", "date", "out"): a.add_argument("--" + k)
+    for k in ("state", "known", "dict", "date", "out"): a.add_argument("--" + k)
+    a.add_argument("--watch", nargs="*", default=[])   # meta/watchlist и meta/watchlist-extra: списки сливаются
     a.add_argument("--max-requests", type=int, default=600)
     a.add_argument("--until", default="")
+    a.add_argument("--precursors", default="")
     x = a.parse_args()
     today = x.date or dt.date.today().isoformat()
     st = json.load(open(x.state, encoding="utf-8")) if x.state and os.path.exists(x.state) else {}
@@ -94,10 +130,15 @@ def main():
     until = x.until   # API не принимает *_before позже конца текущих суток; по умолчанию без верхней границы
     m = C.Matcher(json.load(open(x.dict, encoding="utf-8")))
     kj = json.load(open(x.known, encoding="utf-8")); K = C.Known(); K.ids = kj.get("ids", {}); K.keys = set(kj.get("keys", []))
-    watch = json.load(open(x.watch, encoding="utf-8")) if x.watch and os.path.exists(x.watch) else {}
-    watch = watch.get("data", watch); watch = watch.get("inns", watch)
+    watch = {}
+    for wf in x.watch:
+        if not os.path.exists(wf): continue
+        w = json.load(open(wf, encoding="utf-8")); w = w.get("data", w); w = w.get("inns", w)
+        for k, v in w.items(): watch.setdefault(k, v)
     stats = {"requests": 0, "errors": 0}
     leads, updates, per = [], [], {}
+    pre = json.load(open(x.precursors, encoding="utf-8")) if x.precursors and os.path.exists(x.precursors) else None
+    allrows = []
     new_state = {"published": {}, "updated": {}}
     for law in ("fz44", "fz223"):
         src = "gosplan:" + law
@@ -105,6 +146,7 @@ def main():
         recs, cur = walk(law, "published", since, until, stats, x.max_requests, today)
         new_state["published"][law] = cur
         rows = [to_row(r, law) for r in recs]
+        allrows += rows
         L, U, s = C.process_rows(rows, m, K, src, today)
         # расширенный отбор для заказчиков из watchlist
         got = {l["id"] for l in L}
@@ -138,6 +180,9 @@ def main():
             if (r["deadline"] and r["deadline"] != prev) or canc:
                 updates.append({"id": k, "deadline": r["deadline"] or prev, "prevDeadline": prev, "url": r["url"], **({"cancelled": True} if canc else {})}); uu += 1
         per[law] = {"rows": s["rows"], "matched": s["matched"], "new": len(L), "watch": len(extra), "updatedRows": len(urecs), "updates": len(U) + uu}
+    sig = precursors(allrows, pre, watch, K.ids, today) if pre else []
+    leads += sig
+    per["precursors"] = len(sig)
     # схлопнуть дубли обновлений
     seenu, upd2 = set(), []
     for u in updates:

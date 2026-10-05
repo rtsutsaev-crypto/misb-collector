@@ -3,7 +3,7 @@
 Бесплатный тариф: 10 000 запросов в сутки. Ключ — только из текста запуска (DADATA_KEY), в базу не записывается.
 Запуск: DADATA_KEY=... python3 dadata.py --inns inns.json --out out.json [--parallel 4] [--max 3000]
 inns.json: ["7708503727", ...]. out.json: {"<ИНН>": документ для коллекции customers, ...}, stats.
-Документ: {inn, name, fullName, opf, status, okved, okvedName, employees, region, address, head, contacts:{phone,email,site},
+Документ: {inn, name, fullName, opf, status, okved, okvedName, employees, region, address, head, headPost, headSince, contacts:{phone,email,site},
            branches, registered, checkedAt, via:"dadata"}; не найден — {inn, name:"", checkedAt, via:"dadata", note}.
 """
 import argparse, json, os, sys, time, datetime as dt, urllib.request, urllib.error
@@ -40,7 +40,8 @@ def lookup(inn, today):
            "opf": (d.get("opf") or {}).get("short") or "", "status": st.get("status") or "", "okved": d.get("okved") or "",
            "okvedName": next((o.get("name") for o in (d.get("okveds") or []) if o.get("main")), "") or "",
            "employees": d.get("employee_count"), "region": adata.get("region_with_type") or "", "address": ad.get("value") or "",
-           "head": mg.get("name") or "", "headPost": mg.get("post") or "", "branches": d.get("branch_count"),
+           "head": mg.get("name") or "", "headPost": mg.get("post") or "",
+           "headSince": (dt.datetime.utcfromtimestamp(mg["start_date"] / 1000).date().isoformat() if isinstance(mg.get("start_date"), (int, float)) else ""), "branches": d.get("branch_count"),
            "registered": (dt.datetime.utcfromtimestamp(d["ogrn_date"] / 1000).date().isoformat() if d.get("ogrn_date") else ""),
            "contacts": {k: v for k, v in {"phone": phones[0] if phones else "", "email": emails[0] if emails else "",
                                            "site": (d.get("sites") or [""])[0] if isinstance(d.get("sites"), list) else ""}.items() if v},
