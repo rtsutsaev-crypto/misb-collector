@@ -8,6 +8,9 @@
   contract-buyers.json — meta/contract-buyers: {from, to, total, updatedAt, buyers: [первые top по числу контрактов]}
   watch_add.json — {ИНН: {level: "покупатель по контрактам"}} для заказчиков с ≥ watch-min контрактами, которых нет в watchlist
   need_names.json — ИНН без названия (для dadata.py)
+  gph_buyers.json — заказчики, которые сами нанимают преподавателей-физлиц (≥ gph-min договоров на обучение с ИНН из 12 цифр):
+                    {ИНН: {level: "нанимает преподавателей напрямую", gph: N}} — добавляются в watchlist рядом с watch_add.json.
+                    ИНН и имена физлиц никуда не пишутся (персональные данные) — только число договоров у заказчика.
 names.json — {ИНН: {name}} (выход dadata.py, поле customers); customers_dir — документы коллекции customers.
 """
 import argparse, glob, json, os
@@ -16,11 +19,16 @@ import argparse, glob, json, os
 def main():
     a = argparse.ArgumentParser()
     for k in ("in", "customers", "names", "watch", "date", "outdir"): a.add_argument("--" + k)
+    a.add_argument("--gph-min", type=int, default=3)
     a.add_argument("--top", type=int, default=300); a.add_argument("--top-buyers", type=int, default=250); a.add_argument("--watch-min", type=int, default=3)
     x = a.parse_args()
     d = json.load(open(x.__dict__["in"], encoding="utf-8"))
     # только предмет про обучение/консалтинг и не наём физлиц-преподавателей (все исполнители — ИНН из 12 цифр)
     C = [c for c in d["contracts"] if c["why"].startswith("форма") and not (c["suppliers"] and all(len(s) == 12 for s in c["suppliers"]))]
+    gph = {}
+    for c in d["contracts"]:
+        if c["why"].startswith("форма") and c["suppliers"] and all(len(s) == 12 for s in c["suppliers"]) and len(c["customerInn"]) == 10:
+            gph[c["customerInn"]] = gph.get(c["customerInn"], 0) + 1
     names = {}
     if x.customers:
         for f in glob.glob(os.path.join(x.customers, "*.json")):
@@ -70,8 +78,10 @@ def main():
            if b["contracts"] >= x.watch_min and b["inn"] not in watch and len(b["inn"]) == 10}
     json.dump(add, open(os.path.join(x.outdir, "watch_add.json"), "w", encoding="utf-8"), ensure_ascii=False)
     json.dump(need, open(os.path.join(x.outdir, "need_names.json"), "w", encoding="utf-8"))
+    gb = {i: {"level": "нанимает преподавателей напрямую", "gph": n} for i, n in gph.items() if n >= x.gph_min and i not in watch and i not in add}
+    json.dump(gb, open(os.path.join(x.outdir, "gph_buyers.json"), "w", encoding="utf-8"), ensure_ascii=False)
     print(json.dumps({"contracts": len(C), "buyers": len(buyers), "suppliers": len(sups), "winnersDocs": len(topS),
-                      "buyersShown": len(rows), "watchAdd": len(add), "needNames": len(need)}, ensure_ascii=False))
+                      "buyersShown": len(rows), "watchAdd": len(add), "needNames": len(need), "gphBuyers": len(gb)}, ensure_ascii=False))
 
 
 if __name__ == "__main__":

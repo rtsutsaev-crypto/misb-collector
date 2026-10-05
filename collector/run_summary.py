@@ -77,8 +77,11 @@ def main():
     a.add_argument("--progress", help="файл прогресса (progress.py): добавить строку «ВНИМАНИЕ» и самые долгие источники")
     x = a.parse_args()
     m = Matcher(json.load(open(x.dict, encoding="utf-8")))
-    seen, best, late = set(), [], 0
+    seen, best, late, sig = set(), [], 0, {}
     for l in leads_in(x.leads):
+        if str(l.get("id") or "").startswith("sig-"):         # ранние сигналы и партнёрские карточки — отдельной строкой, не в новых лидах
+            sig[l.get("source") or "sig"] = sig.get(l.get("source") or "sig", 0) + 1
+            continue
         k = norm_key(str(l.get("title") or "")) or str(l.get("id"))
         dl = l.get("deadline") or ""
         if k in seen or (dl and dl < x.date):
@@ -109,6 +112,10 @@ def main():
         tail = [v for v in (cut(l.get("customer"), 50), money(l.get("price"), l.get("currency")),
                             ("до " + dmy(l.get("deadline"))) if l.get("deadline") else "") if v]
         lines.append(f"• {t}" + (f" — {', '.join(tail)}" if tail else ""))
+    if sig:
+        names = {"sig-precursor": "предвестники", "sig-terminated": "расторжения", "sig-vacancy": "вакансии", "sig-head": "новые руководители",
+                 "sig-partner": "партнёры без лицензии", "sig-events": "мероприятия"}
+        lines.append(f"Ранние сигналы (не входят в новые лиды): {sum(sig.values())} — " + ", ".join(f"{names.get(k, k)} {v}" for k, v in sorted(sig.items())))
     if x.progress:
         lines += health(json.load(open(x.progress, encoding="utf-8")), x.active)
     lines.append(f"Все новые: кнопка «смотреть» на сайте {SITE}" if x.new else f"Сайт: {SITE}")
