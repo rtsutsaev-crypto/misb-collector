@@ -90,7 +90,7 @@ def add_months(d, n):
     return dt.date(d.year + y, m + 1, min(d.day, 28)).isoformat()
 
 
-def precursors(rows, pre, watch, known_ids, today):
+def precursors(rows, pre, watch, known_ids, today, lead_ids=()):
     """Ранние сигналы по закупкам-предвестникам. rows — строки to_row(); отбор: класс предвестника и (watchlist или НМЦК ≥ minPrice)."""
     classes = [(c, re.compile(c["rx"])) for c in pre.get("classes", [])]
     out = []
@@ -100,13 +100,14 @@ def precursors(rows, pre, watch, known_ids, today):
         t = C.norm_text(r["title"])
         hit = next((c for c, rx in classes if rx.search(t)), None)
         if not hit: continue
+        if r["id"] in lead_ids and hit["key"] != "combo": continue      # сама закупка уже лид — второй карточки-предвестника не нужно
         w = watch.get(r["customerInn"])
         if not w and (r["price"] or 0) < pre.get("minPrice", 1000000): continue
         pub = dt.date.fromisoformat((r["publishedAt"] or today)[:10])
         l = {"id": sid, "title": f"Предвестник ({hit['key']}): {r['title'][:300]}", "customer": r["customer"], "customerInn": r["customerInn"],
              "region": r["region"], "price": None, "deadline": "", "validUntil": add_months(pub, hit.get("months", 3)),
              "law": r["law"], "url": r["url"], "source": "sig-precursor", "collectedAt": today, "country": "RU", "currency": "RUB",
-             "flags": sorted({"early"} | ({"watch"} | ({"tek"} if w.get("group") else set()) if w else set())),
+             "flags": sorted({"partner" if hit["key"] == "combo" else "early"} | ({"watch"} | ({"tek"} if w.get("group") else set()) if w else set())),
              "publishedAt": r["publishedAt"], "eisNumber": r["id"], "signalPrice": r["price"],
              "note": f"Ранний сигнал: заказчик закупает «{hit['key']}» (НМЦК {r['price'] or '—'}). Ждать: {hit['expect']} — через ~{hit.get('months', 3)} мес."
                      + (f" Группа: {w['group']}." if w and w.get("group") else "")}
@@ -180,7 +181,7 @@ def main():
             if (r["deadline"] and r["deadline"] != prev) or canc:
                 updates.append({"id": k, "deadline": r["deadline"] or prev, "prevDeadline": prev, "url": r["url"], **({"cancelled": True} if canc else {})}); uu += 1
         per[law] = {"rows": s["rows"], "matched": s["matched"], "new": len(L), "watch": len(extra), "updatedRows": len(urecs), "updates": len(U) + uu}
-    sig = precursors(allrows, pre, watch, K.ids, today) if pre else []
+    sig = precursors(allrows, pre, watch, K.ids, today, {l["id"] for l in leads}) if pre else []
     leads += sig
     per["precursors"] = len(sig)
     # схлопнуть дубли обновлений
