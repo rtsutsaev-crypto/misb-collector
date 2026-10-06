@@ -7,7 +7,7 @@ collector/INSTRUCTIONS.md, что и задание Claude, с инструме�
 Окружение: OPENROUTER_API_KEY, OPENROUTER_MODEL (обязательно), OPENROUTER_PAGE_MODEL (чтение страниц и поиск; по умолчанию = OPENROUTER_MODEL),
 MISB_MAX_USD (потолок расходов на запуск, по умолчанию 3), MISB_MAX_TURNS (600), MISB_WEBSEARCH (on|off, по умолчанию on),
 MISB_SITE_URL (адрес сайта для итогового сообщения), MISB_WORK (где создавать рабочие папки), ключи источников GOSPLAN_KEY, TENDERGURU_KEY,
-CHECKO_KEY, DADATA_KEY, RELAY_URL, RELAY_TOKEN. Ключи модели не показываются: в командах и адресах она пишет $GOSPLAN_KEY и т. п.,
+CHECKO_KEY, DADATA_KEY, ROSTENDER_KEY, TENDERLAND_KEY, RELAY_URL, RELAY_TOKEN. Ключи модели не показываются: в командах и адресах она пишет $GOSPLAN_KEY и т. п.,
 подстановку делают Bash (окружение) и WebFetch (замена в адресе).
 """
 import argparse, datetime, fcntl, glob, json, os, re, shutil, sys, time, urllib.error, urllib.request
@@ -17,7 +17,7 @@ from .store import Store
 from .tools import SCHEMAS, Tools
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   # корень репозитория
-KEYS = ["GOSPLAN_KEY", "TENDERGURU_KEY", "CHECKO_KEY", "DADATA_KEY", "RELAY_URL", "RELAY_TOKEN"]
+KEYS = ["GOSPLAN_KEY", "TENDERGURU_KEY", "CHECKO_KEY", "DADATA_KEY", "ROSTENDER_KEY", "TENDERLAND_KEY", "RELAY_URL", "RELAY_TOKEN"]
 MSK = datetime.timezone(datetime.timedelta(hours=3))
 
 
@@ -115,7 +115,7 @@ def prepare_workdir(mode):
 
 def launch_text(mode, manual):
     keys = []
-    names = {"GOSPLAN_KEY": "ГосПлан", "TENDERGURU_KEY": "TenderGuru", "CHECKO_KEY": "Чекко", "DADATA_KEY": "DaData"}
+    names = {"GOSPLAN_KEY": "ГосПлан", "TENDERGURU_KEY": "TenderGuru", "CHECKO_KEY": "Чекко", "DADATA_KEY": "DaData", "ROSTENDER_KEY": "РосТендер API", "TENDERLAND_KEY": "TenderLand"}
     for k, n in names.items():
         keys.append(f"   - {n}: ${k}" + ("" if os.environ.get(k) else "  (НЕ ЗАДАН — источники и шаги с этим ключом пропускай: status skipped, note «нет ключа»)"))
     relay = "   Релей: $RELAY_URL и $RELAY_TOKEN" + (" (локальный: сервер сбора сам в России)" if os.environ.get("MISB_RELAY_LOCAL") else
