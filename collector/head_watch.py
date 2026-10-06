@@ -5,7 +5,7 @@
 meta/watchlist-extra — инфраструктура МСП и др.), у которых последняя проверка старше --recheck-days. Прежний руководитель
 хранится в небольшом документе состояния (meta/head-state), коллекцию customers читать не нужно.
 Изменился руководитель — сигнал sig-head-<ИНН>-<дата>; при первой проверке ИНН сигнал только если по ЕГРЮЛ руководитель
-назначен не раньше чем --fresh-days назад и заказчик из основного watchlist.
+назначен не раньше чем --fresh-days назад и заказчик из основного watchlist с группой (холдинг, дочка).
 
 Запуск: DADATA_KEY=... python3 head_watch.py --watch watch.json [watch_extra.json] --state hstate.json --date ГГГГ-ММ-ДД
         --out head_out.json [--max 400] [--recheck-days 30] [--fresh-days 90]
@@ -85,7 +85,8 @@ def main():
             if changed and since and since < (today - dt.timedelta(days=365)).isoformat():
                 changed = False                                   # по ЕГРЮЛ назначен давно — другое написание имени, не смена
             recent = bool(nh and since and since >= fresh)
-            if not (changed or (recent and not prev and inn in watch)): continue
+            w0 = watch.get(inn) or {}
+            if not (changed or (recent and not prev and w0.get("group"))): continue   # при первой проверке «недавно назначен» — только компании холдингов (не соцучреждения и органы власти)
             st["changed" if changed else "fresh"] += 1
             w = allw.get(inn) or {}
             when = since if recent else x.date

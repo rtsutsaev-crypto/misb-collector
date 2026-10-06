@@ -69,6 +69,9 @@ def main():
         okved = (d.get("ОКВЭД") or {}).get("Наим") or ""
         if str((d.get("ОКВЭД") or {}).get("Код") or "").startswith(("86", "87", "75")):   # медицина и ветеринария — не профиль МИСБ
             st["skippedMed"] = st.get("skippedMed", 0) + 1; continue
+        nm = f"{w.get('name') or ''} {d.get('НаимПолн') or ''}"
+        if str((d.get("ОКВЭД") or {}).get("Код") or "").startswith("85") or re.search(r"(?i)(?<![а-я])дпо(?![а-я])|образовательн|учебн\w* центр|университет|институт|академи|колледж|школ", nm):
+            st["skippedEdu"] = st.get("skippedEdu", 0) + 1; continue   # образовательная организация — лицензия почти наверняка есть, у Чекко нет сведений
         leads.append({"id": f"sig-partner-{inn}", "title": f"Партнёр без лицензии ДПО: {w.get('name') or d.get('НаимСокр') or inn} — {w.get('wins')} контрактов на обучение",
                       "customer": w.get("name") or d.get("НаимСокр") or "", "customerInn": inn, "region": (d.get("Регион") or {}).get("Наим") or "",
                       "price": None, "deadline": "", "validUntil": (today + dt.timedelta(days=x.recheck_days)).isoformat(), "law": "",
