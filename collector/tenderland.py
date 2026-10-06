@@ -4,12 +4,13 @@
 площадки — в том числе коммерческие ЭТП, которых нет в ЕИС), его номер виден в адресе автопоиска и записывается в план
 (поле autosearchIds источника tenderland). Выгрузка в два шага: Export/Create?autosearchId=N&limit=…&format=json&exportViewId=1
 → {Id}; Export/Get?exportId=Id → {items: [{tender: {regNumber, name, beginPrice, publishDate, endDate, region, typeName,
-lotCategories, etpLink, linkToCard, customers: [{lotCustomerShortName}]}}]}. Строки проходят отбор collector.py (Matcher, Known):
+lotCategories, etpLink, linkToCard, customers: [{lotCustomerShortName}]}}]} — по 100 записей, следующие — offset=100, 200…
+Цена (beginPrice) уже в рублях, в том числе у тендеров СНГ (module «СНГ»). Строки проходят отбор collector.py (Matcher, Known):
 номер ЕИС совпадает с id лидов ГосПлана, повторов нет. Лиды source tenderland.
 Нет автопоисков — скрипт ничего не запрашивает (stats.status = no-autosearch).
 
 Запуск: TENDERLAND_KEY=... python3 tenderland.py --autosearch ID [ID …] --dict dictionary.json --known known.json
-        --date ГГГГ-ММ-ДД --out tl_out.json [--limit 300] [--days 4]
+        --date ГГГГ-ММ-ДД --out tl_out.json [--limit 600] [--days 2]
 Выход: {leads, updates, stats}. Ключ только из окружения. Ответы API содержат ключ в ссылках на файлы (files) —
 такие поля не сохраняются, а выход проверяется на отсутствие ключа.
 """
@@ -45,22 +46,43 @@ def get(path, params, st):
     return None
 
 
-def export(aid, limit, st):
-    """Выгрузка автопоиска → список tender."""
+def export(aid, limit, since, st):
+    """Выгрузка автопоиска → список tender (новые сначала). Export/Get отдаёт по 100 записей, дальше — параметр offset;
+    чтение останавливается на тендерах, опубликованных раньше since."""
     c = get("Export/Create", {"autosearchId": aid, "limit": limit, "format": "json", "exportViewId": 1}, st)
     if not c or not c.get("Id"):
         raise RuntimeError(hide((c or {}).get("Description") or "нет ответа")[:200])
-    for t in range(6):                                   # выгрузка готовится на сервере — несколько попыток
-        g = get("Export/Get", {"exportId": c["Id"]}, st)
-        if g and isinstance(g.get("items"), list):
-            return [it.get("tender") or {} for it in g["items"]]
-        time.sleep(5 + 5 * t)
-    raise RuntimeError("выгрузка не готова")
+    total, out = int(c.get("TotalCount") or limit), []
+    while len(out) < total:
+        items = None
+        for t in range(6):                               # выгрузка готовится на сервере — несколько попыток
+            g = get("Export/Get", {"exportId": c["Id"], "offset": len(out)}, st)
+            if g and isinstance(g.get("items"), list):
+                items = [it.get("tender") or {} for it in g["items"]]; break
+            time.sleep(5 + 5 * t)
+        if items is None:
+            if out: st["cut"] = "выгрузка оборвалась"; break
+            raise RuntimeError("выгрузка не готова")
+        out += items
+        if len(items) < 100 or any(str(x.get("publishDate") or "")[:10] and str(x["publishDate"])[:10] < since for x in items): break
+        time.sleep(0.5)
+    return out
 
 
 def law(type_name):
     t = str(type_name or "")
     return "44-ФЗ" if re.search(r"44", t) else "223-ФЗ" if re.search(r"223", t) else ""
+
+
+CIS = [("казахстан", "KZ"), ("беларус", "BY"), ("узбекистан", "UZ"), ("ташкент", "UZ"), ("кыргыз", "KG"), ("киргиз", "KG"),
+       ("армени", "AM"), ("азербайджан", "AZ"), ("таджикистан", "TJ"), ("молдов", "MD"), ("абхаз", "AB")]
+
+
+def country(t):
+    """Страна тендера СНГ по региону; без совпадения — Россия (цена у TenderLand уже в рублях)."""
+    if str(t.get("module") or "") != "СНГ": return "RU"
+    r = str(t.get("region") or "").lower()
+    return next((c for k, c in CIS if k in r), "")
 
 
 def row(t):
@@ -72,8 +94,8 @@ def row(t):
     return {"id": tid, "title": re.sub(r"\s+", " ", str(t.get("name") or "")).strip()[:500], "customer": cust.strip(),
             "region": str(t.get("region") or ""), "price": t.get("beginPrice") or None,
             "deadline": str(t.get("endDate") or "")[:10], "law": law(t.get("typeName")),
-            "url": t.get("linkToCard") or "", "publishedAt": str(t.get("publishDate") or "")[:10],
-            "note": "; ".join(x for x in [str(t.get("typeName") or ""), ", ".join(t.get("lotCategories") or []),
+            "url": t.get("linkToCard") or "", "publishedAt": str(t.get("publishDate") or "")[:10], "country": country(t),
+            "note": "; ".join(x for x in [str(t.get("module") or ""), str(t.get("typeName") or ""), ", ".join(t.get("lotCategories") or []),
                                           ("площадка " + etp) if etp and KEY not in etp else ""] if x)[:300]}
 
 
@@ -81,7 +103,7 @@ def main():
     a = argparse.ArgumentParser()
     a.add_argument("--autosearch", nargs="*", default=[]); a.add_argument("--dict", default="dictionary.json"); a.add_argument("--known")
     a.add_argument("--date", required=True); a.add_argument("--out", required=True)
-    a.add_argument("--limit", type=int, default=300); a.add_argument("--days", type=int, default=4)
+    a.add_argument("--limit", type=int, default=600); a.add_argument("--days", type=int, default=2)
     x = a.parse_args()
     st = {"requests": 0, "errors": 0, "autosearch": len(x.autosearch)}
     leads, updates = [], []
@@ -97,7 +119,7 @@ def main():
         for aid in x.autosearch:
             s1 = st.setdefault("by", {}).setdefault(str(aid), {})
             try:
-                items = export(aid, x.limit, st)
+                items = export(aid, x.limit, since, st)
             except RuntimeError as e:
                 s1.update(status="failed", note=str(e)); continue
             rows = [r for r in map(row, items) if r["id"] and r["title"] and (not r["publishedAt"] or r["publishedAt"] >= since)]
