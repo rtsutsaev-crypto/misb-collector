@@ -7,10 +7,13 @@
 2) terminated — расторгнутые контракты на обучение (stage ET), обновлённые после курсора: заказчик остался с бюджетом и
    необученными людьми. Только предмет про обучение (Matcher), цена от --min-price, исполнитель — организация (ИНН 10 цифр).
    Выход — ранние сигналы sig-et-<реестровый номер> (source sig-terminated, флаг early) для save_leads.py.
+3) complaints — жалобы в ФАС по 44-ФЗ (/fz44/complaints, published_after = курсор): жалоба на закупку из базы → обновление
+   {id, complaint, complaintAt, complaintUrl} в leadupdates. Обоснованная жалоба — отмена, новые сроки или переигровка;
+   менеджеру важно знать это до подачи заявки. Около 5 жалоб в неделю по лидам базы (сентябрь 2026: 20 из 3 754).
 
 Запуск: GOSPLAN_KEY=... python3 gosplan_signals.py --leadsets <папка leadsets> --dict dictionary.json --state fstate.json
         --date ГГГГ-ММ-ДД --out signals_out.json [--max 80] [--min-price 150000]
-state (meta/signals-state): {"failedChecked": {номер: дата}, "etCursor": iso}. Выход: {leads, updates, state, stats}.
+state (meta/signals-state): {"failedChecked": {номер: дата}, "etCursor": iso, "complaintCursor": iso}. Выход: {leads, updates, state, stats}.
 Ничего не выдумывает: причина — текст протокола (abandonedReason.name). Ключ в выход не пишется.
 """
 import argparse, datetime as dt, glob, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
@@ -113,6 +116,34 @@ def terminated(m, classes, state, today, min_price, st):
     return list(dedup.values())
 
 
+def complaints(leadsets, state, today, st, pages=30):
+    """Жалобы ФАС после курсора, пересечённые с номерами 44-ФЗ из базы (срок не старше 30 дней)."""
+    lo = (today - dt.timedelta(days=30)).isoformat()
+    ids = {}
+    for f in glob.glob(os.path.join(leadsets, "*.json")):
+        j = json.load(open(f, encoding="utf-8")); j = j.get("data", j)
+        for l in j.get("leads", []):
+            for i in (str(l.get("id") or ""), str(l.get("eisNumber") or "")):
+                if re.fullmatch(r"0\d{18}", i) and (not l.get("deadline") or l["deadline"] >= lo): ids.setdefault(i, l)
+    since = state.get("complaintCursor") or (today - dt.timedelta(days=3)).isoformat() + "T00:00:00"
+    out, last = {}, since
+    for _ in range(pages):
+        rows = get("/fz44/complaints", {"published_after": last, "limit": 100, "sort": "published_at_asc"}, st)
+        time.sleep(0.15)
+        if not rows: break
+        for r in rows:
+            last = max(last, r.get("published_at") or "")
+            i = str(r.get("purchase_number") or "")
+            if i in ids and i not in out:
+                out[i] = {"id": i, "complaint": True, "complaintAt": (r.get("published_at") or "")[:10],
+                          "complaintUrl": "https://zakupki.gov.ru/epz/complaint/search/search_eis.html?searchString=" + str(r.get("reg_number") or ""),
+                          "url": ids[i].get("url") or EIS + i}
+        if len(rows) < 100: break
+    st["complaints"] = len(out)
+    state["complaintCursor"] = last[:19]
+    return list(out.values())
+
+
 def main():
     a = argparse.ArgumentParser()
     a.add_argument("--leadsets", required=True); a.add_argument("--dict", default="dictionary.json"); a.add_argument("--state")
@@ -129,6 +160,10 @@ def main():
     st = {"requests": 0, "errors": 0}
     ups = failed(x.leadsets, m, state, today, x.max, st, x.budget_sec)
     leads = terminated(m, sorted({c[:5] for c in dic.get("okpd2", [])}), state, today, x.min_price, st)
+    byid = {u["id"]: u for u in ups}
+    for u in complaints(x.leadsets, state, today, st):
+        byid[u["id"]] = dict(byid.get(u["id"], {}), **u)                 # несостоявшаяся и с жалобой — одно обновление
+    ups = list(byid.values())
     state["updatedAt"] = x.date
     json.dump({"leads": leads, "updates": ups, "state": state, "stats": st}, open(x.out, "w", encoding="utf-8"), ensure_ascii=False)
     print(json.dumps(st, ensure_ascii=False))
