@@ -46,9 +46,10 @@ def get(path, params, st):
     return None
 
 
-def export(aid, limit, since, st):
+def export(aid, limit, since, st, known=None):
     """Выгрузка автопоиска → список tender (новые сначала). Export/Get отдаёт по 100 записей, дальше — параметр offset;
-    чтение останавливается на тендерах, опубликованных раньше since."""
+    чтение останавливается на тендерах, опубликованных раньше since, и на странице, где все номера уже известны базе
+    (known — множество id): следующие страницы прочитаны прошлыми запусками, суточный лимит API не тратится зря."""
     c = get("Export/Create", {"autosearchId": aid, "limit": limit, "format": "json", "exportViewId": 1}, st)
     if not c or not c.get("Id"):
         raise RuntimeError(hide((c or {}).get("Description") or "нет ответа")[:200])
@@ -64,6 +65,8 @@ def export(aid, limit, since, st):
             if out: st["cut"] = "выгрузка оборвалась"; break
             raise RuntimeError("выгрузка не готова")
         out += items
+        if known is not None and items and all(str(x.get("regNumber") or "") in known for x in items):
+            st["stopKnown"] = st.get("stopKnown", 0) + 1; break
         if len(items) < 100 or any(str(x.get("publishDate") or "")[:10] and str(x["publishDate"])[:10] < since for x in items): break
         time.sleep(0.5)
     return out
@@ -119,7 +122,7 @@ def main():
         for aid in x.autosearch:
             s1 = st.setdefault("by", {}).setdefault(str(aid), {})
             try:
-                items = export(aid, x.limit, since, st)
+                items = export(aid, x.limit, since, st, set(K.ids))
             except RuntimeError as e:
                 s1.update(status="failed", note=str(e)); continue
             rows = [r for r in map(row, items) if r["id"] and r["title"] and (not r["publishedAt"] or r["publishedAt"] >= since)]
