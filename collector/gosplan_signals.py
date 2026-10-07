@@ -125,7 +125,11 @@ def complaints(leadsets, state, today, st, pages=30):
         for l in j.get("leads", []):
             for i in (str(l.get("id") or ""), str(l.get("eisNumber") or "")):
                 if re.fullmatch(r"0\d{18}", i) and (not l.get("deadline") or l["deadline"] >= lo): ids.setdefault(i, l)
-    since = state.get("complaintCursor") or (today - dt.timedelta(days=3)).isoformat() + "T00:00:00"
+    # ГосПлан выкладывает жалобы с задержкой больше суток и не по порядку: окно перечитывается на 3 дня назад от курсора,
+    # уже учтённые жалобы (complaintSeen: номер жалобы → дата) пропускаются
+    cur = state.get("complaintCursor") or (today - dt.timedelta(days=3)).isoformat() + "T00:00:00"
+    since = (dt.datetime.fromisoformat(cur[:19]) - dt.timedelta(days=3)).isoformat()[:19]
+    seen = state.setdefault("complaintSeen", {})
     out, last = {}, since
     for _ in range(pages):
         rows = get("/fz44/complaints", {"published_after": last, "limit": 100, "sort": "published_at_asc"}, st)
@@ -133,14 +137,18 @@ def complaints(leadsets, state, today, st, pages=30):
         if not rows: break
         for r in rows:
             last = max(last, r.get("published_at") or "")
-            i = str(r.get("purchase_number") or "")
+            i, rn = str(r.get("purchase_number") or ""), str(r.get("reg_number") or "")
+            if rn in seen: continue
+            if i in ids: seen[rn] = today.isoformat()
             if i in ids and i not in out:
                 out[i] = {"id": i, "complaint": True, "complaintAt": (r.get("published_at") or "")[:10],
                           "complaintUrl": "https://zakupki.gov.ru/epz/complaint/search/search_eis.html?searchString=" + str(r.get("reg_number") or ""),
                           "url": ids[i].get("url") or EIS + i}
         if len(rows) < 100: break
     st["complaints"] = len(out)
-    state["complaintCursor"] = last[:19]
+    state["complaintCursor"] = max(last[:19], cur[:19])
+    old = (today - dt.timedelta(days=30)).isoformat()
+    for k in [k for k, v in seen.items() if v < old]: seen.pop(k)
     return list(out.values())
 
 
