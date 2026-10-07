@@ -85,7 +85,7 @@ def main():
     a.add_argument("--reserve", type=int, default=10, help="оставить в дневном лимите")
     a.add_argument("--templates-share", type=float, default=0.5, help="доля запросов на шаблоны, если они есть")
     a.add_argument("--days", type=int, default=3, help="templates: тендеры, опубликованные не раньше чем days дней назад")
-    a.add_argument("--budget-sec", type=int, default=300)
+    a.add_argument("--budget-sec", type=int, default=600)   # РосТендер из облака отвечает медленно: ~3–4 с на карточку
     x = a.parse_args()
     if not KEY: sys.exit("нет ROSTENDER_KEY")
     today = dt.date.fromisoformat(x.date)

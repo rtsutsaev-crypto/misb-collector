@@ -38,7 +38,10 @@ def get(path, params, st):
             st["requests"] += 1
             body = e.read().decode("utf-8", "ignore")
             if e.code == 400 and "ключ" in body.lower(): raise SystemExit("ключ TenderLand не принят: " + hide(body)[:200])
-            if e.code == 400: return {"Success": False, "Description": hide(body)[:300]}
+            if e.code in (400, 401, 403):                      # 403 «истек период доступа», 400 — ошибка запроса: повтор не поможет
+                try: d = json.loads(body).get("Description") or body
+                except Exception: d = body
+                return {"Success": False, "Description": f"HTTP {e.code}: " + hide(d)[:300]}
             time.sleep(3 + 3 * t)
         except Exception:
             time.sleep(3 + 3 * t)
