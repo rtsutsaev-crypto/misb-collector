@@ -17,7 +17,7 @@
    "key": "rt-treningi",
    "method": "раздел постранично",
    "name": "РосТендер · Тренинги",
-   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). ",
+   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). 11.10.2026: из облака соединение рвётся (HTTP 000), если страницы запрашивать подряд; пауза 40 с между страницами, pages.py повторяет обрыв через 45 с.",
    "planned": 1,
    "prevType": "pages",
    "site": "rostender",
@@ -26,13 +26,14 @@
    "urls": [
     "https://rostender.info/category/tendery-treningi"
    ],
-   "light": true
+   "light": true,
+   "pause": 40
   },
   {
    "key": "rt-seminary",
    "method": "раздел постранично",
    "name": "РосТендер · Семинары",
-   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). ",
+   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). 11.10.2026: из облака соединение рвётся (HTTP 000), если страницы запрашивать подряд; пауза 40 с между страницами, pages.py повторяет обрыв через 45 с.",
    "planned": 3,
    "prevType": "pages",
    "site": "rostender",
@@ -43,13 +44,14 @@
     "https://rostender.info/category/tendery-seminary?page=2",
     "https://rostender.info/category/tendery-seminary?page=3"
    ],
-   "light": true
+   "light": true,
+   "pause": 40
   },
   {
    "key": "rt-pk",
    "method": "раздел постранично",
    "name": "РосТендер · Повышение квалификации",
-   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). ",
+   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). 11.10.2026: из облака соединение рвётся (HTTP 000), если страницы запрашивать подряд; пауза 40 с между страницами, pages.py повторяет обрыв через 45 с.",
    "planned": 4,
    "prevType": "pages",
    "site": "rostender",
@@ -61,13 +63,14 @@
     "https://rostender.info/category/tendery-povyshenie-kvalifikacii?page=3",
     "https://rostender.info/category/tendery-povyshenie-kvalifikacii?page=4"
    ],
-   "light": true
+   "light": true,
+   "pause": 40
   },
   {
    "key": "rt-obr",
    "method": "раздел постранично",
    "name": "РосТендер · Образование и ДПО",
-   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). ",
+   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). 11.10.2026: из облака соединение рвётся (HTTP 000), если страницы запрашивать подряд; пауза 40 с между страницами, pages.py повторяет обрыв через 45 с.",
    "planned": 4,
    "prevType": "pages",
    "site": "rostender",
@@ -79,13 +82,14 @@
     "https://rostender.info/tendery-uslugi-v-oblasti-obrazovaniya-i-povysheniya-kvalifikacii?page=3",
     "https://rostender.info/tendery-uslugi-v-oblasti-obrazovaniya-i-povysheniya-kvalifikacii?page=4"
    ],
-   "light": true
+   "light": true,
+   "pause": 40
   },
   {
    "key": "rt-obuch",
    "method": "Раздел постранично",
    "name": "РосТендер · Обучение персонала",
-   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). ",
+   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). 11.10.2026: из облака соединение рвётся (HTTP 000), если страницы запрашивать подряд; пауза 40 с между страницами, pages.py повторяет обрыв через 45 с.",
    "planned": 2,
    "prevType": "pages",
    "site": "rostender",
@@ -95,13 +99,14 @@
     "https://rostender.info/category/tendery-obuchenie-personala",
     "https://rostender.info/category/tendery-obuchenie-personala?page=2"
    ],
-   "light": true
+   "light": true,
+   "pause": 40
   },
   {
    "key": "rt-event",
    "method": "Раздел, 1 страница; отбирать только деловые и обучающие мероприятия",
    "name": "РосТендер · Event-мероприятия",
-   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). ",
+   "note": "С 30.09.2026 читается скриптом pages.py (все строки страницы дословно, без WebFetch). 11.10.2026: из облака соединение рвётся (HTTP 000), если страницы запрашивать подряд; пауза 40 с между страницами, pages.py повторяет обрыв через 45 с.",
    "planned": 1,
    "prevType": "pages",
    "site": "rostender",
@@ -110,7 +115,8 @@
    "urls": [
     "https://rostender.info/category/tendery-event-meropriyatiya"
    ],
-   "light": true
+   "light": true,
+   "pause": 40
   },
   {
    "customer": "АНО «Корпоративная Академия Росатома»",
@@ -164,7 +170,7 @@
    "key": "b2b",
    "method": "Тематические подборки /search/industry/<тема>/ (обучение — 3 страницы, консультационные услуги, повышение квалификации, образовательные услуги) скриптом pages.py --site b2b: карточки schema.org с организатором, сроком, ценой и ссылкой на площадку-источник",
    "name": "B2B-Center · тематические подборки (агрегатор РТС-тендер/ЗМО, ЕИС, ЕАТ)",
-   "note": "01.10.2026: адреса /search-tender/tendery-… переехали на /search/industry/…; читается скриптом (все карточки дословно). Подборки агрегируют закупки РТС-тендера (в т.ч. малого объёма), ЕИС, ЕАТ «Берёзка», OTC — площадок, недоступных напрямую. Проверка 01.10: 6 страниц = 48 строк, 24 по профилю, 11 новых, 13 дублей ЕИС. Подборка «обучение персонала» переадресует на «Подбор персонала» — не читать; подборок «семинары», «тренинги», «конференции», «оценка персонала» нет (уходят на /market/).",
+   "note": "01.10.2026: адреса /search-tender/tendery-… переехали на /search/industry/…; читается скриптом (все карточки дословно). Подборки агрегируют закупки РТС-тендера (в т.ч. малого объёма), ЕИС, ЕАТ «Берёзка», OTC — площадок, недоступных напрямую. Проверка 01.10: 6 страниц = 48 строк, 24 по профилю, 11 новых, 13 дублей ЕИС. Подборка «обучение персонала» переадресует на «Подбор персонала» — не читать; подборок «семинары», «тренинги», «конференции», «оценка персонала» нет (уходят на /market/). 11.10.2026: вёрстка карточек сменилась (Organization → Demand, срок validThrough) — pages.py читает обе.",
    "pause": 2,
    "planned": 11,
    "prevType": "pages",
@@ -225,9 +231,9 @@
    "key": "bico",
    "method": "Теги с названием заказчика; пауза 20 с между страницами; при проверке «подождите» — остановиться",
    "name": "Бикотендер · теги",
-   "note": "",
+   "note": "11.10.2026: страница категории https://www.bicotender.ru/zakupki-i-tendery/kategorii/professionalnye-uslugi-i-raboty/obrazovatelnye-uslugi/vse-tendery-i-zakupki-na-treningi-i-obuchenie/ отдаёт проверку на бота («Подождите секунду, выполняется проверка») — убрана из urls, проверку не обходим; теги читаются.",
    "pause": 20,
-   "planned": 6,
+   "planned": 5,
    "source": "bicotender",
    "type": "pages",
    "urls": [
@@ -235,23 +241,24 @@
     "https://www.bicotender.ru/tags/tendery-na-seminary.html",
     "https://www.bicotender.ru/tags/tendery-na-povyshenie-kvalifikacii.html",
     "https://www.bicotender.ru/tags/tendery-na-obuchenie-personala.html",
-    "https://www.bicotender.ru/tags/tendery-po-obucheniyu-po-ohrane-truda.html",
-    "https://www.bicotender.ru/zakupki-i-tendery/kategorii/professionalnye-uslugi-i-raboty/obrazovatelnye-uslugi/vse-tendery-i-zakupki-na-treningi-i-obuchenie/"
+    "https://www.bicotender.ru/tags/tendery-po-obucheniyu-po-ohrane-truda.html"
    ],
    "light": true
   },
   {
    "key": "zmo-lenreg",
-   "method": "Открытый список новых запросов малых закупок; карточка проверена 26.09",
+   "method": "Открытый список запросов малых закупок /Search/Requests (20 новейших), скрипт pages.py --site lenreg",
    "name": "Электронный магазин Ленинградской области",
-   "note": "Если на странице есть ссылка на следующую страницу списка — прочитай ещё одну. Ссылка лида — адрес карточки со страницы (вида https://zakupki.lenreg.ru/ProductRequestGroup/Index/<номер>).",
-   "planned": 2,
+   "note": "11.10.2026: прежний адрес /Search/NewRequests уводит на главную, WebFetch пересказывал её вместо строк; список — /Search/Requests (HTML, 20 строк: номер, название, заказчик, срок оферт, цена), robots.txt нет. Ссылка лида — карточка /ProductRequestGroup/Index/<номер>.",
+   "planned": 1,
    "source": "zmo:lenreg",
-   "type": "pages",
+   "type": "pages-script",
    "urls": [
-    "http://zakupki.lenreg.ru/Search/NewRequests"
+    "https://zakupki.lenreg.ru/Search/Requests"
    ],
-   "light": true
+   "light": true,
+   "prevType": "pages",
+   "site": "lenreg"
   },
   {
    "key": "zmo-vendorportal",
@@ -25915,5 +25922,5 @@
   }
  ],
  "updatedAt": "2026-10-06",
- "version": "6.27"
+ "version": "6.28"
 }

@@ -8,7 +8,7 @@ import argparse, html, json, re, subprocess, time
 
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36"
 HOST = {"rostender": "https://rostender.info", "komtender": "https://www.komtender.ru", "goszakup": "https://old.goszakup.gov.kz", "b2b": "https://www.b2b-center.ru",
-        "mitwork": "https://eep.mitwork.kz", "energybase": "https://energybase.ru"}
+        "mitwork": "https://eep.mitwork.kz", "energybase": "https://energybase.ru", "lenreg": "https://zakupki.lenreg.ru"}
 RELAY = {"url": "", "token": ""}   # --relay/--relay-token: чтение через российский сервер (см. config/collector); токен только из текста запуска
 
 
@@ -26,6 +26,23 @@ def fetch(url):
     r = subprocess.run(["curl", "-s", "-L", "-m", "60", "-A", UA, "-w", "\n%{http_code}", url], capture_output=True, text=True, errors="ignore")
     body, _, code = r.stdout.rpartition("\n")
     return code, body
+
+
+RETRY = {"n": 2, "wait": 45}                 # --retries/--retry-wait
+TRANSIENT = {"", "0", "000", "429", "502", "504", "599"}
+
+
+def fetch_retry(url):
+    """Обрыв соединения (HTTP 000), 429, 502, 504, 599 релея — повтор после паузы, не больше RETRY["n"] раз; 403/503 не повторяются.
+    11.10.2026: из облака соединения с российскими и казахстанскими сайтами (РосТендер, B2B-Center, goszakup.kz, lenreg) рвутся
+    примерно через 12 с, если запросы идут подряд; первый запрос после паузы 40–45 с проходит."""
+    code, body = fetch(url)
+    tries = 1
+    while code in TRANSIENT and tries <= RETRY["n"]:
+        time.sleep(RETRY["wait"])
+        code, body = fetch(url)
+        tries += 1
+    return code, body, tries
 
 
 def clean(s):
@@ -91,9 +108,13 @@ def parse_b2b(page):
     id: номер ЕИС, если карточка ведёт на zakupki.gov.ru (дедуп с ГосПланом), иначе rts-<номер>/eat-<номер>/номер подборки."""
     rows = []
     for c in page.split('<div class="cards" itemscope')[1:]:
-        def g(p):
-            m = re.search(p, c, re.S); return clean(m.group(1)) if m else ""
-        title = g(r'itemprop="name" content="([^"]*)"'); b2b_url = g(r'itemprop="url" content="([^"]*)"')
+        # 11.10.2026 вёрстка сменилась: карточка — Organization → seeks Demand; ссылка <link itemprop="url" href>, срок validThrough,
+        # регион areaServed, цена — «Начальная цена» в свойствах. Старая разметка (Product/Offer, endDate, location) тоже читается.
+        d = c.split('schema.org/Demand', 1)[1] if 'schema.org/Demand' in c else c
+        def g(p, s=None):
+            m = re.search(p, d if s is None else s, re.S); return clean(m.group(1)) if m else ""
+        title = g(r'card-item__title"[^>]*>(.*?)</div>', c) or clean(html.unescape(g(r'itemprop="name" content="([^"]*)"')))
+        b2b_url = g(r'itemprop="url" (?:content|href)="([^"]*)"')
         if not title or not b2b_url: continue
         ext = re.search(r'card-item__about">\s*(?:<noindex>)?\s*<a target="_blank" href="([^"]+)"', c, re.S)
         ext_url = html.unescape(ext.group(1)) if ext else ""
@@ -108,9 +129,10 @@ def parse_b2b(page):
         if reg and pre == "": rid = reg.group(1)                       # номер ЕИС — дедуп с ГосПланом
         elif num and pre: rid = pre + num.group(1)
         else: rid = re.sub(r"^.*?/number/|/$", "", b2b_url)
-        end = g(r'itemprop="endDate" content="(\d{4}-\d\d-\d\d)')
-        rows.append({"id": rid, "title": title, "customer": g(r'card-item__organization-name">(.*?)</div>'),
-                     "region": g(r'itemprop="location" content="([^"]*)"').replace("-", " "), "price": price(g(r'itemprop="price" content="([^"]*)"')),
+        end = g(r'itemprop="(?:endDate|validThrough)" content="(\d{4}-\d\d-\d\d)')
+        pr = g(r'itemprop="price" content="([^"]*)"') or g(r'Начальная цена</div>\s*<div class="card-item__properties-desc">(.*?)</div>', c)
+        rows.append({"id": rid, "title": title, "customer": g(r'card-item__organization-name">(.*?)</div>', c),
+                     "region": g(r'itemprop="(?:location|areaServed)" content="([^"]*)"').replace("-", " "), "price": price(pr),
                      "deadline": end, "url": ext_url or b2b_url, "urls": [u for u in (ext_url, b2b_url) if u], "law": law,
                      "note": "; ".join(x for x in (etp, zmo, method) if x)})
     return rows
@@ -166,7 +188,24 @@ def parse_energybase(page):
     return rows
 
 
+def parse_lenreg(page):
+    """Электронный магазин Ленинградской области: /Search/Requests — 20 новейших запросов малых закупок (с 11.10.2026 прежний адрес
+    /Search/NewRequests уводит на главную). id — номер карточки /ProductRequestGroup/Index/<номер>; срок — окончание подачи оферт."""
+    rows = []
+    for part in page.split('<li class="search-item clearfix">')[1:]:
+        a = re.search(r'href="/ProductRequestGroup/Index/(\d+)"[^>]*>(.*?)</a>', part, re.S)
+        if not a: continue
+        d = re.search(r'окончания подачи оферт:</label>\s*<label[^>]*>([^<]*)<', part)
+        p = re.search(r'search-counter-number">([^<]*)<', part)
+        cust = re.search(r'fa-user[^>]*></i>(.*?)</p>', part, re.S)
+        rows.append({"id": a.group(1), "title": re.sub(r"^\d+-\d+LO\s+", "", clean(a.group(2))), "customer": clean(cust.group(1)) if cust else "",
+                     "region": "Ленинградская область", "price": price(p.group(1).replace("руб.", "")) if p else None, "deadline": ru_date(d.group(1)) if d else "",
+                     "url": f"{HOST['lenreg']}/ProductRequestGroup/Index/{a.group(1)}", "law": ""})
+    return rows
+
+
 def parse(site, page):
+    if site == "lenreg": return parse_lenreg(page)
     if site == "goszakup": return parse_goszakup_announce(page) if 'Окончание приема заявок' in page else parse_goszakup(page)
     if site == "mitwork": return parse_mitwork(page, time.strftime("%Y-%m-%d"))
     if site == "b2b": return parse_b2b(page)
@@ -202,8 +241,11 @@ def main():
     a.add_argument("--words", nargs="*", default=[], help="goszakup, mitwork: слова поиска (каждое — отдельный запрос по наименованию лота)")
     a.add_argument("--relay", default="", help="адрес релея (российский сервер), например https://host/; без него — напрямую")
     a.add_argument("--relay-token", default="")
+    a.add_argument("--retries", type=int, default=2, help="повторов при обрыве соединения (HTTP 000), 429, 502, 504")
+    a.add_argument("--retry-wait", type=float, default=45, help="пауза перед повтором, с")
     x = a.parse_args()
     RELAY.update(url=x.relay, token=x.relay_token)
+    RETRY.update(n=x.retries, wait=x.retry_wait)
     out, pages, seen = [], [], set()
     if x.site == "goszakup":
         import urllib.parse
@@ -212,9 +254,9 @@ def main():
         import urllib.parse
         x.urls = [f"{HOST['mitwork']}/ru/publics/buys?" + urllib.parse.urlencode({"filter[search]": w}) for w in x.words] or x.urls
     for i, u in enumerate(x.urls):
-        code, body = fetch(u)
+        code, body, tries = fetch_retry(u)
         if code != "200":
-            pages.append({"url": u, "status": "failed", "rows": 0, "note": f"HTTP {code}"})
+            pages.append({"url": u, "status": "failed", "rows": 0, "note": f"HTTP {code}" + (f", попыток {tries}" if tries > 1 else "")})
         elif re.search(r"Подождите|выполняется проверка|captcha|challenge", body[:3000], re.I):
             pages.append({"url": u, "status": "blocked", "rows": 0, "note": "проверка на бота — не обходим"})
         else:
